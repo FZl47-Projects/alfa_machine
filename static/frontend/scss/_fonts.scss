@@ -1,0 +1,86 @@
+
+/* ----------------------------- YEKANBAKH ----------------------------- */
+
+@font-face {
+    font-family: test;
+    font-style: normal;
+    font-weight: 300;
+    src: url("../fonts/Ravi\ Medium.@Font_farsi.eot");
+    src: url("../fonts/Ravi\ Medium.@Font_farsi.eot?#iefix")
+        format("embedded-opentype"),
+      /* IE6-8 */
+        url("../fonts/Ravi\ Medium.@Font_farsi.woff")
+        format("woff"),
+        url("../fonts/Ravi\ Medium.@Font_farsi.woff2")
+        format("woff2"),
+      /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+        url("../fonts/Ravi\ Medium.@Font_farsi.otf")
+        format("truetype");
+  }
+  @font-face {
+    font-family: test;
+    font-style: normal;
+    font-weight: 500;
+    src: url("../fonts/Ravi\ Regular.@Font_farsi.eot");
+    src: url("../fonts/Ravi\ Regular.@Font_farsi.eot?#iefix")
+        format("embedded-opentype"),
+      /* IE6-8 */
+        url("../fonts/Ravi\ Regular.@Font_farsi.woff")
+        format("woff"),
+        url("../fonts/Ravi\ Regular.@Font_farsi.woff2")
+        format("woff2"),
+      /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+        url("../fonts/Ravi\ Regular.@Font_farsi.otf")
+        format("truetype");
+  }
+  @font-face {
+    font-family: test;
+    font-style: normal;
+    font-weight: 600;
+    src: url("../fonts/Ravi\ SemiBold.@Font_farsi.eot");
+    src: url("../fonts/Ravi\ SemiBold.@Font_farsi.eot?#iefix")
+        format("embedded-opentype"),
+      /* IE6-8 */
+        url("../fonts/Ravi\ SemiBold.@Font_farsi.woff")
+        format("woff"),
+        url("../fonts/Ravi\ SemiBold.@Font_farsi.woff2")
+        format("woff2"),
+      /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+        url("../fonts/Ravi\ SemiBold.@Font_farsi.otf")
+        format("truetype");
+  }
+  @font-face {
+    font-family: test;
+    font-style: bold;
+    font-weight: 900;
+    src: url("../fonts/Ravi\ Light.@Font_farsi.eot");
+    src: url("../fonts/Ravi\ Light.@Font_farsi.eot?#iefix")
+        format("embedded-opentype"),
+      /* IE6-8 */
+        url("../fonts/Ravi\ Light.@Font_farsi.woff")
+        format("woff"),
+        url("../fonts/Ravi\ Light.@Font_farsi.woff2")
+        format("woff2"),
+      /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+        url("../fonts/Ravi\ Light.@Font_farsi.otf")
+        format("truetype");
+  }
+
+
+  @font-face {
+    font-family: iransans;
+    font-style: normal;
+    font-weight: 400;
+    src: url("../fonts/IRANSansWeb\(FaNum\).eot");
+    src: url("../fonts/IRANSansWeb\(FaNum\).eot?#iefix")
+        format("embedded-opentype"),
+        /* IE6-8 */
+        url("../fonts/IRANSansWeb\(FaNum\).woff2")
+        format("woff2"),
+       
+      /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+        url("../fonts/IRANSansWeb\(FaNum\).ttf")
+        format("truetype");
+      
+  }
+  

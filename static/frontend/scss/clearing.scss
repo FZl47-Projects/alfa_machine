@@ -1,0 +1,26 @@
+@import "./component";
+.up-clearing{
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    padding:20px 10px;
+    .right{
+        .right-item{
+            padding: 10px;
+            font-size: 14px;
+        }
+    }
+    .left{
+        .btn-clearing{
+            background-color: #7f9fea;
+            margin-bottom: 10px;
+            padding: 5px 10px;
+            font-size: 13px;
+            cursor: pointer;
+            color: #fff;
+        }
+    }
+}
+@import "./medias";

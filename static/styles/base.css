@@ -1,0 +1,243 @@
+@font-face {
+    font-family: 'KalamehBlack';
+    src: url('/static/fonts/Kalameh_Black.woff')
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Vazir';
+}
+
+.text-left{
+    text-align: left;
+}
+
+.d-none{
+    display: none;
+}
+
+.border-1-gray{
+    border: 1px solid #ddd;
+}
+
+.container-not-found-base {
+    text-align: center;
+    margin: 30px auto;
+}
+
+.container-not-found-base img {
+    width: 200px;
+    height: 100%;
+}
+
+.container-not-found-base p {
+    font-size: 160%;
+    font-family: KalamehBlack;
+    color: rgb(229, 122, 122);
+}
+
+.loading-element-parent {
+    position: relative;
+}
+
+.loading-element {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    z-index: 99999;
+    border-radius: 50%;
+    animation: loading-circle-animation 1s linear infinite;
+}
+
+.loading-blur-element {
+    backdrop-filter: blur(2px);
+    /*backdrop-filter: brightness(50%);*/
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    inset: 0;
+    z-index: 99998;
+    border-radius: inherit;
+}
+
+.loading-blur-element.fill {
+    backdrop-filter: none !important;
+}
+
+.loading-blur-element.fill:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    left: 100%;
+    inset: 0;
+    z-index: 99997;
+    background: inherit;
+    border-radius: inherit;
+}
+
+.loading-circle-big {
+    border: 6px solid transparent;
+    border-top-width: 6px;
+    border-top-style: solid;
+    border-right-width: 6px;
+    border-right-style: solid;
+    width: 75px;
+    height: 75px;
+}
+
+.loading-circle-normal {
+    border: 4px solid transparent;
+    border-top-width: 4px;
+    border-top-style: solid;
+    border-right-width: 4px;
+    border-right-style: solid;
+    width: 50px;
+    height: 50px;
+}
+
+
+.loading-circle-small {
+    border: 3px solid transparent;
+    border-top-width: 3px;
+    border-top-style: solid;
+    border-right-width: 3px;
+    border-right-style: solid;
+    width: 25px;
+    height: 25px;
+}
+
+@keyframes loading-circle-animation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.list-row {
+    border: 1px solid #dcdcdc;
+    border-radius: 10px;
+    font-size: 80%;
+    text-align: center;
+}
+
+.title-list-row {
+    border-radius: 10px 10px 0 0;
+    padding: 10px;
+    background: #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.title-list-row > div {
+    display: inline-block;
+    margin: 0 5px;
+    color: #555;
+    font-size: 80%;
+}
+
+
+.detail-row {
+    font-size: 90%;
+    color: #444;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    /* margin: 10px 0; */
+    /* margin-bottom: 10px; */
+    padding: 12px 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+.detail-row:last-of-type {
+    border-bottom: none;
+    border-radius: 0 0 10px 10px ;
+}
+
+.detail-row > div {
+    display: inline-block;
+    margin: 0 5px;
+}
+
+.font-80 {
+    font-size: 80%!important;
+}
+
+.font-70 {
+    font-size: 70%!important;
+}
+
+.font-60 {
+    font-size: 60%!important;
+}
+
+.pagination{
+    direction: ltr;
+    display: block!important;
+    text-align: left;
+    margin: 15px 0;
+}
+
+.pagination .step-links{
+    background: #f0f0f0;
+    border: 1px solid #d2d2d2;
+    display: inline-block;
+    border-radius: 7px;
+}
+
+.pagination .step-links a{
+    padding: 5px 11px;
+    margin: 0;
+    /*width: 40px;*/
+    font-size: 80%;
+    background: #f6f6f6;
+    text-align: center;
+    display: inline-block;
+}
+
+.pagination-previous a:first-of-type{
+    border-radius: 7px 0 0 7px ;
+    border-right: 1px solid #d2d2d2;
+}
+
+.pagination-next a:last-of-type{
+    border-radius: 0 7px 7px 0;
+    border-left: 1px solid #d2d2d2;
+}
+
+.pagination .current{
+    font-size: 65%;
+    padding: 0 3px;
+    color: #888;
+}
+
+
+.user-select {
+    cursor: pointer;
+    transition: all .2s;
+}
+
+.user-select:hover {
+    background: #eee;
+}
+
+.user-select[selected='true'] {
+    background: #2fbd75 !important;
+    border: 1px solid #08a673 !important;
+    color: #fff;
+}

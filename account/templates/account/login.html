@@ -1,0 +1,62 @@
+{% extends 'base/base_template.html' %}
+{% load static %}
+
+{% block Title %}
+    ورود
+{% endblock %}
+
+{% block Link %}
+    <!-- BOOTSTRAP -->
+    <link rel="stylesheet" href="{% static 'frontend/vendors/bootstrap.min.css' %}"/>
+
+    <!-- SWIPER -->
+    <link rel="stylesheet" href="{% static 'frontend/vendors/swiper.css' %}"/>
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="{% static 'frontend/styles/login.css' %}"/>
+{% endblock %}
+
+{% block Content %}
+    <main class="main container">
+        <!-- form-login -->
+        <section class="login">
+            <div class="content form-login col-12 col-md-6">
+                <div class="forms">
+                    <form class="form form-login" action="{% url 'account:login' %}" method="post">
+                        {% csrf_token %}
+                        <div class="titlee">ورود</div>
+                        <div>
+                            <div class="group-form">
+                                <input type="email" id="phoneNumber-login" name="email" required>
+                                <label for="phoneNumber-login"> :ایمیل</label>
+                            </div>
+                            <div class="group-form">
+                                <input type="password"
+                                       id="phoneNumber-login"
+                                       name="password" required>
+                                <label for="phoneNumber-login">:رمز عبور</label>
+                            </div>
+                            <small></small>
+                        </div>
+
+                        <div class="d-flex justify-content-end align-items-center check d-none">
+                            <!-- add in future -->
+                            <div class="py-3">
+                                <label for="password-login">مرابه خاطر بسپار</label>
+                                <input type="checkbox" name="check">
+                            </div>
+                        </div>
+                        <button type="submit" id="btn-login"
+                                class="btn-submit">ورود
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+        <!-- form-login -->
+    </main>
+{% endblock %}
+
+{% block Script %}
+    <script src="{% static 'frontend/js/login.js' %}" type="module"></script>
+{% endblock %}

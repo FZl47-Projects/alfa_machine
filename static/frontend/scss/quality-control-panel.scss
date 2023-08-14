@@ -1,0 +1,33 @@
+@import "./component";
+.taskk{
+    overflow-x: hidden;
+}
+.table-content{
+    background-color: #fff;
+    height: 100%;
+}
+.btn-table-takhsis{
+    display: flex;
+    justify-content: center;
+    .btn-item{
+        padding: 5px 8px;
+        text-align: center;
+        border: 1px solid #a5a0a0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        cursor: pointer;
+        width:70px;
+        color: #fff;
+        &.remov{
+            background-color: #49ab72;
+          
+        }
+        &.edit{
+            background-color: #b9b9b9;
+        }
+    }
+}
+
+@import "./medias";
