@@ -70,13 +70,14 @@ def add_prefix_phonenum(phonenumber):
 def form_validate_err(request, form):
     if form.is_valid() is False:
         errors = form.errors.as_data()
-        if errors:
-            errors = list(errors.values())
-            err = str(errors[0][0])
-            err = err.replace('[', '').replace(']', '')
-            err = err.replace("'", '')
-            messages.error(request, err)
-        else:
-            messages.error(request, 'دیتای ورودی نامعتبر است')
+        messages.error(request, 'لطفا فیلد هارا به درستی وارد نمایید')
+        # if errors:
+        #     errors = list(errors.values())
+        #     err = str(errors[0][0])
+        #     err = err.replace('[', '').replace(']', '')
+        #     err = err.replace("'", '')
+        #     messages.error(request, err)
+        # else:
+        #     messages.error(request, 'دیتای ورودی نامعتبر است')
         return False
     return True

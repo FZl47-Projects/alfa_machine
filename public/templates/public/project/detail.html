@@ -1,0 +1,1146 @@
+{% extends 'base/base_template.html' %}
+{% load static %}
+
+{% block Title %}
+    {{ project.name }}
+{% endblock %}
+
+{% block Link %}
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <link rel="stylesheet" href="{% static 'frontend/styles/project.css' %}"/>
+{% endblock %}
+
+{% block Content %}
+    <main class="main content-page container">
+        <h5 class="title-page">{{ project.name }}</h5>
+        <section class="col-12 project-content">
+            <div class="inner-project">
+                <!-- btn tab page -->
+                <div class="btn-content" style="border-bottom:1px solid #a2a2a2 ;">
+                    <div class="btns col-12 col-md-7">
+                        <div class="btn-change col-2 text-center active">مشخصات پروژه</div>
+                        <div class="btn-change col-2 text-center">مواد اولیه</div>
+                        <div class="btn-change col-2 text-center">اسنادآپلود شده</div>
+                        <div class="btn-change col-2 text-center">بازرگانی</div>
+                        <div class="btn-change col-2 text-center">مکاتبات پروژه</div>
+                        <div class="btn-change col-2 text-center">امور مالی</div>
+                    </div>
+                </div>
+                <!-- btn tab page -->
+
+                <section class="content-notifcation">
+                    <!-- Project-specifications chart and name ddline  -->
+                    <div class="Project-specifications">
+                        <div class="col-12 col-md-8 d-flex flex-column justify-content-center align-items-start">
+                            <div class="right">
+                                <div class="col-12 col-md-6 p-2">
+                                    <div class="right-item">
+                                        <span>نام پروژه:</span>
+                                        <span>{{ project.name }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 p-2">
+                                    <div class="right-item">
+                                        <span>کارفرما:</span>
+                                        <span>{{ project.task_master }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 p-2">
+                                    <div class="right-item">
+                                        <span>تاریخ شروع:</span>
+                                        <span class="datetime-convert">{{ project.time_start }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 p-2">
+                                    <div class="right-item">
+                                        <span>تاریخ پایان</span>
+                                        <span class="datetime-convert">{{ project.time_end }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- chart left -->
+                        <div id="chart" class="col-12 col-md-4 chart-section"></div>
+                        <!-- chart left -->
+                    </div>
+                    <!-- Project-specifications chart and name ddline  -->
+                    <!--start content list task -->
+                    <div class="content-items p-2 active">
+                        <section class="section-table">
+                            <h6 class="title-page">لیست تسک ها</h6>
+                            <div class="table">
+                                <div class="table-title">
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            ردیف
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            نام تسک
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            وضعیت
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            واحد
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            الویت
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            تاریخ شروع
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            تاریخ پایان
+                                        </div>
+                                    </div>
+                                    {#                                    <div class="col-1">#}
+                                    {#                                        <div class="table-title-item">#}
+                                    {##}
+                                    {#                                        </div>#}
+                                    {#                                    </div>#}
+                                </div>
+                                <div class="table-content">
+                                    {% for task in project.get_tasks %}
+                                        <div class="row-table">
+                                            <div class="col-1 p-2">
+                                                <div class="table-content-item">
+                                                    {{ forloop.counter }}
+                                                </div>
+                                            </div>
+                                            <div class="col-2 p-2">
+                                                <div class="table-content-item">
+                                                    {{ task.name }}
+                                                </div>
+                                            </div>
+                                            <div class="col-2 p-2">
+                                                <div class="status">
+                                                    {{ task.get_state_label }}
+                                                </div>
+                                            </div>
+                                            <div class="col-2 p-2">
+                                                <div class="table-content-item">
+                                                    {{ task.to_department }}
+                                                </div>
+                                            </div>
+                                            <div class="col-2 p-2">
+                                                <div class="table-content-item">
+                                                    {{ task.priority }}
+                                                </div>
+                                            </div>
+                                            <div class="col-1 p-2">
+                                                <div class="table-content-item datetime-convert">
+                                                    {{ task.get_time_start }}
+                                                </div>
+                                            </div>
+                                            <div class="col-1 p-2">
+                                                <div class="table-content-item datetime-convert">
+                                                    {{ task.get_time_end }}
+                                                </div>
+                                            </div>
+                                            {#                                                                                        <div class="col-1 p-2">#}
+                                            {#                                                                                            <div class="table-content-item">#}
+                                            {#                                                                                                <div class="btn-table blue">انجام شد</div>#}
+                                            {#                                                                                            </div>#}
+                                            {#                                                                                        </div>#}
+                                        </div>
+                                    {% empty %}
+                                        <div class="container-not-found-base">
+                                            <p>چیزی یافت نشد</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <!--end content list task -->
+                    <!--start List of raw materials -->
+                    <div class="content-items p-2">
+                        <section class="section-table">
+                            <h6 class="title-page">مواد اولیه</h6>
+                            <div class="table">
+                                <div class="table-title">
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            ردیف
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            نام مواد
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            تحویل دهنده
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            حجم
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            تحویل گیرنده
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            تاریخ
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-content">
+                                    <div class="row-table">
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                1
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام شماره یک
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                20ml
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                1388/8/5
+                                            </div>
+                                        </div>
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                <div class="btn-table">دانلود</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-table">
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                1
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام شماره یک
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                20ml
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                1388/8/5
+                                            </div>
+                                        </div>
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                <div class="btn-table">دانلود</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-table">
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                1
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام شماره یک
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                20ml
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                1388/8/5
+                                            </div>
+                                        </div>
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                <div class="btn-table">دانلود</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-table">
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                1
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام شماره یک
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                20ml
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                1388/8/5
+                                            </div>
+                                        </div>
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                <div class="btn-table">دانلود</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-table">
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                1
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام شماره یک
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                20ml
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                1388/8/5
+                                            </div>
+                                        </div>
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                <div class="btn-table">دانلود</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-table">
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                1
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام شماره یک
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                20ml
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                1388/8/5
+                                            </div>
+                                        </div>
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                <div class="btn-table">دانلود</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-table">
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                1
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام شماره یک
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                20ml
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                1388/8/5
+                                            </div>
+                                        </div>
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                <div class="btn-table">دانلود</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-table">
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                1
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام شماره یک
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                20ml
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                1388/8/5
+                                            </div>
+                                        </div>
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                <div class="btn-table">دانلود</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-table">
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                1
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام شماره یک
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                20ml
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                1388/8/5
+                                            </div>
+                                        </div>
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                <div class="btn-table">دانلود</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <!--end List of raw materials -->
+                    <!--start Uploaded documents -->
+                    <div class="content-items p-2">
+                        <section class="section-table">
+                            <div class="table">
+                                <div class="table-title">
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            ردیف
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            فرستنده
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="table-title-item">
+                                            توضیحات
+                                        </div>
+                                    </div>
+
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            تاریخ
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-content">
+                                    <div class="row-table">
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                1
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-2">
+                                            <div class="table-content-item">
+                                                <span class="description"> لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                1388/8/5
+                                            </div>
+                                        </div>
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                <div class="btn-table">دانلود</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-table">
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                1
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-2">
+                                            <div class="table-content-item">
+                                                <span class="description"> لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                1388/8/5
+                                            </div>
+                                        </div>
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                <div class="btn-table">دانلود</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-table">
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                1
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-2">
+                                            <div class="table-content-item">
+                                                <span class="description"> لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                1388/8/5
+                                            </div>
+                                        </div>
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                <div class="btn-table">دانلود</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <!--end Uploaded documents -->
+                    <!-- start Commerce -->
+                    <div class="content-items p-2">
+                        <section class="section-table">
+                            <div class="table">
+                                <div class="table-title">
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            ردیف
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            فرستنده
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="table-title-item">
+                                            توضیحات
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            تاریخ
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-content">
+                                    <div class="row-table">
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                1
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-2">
+                                            <div class="table-content-item">
+                                                <span class="description"> لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                1388/8/5
+                                            </div>
+                                        </div>
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                <div class="btn-table">دانلود</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-table">
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                1
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-2">
+                                            <div class="table-content-item">
+                                                <span class="description"> لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                1388/8/5
+                                            </div>
+                                        </div>
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                <div class="btn-table">دانلود</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-table">
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                1
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-2">
+                                            <div class="table-content-item">
+                                                <span class="description"> لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                1388/8/5
+                                            </div>
+                                        </div>
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                <div class="btn-table">دانلود</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-table">
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                1
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-2">
+                                            <div class="table-content-item">
+                                                <span class="description"> لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                1388/8/5
+                                            </div>
+                                        </div>
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                <div class="btn-table">دانلود</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <!--end Commerce -->
+                    <!-- ticket -->
+                    <div class="content-items p-2">
+                        <section class="section-table">
+                            <div class="table">
+                                <div class="table-title">
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            ردیف
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            فرستنده
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="table-title-item">
+                                            متن تیکت
+                                        </div>
+                                    </div>
+
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            تاریخ
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-content">
+                                    <div class="row-table">
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                1
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-2">
+                                            <div class="table-content-item">
+                                                <span class="description">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                1388/8/5
+                                            </div>
+                                        </div>
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                <div class="btn-table">دانلود</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-table">
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                1
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-2">
+                                            <div class="table-content-item">
+                                                <span class="description">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                1388/8/5
+                                            </div>
+                                        </div>
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                <div class="btn-table">دانلود</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-table">
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                1
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-2">
+                                            <div class="table-content-item">
+                                                <span class="description">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                1388/8/5
+                                            </div>
+                                        </div>
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                <div class="btn-table">دانلود</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row-table">
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                1
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                نام و نام خانوادگی
+                                            </div>
+                                        </div>
+                                        <div class="col-6 p-2">
+                                            <div class="table-content-item">
+                                                <span class="description">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                1388/8/5
+                                            </div>
+                                        </div>
+                                        <div class="col-1 p-2">
+                                            <div class="table-content-item">
+                                                <div class="btn-table">دانلود</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <!-- ticket -->
+                    <!-- financial department -->
+                    <div class="content-items p-2">
+                        <section class="section-table">
+                            <p style="text-align: right">پرداختی ها</p>
+                            <div class="table">
+                                <!-- start title table -->
+                                <div class="table-title">
+                                    <!-- each column title table -->
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            ردیف
+                                        </div>
+                                    </div>
+                                    <!-- each column title table -->
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            نوع
+                                        </div>
+                                    </div>
+                                    <div class="col-5">
+                                        <div class="table-title-item">
+                                            مبلغ
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            تاریخ
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            کدرهگیری
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- end title table -->
+                                <!-- start content table -->
+                                <div class="table-content">
+                                    {% for payment in project.get_payments %}
+                                        <div class="row-table">
+                                            <!-- each column content table -->
+                                            <div class="col-1 p-2">
+                                                <div class="table-content-item">
+                                                    {{ forloop.counter }}
+                                                </div>
+                                            </div>
+                                            <!-- each column content table -->
+                                            <div class="col-2 p-2">
+                                                <div class="table-content-item">
+                                                    {{ payment.get_type_payment_label }}
+                                                </div>
+                                            </div>
+                                            <div class="col-5 p-2">
+                                                <div class="table-content-item spread-price">
+                                                    {{ payment.price }}
+                                                </div>
+                                            </div>
+                                            <div class="col-2 p-2">
+                                                <div class="table-content-item datetime-convert">
+                                                    {{ payment.get_created_at }}
+                                                </div>
+                                            </div>
+                                            <div class="col-2 p-2">
+                                                <div class="table-content-item">
+                                                    {{ payment.tracking_code }}
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    {% empty %}
+                                        <div class="container-not-found-base">
+                                            <p>چیزی یافت نشد</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <!-- start content table -->
+                            </div>
+
+                            <p style="text-align: right">پیش پرداختی ها</p>
+                            <div class="table">
+                                <!-- start title table -->
+                                <div class="table-title">
+                                    <!-- each column title table -->
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            ردیف
+                                        </div>
+                                    </div>
+                                    <!-- each column title table -->
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            نوع
+                                        </div>
+                                    </div>
+                                    <div class="col-5">
+                                        <div class="table-title-item">
+                                            مبلغ
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            تاریخ
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            کدرهگیری
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- end title table -->
+                                <!-- start content table -->
+                                <div class="table-content">
+                                    {% for payment in project.get_prepayments %}
+                                        <div class="row-table">
+                                            <!-- each column content table -->
+                                            <div class="col-1 p-2">
+                                                <div class="table-content-item">
+                                                    {{ forloop.counter }}
+                                                </div>
+                                            </div>
+                                            <!-- each column content table -->
+                                            <div class="col-2 p-2">
+                                                <div class="table-content-item">
+                                                    {{ payment.get_type_payment_label }}
+                                                </div>
+                                            </div>
+                                            <div class="col-5 p-2">
+                                                <div class="table-content-item spread-price">
+                                                    {{ payment.price }}
+                                                </div>
+                                            </div>
+                                            <div class="col-2 p-2">
+                                                <div class="table-content-item datetime-convert">
+                                                    {{ payment.get_created_at }}
+                                                </div>
+                                            </div>
+                                            <div class="col-2 p-2">
+                                                <div class="table-content-item">
+                                                    {{ payment.tracking_code }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% empty %}
+                                        <div class="container-not-found-base">
+                                            <p>چیزی یافت نشد</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <!-- start content table -->
+                            </div>
+                        </section>
+                    </div>
+                    <!-- financial department -->
+                </section>
+            </div>
+        </section>
+    </main>
+{% endblock %}
+
+{% block Script %}
+    <script>
+        let tasks_count = '{{ project.get_tasks.count }}'
+        let tasks_progress_count = '{{ project.get_tasks_progress.count }}'
+        let tasks_queue_count = '{{ project.get_tasks_queue.count }}'
+        let tasks_finished_count = '{{ project.get_tasks_finished.count }}'
+    </script>
+    <script type="module" src="{% static 'frontend/js/adminpanel.js' %}"></script>
+{% endblock %}
+
+
+
+
+
+
+

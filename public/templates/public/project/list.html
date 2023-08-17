@@ -1,0 +1,63 @@
+{% extends 'base/base_template.html' %}
+{% load static %}
+
+{% block Title %}
+    همه پروژها
+{% endblock %}
+
+{% block Link %}
+    <link rel="stylesheet" href="{% static 'frontend/styles/all-project.css' %}"/>
+{% endblock %}
+
+{% block Content %}
+    <div class="container-fluid col-md-12 content-page">
+        <main class="main">
+
+            <!-- sectin project -->
+            <section class="ongoing-projects">
+                <div class="box-section">
+                    {% for project in projects %}
+                        <div class="col-12 col-md-3 p-2 border-1-gray m-1">
+                            <div class="box-item">
+                                <div class="top">
+                                    <div style="color:black; margin-bottom:10px">
+                                        {{ project.name }}
+                                    </div>
+                                    <div class=" style-conent-box">
+                                        <span>تاریخ شروع:</span>
+                                        <span class="datetime-convert">{{ project.time_start }}</span>
+                                    </div>
+                                    <div class="style-conent-box">
+                                        <span>تاریخ پایان:</span>
+                                        <span class="datetime-convert">{{ project.time_end }}</span>
+                                    </div>
+                                    <div class="style-conent-box blue">
+                                        <span>وضعیت فعلی</span>
+                                        <span>{{ project.get_state_label }}</span>
+                                    </div>
+                                    <div class="style-conent-box">
+                                        <span>درصد پیشرفت:</span>
+                                        <span>{{ project.get_progress_percentage }}%</span>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    <a href="{{ project.get_absolute_url }}">اطلاعات بیشتر</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="container-not-found-base">
+                            <p>چیزی یافت نشد</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+            <!-- sectin project -->
+        </main>
+
+    </div>
+{% endblock %}
+
+{% block Script %}
+    <script type="module" src="{% static 'frontend/js/control-project.js' %}"></script>
+{% endblock %}

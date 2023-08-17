@@ -42,9 +42,10 @@ class User(AbstractUser):
     first_name = models.CharField("first name", max_length=150, blank=True, default="بدون نام")
     username = None
     email = models.EmailField("email address", null=True, blank=True, unique=True)
-
+    department = models.OneToOneField('public.Department',on_delete=models.SET_NULL,null=True)
     # type users|roles
     role = models.CharField(max_length=20, choices=ROLE_USER_OPTIONS)
+
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

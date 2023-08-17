@@ -18,9 +18,12 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
-
 urlpatterns = [
-    path('',include('account.urls',namespace='account')),
+    path('', include('public.urls', namespace='public')),
+    path('', include('account.urls', namespace='account')),
+    path('dp/general/', include('departments.general.urls', namespace='dp_general')),
+    path('dp/control-project/', include('departments.control_project.urls', namespace='dp_control_project')),
+    path('dp/financial/', include('departments.financial.urls', namespace='dp_financial')),
     path('admin/', admin.site.urls),
 ]
 

@@ -147,3 +147,13 @@ for (let dt_el of all_datetime_convert) {
        dt_el.innerHTML = dt_persian
     }
 }
+
+let all_spread_price = document.querySelectorAll('.spread-price')
+for (let el of all_spread_price){
+    let price = el.innerHTML
+    el.innerHTML = numberWithCommas(price)
+}
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}

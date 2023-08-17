@@ -3,7 +3,7 @@ from core.models import BaseModel, File
 
 
 class Material(BaseModel):
-    project = models.ForeignKey('core.Project', on_delete=models.CASCADE)
+    project = models.ForeignKey('public.Project', on_delete=models.CASCADE)
     items = models.ManyToManyField('MaterialItem')
     time_end = models.DateTimeField()
     delivery_status = models.BooleanField()

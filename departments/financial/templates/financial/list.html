@@ -1,0 +1,292 @@
+{% extends 'base/base_template.html' %}
+{% load static %}
+
+{% block Title %}
+    جزئیات مالی  {{ project.name }}
+{% endblock %}
+
+{% block Link %}
+    <link rel="stylesheet" href="{% static 'frontend/styles/clearing.css' %}">
+{% endblock %}
+
+{% block Content %}
+
+    <!-- popup prepayment -->
+    <div class="content-modal-two modal-prepayment">
+        <div class="inner-modal">
+            <form class="p-4" action="{% url 'dp_financial:prepayment' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="project" value="{{ project.id }}">
+                <div class="information-section">
+                    <div class="information-item">
+                        <label for="lihh">نوع</label>
+                        <select name="type_payment" id="" required>
+                            <option value="deposit">واریزی</option>
+                            <option value="payment">پرداختی</option>
+                        </select>
+                    </div>
+                    <div class="information-item">
+                        <label for="lihh">مبلغ</label>
+                        <input type="number" name="price" required>
+                    </div>
+                    <div class="information-item">
+                        <label for="lihh">تاریخ</label>
+                        <input type="date" name="submited_at" required>
+                    </div>
+                    <div class="information-item">
+                        <label for="lihh">کد رهگیری</label>
+                        <input type="text" name="tracking_code" required>
+                    </div>
+                </div>
+
+                <div class="information-section">
+                    <button class="btn btn-primary d-block p-3 col-12">ثبت</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- popup prepayment -->
+    <!-- popup New payment -->
+    <div class="content-modal-two modal-new-payment">
+        <div class="inner-modal">
+            <form class="p-4" action="{% url 'dp_financial:payment' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="project" value="{{ project.id }}">
+                <div class="information-section">
+                    <div class="information-item">
+                        <label for="lihh">نوع</label>
+                        <select name="type_payment" id="" required>
+                            <option value="deposit">واریزی</option>
+                            <option value="payment">پرداختی</option>
+                        </select>
+                    </div>
+                    <div class="information-item">
+                        <label for="lihh">مبلغ</label>
+                        <input type="number" name="price" required>
+                    </div>
+                    <div class="information-item">
+                        <label for="lihh">تاریخ</label>
+                        <input type="date" name="submited_at" required>
+                    </div>
+                    <div class="information-item">
+                        <label for="lihh">کد رهگیری</label>
+                        <input type="text" name="tracking_code" required>
+                    </div>
+                </div>
+
+                <div class="information-section">
+                    <button class="btn btn-primary d-block p-3 col-12">ثبت</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- popup New payment -->
+
+
+
+    <main class="main content-page container" style="padding-bottom:60px ;">
+        <h5 class="title-page">جزئیات مالی</h5>
+        <!-- Project specifications -->
+        <section class="up-clearing">
+            <!-- right name & price... -->
+            <div class="right">
+                <div class="right-item" style="font-size:17px ;">
+                    <span>نام پروژه:</span>
+                    <span>{{ project.name }}</span>
+                </div>
+                <div class="right-item">
+                    <span>قیمت:</span>
+                    <span class="spread-price">{{ project.price }}</span>
+                    <span>تومان</span>
+                </div>
+                <div class="right-item">
+                    <span> پرداخت شده:</span>
+                    <span class="spread-price">{{ project.get_payments_price }}</span>
+                    <span>تومان</span>
+                </div>
+            </div>
+            <!-- right name & price... -->
+            <!-- left pardakht btn -->
+            <div class="left">
+                <div class="btn-clearing btn-prepayment">ثبت پیش پرداخت</div>
+                <div class="btn-clearing btn-new-payment">ثبت پرداخت جدید</div>
+            </div>
+            <!-- left pardakht btn -->
+        </section>
+        <!-- Project specifications -->
+        <section class="col-12 clearing-content">
+            <!-- start section table -->
+            <div class="content-items p-2">
+                <section class="section-table">
+                    <!-- table -->
+                    <p style="text-align: right">پرداختی ها</p>
+                    <div class="table">
+                        <!-- start title table -->
+                        <div class="table-title">
+                            <!-- each column title table -->
+                            <div class="col-1">
+                                <div class="table-title-item">
+                                    ردیف
+                                </div>
+                            </div>
+                            <!-- each column title table -->
+                            <div class="col-2">
+                                <div class="table-title-item">
+                                    نوع
+                                </div>
+                            </div>
+                            <div class="col-5">
+                                <div class="table-title-item">
+                                    مبلغ
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="table-title-item">
+                                    تاریخ
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="table-title-item">
+                                    کدرهگیری
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- end title table -->
+                        <!-- start content table -->
+                        <div class="table-content">
+                            {% for payment in project.get_payments %}
+                                <div class="row-table">
+                                    <!-- each column content table -->
+                                    <div class="col-1 p-2">
+                                        <div class="table-content-item">
+                                            {{ forloop.counter }}
+                                        </div>
+                                    </div>
+                                    <!-- each column content table -->
+                                    <div class="col-2 p-2">
+                                        <div class="table-content-item">
+                                            {{ payment.get_type_payment_label }}
+                                        </div>
+                                    </div>
+                                    <div class="col-5 p-2">
+                                        <div class="table-content-item spread-price">
+                                            {{ payment.price }}
+                                        </div>
+                                    </div>
+                                    <div class="col-2 p-2">
+                                        <div class="table-content-item datetime-convert">
+                                            {{ payment.get_created_at }}
+                                        </div>
+                                    </div>
+                                    <div class="col-2 p-2">
+                                        <div class="table-content-item">
+                                            {{ payment.tracking_code }}
+                                        </div>
+                                    </div>
+
+                                </div>
+                            {% empty %}
+                                <div class="container-not-found-base">
+                                    <p>چیزی یافت نشد</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <!-- start content table -->
+                    </div>
+
+                    <p style="text-align: right">پیش پرداختی ها</p>
+                    <div class="table">
+                        <!-- start title table -->
+                        <div class="table-title">
+                            <!-- each column title table -->
+                            <div class="col-1">
+                                <div class="table-title-item">
+                                    ردیف
+                                </div>
+                            </div>
+                            <!-- each column title table -->
+                            <div class="col-2">
+                                <div class="table-title-item">
+                                    نوع
+                                </div>
+                            </div>
+                            <div class="col-5">
+                                <div class="table-title-item">
+                                    مبلغ
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="table-title-item">
+                                    تاریخ
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="table-title-item">
+                                    کدرهگیری
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- end title table -->
+                        <!-- start content table -->
+                        <div class="table-content">
+                            {% for payment in project.get_prepayments %}
+                                <div class="row-table">
+                                    <!-- each column content table -->
+                                    <div class="col-1 p-2">
+                                        <div class="table-content-item">
+                                            {{ forloop.counter }}
+                                        </div>
+                                    </div>
+                                    <!-- each column content table -->
+                                    <div class="col-2 p-2">
+                                        <div class="table-content-item">
+                                            {{ payment.get_type_payment_label }}
+                                        </div>
+                                    </div>
+                                    <div class="col-5 p-2">
+                                        <div class="table-content-item spread-price">
+                                            {{ payment.price }}
+                                        </div>
+                                    </div>
+                                    <div class="col-2 p-2">
+                                        <div class="table-content-item datetime-convert">
+                                            {{ payment.get_created_at }}
+                                        </div>
+                                    </div>
+                                    <div class="col-2 p-2">
+                                        <div class="table-content-item">
+                                            {{ payment.tracking_code }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <div class="container-not-found-base">
+                                    <p>چیزی یافت نشد</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <!-- start content table -->
+                    </div>
+                    <!-- table -->
+                </section>
+            </div>
+            <!-- start section table -->
+        </section>
+
+
+    </main>
+
+    <svg id="SvgjsSvg1001" width="2" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1"
+         xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev"
+         style="overflow: hidden; top: -100%; left: -100%; position: absolute; opacity: 0;">
+        <defs id="SvgjsDefs1002"></defs>
+        <polyline id="SvgjsPolyline1003" points="0,0"></polyline>
+        <path id="SvgjsPath1004" d="M0 0 "></path>
+    </svg></body>
+{% endblock %}
+
+{% block Script %}
+    <script type="module" src="{% static 'frontend/js/clearing.js' %}"></script>
+{% endblock %}

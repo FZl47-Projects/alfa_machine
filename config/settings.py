@@ -38,8 +38,10 @@ INSTALLED_APPS = [
     # apps
     'core',
     'account',
+    'public',
     # department apps
     'departments.general',
+    'departments.financial',
     'departments.control_project',
     'departments.control_quality',
     'departments.warehouse',
