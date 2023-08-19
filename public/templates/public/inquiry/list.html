@@ -1,0 +1,194 @@
+{% extends 'base/base_template.html' %}
+{% load static %}
+
+{% block Title %}
+    لیست استعلامات
+{% endblock %}
+
+{% block Link %}
+    <link rel="stylesheet" href="{% static 'frontend/styles/all-query.css' %}">
+{% endblock %}
+
+{% block Content %}
+
+    <h5 class="title-page">لیست استعلامات</h5>
+
+    <!--morde-descriptin popup -->
+    {% for inquiry in inquiries %}
+        <div class="content-modal-two modal-more-description">
+            <div class="inner-modal">
+                <form class="p-4">
+                    <div class="close-modal close-modal-description">
+                        <img src="{% static 'frontend/images/close.png' %}" alt="">
+                    </div>
+                    <div class="hhh">
+                        <div class="more-des">
+                            {{ inquiry.description }}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+
+    <!--morde-descriptin popup -->
+    <!-- popup taid -->
+    {% for inquiry in inquiries %}
+        <div class="content-modal-two modal-query-approval">
+            <div class="inner-modal">
+                <form class="p-4" action="{% url 'public:inquiry_status' inquiry_id=inquiry.id %}" method="post"
+                      enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="status" value="accepted">
+                    <div class="information-section">
+                        <div class="information-item">
+                            <label for="lihh">توضیحات</label>
+                            <textarea name="description" id="" cols="30" rows="10" required></textarea>
+                        </div>
+                        <div class="information-item">
+                            <div class="uploade-imge">
+                                <label class="item-upload" for="add-{{ forloop.counter }}">
+                                    آپلود فایل
+                                </label>
+                                <input type="file" name="file" id="add-{{ forloop.counter }}" required hidden/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="information-section">
+                        <button class="sabt-modal col-12 btn-primary">ثبت</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+
+
+    {% for inquiry in inquiries %}
+        <div class="content-modal-two modal-query-no-approval"> --&gt;
+            <div class="inner-modal">
+                <form class="p-4" action="{% url 'public:inquiry_status' inquiry_id=inquiry.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="status" value="rejected">
+                    <div class="information-section">
+                        <div class="information-item">
+                            <label for="lihh">توضیحات</label>
+                            <textarea name="description" id="" cols="30" rows="10" required></textarea>
+                        </div>
+                    </div>
+                    <div class="information-section">
+                        <button class="sabt-modal btn-primary col-12">ثبت</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+
+
+    <div class="container-fluid col-md-12 content-page">
+        <main class="main">
+            <section class="query m-1">
+                <div class="section-table">
+                    <!-- table -->
+                    <div class="table" style="height:400px ;">
+                        <!-- title table -->
+                        <div class="table-title">
+                            <div class="col-1">
+                                <div class="table-title-item">
+                                    ردیف
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="table-title-item">
+                                    واحد استعلام دهنده
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="table-title-item">
+                                    عنوان
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="table-title-item">
+                                    تاریخ
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="table-title-item">
+                                    توضیحات
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="table-title-item">
+                                    وضعیت
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <!-- title table -->
+                        <!--  start content table -->
+                        <div class="table-content">
+                            <!-- each row table -->
+                            {% for inquiry in inquiries %}
+                                <div class="row-table">
+                                    <!-- each column  -->
+                                    <div class="col-1 p-2">
+                                        <div class="table-content-item">
+                                            {{ forloop.counter }}
+                                        </div>
+                                    </div>
+                                    <!-- each column  -->
+                                    <div class="col-2 p-2">
+                                        <div class="table-content-item">
+                                            {{ inquiry.from_department.name }}
+                                        </div>
+                                    </div>
+                                    <div class="col-2 p-2">
+                                        <div class="table-content-item">
+                                            {{ inquiry.title }}
+                                        </div>
+                                    </div>
+                                    <div class="col-2 p-2">
+                                        <div class="table-content-item datetime-convert">
+                                            {{ inquiry.get_time_submited }}
+                                        </div>
+                                    </div>
+                                    <div class="col-2 p-2">
+                                        <div class="table-content-item">
+                                            <p class="description">
+                                                {{ inquiry.description|truncatechars:30 }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-2 p-2">
+                                        <div class="table-content-item">
+                                            <div class="btn-table-takhsis d-flex">
+                                                <div class="btn-item m-1 taeid btn-taeid-query">تایید</div>
+                                                <div class="btn-item m-1 notaeid  btn-notaeid-query">رد</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <div class="container-not-found-base">
+                                    <p>چیزی یافت نشد</p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <!-- end content table -->
+                    </div>
+                    <!--end table -->
+                </div>
+            </section>
+            <!-- tasks quality-control-panel -->
+
+
+        </main>
+
+    </div>
+
+{% endblock %}
+
+{% block Script %}
+    <script type="module" src="{% static 'frontend/js/all-query.js' %}"></script>
+{% endblock %}

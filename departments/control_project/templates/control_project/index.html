@@ -1,0 +1,314 @@
+{% extends 'base/base_template.html' %}
+{% load static %}
+
+{% block Title %}
+    پنل کنترل پروژه
+{% endblock %}
+
+{% block Link %}
+    <link rel="stylesheet" href="{% static 'frontend/styles/Project-control-panel.css' %}">
+{% endblock %}
+
+
+{% block Content %}
+
+    <!-- request unit -->
+    {% include 'support/components/new-ticket.html' with departments=departments projects=projects %}
+    <!--  request unit -->
+    <!-- modal tarif task jadid -->
+
+    {% include 'public/task/components/new-task.html' with projects=projects departments=departments %}
+
+    <!-- START SECTION NOTIFATION -->
+    <div class="col-12 col-md-2 notifcation">
+        <div class="overly">
+            <div class="inner-notfication">
+                <div class="btns">
+                    <div class="btn-change col-6 text-center active">زمان</div>
+                    <div class="btn-change col-6 text-center">الویت</div>
+                </div>
+                <section class="content-notifcation">
+                    <div class="content-items p-2 active">
+                        <div class="col-12">
+                            <div class="notifcation-item">
+                                <div class="top">
+                                    <div class="title">
+                                        <span class="right-title">عنوان اعلان</span>
+                                        <span class="style-conent-box">1377/2/8</span>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    <div class="des-notif style-conent-box">لورم ایپسوم متن ساختگی با تولید سادگی
+                                        نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، ت...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="notifcation-item">
+                                <div class="top">
+                                    <div class="title">
+                                        <span class="right-title">عنوان اعلان</span>
+                                        <span class="style-conent-box">1377/2/8</span>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    <div class="des-notif style-conent-box">لورم ایپسوم متن ساختگی با تولید سادگی
+                                        نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، ت...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="notifcation-item">
+                                <div class="top">
+                                    <div class="title">
+                                        <span class="right-title">عنوان اعلان</span>
+                                        <span class="style-conent-box">1377/2/8</span>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    <div class="des-notif style-conent-box">لورم ایپسوم متن ساختگی با تولید سادگی
+                                        نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، ت...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="notifcation-item">
+                                <div class="top">
+                                    <div class="title">
+                                        <span class="right-title">عنوان اعلان</span>
+                                        <span class="style-conent-box">1377/2/8</span>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    <div class="des-notif style-conent-box">لورم ایپسوم متن ساختگی با تولید سادگی
+                                        نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، ت...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="notifcation-item">
+                                <div class="top">
+                                    <div class="title">
+                                        <span class="right-title">عنوان اعلان</span>
+                                        <span class="style-conent-box">1377/2/8</span>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    <div class="des-notif style-conent-box">لورم ایپسوم متن ساختگی با تولید سادگی
+                                        نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، ت...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-items p-2">
+                        <div class="col-12">
+                            <div class="notifcation-item">
+                                <div class="top">
+                                    <div class="title">
+                                        <span class="right-title">عنوانkkkkkk اعلان</span>
+                                        <span class="style-conent-box">1377/2/8</span>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    <div class="des-notif style-conent-box">لورم ایپسوم متن ساختگی با تولید سادگی
+                                        نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، ت...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="notifcation-item">
+                                <div class="top">
+                                    <div class="title">
+                                        <span class="right-title">عنوان اعلان</span>
+                                        <span class="style-conent-box">1377/2/8</span>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    <div class="des-notif style-conent-box">لورم ایپسوم متن ساختگی با تولید سادگی
+                                        نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، ت...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="notifcation-item">
+                                <div class="top">
+                                    <div class="title">
+                                        <span class="right-title">عنوان اعلان</span>
+                                        <span class="style-conent-box">1377/2/8</span>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    <div class="des-notif style-conent-box">لورم ایپسوم متن ساختگی با تولید سادگی
+                                        نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، ت...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="notifcation-item">
+                                <div class="top">
+                                    <div class="title">
+                                        <span class="right-title">عنوان اعلان</span>
+                                        <span class="style-conent-box">1377/2/8</span>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    <div class="des-notif style-conent-box">لورم ایپسوم متن ساختگی با تولید سادگی
+                                        نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، ت...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="all-notif">
+                        <a href="./Notification-list.html">مشاهده همه</a>
+                    </div>
+                </section>
+                <div class="download">
+                    <button class="download-notifcation-file">دانلودفایل اعلانات</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- END SECTION NOTIFATION -->
+    <!-- END SECTION NOTIFATION -->
+    <div class="container-fluid col-md-10 content-page">
+        <main class="main">
+            <!-- btn allocation-of-materials -->
+            <div class="allocation-of-materials d-flex justify-content-between align-item-center">
+                <a href="{% url 'dp_warehouse:items_allocation_project' %}"><span class="allocation-btn">تخصیص مواد اولیه</span></a>
+                <div class="notif-btn-mobile d-none">اعلانات</div>
+
+            </div>
+            <!-- btn allocation-of-materials -->
+            <!--Start Access panel -->
+            <section class="collection-units mb-4" style="background-color:#fff ; margin-top:30px;">
+                <div class="box-section">
+                    <!--Access panel item  -->
+                    <div class="col-12 col-md-3  col-lg-2 ">
+                        <div class="box-item-2 ddd">
+                            <img src="./assets/images/درخواست از سایر واحد ها 2@2x.png" alt="" class="icon-box"
+                                 style="margin-bottom:15px ;">
+                            <div class="style-conent-box" style="margin-bottom:15px ;">
+                                <span>درخواست از سایر واحدها</span>
+                            </div>
+                            <div class="tarif-task btn-request-unit" id="one">مشاهده</div>
+                        </div>
+                    </div>
+                    <!--Access panel item  -->
+                </div>
+            </section>
+            <!--Start Access panel -->
+            <!-- tasks category -->
+            <section class="tasks">
+                <div class="box-section">
+                    <!-- each category task -->
+                    <div class="col-12 col-md-3 p-2">
+                        <div class="box-item-2">
+                            <img src="{% static 'frontend/images/22.png' %}" alt="" class="icon-box">
+                            <div class=" style-conent-box">
+                                <span>درحال اجرا</span>
+                            </div>
+                            <div class="style-conent-box">
+                                <span>{{ tasks.progress }}</span>
+                            </div>
+                            <div class="btn--ta"><a href="{% url 'public:task_owner' %}?task_state=progress">مشاهده
+                                همه</a></div>
+                        </div>
+                    </div>
+                    <!--each category task -->
+                    <div class="col-12 col-md-3 p-2">
+                        <div class="box-item-2">
+                            <img src="{% static 'frontend/images/33.png' %}" alt="" class="icon-box">
+                            <div class=" style-conent-box">
+                                <span>درصف</span>
+                            </div>
+                            <div class="style-conent-box">
+                                <span>{{ tasks.queue }}</span>
+                            </div>
+                            <div class="btn--ta"><a href="{% url 'public:task_owner' %}?task_state=queue">مشاهده همه</a>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-12 col-md-3 p-2">
+                        <div class="box-item-2">
+                            <img src="{% static 'frontend/images/44.png' %}" alt="" class="icon-box">
+                            <div class=" style-conent-box">
+                                <span>نیاز به بررسی</span>
+                            </div>
+                            <div class="style-conent-box">
+                                <span>{{ tasks.need_to_check }}</span>
+                            </div>
+                            <div class="btn--ta"><a href="{% url 'public:task_owner' %}?task_state=need-to-check">مشاهده
+                                همه</a></div>
+                        </div>
+
+                    </div>
+                    <div class="col-12 col-md-3 p-2">
+                        <div class="box-item-2">
+                            <img src="{% static 'frontend/images/55.png' %}" alt="" class="icon-box">
+                            <div class=" style-conent-box">
+                                <span>تمام شده</span>
+                            </div>
+                            <div class="style-conent-box">
+                                <span>{{ tasks.finished }}</span>
+                            </div>
+                            <div class="btn--ta"><a href="{% url 'public:task_owner' %}?task_state=finished">مشاهده
+                                همه</a></div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </section>
+            <!-- tasks category -->
+            <div class="title px-4">
+                <span style="padding-left:3px;">پروژه های درحال اجرا</span>
+                <span class="d-flex justify-content-center align-item-center">
+              <a href="{% url 'public:project' %}">مشاهده همه</a>
+              <img src="{% static 'frontend/images/back-icon.png' %}" alt="">
+          </span>
+            </div>
+            <!-- sectin project -->
+            <section class="ongoing-projects">
+                <!-- inner project section -->
+                <div class="box-section">
+                    {% for project in projects %}
+                        {% include 'public/project/components/list-project.html' with project=project %}
+                    {% empty %}
+                        <div class="container-not-found-base">
+                            <p>چیزی یافت نشد</p>
+                        </div>
+                    {% endfor %}
+                </div>
+                <!-- inner project section -->
+            </section>
+            <!-- sectin project -->
+            <!--Start Access panel -->
+            <section class="collection-units" style="background-color:#fff ; margin-top:30px;">
+                <div class="box-section">
+                    {% for department in departments %}
+                        {% include 'public/department/list-department-task.html' with department=department %}
+                    {% endfor %}
+                </div>
+            </section>
+            <!--end Access panel -->
+        </main>
+
+    </div>
+
+{% endblock %}
+
+{% block Script %}
+    <script type="module" src="{% static 'frontend/js/control-project.js' %}"></script>
+{% endblock %}

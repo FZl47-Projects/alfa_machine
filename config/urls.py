@@ -1,18 +1,3 @@
-"""config URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
@@ -20,10 +5,19 @@ from django.conf import settings
 
 urlpatterns = [
     path('', include('public.urls', namespace='public')),
-    path('', include('account.urls', namespace='account')),
+    path('u/', include('account.urls', namespace='account')),
+    path('support/', include('support.urls', namespace='support')),
+    path('notification/', include('notification.urls', namespace='notification')),
+
     path('dp/general/', include('departments.general.urls', namespace='dp_general')),
+    path('dp/commerce/', include('departments.commerce.urls', namespace='dp_commerce')),
+    path('dp/warehouse/', include('departments.warehouse.urls', namespace='dp_warehouse')),
     path('dp/control-project/', include('departments.control_project.urls', namespace='dp_control_project')),
+    path('dp/control-quality/', include('departments.control_quality.urls', namespace='dp_control_quality')),
     path('dp/financial/', include('departments.financial.urls', namespace='dp_financial')),
+    path('dp/technical/', include('departments.technical.urls', namespace='dp_technical')),
+    path('dp/production/', include('departments.production.urls', namespace='dp_production')),
+
     path('admin/', admin.site.urls),
 ]
 

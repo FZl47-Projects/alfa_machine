@@ -63,20 +63,21 @@ CloseDescription.forEach((item, index) => {
 // ---------------------------------more description-------------------------------------//
 // ---------------------------------edit query-------------------------------------//
 let BtnEditQuery = document.querySelectorAll(".btn-edit-query");
-let Modal_EditQuery = document.querySelector(".modal-edit-query");
-let overaly_EditQuery= document.querySelector(".modal-edit-query .inner-modal");
+let Modal_EditQuery = document.querySelectorAll(".modal-edit-query");
+let overaly_EditQuery= document.querySelectorAll(".modal-edit-query .inner-modal");
 
 BtnEditQuery.forEach((item, index) =>{
-  item.addEventListener("click" , () =>{
-    Modal_EditQuery.classList.add("active");
-  })
+  item.addEventListener("click", () => {
+    Modal_EditQuery[index].classList.add("active");
+  });
 })
 
 
- 
-overaly_EditQuery.addEventListener("click", (e) => {
+overaly_EditQuery.forEach((item, index) => {
+  item.addEventListener("click", (e) => {
     if (e.target.className === "inner-modal") {
-      Modal_EditQuery.classList.remove("active");
+      Modal_EditQuery[index].classList.remove("active");
     }
   });
+});
 // ---------------------------------edit query-------------------------------------//

@@ -5,7 +5,7 @@ let overalyModals_New= document.querySelectorAll(".modal-new-task .inner-modal")
 
 BtnNewTask.forEach((item, index) => {
   item.addEventListener("click", () => {
-    Modal_NewTask[index].classList.add("active");
+    Modal_NewTask[0].classList.add("active");
   });
 });
 overalyModals_New.forEach((item, index) => {

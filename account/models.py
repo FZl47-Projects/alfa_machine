@@ -1,3 +1,4 @@
+from django.shortcuts import reverse
 from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
@@ -42,10 +43,9 @@ class User(AbstractUser):
     first_name = models.CharField("first name", max_length=150, blank=True, default="بدون نام")
     username = None
     email = models.EmailField("email address", null=True, blank=True, unique=True)
-    department = models.OneToOneField('public.Department',on_delete=models.SET_NULL,null=True)
+    department = models.ForeignKey('public.Department', on_delete=models.SET_NULL, null=True)
     # type users|roles
     role = models.CharField(max_length=20, choices=ROLE_USER_OPTIONS)
-
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -69,3 +69,24 @@ class User(AbstractUser):
         if self.last_login:
             return self.last_login.strftime('%Y-%m-%d %H:%M:%S')
         return '-'
+
+    def get_absolute_url_dashboard(self):
+
+        role = self.role
+        if role == 'super_user':
+            return reverse('dp_general:index')
+        elif role == 'control_project_user':
+            return reverse('dp_control_project:index')
+        elif role == 'control_quality_user':
+            return reverse('dp_control_quality:index')
+        elif role == 'commerce_user':
+            return reverse('dp_commerce:index')
+        elif role == 'financial_user':
+            return reverse('dp_financial:index')
+        elif role == 'warehouse_user':
+            return reverse('dp_warehouse:index')
+        elif role == 'production_user':
+            return reverse('dp_production:index')
+        elif role == 'technical_user':
+            return reverse('dp_technical:index')
+        return reverse('public:error')

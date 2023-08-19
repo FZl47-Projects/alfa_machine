@@ -1,10 +1,10 @@
 from django import forms
 from . import models
 
-class TicketForm(forms.ModelForm):
-    
-    class Meta:
-        model = models.Ticket
-        exclude = ('is_open',)
 
-        
+class TicketDepartmentForm(forms.ModelForm):
+    file = forms.FileField(required=False)
+
+    class Meta:
+        model = models.TicketDepartment
+        exclude = ('is_open',)

@@ -16,10 +16,9 @@ btns.forEach((item, index) => {
 
 
 // ---------------------chart---------------------//
-tasks_progress_count = (tasks_count / 100) * tasks_progress_count
-tasks_queue_count = (tasks_count / 100) * tasks_queue_count
-tasks_finished_count = (tasks_count / 100) * tasks_finished_count
-console.log(tasks_queue_count)
+tasks_progress_count = (100 / tasks_count) * tasks_progress_count
+tasks_queue_count = (100 / tasks_count) * tasks_queue_count
+tasks_finished_count = (100 / tasks_count) * tasks_finished_count
 var options = {
     chart: {
         type: 'donut'

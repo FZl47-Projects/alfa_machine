@@ -1,0 +1,82 @@
+  <div class="content-modal modal-new-task">
+        <div class="inner-modal">
+            <form class="px-4 pt-2" action="{% url 'public:task' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="py-2">
+                    <div class="title">
+                        <h4>تعریف تسک</h4>
+                    </div>
+                    <div class="information-section">
+                        <div class="information-item">
+                            <label for="lihh">نام تسک</label>
+                            <input type="text" placeholder="تسک شماره یک" name="name" required>
+                        </div>
+                        <div class="d-flex ">
+                            <div class="col-6" style="padding:0px 5px ;">
+                                <div class="information-item date">
+                                    <label>تاریخ شروع</label>
+                                    <input type="text " class="persianDatapicker" name="" set-on="task_time_start" required>
+                                    <input type="hidden" name="time_start" required id="task_time_start" >
+                                </div>
+                            </div>
+                            <div class="col-6" style="padding:0px 5px ;">
+                                <div class="information-item date">
+                                    <label>تاریخ پایان</label>
+                                    <input type="text " class="persianDatapicker" name="" set-on="task_time_end" required>
+                                    <input type="hidden" name="time_end" required id="task_time_end">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="d-flex">
+                            <div class="col-6" style="padding:0px 5px ;">
+                                <div class="information-item">
+                                    <label for="lihh">میزان انجام کار</label>
+                                    <input type="number" placeholder="ساعت" name="work_hour" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="information-item">
+                            <label for="lihh">توضیحات</label>
+                            <textarea name="description" id="description" cols="30" rows="10" required></textarea>
+                        </div>
+                        <div class="information-item">
+                            <label for="lihh">نام واحد:</label>
+                            <select name="to_department" id="" required>
+                                {% for department in departments %}
+                                    <option value="{{ department.id }}">{{ department.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="information-item">
+                            <label for="lihh">پروژه :</label>
+                            <select name="project" id="" required>
+                                {% for project in projects %}
+                                    <option value="{{ project.id }}">{{ project.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="information-item">
+                            <label for="lihh">توضیحات تحصیص</label>
+                            <textarea name="description_allocate" id="" cols="20" rows="10" required></textarea>
+                        </div>
+                        <div class="information-item">
+                            <label for="lihh">اولویت</label>
+                            <input type="number" placeholder="اولویت" value="1" name="priority" required>
+                        </div>
+                        <div class="d-flex">
+                            <div class="uploade-imge">
+                                <label class="item-upload" for="add">
+                                    آپلود فایل
+                                </label>
+                                <input type="file" name="file" id="add" hidden/>
+                            </div>
+                            <span class="des">فایل های مربوط به تسک</span>
+                        </div>
+                        <button class="sabt-modal d-block col-12">ثبت</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>

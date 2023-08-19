@@ -1,14 +1,23 @@
 from django.urls import path
 from . import views
 
-
-app_name = 'core'
+app_name = 'public'
 urlpatterns = [
-    path('project',views.Project.as_view(),name='project'),
-    path('project/<int:project_id>',views.ProjectDetail.as_view(),name='project_detail'),
-    path('task',views.Task.as_view(),name='task'),
-    path('task/owner',views.TaskOwner.as_view(),name='task_owner'),
-    path('task/owner/<int:task_id>',views.TaskOwner.as_view(),name='task_owner_detail'),
-    path('task/department/<int:department_id>',views.TaskDepartment.as_view(),name='task_department'),
-    # path('task/<int:task_id>',views.TaskDetail.as_view(),name='task_detail'),
+    path('error', views.Error.as_view(), name='error'),
+    path('success', views.Success.as_view(), name='success'),
+    path('', views.Index.as_view(), name='index'),
+
+    path('project', views.Project.as_view(), name='project'),
+    path('project/file', views.ProjectFile.as_view(), name='project_file'),
+    path('project/<int:project_id>', views.ProjectDetail.as_view(), name='project_detail'),
+    path('task', views.Task.as_view(), name='task'),
+    path('task/owner', views.TaskOwner.as_view(), name='task_owner'),
+    path('task/owner/<int:task_id>', views.TaskOwner.as_view(), name='task_owner_detail'),
+    path('task/owner/department/<int:department_id>', views.TaskOwnerDepartment.as_view(),
+         name='task_owner_department'),
+    path('task/list/state', views.TaskListStateUpdate.as_view(), name='task_list_state_update'),
+    path('inquiry', views.Inquiry.as_view(), name='inquiry'),
+    path('inquiry/<int:inquiry_id>', views.InquiryDetail.as_view(), name='inquiry_detail'),
+    path('inquiry/<int:inquiry_id>/status', views.InquiryStatus.as_view(), name='inquiry_status'),
+    path('inquiry/owner', views.InquiryOwner.as_view(), name='inquiry_owner'),
 ]

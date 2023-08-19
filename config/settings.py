@@ -39,11 +39,14 @@ INSTALLED_APPS = [
     'core',
     'account',
     'public',
+    'support',
+    'notification',
     # department apps
     'departments.general',
     'departments.financial',
     'departments.control_project',
     'departments.control_quality',
+    'departments.commerce',
     'departments.warehouse',
     'departments.production',
     'departments.technical'
@@ -57,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'core.middleware.UserIsAuthenticated'
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -112,11 +116,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tehran'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
@@ -143,3 +147,8 @@ Q_CLUSTER = {
 
 AUTH_USER_MODEL = 'account.User'  # custom normal_user model
 LOGIN_URL = '/u/login'
+EXCEPT_USER_AUTH_URLS = [
+    '/u/login',
+    '/admin',
+    '/project'
+]

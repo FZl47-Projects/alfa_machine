@@ -1,0 +1,251 @@
+{% extends 'base/base_template.html' %}
+{% load static %}
+
+{% block Title %}
+    استعلامات
+{% endblock %}
+
+{% block Link %}
+    <link rel="stylesheet" href="{% static 'frontend/styles/query-list.css' %}">
+{% endblock %}
+
+
+{% block Content %}
+
+
+    <!-- popup edit-query -->
+    {% for inquiry in inquiries %}
+        <div class="content-modal-two modal-edit-query">
+            <div class="inner-modal">
+                <form class="p-4" action="{% url 'public:inquiry_detail' inquiry_id=inquiry.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="type_request" value="update">
+                    <div class="information-section">
+                        <div class="information-item">
+                            <label for="lihh">عنوان استعلام</label>
+                            <input type="text" name="title" required value="{{ inquiry.title }}">
+                        </div>
+                        <div class="information-item">
+                            <label for="lihh">تاریخ</label>
+                            <input type="text " set-on="inquiry-time-submited"
+                                   class="persianDatapicker pwt-datepicker-input-element datetime-convert" required
+                                   value="{{ inquiry.get_time_submited }}">
+                            <input type="hidden" name="time_submited" id="inquiry-time-submited" required
+                                   value="{{ inquiry.get_time_submited }}">
+                        </div>
+                        <div class="information-item">
+                            <label for="lihh">توضیح</label>
+                            <textarea name="description" id="" cols="30" rows="10"
+                                      required>{{ inquiry.description }}</textarea>
+                        </div>
+                    </div>
+                    <div class="information-section">
+                        <button class="sabt-modal btn-primary col-12">ثبت</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+
+
+    <!-- popup edit-query -->
+    <!--Reason rejection popup -->
+    {% for inquiry in inquiries_rejected %}
+        <div class="content-modal-two modal-Reason-rejection">
+            <div class="inner-modal">
+                <form class="p-4">
+                    <div class="information-section">
+                        <div class="information-item">
+                            <label for="lihh">دلیل رد شدن</label>
+                            <textarea name="" id="" cols="30" rows="10"
+                                      disabled>{{ inquiry.status.description }}</textarea>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+    <!--Reason rejection popup -->
+
+
+    <!--Reason Followed up popup -->
+    {% for inquiry in inquiries_accepted %}
+        <div class="content-modal-two modal-Followed-up">
+            <div class="inner-modal">
+                <form class="p-4">
+                    <div class="information-section">
+                        <div class="information-item">
+                            توضیح :
+                        </div>
+                        <div class="information-item">
+                            {{ inquiry.status.description }}
+                        </div>
+                    </div>
+                    <div class="information-section">
+                        <div class="information-item">
+                            فایل :
+                        </div>
+                        <div class="information-item">
+                            {% if inquiry.status.get_file_url %}
+                                <a class="btn btn-success mx-auto col-12 d-block" href="{{ inquiry.status.get_file_url }}" download="">دانلود</a>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+    <!--Reason Followed up popup -->
+
+
+    <!--morde-descriptin popup -->
+    {% for inquiry in inquiries %}
+        <div class="content-modal-two modal-more-description">
+            <div class="inner-modal">
+                <form class="p-4">
+                    <div class="close-modal close-modal-description">
+                        <img src="{% static 'frontend/images/close.png' %}" alt="">
+                    </div>
+                    <div class="hhh">
+                        <div class="more-des">
+                            {{ inquiry.description }}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+    <!--morde-descriptin popup -->
+
+
+    <main class="main content-page container">
+        <h5 class="title-page">لیست استعلامات </h5>
+        <section class="col-12 project-content">
+            <div class="inner-project">
+
+                <section class="content-notifcation">
+                    <div class="content-items p-2 active">
+                        <section class="section-table">
+                            <!-- table -->
+                            <div class="table">
+                                <!-- title table -->
+                                <div class="table-title">
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            ردیف
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            استعلام دهنده
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="table-title-item">
+                                            توضیحات
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            ویرایش
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            حذف
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            وضعیت
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- title table -->
+                                <!-- content table -->
+                                <div class="table-content">
+                                    <!-- each row table -->
+                                    {% for inquiry in inquiries %}
+                                        <div class="row-table">
+                                            <!-- each row table -->
+                                            <div class="col-1 p-1">
+                                                <div class="table-content-item">
+                                                    {{ forloop.counter }}
+                                                </div>
+                                            </div>
+                                            <!-- each row table -->
+                                            <div class="col-2 p-1">
+                                                <div class="table-content-item">
+                                                    {{ inquiry.from_department.name }}
+                                                </div>
+                                            </div>
+
+                                            <div class="col-4 p-1">
+                                                <div class="table-content-item">
+                                                    <p class="description">
+                                                        {{ inquiry.description|truncatechars:25 }}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="col-2 p-1">
+                                                <div class="table-content-item">
+                                                    <!-- btn column table -->
+                                                    <div class="query-item btn-edit-query">کلیک کنید</div>
+                                                    <!-- btn column table -->
+                                                </div>
+                                            </div>
+                                            <div class="col-2 p-1">
+                                                <div class="table-content-item">
+                                                    <!-- btn column table -->
+                                                    <form action="{% url 'public:inquiry_detail' inquiry_id=inquiry.id %}"
+                                                          method="post">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="type_request" value="delete">
+                                                        <button class="query-item delete btn">کلیک کنید</button>
+                                                    </form>
+                                                    <!-- btn column table -->
+                                                </div>
+                                            </div>
+                                            <div class="col-1 p-1">
+                                                <div class="table-content-item">
+                                                    <!-- btn column table -->
+                                                    {% if inquiry.get_status == 'accepted' %}
+                                                        <div class="btn-table green btn-Followed-up">تایید شده</div>
+                                                    {% elif inquiry.get_status == 'rejected' %}
+                                                        <div class="btn-table red btn-Reason-rejection">ردشده</div>
+                                                    {% elif inquiry.get_status == 'progress' %}
+                                                        <div class="btn-table blue">درحال بررسی</div>
+                                                    {% endif %}
+                                                    <!-- btn column table -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% empty %}
+                                        <div class="container-not-found-base">
+                                            <p>چیزی یافت نشد</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <!-- content table -->
+
+                            </div>
+                            <!-- table -->
+                        </section>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </main>
+
+
+
+
+{% endblock %}
+
+{% block Script %}
+    <script type="module" src="{% static 'frontend/js/query-list.js' %}"></script>
+{% endblock %}

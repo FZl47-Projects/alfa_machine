@@ -11,520 +11,79 @@
 
 {% block Content %}
     <!-- new task -->
-    <div class="content-modal modal-new-task">
-        <div class="inner-modal">
-            <form class="px-4 pt-2" action="{% url 'public:task' %}" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="py-2">
-                    <div class="title">
-                        <h4>تعریف تسک</h4>
-                    </div>
-                    <div class="information-section">
-                        <div class="information-item">
-                            <label for="lihh">نام تسک</label>
-                            <input type="text" placeholder="تسک شماره یک" name="name" required>
-                        </div>
-                        <div class="d-flex ">
-                            <div class="col-6" style="padding:0px 5px ;">
-                                <div class="information-item date">
-                                    <label>تاریخ شروع</label>
-                                    <input type="text " class="persianDatapicker" name="" set-on="task_time_start" required>
-                                    <input type="hidden" name="time_start" required id="task_time_start" >
-                                </div>
-                            </div>
-                            <div class="col-6" style="padding:0px 5px ;">
-                                <div class="information-item date">
-                                    <label>تاریخ پایان</label>
-                                    <input type="text " class="persianDatapicker" name="" set-on="task_time_end" required>
-                                    <input type="hidden" name="time_end" required id="task_time_end">
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="d-flex">
-                            <div class="col-6" style="padding:0px 5px ;">
-                                <div class="information-item">
-                                    <label for="lihh">میزان انجام کار</label>
-                                    <input type="number" placeholder="ساعت" name="work_hour" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="information-item">
-                            <label for="lihh">توضیحات</label>
-                            <textarea name="description" id="description" cols="30" rows="10" required></textarea>
-                        </div>
-                        <div class="information-item">
-                            <label for="lihh">نام واحد:</label>
-                            <select name="to_department" id="" required>
-                                {% for department in departments %}
-                                    <option value="{{ department.id }}">{{ department.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="information-item">
-                            <label for="lihh">پروژه :</label>
-                            <select name="project" id="" required>
-                                {% for project in projects %}
-                                    <option value="{{ project.id }}">{{ project.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="information-item">
-                            <label for="lihh">توضیحات تحصیص</label>
-                            <textarea name="description_allocate" id="" cols="20" rows="10" required></textarea>
-                        </div>
-                        <div class="information-item">
-                            <label for="lihh">اولویت</label>
-                            <input type="number" placeholder="اولویت" value="1" name="priority" required>
-                        </div>
-                        <div class="d-flex">
-                            <div class="uploade-imge">
-                                <label class="item-upload" for="add">
-                                    آپلود فایل
-                                </label>
-                                <input type="file" name="file" id="add" hidden/>
-                            </div>
-                            <span class="des">فایل های مربوط به تسک</span>
-                        </div>
-                        <button class="sabt-modal d-block col-12">ثبت</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-    </div>
+    {% include 'public/task/components/new-task.html' with projects=projects departments=departments %}
 
     <!-- new task -->
     <!-- popup taid -->
-    <div class="content-modal-two modal-management-approval">
-        <div class="inner-modal">
-            <form class="p-4">
-                <div class="information-section">
-                    <div class="information-item">
-                        <label for="lihh">توضیحات</label>
-                        <textarea name="" id="" cols="30" rows="10"></textarea>
-                    </div>
-                    <div class="information-item">
-                        <div class="uploade-imge">
-                            <label class="item-upload" for="add">
-                                آپلود فایل
-                            </label>
-                            <input type="file" name="photo" id="add" hidden/>
+    {% for inquiry in inquiries %}
+        <div class="content-modal-two modal-management-approval">
+            <div class="inner-modal">
+                <form class="p-4" action="{% url 'public:inquiry_status' inquiry_id=inquiry.id %}" method="post"
+                      enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="status" value="accepted">
+                    <div class="information-section">
+                        <div class="information-item">
+                            <label for="lihh">توضیحات</label>
+                            <textarea name="description" id="" cols="30" rows="10" required></textarea>
+                        </div>
+                        <div class="information-item">
+                            <div class="uploade-imge">
+                                <label class="item-upload" for="add-{{ forloop.counter }}">
+                                    آپلود فایل
+                                </label>
+                                <input type="file" name="file" id="add-{{ forloop.counter }}" required hidden/>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="information-section">
-                    <div class="sabt-modal">ثبت</div>
-                </div>
-            </form>
+                    <div class="information-section">
+                        <button class="sabt-modal col-12 btn-primary">ثبت</button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-    <div class="content-modal-two modal-management-approval">
-        <div class="inner-modal">
-            <form class="p-4">
-                <div class="information-section">
-                    <div class="information-item">
-                        <label for="lihh">توضیحات</label>
-                        <textarea name="" id="" cols="30" rows="10"></textarea>
-                    </div>
-                    <div class="information-item">
-                        <div class="uploade-imge">
-                            <label class="item-upload" for="add">
-                                آپلود فایل
-                            </label>
-                            <input type="file" name="photo" id="add" hidden/>
-                        </div>
-                    </div>
-                </div>
-                <div class="information-section">
-                    <div class="sabt-modal">ثبت</div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="content-modal-two modal-management-approval">
-        <div class="inner-modal">
-            <form class="p-4">
-                <div class="information-section">
-                    <div class="information-item">
-                        <label for="lihh">توضیحات</label>
-                        <textarea name="" id="" cols="30" rows="10"></textarea>
-                    </div>
-                    <div class="information-item">
-                        <div class="uploade-imge">
-                            <label class="item-upload" for="add">
-                                آپلود فایل
-                            </label>
-                            <input type="file" name="photo" id="add" hidden/>
-                        </div>
-                    </div>
-                </div>
-                <div class="information-section">
-                    <div class="sabt-modal">ثبت</div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="content-modal-two modal-management-approval">
-        <div class="inner-modal">
-            <form class="p-4">
-                <div class="information-section">
-                    <div class="information-item">
-                        <label for="lihh">توضیحات</label>
-                        <textarea name="" id="" cols="30" rows="10"></textarea>
-                    </div>
-                    <div class="information-item">
-                        <div class="uploade-imge">
-                            <label class="item-upload" for="add">
-                                آپلود فایل
-                            </label>
-                            <input type="file" name="photo" id="add" hidden/>
-                        </div>
-                    </div>
-                </div>
-                <div class="information-section">
-                    <div class="sabt-modal">ثبت</div>
-                </div>
-            </form>
-        </div>
-    </div>
+    {% endfor %}
+
     <!-- popup taid -->
     <!-- popup no-taeid -->
-    <div class="content-modal-two modal-management-no-approval">
-        <div class="inner-modal">
-            <form class="p-4">
-                <div class="information-section">
-                    <div class="information-item">
-                        <label for="lihh">توضیحات</label>
-                        <textarea name="" id="" cols="30" rows="10"></textarea>
+    {% for inquiry in inquiries %}
+        <div class="content-modal-two modal-management-no-approval">
+            <div class="inner-modal">
+                <form class="p-4" action="{% url 'public:inquiry_status' inquiry_id=inquiry.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="status" value="rejected">
+                    <div class="information-section">
+                        <div class="information-item">
+                            <label for="lihh">توضیحات</label>
+                            <textarea name="description" id="" cols="30" rows="10" required></textarea>
+                        </div>
                     </div>
-                </div>
-                <div class="information-section">
-                    <div class="sabt-modal">ثبت</div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="content-modal-two modal-management-no-approval">
-        <div class="inner-modal">
-            <form class="p-4">
-                <div class="information-section">
-                    <div class="information-item">
-                        <label for="lihh">توضیحات</label>
-                        <textarea name="" id="" cols="30" rows="10"></textarea>
+                    <div class="information-section">
+                        <button class="sabt-modal btn-primary col-12">ثبت</button>
                     </div>
-                </div>
-                <div class="information-section">
-                    <div class="sabt-modal">ثبت</div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
-    <div class="content-modal-two modal-management-no-approval">
-        <div class="inner-modal">
-            <form class="p-4">
-                <div class="information-section">
-                    <div class="information-item">
-                        <label for="lihh">توضیحات</label>
-                        <textarea name="" id="" cols="30" rows="10"></textarea>
-                    </div>
-                </div>
-                <div class="information-section">
-                    <div class="sabt-modal">ثبت</div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="content-modal-two modal-management-no-approval">
-        <div class="inner-modal">
-            <form class="p-4">
-                <div class="information-section">
-                    <div class="information-item">
-                        <label for="lihh">توضیحات</label>
-                        <textarea name="" id="" cols="30" rows="10"></textarea>
-                    </div>
-                </div>
-                <div class="information-section">
-                    <div class="sabt-modal">ثبت</div>
-                </div>
-            </form>
-        </div>
-    </div>
+    {% endfor %}
     <!-- popup no-taeid -->
     <!--morde-descriptin popup -->
-    <div class="content-modal-two modal-more-description">
-        <div class="inner-modal">
-            <form class="p-4">
-                <div class="close-modal close-modal-description">
-                    <img src="./assets/images/close.png" alt="">
-                </div>
-                <div class="hhh">
-                    <div class="more-des">
-                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
-                        چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی
-                        مورد
-                        نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد
-                        گذشته
-                        حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای
-                        طراحان
-                        رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان
-                        امید
-                        داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز
-                        شامل
-                        حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی لورم ایپسوم متن ساختگی
-                        با
-                        تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه
-                        و
-                        مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با
-                        هدف
-                        بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان
-                        جامعه
-                        و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان
-                        خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری
-                        موجود
-                        در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی،
-                        و
-                        جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
-
+    {% for inquiry in inquiries %}
+        <div class="content-modal-two modal-more-description">
+            <div class="inner-modal">
+                <form class="p-4">
+                    <div class="close-modal close-modal-description">
+                        <img src="{% static 'frontend/images/close.png' %}" alt="">
                     </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="content-modal-two modal-more-description">
-        <div class="inner-modal">
-            <form class="p-4">
-                <div class="close-modal close-modal-description">
-                    <img src="./assets/images/close.png" alt="">
-                </div>
-                <div class="hhh">
-                    <div class="more-des">
-                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
-                        چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی
-                        مورد
-                        نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد
-                        گذشته
-                        حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای
-                        طراحان
-                        رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان
-                        امید
-                        داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز
-                        شامل
-                        حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی لورم ایپسوم متن ساختگی
-                        با
-                        تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه
-                        و
-                        مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با
-                        هدف
-                        بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان
-                        جامعه
-                        و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان
-                        خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری
-                        موجود
-                        در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی،
-                        و
-                        جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
-
+                    <div class="hhh">
+                        <div class="more-des">
+                            {{ inquiry.description }}
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
-    </div>
-    <div class="content-modal-two modal-more-description">
-        <div class="inner-modal">
-            <form class="p-4">
-                <div class="close-modal close-modal-description">
-                    <img src="./assets/images/close.png" alt="">
-                </div>
-                <div class="hhh">
-                    <div class="more-des">
-                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
-                        چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی
-                        مورد
-                        نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد
-                        گذشته
-                        حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای
-                        طراحان
-                        رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان
-                        امید
-                        داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز
-                        شامل
-                        حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی لورم ایپسوم متن ساختگی
-                        با
-                        تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه
-                        و
-                        مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با
-                        هدف
-                        بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان
-                        جامعه
-                        و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان
-                        خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری
-                        موجود
-                        در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی،
-                        و
-                        جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
+    {% endfor %}
 
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="content-modal-two modal-more-description">
-        <div class="inner-modal">
-            <form class="p-4">
-                <div class="close-modal close-modal-description">
-                    <img src="./assets/images/close.png" alt="">
-                </div>
-                <div class="hhh">
-                    <div class="more-des">
-                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
-                        چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی
-                        مورد
-                        نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد
-                        گذشته
-                        حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای
-                        طراحان
-                        رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان
-                        امید
-                        داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز
-                        شامل
-                        حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی لورم ایپسوم متن ساختگی
-                        با
-                        تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه
-                        و
-                        مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با
-                        هدف
-                        بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان
-                        جامعه
-                        و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان
-                        خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری
-                        موجود
-                        در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی،
-                        و
-                        جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
-
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="content-modal-two modal-more-description">
-        <div class="inner-modal">
-            <form class="p-4">
-                <div class="close-modal close-modal-description">
-                    <img src="./assets/images/close.png" alt="">
-                </div>
-                <div class="hhh">
-                    <div class="more-des">
-                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
-                        چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی
-                        مورد
-                        نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد
-                        گذشته
-                        حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای
-                        طراحان
-                        رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان
-                        امید
-                        داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز
-                        شامل
-                        حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی لورم ایپسوم متن ساختگی
-                        با
-                        تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه
-                        و
-                        مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با
-                        هدف
-                        بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان
-                        جامعه
-                        و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان
-                        خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری
-                        موجود
-                        در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی،
-                        و
-                        جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
-
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="content-modal-two modal-more-description">
-        <div class="inner-modal">
-            <form class="p-4">
-                <div class="close-modal close-modal-description">
-                    <img src="./assets/images/close.png" alt="">
-                </div>
-                <div class="hhh">
-                    <div class="more-des">
-                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
-                        چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی
-                        مورد
-                        نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد
-                        گذشته
-                        حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای
-                        طراحان
-                        رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان
-                        امید
-                        داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز
-                        شامل
-                        حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی لورم ایپسوم متن ساختگی
-                        با
-                        تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه
-                        و
-                        مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با
-                        هدف
-                        بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان
-                        جامعه
-                        و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان
-                        خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری
-                        موجود
-                        در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی،
-                        و
-                        جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
-
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="content-modal-two modal-more-description">
-        <div class="inner-modal">
-            <form class="p-4">
-                <div class="close-modal close-modal-description">
-                    <img src="./assets/images/close.png" alt="">
-                </div>
-                <div class="hhh">
-                    <div class="more-des">
-                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
-                        چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی
-                        مورد
-                        نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد
-                        گذشته
-                        حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای
-                        طراحان
-                        رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان
-                        امید
-                        داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز
-                        شامل
-                        حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی لورم ایپسوم متن ساختگی
-                        با
-                        تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه
-                        و
-                        مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با
-                        هدف
-                        بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان
-                        جامعه
-                        و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان
-                        خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری
-                        موجود
-                        در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی،
-                        و
-                        جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.
-
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
     <!--morde-descriptin popup -->
     <!-- start notifcation section -->
     <div class="col-12 col-md-2 notifcation">
@@ -701,130 +260,53 @@
             <div class="title px-4">
                 <span style="padding-left:3px;">استعلامات</span>
                 <span class="d-flex justify-content-center align-item-center">
-            <a href="./all-query.html">مشاهده همه</a>
-            <img src="./assets/images/back-icon.png" alt="">
+            <a href="{% url 'public:inquiry' %}">مشاهده همه</a>
+            <img src="{% static 'frontend/images/back-icon.png' %}" alt="">
         </span>
             </div>
             <!-- Query-section -->
             <section class="queries">
                 <!--inner Query-section  -->
                 <div class="box-section">
-                    <!--each box Query -->
-                    <div class="col-12 col-md-3 p-2">
-                        <div class="box-item">
-                            <div class="top">
-                                <!-- query title -->
-                                <div style="color:black; margin-bottom:10px">
-                                    عنوان
+                    {% for inquiry in inquiries %}
+                        <div class="col-12 col-md-3 p-2">
+                            <div class="box-item">
+                                <div class="top">
+                                    <!-- query title -->
+                                    <div style="color:black; margin-bottom:10px">
+                                        {{ inquiry.title }}
+                                    </div>
+                                    <!-- query title -->
+                                    <!-- The name of the inquirer -->
+                                    <div class=" style-conent-box">
+                                        <span>{{ inquiry.from_department.name }}</span>
+                                    </div>
+                                    <!-- The name of the inquirer -->
+                                    <!-- date -->
+                                    <div class="style-conent-box">
+                                        <span>تاریخ</span>
+                                        <span class="datetime-convert">{{ inquiry.get_time_submited }}</span>
+                                    </div>
+                                    <!-- date -->
+                                    <!-- description -->
+                                    <div class="style-conent-box">
+                                        <span style="cursor:pointer ;"
+                                              class="description">{{ inquiry.description|truncatechars:30 }}</span>
+                                    </div>
                                 </div>
-                                <!-- query title -->
-                                <!-- The name of the inquirer -->
-                                <div class=" style-conent-box">
-                                    <span>نام استعلام دهنده</span>
+                                <!-- btn approval and noapproval  -->
+                                <div class="btn-two d-flex">
+                                    <div class="col-6 p-1 btn-item taeid btn-management-approval">تایید</div>
+                                    <div class="col-6 p-1 btn-item n-taeid btn-management-noapproval">رد</div>
                                 </div>
-                                <!-- The name of the inquirer -->
-                                <!-- date -->
-                                <div class="style-conent-box">
-                                    <span>تاریخ پایان:</span>
-                                    <span>1377/8/8</span>
-                                </div>
-                                <!-- date -->
-                                <!-- description -->
-                                <div class="style-conent-box">
-                                    <span style="cursor:pointer ;" class="description">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</span>
-                                </div>
-                                <!-- description -->
-                                <div class="style-conent-box">
-                                    <span style="cursor:pointer ;">دانلود فایل</span>
-                                </div>
-                            </div>
-                            <!-- btn approval and noapproval  -->
-                            <div class="btn-two d-flex">
-                                <div class="col-6 p-1 btn-item taeid btn-management-approval">تایید</div>
-                                <div class="col-6 p-1 btn-item n-taeid btn-management-noapproval">رد</div>
-                            </div>
-                            <!-- btn approval and noapproval  -->
-                        </div>
-                    </div>
-                    <!--each box Query -->
-                    <div class="col-12 col-md-3 p-2">
-                        <div class="box-item">
-                            <div class="top">
-                                <div style="color:black; margin-bottom:10px">
-                                    عنوان
-                                </div>
-                                <div class=" style-conent-box">
-                                    <span>نام استعلام دهنده</span>
-                                </div>
-                                <div class="style-conent-box">
-                                    <span>تاریخ پایان:</span>
-                                    <span>1377/8/8</span>
-                                </div>
-                                <div class="style-conent-box">
-                                    <span style="cursor:pointer ;" class="description">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</span>
-                                </div>
-                                <div class="style-conent-box">
-                                    <span style="cursor:pointer ;">دانلود فایل</span>
-                                </div>
-                            </div>
-                            <div class="btn-two d-flex">
-                                <div class="col-6 p-1 btn-item taeid btn-management-approval">تایید</div>
-                                <div class="col-6 p-1 btn-item n-taeid btn-management-noapproval">رد</div>
+                                <!-- btn approval and noapproval  -->
                             </div>
                         </div>
-                    </div>
-                    <div class="col-12 col-md-3 p-2">
-                        <div class="box-item">
-                            <div class="top">
-                                <div style="color:black; margin-bottom:10px">
-                                    عنوان
-                                </div>
-                                <div class=" style-conent-box">
-                                    <span>نام استعلام دهنده</span>
-                                </div>
-                                <div class="style-conent-box">
-                                    <span>تاریخ پایان:</span>
-                                    <span>1377/8/8</span>
-                                </div>
-                                <div class="style-conent-box">
-                                    <span style="cursor:pointer ;" class="description">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</span>
-                                </div>
-                                <div class="style-conent-box">
-                                    <span style="cursor:pointer ;">دانلود فایل</span>
-                                </div>
-                            </div>
-                            <div class="btn-two d-flex">
-                                <div class="col-6 p-1 btn-item taeid btn-management-approval">تایید</div>
-                                <div class="col-6 p-1 btn-item n-taeid btn-management-noapproval">رد</div>
-                            </div>
+                    {% empty %}
+                        <div class="container-not-found-base">
+                            <p>چیزی یافت نشد</p>
                         </div>
-                    </div>
-                    <div class="col-12 col-md-3 p-2">
-                        <div class="box-item">
-                            <div class="top">
-                                <div style="color:black; margin-bottom:10px">
-                                    عنوان
-                                </div>
-                                <div class=" style-conent-box">
-                                    <span>نام استعلام دهنده</span>
-                                </div>
-                                <div class="style-conent-box">
-                                    <span>تاریخ پایان:</span>
-                                    <span>1377/8/8</span>
-                                </div>
-                                <div class="style-conent-box">
-                                    <span style="cursor:pointer ;" class="description">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</span>
-                                </div>
-                                <div class="style-conent-box">
-                                    <span style="cursor:pointer ;">دانلود فایل</span>
-                                </div>
-                            </div>
-                            <div class="btn-two d-flex">
-                                <div class="col-6 p-1 btn-item taeid btn-management-approval">تایید</div>
-                                <div class="col-6 p-1 btn-item n-taeid btn-management-noapproval">رد</div>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
                 <!--inner Query-section  -->
             </section>
@@ -833,8 +315,8 @@
             <div class="title px-4">
                 <span style="padding-left:3px;">پروژه های درحال اجرا</span>
                 <span class="d-flex justify-content-center align-item-center">
-                <a href="{% url 'core:project' %}">مشاهده همه</a>
-                <img src="./assets/images/back-icon.png" alt="">
+                <a href="{% url 'public:project' %}">مشاهده همه</a>
+                <img src="{% static 'frontend/images/back-icon.png' %}" alt="">
             </span>
             </div>
             <!-- project section -->
@@ -842,34 +324,7 @@
                 <!-- inner project section -->
                 <div class="box-section">
                     {% for project in projects %}
-                        <div class="col-12 col-md-3 p-2 border-1-gray m-1">
-                            <div class="box-item">
-                                <div class="top">
-                                    <div style="color:black; margin-bottom:10px">
-                                        {{ project.name }}
-                                    </div>
-                                    <div class=" style-conent-box">
-                                        <span>تاریخ شروع:</span>
-                                        <span class="datetime-convert">{{ project.time_start }}</span>
-                                    </div>
-                                    <div class="style-conent-box">
-                                        <span>تاریخ پایان:</span>
-                                        <span class="datetime-convert">{{ project.time_end }}</span>
-                                    </div>
-                                    <div class="style-conent-box blue">
-                                        <span>وضعیت فعلی</span>
-                                        <span>{{ project.get_state_label }}</span>
-                                    </div>
-                                    <div class="style-conent-box">
-                                        <span>درصد پیشرفت:</span>
-                                        <span>{{ project.get_progress_percentage }}%</span>
-                                    </div>
-                                </div>
-                                <div class="bottom">
-                                    <a href="{{ project.get_absolute_url }}">اطلاعات بیشتر</a>
-                                </div>
-                            </div>
-                        </div>
+                        {% include 'public/project/components/list-project.html' with project=project %}
                     {% empty %}
                         <div class="container-not-found-base">
                             <p>چیزی یافت نشد</p>
@@ -889,7 +344,7 @@
             <!-- section-task -->
             <section class="tasks">
                 <div class="box-section">
-                    <!--each category task -->
+                    <!-- each category task -->
                     <div class="col-12 col-md-3 p-2">
                         <div class="box-item-2">
                             <img src="{% static 'frontend/images/22.png' %}" alt="" class="icon-box">
@@ -913,7 +368,8 @@
                             <div class="style-conent-box">
                                 <span>{{ tasks.queue }}</span>
                             </div>
-                            <div class="btn--ta"><a href="{% url 'public:task_owner' %}?task_state=queue">مشاهده همه</a></div>
+                            <div class="btn--ta"><a href="{% url 'public:task_owner' %}?task_state=queue">مشاهده همه</a>
+                            </div>
                         </div>
 
                     </div>
@@ -926,7 +382,8 @@
                             <div class="style-conent-box">
                                 <span>{{ tasks.need_to_check }}</span>
                             </div>
-                            <div class="btn--ta"><a href="{% url 'public:task_owner' %}?task_state=need-to-check">مشاهده همه</a></div>
+                            <div class="btn--ta"><a href="{% url 'public:task_owner' %}?task_state=need-to-check">مشاهده
+                                همه</a></div>
                         </div>
 
                     </div>
@@ -939,7 +396,8 @@
                             <div class="style-conent-box">
                                 <span>{{ tasks.finished }}</span>
                             </div>
-                            <div class="btn--ta"><a href="{% url 'public:task_owner' %}?task_state=finished">مشاهده همه</a></div>
+                            <div class="btn--ta"><a href="{% url 'public:task_owner' %}?task_state=finished">مشاهده
+                                همه</a></div>
                         </div>
 
                     </div>
@@ -952,23 +410,7 @@
             <section class="collection-units" style="background-color:#fff ; margin-top:30px;">
                 <div class="box-section">
                     {% for department in departments %}
-                        <div class="col-12 col-md-3 ">
-                        <div class="box-item-2 ddd">
-{#                            <img src="{{ department.get_image }}" alt="{{ department.name }}" class="icon-box">#}
-                            <div class=" style-conent-box">
-                                <span>{{ department.name }}</span>
-                            </div>
-                            <div class="style-conent-box">
-                                <span>{{ department.get_state_busy }}</span>
-                            </div>
-                            <div class="style-conent-box blue d-none">
-                                <span>تاریخ پایان</span>
-                                <span>1399/2/8</span>
-                            </div>
-                            <div class="btn-new-task tarif-task">تعریف تسک</div>
-                            <a href="{{ department.get_absolute_url_manage_tasks }}"><span class="manage-task">مدیریت تسک ها</span></a>
-                        </div>
-                    </div>
+                        {% include 'public/department/list-department-task.html' with department=department %}
                     {% endfor %}
                 </div>
             </section>

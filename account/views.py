@@ -19,10 +19,12 @@ class Login(View):
             if user is None:
                 messages.error(request, 'کاربری با این مشخصات یافت نشد')
                 return redirect('account:login')
+            if user.department is None:
+                messages.error(request, 'برای این کاربر واحدی ثبت نشده است لطفا به پشتیبانی اطلاع دهید')
+                return redirect('account:login')
             login(request, user)
             messages.success(request, 'خوش امدید')
-            # redirect by role user to panel
-            # return redirect('public:home')
+            return redirect('public:index')
         else:
             messages.error(request, 'لطفا فیلد هارا به درستی وارد نمایید')
         return redirect('account:login')

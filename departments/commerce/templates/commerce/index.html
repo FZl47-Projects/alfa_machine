@@ -1,0 +1,613 @@
+{% extends 'base/base_template.html' %}
+{% load static %}
+
+{% block Title %}
+    پنل مدیریت بازرگانی
+{% endblock %}
+
+{% block Link %}
+    <link rel="stylesheet" href="{% static 'frontend/styles/business-management-panel.css' %}">
+{% endblock %}
+
+{% block Content %}
+
+    <!-- popup email information -->
+    <div class="content-modal-two modal-email-information">
+        <div class="inner-modal">
+            <div class="email-popup">
+                <div class="close-modal close-modal-email"><img src="./assets/images/close.png" alt=""></div>
+                <div class="information-section">
+                    <div class="sender">
+                        <span>فرستنده:</span>
+                        <span>info@yahoo.com</span>
+                    </div>
+                    <div class="date">
+                        <span>تاریخ:</span>
+                        <span>1400/8/2</span>
+                    </div>
+                    <div class="title-email">
+                        موضوع ایمیل
+                    </div>
+                    <div class="input-serch d-flex justify-content-between align-item-center p-1">
+                        <div class="col-10 p-2">
+                            <div class="input">
+                                <label for="search">نام پروژه :</label>
+                                <input type="search" class="search" placeholder="پروژه مس سرچشمه رفسنجان">
+                            </div>
+                        </div>
+                        <div class=" col-2 p-2 d-flex justify-content-end flex-column">
+                            <div class="btn-sbt">
+                                تخصیص
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subject-email">
+                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+                        چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی
+                        مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه
+                        درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری
+                        را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این
+                        صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و
+                        زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی
+                        اساسا مورد استفاده قرار گیرد.
+                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+                        چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی
+                        مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه
+                        درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری
+                        را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این
+                        صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و
+                        زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی
+                        اساسا مورد استفاده قرار گیرد.
+                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+                        چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی
+                        مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه
+                        درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری
+                        را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این
+                        صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و
+                        زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی
+                        اساسا مورد استفاده قرار گیرد.
+                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+                        چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی
+                        مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه
+                        درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری
+                        را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این
+                        صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و
+                        زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی
+                        اساسا مورد استفاده قرار گیرد.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- popup email information -->
+    <div class="content-modal-two modal-email-information">
+        <div class="inner-modal">
+            <div class="email-popup">
+                <div class="close-modal close-modal-email"><img src="./assets/images/close.png" alt=""></div>
+                <div class="information-section">
+                    <div class="sender">
+                        <span>فرستنده:</span>
+                        <span>info@yahoo.com</span>
+                    </div>
+                    <div class="date">
+                        <span>تاریخ:</span>
+                        <span>1400/8/2</span>
+                    </div>
+                    <div class="title-email">
+                        موضوع ایمیل
+                    </div>
+                    <div class="input-serch d-flex justify-content-between align-item-center p-1">
+                        <div class="col-10 p-2">
+                            <div class="input">
+                                <label for="search">نام پروژه :</label>
+                                <input type="search" class="search" placeholder="پروژه مس سرچشمه رفسنجان">
+                            </div>
+                        </div>
+                        <div class=" col-2 p-2 d-flex justify-content-end flex-column">
+                            <div class="btn-sbt">
+                                تخصیص
+                            </div>
+                        </div>
+                    </div>
+                    <div class="subject-email">
+                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+                        چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی
+                        مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه
+                        درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری
+                        را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این
+                        صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و
+                        زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی
+                        اساسا مورد استفاده قرار گیرد.
+                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+                        چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی
+                        مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه
+                        درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری
+                        را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این
+                        صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و
+                        زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی
+                        اساسا مورد استفاده قرار گیرد.
+                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+                        چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی
+                        مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه
+                        درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری
+                        را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این
+                        صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و
+                        زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی
+                        اساسا مورد استفاده قرار گیرد.
+                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است،
+                        چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی
+                        مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه
+                        درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری
+                        را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این
+                        صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و
+                        زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی
+                        اساسا مورد استفاده قرار گیرد.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- popup Create-query -->
+    <div class="content-modal-two modal-Create-query">
+        <div class="inner-modal">
+            <form class="p-4" action="{% url 'public:inquiry' %}" method="post">
+                {% csrf_token %}
+                <div class="information-section">
+                    <div class="information-item">
+                        <label for="lihh">عنوان استعلام</label>
+                        <input type="text" name="title" required>
+                    </div>
+                    <div class="information-item">
+                        <label for="lihh">تاریخ</label>
+                        <input type="text " set-on="inquiry-time-submited" class="persianDatapicker pwt-datepicker-input-element" required>
+                        <input type="hidden" name="time_submited" id="inquiry-time-submited" required>
+                    </div>
+                    <div class="information-item">
+                        <label for="lihh">توضیح</label>
+                        <textarea name="description" id="" cols="30" rows="10" required></textarea>
+                    </div>
+                </div>
+                <div class="information-section">
+                    <button class="sabt-modal btn-primary col-12">ثبت</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- popup Create-query -->
+
+    <!-- request unit -->
+    {% include 'support/components/new-ticket.html' with projects=projects|slice:':4' departments=departments %}
+    <!--  request unit -->
+
+    <!-- START SECTION NOTIFATION -->
+    <div class="col-12 col-md-2 notifcation">
+        <div class="overly">
+            <div class="inner-notfication">
+                <div class="btns">
+                    <div class="btn-change col-6 text-center active">زمان</div>
+                    <div class="btn-change col-6 text-center">الویت</div>
+                </div>
+                <section class="content-notifcation">
+                    <div class="content-items p-2 active">
+                        <div class="col-12">
+                            <div class="notifcation-item">
+                                <div class="top">
+                                    <div class="title">
+                                        <span class="right-title">عنوان اعلان</span>
+                                        <span class="style-conent-box">1377/2/8</span>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    <div class="des-notif style-conent-box">لورم ایپسوم متن ساختگی با تولید سادگی
+                                        نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، ت...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="notifcation-item">
+                                <div class="top">
+                                    <div class="title">
+                                        <span class="right-title">عنوان اعلان</span>
+                                        <span class="style-conent-box">1377/2/8</span>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    <div class="des-notif style-conent-box">لورم ایپسوم متن ساختگی با تولید سادگی
+                                        نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، ت...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="notifcation-item">
+                                <div class="top">
+                                    <div class="title">
+                                        <span class="right-title">عنوان اعلان</span>
+                                        <span class="style-conent-box">1377/2/8</span>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    <div class="des-notif style-conent-box">لورم ایپسوم متن ساختگی با تولید سادگی
+                                        نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، ت...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="notifcation-item">
+                                <div class="top">
+                                    <div class="title">
+                                        <span class="right-title">عنوان اعلان</span>
+                                        <span class="style-conent-box">1377/2/8</span>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    <div class="des-notif style-conent-box">لورم ایپسوم متن ساختگی با تولید سادگی
+                                        نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، ت...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="notifcation-item">
+                                <div class="top">
+                                    <div class="title">
+                                        <span class="right-title">عنوان اعلان</span>
+                                        <span class="style-conent-box">1377/2/8</span>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    <div class="des-notif style-conent-box">لورم ایپسوم متن ساختگی با تولید سادگی
+                                        نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، ت...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-items p-2">
+                        <div class="col-12">
+                            <div class="notifcation-item">
+                                <div class="top">
+                                    <div class="title">
+                                        <span class="right-title">عنوانkkkkkk اعلان</span>
+                                        <span class="style-conent-box">1377/2/8</span>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    <div class="des-notif style-conent-box">لورم ایپسوم متن ساختگی با تولید سادگی
+                                        نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، ت...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="notifcation-item">
+                                <div class="top">
+                                    <div class="title">
+                                        <span class="right-title">عنوان اعلان</span>
+                                        <span class="style-conent-box">1377/2/8</span>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    <div class="des-notif style-conent-box">لورم ایپسوم متن ساختگی با تولید سادگی
+                                        نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، ت...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="notifcation-item">
+                                <div class="top">
+                                    <div class="title">
+                                        <span class="right-title">عنوان اعلان</span>
+                                        <span class="style-conent-box">1377/2/8</span>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    <div class="des-notif style-conent-box">لورم ایپسوم متن ساختگی با تولید سادگی
+                                        نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، ت...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="notifcation-item">
+                                <div class="top">
+                                    <div class="title">
+                                        <span class="right-title">عنوان اعلان</span>
+                                        <span class="style-conent-box">1377/2/8</span>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    <div class="des-notif style-conent-box">لورم ایپسوم متن ساختگی با تولید سادگی
+                                        نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، ت...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="all-notif">
+                        <a href="{% url 'notification:list_department' %}">مشاهده همه</a>
+                    </div>
+                </section>
+                <div class="download">
+                    <button class="download-notifcation-file">دانلودفایل اعلانات</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container-fluid col-md-10 content-page">
+        <main class="main">
+            <!--title-paga -->
+            <div class="title px-4">
+                <span style="padding-left:3px;">پنل بازرگانی</span>
+                <!-- btn-notif in mobile -->
+                <div class="notif-btn-mobile d-none">اعلانات</div>
+                <!-- btn-notif in mobile -->
+            </div>
+            <!--Start Access panel -->
+            <section class="collection-units mb-4" style="background-color:#fff ; margin-top:30px;">
+                <div class="box-section d-flex justify-content-between">
+                    <!--Access panel item  -->
+                    <div class="col-12 col-md-3 col-lg-2">
+                        <div class="box-item-2 ddd">
+                            <!-- image box  -->
+                            <img src="{% static 'frontend/images/لیست خرید تایید شده مدیریت 2@2x.png' %}" alt="" class="icon-box"
+                                 style="margin-bottom:15px ;">
+                            <!-- image box  -->
+                            <!-- discription -->
+                            <div class="style-conent-box" style="margin-bottom:15px ;">
+                                <span>لیست خرید تایید شده ی مدیریت</span>
+                            </div>
+                            <!-- discription -->
+                            <!-- btn box-->
+                            <a href="{% url 'departments.warehouse:items' %}">
+                                <div class="tarif-task" id="one">مشاهده</div>
+                            </a>
+                            <!-- btn box-->
+                        </div>
+                    </div>
+                    <!--Access panel item  -->
+                    <div class="col-12 col-md-3 col-lg-2 ">
+                        <div class="box-item-2 ddd">
+                            <img src="{% static 'frontend/images/تسک خای اولویت بندی شده 2@2x.png' %}" alt="" class="icon-box"
+                                 style="margin-bottom:15px ;">
+                            <div class="style-conent-box" style="margin-bottom:15px ;">
+                                <span>تسک های الویت بندی شده</span>
+                            </div>
+                            <a href="{% url 'public:task' %}">
+                                <div class="tarif-task" id="one">مشاهده</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3 col-lg-2 ">
+                        <div class="box-item-2 ddd">
+                            <img src="{% static 'frontend/images/1.png' %}" alt="" class="icon-box" style="margin-bottom:15px ;">
+                            <div class="style-conent-box" style="margin-bottom:15px ;">
+                                <span>استعلام</span>
+                            </div>
+                            <div class="tarif-task btn-new-query" id="one">جدید</div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3 col-lg-2 ">
+                        <div class="box-item-2 ddd">
+                            <img src="{% static 'frontend/images/2 (لیست استعلامات(حتی رد شده ها با دلیل@2x.png' %}" alt=""
+                                 class="icon-box" style="margin-bottom:15px ;">
+                            <div class="style-conent-box" style="margin-bottom:15px ;">
+                                <span>لیست استعلامات </span>
+                            </div>
+                            <a href="{% url 'public:inquiry_owner' %}">
+                                <div class="tarif-task" id="one">مشاهده</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3  col-lg-2 ">
+                        <div class="box-item-2 ddd">
+                            <img src="{% static 'frontend/images/درخواست از سایر واحد ها 2@2x.png' %}" alt="" class="icon-box"
+                                 style="margin-bottom:15px ;">
+                            <div class="style-conent-box" style="margin-bottom:15px ;">
+                                <span>درخواست از سایر واحدها</span>
+                            </div>
+                            <div class="tarif-task btn-request-unit" id="one">مشاهده</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--Start Access panel -->
+            <div class="title px-4">
+                <span style="padding-left:3px;">پروژه های درحال اجرا</span>
+                <span class="d-flex justify-content-center align-item-center">
+                <a href="{% url 'public:project' %}">مشاهده همه</a>
+                <img src="./assets/images/back-icon.png" alt="">
+            </span>
+            </div>
+            <!-- project section -->
+            <section class="ongoing-projects">
+                <!-- inner project section -->
+                <div class="box-section">
+                    {% for project in projects %}
+                        {% include 'public/project/components/list-project.html' with project=project %}
+                    {% endfor %}
+                </div>
+                <!-- inner project section -->
+            </section>
+            <!-- project section -->
+            <!-- title section email -->
+            <div class="title px-4">
+                <span style="padding:10px;">ایمیل ها</span>
+            </div>
+            <!-- title section email -->
+            <!--  start section email -->
+            <section class="emails m-1">
+                <div class="section-table">
+                    <div class="table" style="height:400px;">
+                        <!--start titles table -->
+                        <div class="table-title">
+                            <div class="col-1">
+                                <div class="table-title-item">
+                                    ردیف
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <div class="table-title-item">
+                                    عنوان ایمیل
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="table-title-item">
+                                    فرستنده
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="table-title-item">
+                                    تاریخ
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="table-title-item">
+                                    موضوع
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="table-title-item">
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--end titles table -->
+                        <!--start content table -->
+                        <div class="table-content">
+                            <!--start each row in table -->
+                            <div class="row-table">
+                                <!-- each column table -->
+                                <div class="col-1 p-2">
+                                    <div class="table-content-item">
+                                        <span>1</span>
+                                    </div>
+                                </div>
+                                <!-- each column table -->
+                                <div class="col-3 p-2">
+                                    <div class="table-content-item">
+                                        <span>عنوان ایمیل</span>
+                                    </div>
+                                </div>
+                                <div class="col-2 p-2">
+                                    <div class="table-content-item">
+                                        نام فرستنده
+                                    </div>
+                                </div>
+                                <div class="col-2 p-2">
+                                    <div class="table-content-item">
+                                        1402/5/2
+                                    </div>
+                                </div>
+                                <div class="col-2 p-2">
+                                    <div class="table-content-item">
+                                        مربوط به فنی
+                                    </div>
+                                </div>
+                                <div class="col-2 p-2">
+                                    <div class="table-content-item">
+                                        <div class="table-content-item">
+                                            <div class="btn-four btn-email-information">مشاهده</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row-table">
+                                <!-- each column table -->
+                                <div class="col-1 p-2">
+                                    <div class="table-content-item">
+                                        <span>1</span>
+                                    </div>
+                                </div>
+                                <!-- each column table -->
+                                <div class="col-3 p-2">
+                                    <div class="table-content-item">
+                                        <span>عنوان ایمیل</span>
+                                    </div>
+                                </div>
+                                <div class="col-2 p-2">
+                                    <div class="table-content-item">
+                                        نام فرستنده
+                                    </div>
+                                </div>
+                                <div class="col-2 p-2">
+                                    <div class="table-content-item">
+                                        1402/5/2
+                                    </div>
+                                </div>
+                                <div class="col-2 p-2">
+                                    <div class="table-content-item">
+                                        مربوط به فنی
+                                    </div>
+                                </div>
+                                <div class="col-2 p-2">
+                                    <div class="table-content-item">
+                                        <div class="table-content-item">
+                                            <div class="btn-four btn-email-information">مشاهده</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row-table">
+                                <!-- each column table -->
+                                <div class="col-1 p-2">
+                                    <div class="table-content-item">
+                                        <span>1</span>
+                                    </div>
+                                </div>
+                                <!-- each column table -->
+                                <div class="col-3 p-2">
+                                    <div class="table-content-item">
+                                        <span>عنوان ایمیل</span>
+                                    </div>
+                                </div>
+                                <div class="col-2 p-2">
+                                    <div class="table-content-item">
+                                        نام فرستنده
+                                    </div>
+                                </div>
+                                <div class="col-2 p-2">
+                                    <div class="table-content-item">
+                                        1402/5/2
+                                    </div>
+                                </div>
+                                <div class="col-2 p-2">
+                                    <div class="table-content-item">
+                                        مربوط به فنی
+                                    </div>
+                                </div>
+                                <div class="col-2 p-2">
+                                    <div class="table-content-item">
+                                        <div class="table-content-item">
+                                            <div class="btn-four btn-email-information">مشاهده</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!--start each row in table -->
+
+                        </div>
+                        <!--start content table -->
+                    </div>
+                </div>
+            </section>
+            <!-- end section email -->
+
+        </main>
+    </div>
+
+{% endblock %}
+
+{% block Script %}
+    <script type="module" src="{% static 'frontend/js/business-management-panel.js' %}"></script>
+{% endblock %}

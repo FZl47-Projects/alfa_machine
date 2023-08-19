@@ -19,7 +19,7 @@ class Department(BaseModel):
         return 'بیکار'
 
     def get_absolute_url_manage_tasks(self):
-        return reverse('core:task_department', args=(self.id,))
+        return reverse('public:task_owner_department', args=(self.id,))
 
 
 class Project(BaseModel):
@@ -35,11 +35,16 @@ class Project(BaseModel):
         return self.name
 
     def get_state_label(self):
+        pr = self.get_progress_percentage()
+        if pr == 100:
+            return 'تمام شده'
         return 'در حال انجام'
 
     def get_progress_percentage(self):
-        # TODO: should be complete
-        return 40
+        all_count = self.get_tasks().count()
+        finished_count = self.get_tasks().filter(state='finished').count()
+        p = (100 / all_count) * finished_count
+        return p
 
     def get_absolute_url(self):
         return reverse('public:project_detail', args=(self.id,))
@@ -74,6 +79,30 @@ class Project(BaseModel):
 
     def get_prepayments(self):
         return self.prepayment_set.all()
+
+    def get_material_items(self):
+        try:
+            return self.materialproject.items.all()
+        except:
+            return []
+
+    def get_files(self):
+        return self.projectfile_set.all()
+
+    def get_tickets(self):
+        return self.ticketdepartment_set.all()
+
+
+class ProjectFile(BaseModel, File):
+    name = models.CharField(max_length=100)
+    project = models.ForeignKey('Project', on_delete=models.CASCADE)
+    description = models.TextField()
+
+    class Meta:
+        ordering = '-id',
+
+    def __str__(self):
+        return self.name
 
 
 class Task(BaseModel, File):
@@ -138,12 +167,25 @@ class TaskStatus(BaseModel, File):
 
 
 class Inquiry(BaseModel):
-    inquiry_user = models.ForeignKey('account.User', on_delete=models.CASCADE)
+    from_department = models.ForeignKey('Department',on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     description = models.TextField()
+    time_submited = models.DateTimeField()
+
+    class Meta:
+        ordering = '-id',
 
     def __str__(self):
         return self.title
+
+    def get_status(self):
+        status = getattr(self,'status',None)
+        if status:
+            return status.status
+        return 'progress'
+
+    def get_time_submited(self):
+        return self.time_submited.strftime('%Y-%m-%d %H:%M')
 
 
 class InquiryStatus(BaseModel, File):
@@ -152,7 +194,7 @@ class InquiryStatus(BaseModel, File):
         ('rejected', 'رد شد'),
     )
     status = models.CharField(max_length=20, choices=STATUS_OPTIONS)
-    inquiry = models.OneToOneField('Inquiry', on_delete=models.CASCADE)
+    inquiry = models.OneToOneField('Inquiry', on_delete=models.CASCADE,related_name='status')
     description = models.TextField()
 
     def __str__(self):

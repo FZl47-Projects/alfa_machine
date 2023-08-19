@@ -1,13 +1,15 @@
 from django.db import models
 from core.models import BaseModel, File
-from django.contrib.auth import get_user_model
-from django.utils.crypto import get_random_string
 
 
-class Notification(BaseModel, File):
-    to_department = models.ForeignKey('core.Department',on_delete=models.CASCADE)
+class NotificationDepartment(BaseModel, File):
+    from_department = models.ForeignKey('public.Department', on_delete=models.CASCADE,
+                                        related_name='from_dp_notification')
+    to_department = models.ForeignKey('public.Department', on_delete=models.CASCADE, related_name='to_dp_notification')
+    project = models.ForeignKey('public.Project', on_delete=models.CASCADE)
     title = models.CharField(max_length=150)
     description = models.TextField(null=True, blank=True)
+    priority = models.IntegerField(default=1)
 
     class Meta:
         ordering = '-id',
@@ -17,7 +19,3 @@ class Notification(BaseModel, File):
 
     def get_title(self):
         return self.title or 'notification'
-
-
-
-

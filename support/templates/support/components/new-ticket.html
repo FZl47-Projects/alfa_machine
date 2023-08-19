@@ -1,0 +1,47 @@
+<div class="content-modal-two modal-request-unit">
+    <div class="inner-modal">
+        <form class="p-4" action="{% url 'support:ticket_department' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="information-section">
+                <div class="information-item">
+                    <label for="lihh">توضیحات</label>
+                    <textarea name="description" id="" cols="30" rows="10"></textarea>
+                </div>
+                <div class="information-item">
+                    <div class="uploade-imge">
+                        <label class="item-upload" for="add">
+                            آپلود فایل
+                        </label>
+                        <input type="file" name="file" id="add" hidden="">
+                    </div>
+                </div>
+                <div class="information-item">
+                    <label for="lihh">نام واحد:</label>
+                    <div class="units d-flex  flex-wrap">
+                        {% for department in departments %}
+                            <div class="d-flex align-items-center justify-content-center col-6 col-md-3 p-2">
+
+                                <label class="mt-2" for="inp-to-dep-{{ forloop.counter }}">
+                                    {{ department.name }}
+                                </label>
+                                <input type="radio" id="inp-to-dep-{{ forloop.counter }}" name="to_department" value="{{ department.id }}"
+                                       required>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="information-item">
+                    <label for="lihh">نام پروژه</label>
+                    <select name="project" required>
+                        {% for project in projects %}
+                            <option value="{{ project.id }}">{{ project.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="information-section">
+                <button class="d-inline-block col-12 p-2 bg-primary text-white">ثبت</button>
+            </div>
+        </form>
+    </div>
+</div>
