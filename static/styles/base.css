@@ -242,3 +242,32 @@ body {
     border: 1px solid #08a673 !important;
     color: #fff;
 }
+
+.select-choices{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    flex-direction:row!important;
+    align-content: center;
+    text-align: center;
+    padding: 10px 8px;
+    background: #f0f0f0;
+    border-radius: 10px;
+    margin: 7px auto;
+}
+
+.select-choices-content{
+    width: 100%;
+    display: none!important;
+}
+
+.select-choices-content select{
+    width: 95%;
+    margin: auto;
+    display: block;
+}
+
+.select-choices[choice-val='select'] + .select-choices-content{
+    display: block!important;
+}
+

@@ -15,11 +15,16 @@ class Department(BaseModel):
         pass
 
     def get_state_busy(self):
-        # TODO: should be complete
+        tasks_count = self.task_set.exclude(status__status='finished').count()
+        if tasks_count != 0 :
+            return 'مشغول'
         return 'بیکار'
 
     def get_absolute_url_manage_tasks(self):
         return reverse('public:task_owner_department', args=(self.id,))
+
+    def get_notifications(self):
+        return self.notificationdepartment_set.filter(is_showing=True)
 
 
 class Project(BaseModel):
@@ -44,7 +49,7 @@ class Project(BaseModel):
         all_count = self.get_tasks().count()
         finished_count = self.get_tasks().filter(state='finished').count()
         p = (100 / all_count) * finished_count
-        return p
+        return round(p,1)
 
     def get_absolute_url(self):
         return reverse('public:project_detail', args=(self.id,))

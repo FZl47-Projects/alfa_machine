@@ -13,6 +13,8 @@ class Index(View):
     @user_role_required_cbv(['financial_user'])
     def get(self, request):
         context = {
+            'tickets': request.user.get_tickets(),
+            'notifications': request.user.department.get_notifications(),
             'projects': Project.objects.filter(is_active=True)
         }
         return render(request, self.template_name, context)

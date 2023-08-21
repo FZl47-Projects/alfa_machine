@@ -1,5 +1,3 @@
-
-
 function redirect(url) {
     window.location.href = url
 }
@@ -143,14 +141,14 @@ for (let dt_el of all_datetime_convert) {
         hour: '2-digit',
         minute: '2-digit'
     });
-    if (dt_persian != 'Invalid Date'){
-       dt_el.innerHTML = dt_persian
-       dt_el.value = dt_persian
+    if (dt_persian != 'Invalid Date') {
+        dt_el.innerHTML = dt_persian
+        dt_el.value = dt_persian
     }
 }
 
 let all_spread_price = document.querySelectorAll('.spread-price')
-for (let el of all_spread_price){
+for (let el of all_spread_price) {
     let price = el.innerHTML
     el.innerHTML = numberWithCommas(price)
 }
@@ -158,3 +156,34 @@ for (let el of all_spread_price){
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+
+// ---
+
+
+let container_select_choices = document.querySelectorAll('.container-select-choices')
+
+$('.container-select-choices input[type="radio"]').on('change', function (e) {
+    let inp = e.currentTarget
+    let choices = inp.parentNode.parentNode
+    choices.setAttribute('choice-val', inp.value)
+
+});
+
+
+let BtnRequestUnit = document.querySelectorAll(".btn-request-unit");
+let Modal_RequestUnit = document.querySelectorAll(".modal-request-unit");
+let overalyRequestUnit = document.querySelectorAll(".modal-request-unit .inner-modal");
+
+BtnRequestUnit.forEach((item, index) => {
+    item.addEventListener("click", () => {
+        Modal_RequestUnit[index].classList.add("active");
+    });
+});
+overalyRequestUnit.forEach((item, index) => {
+    item.addEventListener("click", (e) => {
+        if (e.target.className === "inner-modal") {
+            Modal_RequestUnit[index].classList.remove("active");
+        }
+    });
+});

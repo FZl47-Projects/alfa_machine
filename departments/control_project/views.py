@@ -10,6 +10,8 @@ class Index(View):
     @user_role_required_cbv(['control_project_user'])
     def get(self, request):
         context = {
+            'tickets': request.user.get_tickets(),
+            'notifications': request.user.department.get_notifications(),
             'projects': Project.objects.filter(is_active=True),
             'departments': Department.objects.all(),
             'tasks': {

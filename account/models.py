@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 
+from support.models import TicketDepartment
+
 
 class CustomBaseUserManager(BaseUserManager):
 
@@ -69,6 +71,14 @@ class User(AbstractUser):
         if self.last_login:
             return self.last_login.strftime('%Y-%m-%d %H:%M:%S')
         return '-'
+
+    def get_tickets(self):
+        # TODO: should be complete
+        return self.department.ticketdepartment_set.filter(is_open=True)
+
+    def have_new_ticket(self):
+        # TODO: should be complete
+        pass
 
     def get_absolute_url_dashboard(self):
 

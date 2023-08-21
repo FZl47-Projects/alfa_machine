@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block Title %}
-    لیست اعلانات
+    لیست تیکت ها
 {% endblock %}
 
 {% block Link %}
@@ -11,7 +11,7 @@
 
 {% block Content %}
 
-    {% for notification in notifications %}
+    {% for ticket in tickets %}
         <div class="content-modal-two modal-more-description">
             <div class="inner-modal">
                 <form class="p-4">
@@ -20,7 +20,7 @@
                     </div>
                     <div class="hhh">
                         <div class="more-des">
-                            {{ notification.description }}
+                            {{ ticket.description }}
                         </div>
                     </div>
                 </form>
@@ -30,7 +30,7 @@
 
 
     <main class="main content-page container">
-        <h5 class="title-page">لیست اعلانات</h5>
+        <h5 class="title-page">لیست تیکت ها</h5>
         <section class="col-12 project-content">
             <div class="inner-project">
                 <div class="content-items p-2">
@@ -39,19 +39,14 @@
                         <div class="table">
                             <!--section title table -->
                             <div class="table-title">
-                                <div class="col-2">
-                                    <div class="table-title-item">
-                                        عنوان
-                                    </div>
-                                </div>
-                                <div class="col-2">
+                                <div class="col-4">
                                     <div class="table-title-item">
                                         پروژه ها
                                     </div>
                                 </div>
                                 <div class="col-3">
                                     <div class="table-title-item">
-                                        متن اعلان
+                                        متن تیکت
                                     </div>
                                 </div>
                                 <div class="col-3">
@@ -70,17 +65,13 @@
                             <!-- section content table -->
                             <div class="table-content">
                                 <!-- each row table -->
-                                {% for notification in notifications %}
+                                {% for ticket in tickets %}
                                     <div class="row-table">
-                                        <div class="col-2 p-2">
-                                            <div class="table-content-item">
-                                                {{ notification.title }}
-                                            </div>
-                                        </div>
-                                        <div class="col-2 p-2">
+
+                                        <div class="col-4 p-2">
                                             <div class="table-content-item">
                                                 <select>
-                                                    {% for name in notification.get_projects_name %}
+                                                    {% for name in ticket.get_projects_name %}
                                                         <option>{{ name }}</option>
                                                     {% endfor %}
                                                 </select>
@@ -89,22 +80,22 @@
                                         <div class="col-3 p-2">
                                             <div class="table-content-item">
                                                 <p class="description">
-                                                    {{ notification.description|truncatechars:30 }}
+                                                    {{ ticket.description|truncatechars:30 }}
                                                 </p>
                                             </div>
                                         </div>
                                         <div class="col-3 p-2">
                                             <div class="table-content-item">
-                                                <span class="datetime-convert">{{ notification.created_at }}</span>
+                                                <span class="datetime-convert">{{ ticket.created_at }}</span>
                                                 &nbsp;
                                                 <span class="font-70"
-                                                      dir="rtl">({{ notification.get_created_at_timepast }})</span>
+                                                      dir="rtl">({{ ticket.get_created_at_timepast }})</span>
                                             </div>
                                         </div>
                                         <div class="col-2 p-2">
                                             <div class="table-content-item">
-                                                {% if notification.get_file_url %}
-                                                    <a href="{{ notification.get_file_url }}" download="">دانلود</a>
+                                                {% if ticket.get_file_url %}
+                                                    <a href="{{ ticket.get_file_url }}" download="">دانلود</a>
                                                 {% else %}
                                                     -
                                                 {% endif %}
