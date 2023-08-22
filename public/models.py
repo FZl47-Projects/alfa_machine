@@ -46,10 +46,13 @@ class Project(BaseModel):
         return 'در حال انجام'
 
     def get_progress_percentage(self):
-        all_count = self.get_tasks().count()
-        finished_count = self.get_tasks().filter(state='finished').count()
-        p = (100 / all_count) * finished_count
-        return round(p,1)
+        try:
+            all_count = self.get_tasks().count()
+            finished_count = self.get_tasks().filter(state='finished').count()
+            p = (100 / all_count) * finished_count
+            return round(p,1)
+        except:
+            return 0
 
     def get_absolute_url(self):
         return reverse('public:project_detail', args=(self.id,))
