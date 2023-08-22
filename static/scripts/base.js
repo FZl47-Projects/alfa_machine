@@ -187,3 +187,23 @@ overalyRequestUnit.forEach((item, index) => {
         }
     });
 });
+
+
+try{
+    let btns = document.querySelectorAll(".btns .btn-change");
+    let contents = document.querySelectorAll(".content-items");
+    // btn for switch to old ticket or new tciket
+    btns.forEach((item, index) => {
+      item.addEventListener("click", () => {
+        btns.forEach((item) => {
+          item.classList.remove("active");
+        });
+        contents.forEach((item) => {
+          item.classList.remove("active");
+        });
+        btns[index].classList.add("active");
+        contents[index].classList.add("active");
+      });
+    });
+
+}catch(e){}
