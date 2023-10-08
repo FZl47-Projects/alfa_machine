@@ -30,6 +30,8 @@ class Login(View):
         return redirect('account:login')
 
 
-def logout(request):
-    logout_handler(request)
-    return redirect('account:login')
+class Logout(View):
+
+    def get(self,request):
+        logout_handler(request)
+        return redirect('account:login')
