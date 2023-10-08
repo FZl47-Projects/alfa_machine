@@ -158,7 +158,7 @@ class Task(View):
 
 class TaskListStateUpdate(View):
 
-    @user_role_required_cbv(['super_user', 'control_project_user'])
+    # @user_role_required_cbv(['super_user', 'control_project_user'])
     def post(self, request):
         referer_url = request.META.get('HTTP_REFERER', None)
         data = request.POST
@@ -172,7 +172,7 @@ class TaskListStateUpdate(View):
                     return redirect(referer_url or '/error')
                 task.state = task_data_state
                 task.save()
-        messages.success(request, 'عملیات مورد نظر با موفقیت ایجاد شد')
+        messages.success(request, 'عملیات مورد نظر با موفقیت انجام شد')
         return redirect(referer_url or '/success')
 
 

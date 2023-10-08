@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.views.generic import View
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout as logout_handler
 
 
 class Login(View):
@@ -28,3 +28,8 @@ class Login(View):
         else:
             messages.error(request, 'لطفا فیلد هارا به درستی وارد نمایید')
         return redirect('account:login')
+
+
+def logout(request):
+    logout_handler(request)
+    return redirect('account:login')

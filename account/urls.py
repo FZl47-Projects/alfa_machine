@@ -3,5 +3,7 @@ from . import views
 
 app_name = 'account'
 urlpatterns = [
-    path('login', views.Login.as_view(), name='login')
+    path('login', views.Login.as_view(), name='login'),
+    # fbv
+    path('logout', views.logout, name='logout'),
 ]
