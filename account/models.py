@@ -100,3 +100,4 @@ class User(AbstractUser):
         elif role == 'technical_user':
             return reverse('dp_technical:index')
         return reverse('public:error')
+    

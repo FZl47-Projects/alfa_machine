@@ -1,7 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.views.generic import View
 from django.contrib.auth import authenticate, login, logout as logout_handler
+from public.models import Department
+from .models import User
 
 
 class Login(View):
@@ -29,6 +31,48 @@ class Login(View):
             messages.error(request, 'لطفا فیلد هارا به درستی وارد نمایید')
         return redirect('account:login')
 
+
+class SignUp(View):
+    template_name = 'account/signup.html'
+    def get(self, request):
+         return render(request, self.template_name)
+    def post(self, request):
+        post = request.POST
+        email = post.get('email', None)
+        password = post.get('password', None)
+        password2 = post.get('password2', None)
+        if password != password2:
+            messages.error(request, 'رمز های وارد شده یکسان نیستند')
+            return redirect('account:signup')
+        user = get_object_or_404(User, email= email)
+        if user.password is None:
+            user.set_password(password)
+            user.save()
+            return redirect ('account:login')
+        messages.error(request,'کاربری با این مشخصات ثبت نام شده')
+        return redirect('account:signup')
+        
+
+class NewUser(View):
+    template_name = 'account/new_user.html'
+    def get(self, request):
+        context={
+        'departments': Department.objects.all(),
+        }
+        return render(request, self.template_name, context)
+    def post(self, request):
+        post = request.POST
+        email = post.get('email', None)
+        first_name = post.get('first_name', None)
+        role = post.get('role', None)
+        department_id = post.get('department', None)
+        department = Department.objects.get(id=department_id)
+        if email and role and department and first_name:
+            user = User(first_name=first_name, email= email, department= department, role= role)
+            user.save()
+        else:
+            messages.error(request, 'لطفا فیلد هارا به درستی وارد نمایید')
+        return redirect ('account:new_user')
 
 class Logout(View):
 

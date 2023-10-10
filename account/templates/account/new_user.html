@@ -1,0 +1,64 @@
+{% extends 'base/base_template.html' %}
+{% load static %}
+
+{% block Title %}
+    کاربر جدید
+{% endblock %}
+
+{% block Link %}
+    <!-- BOOTSTRAP -->
+    <link rel="stylesheet" href="{% static 'frontend/vendors/bootstrap.min.css' %}"/>
+
+    <!-- SWIPER -->
+    <link rel="stylesheet" href="{% static 'frontend/vendors/swiper.css' %}"/>
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="{% static 'frontend/styles/login.css' %}"/>
+{% endblock %}
+
+{% block Content %}
+    <main class="main container">
+        <!-- form-user -->
+        <section class="new_user">
+            <div class="content form-new_user col-12 col-md-6">
+                <div class="forms">
+                    <form class="form form-new_user" action="{% url 'account:new_user' %}" method="post">
+                        {% csrf_token %}
+                        <div class="titlee">کاربر جدید</div>
+                        <div>
+                            <div class="group-form">
+                                <input type="email" id="email" name="email" required>
+                                <label for="email"> :ایمیل</label>
+                            </div>
+                            <div class="group-form">
+                                <input type="text" id="first_name" name="first_name" required>
+                                <label for="first_name"> :نام</label>
+                            </div>
+                            <div class="group-form">
+                                <input type="text" id="role" name="role" required>
+                                <label for="role"> :نقش</label>
+                            </div>
+                            <div class="group-form">
+                                    <label for="department">نام واحد:</label>
+                                    <select name="department" id="department" required>
+                                        {% for department in departments %}
+                                            <option value="{{ department.id }}">{{ department.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                            <small></small>
+                        </div>
+
+                        <button type="submit" id="btn-login"
+                                class="btn-submit">ثبت
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+        <!-- form-login -->
+    </main>
+{% endblock %}
+
+{% block Script %}
+    <script src="{% static 'frontend/js/login.js' %}" type="module"></script>
+{% endblock %}
