@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.views.generic import View
 from django.contrib.auth import authenticate, login, logout as logout_handler
-from public.models import Department
+from public.models import Department, Task
 from .models import User
+from account.auth.decorators import user_role_required_cbv
 
 
 class Login(View):
@@ -79,3 +80,26 @@ class Logout(View):
     def get(self,request):
         logout_handler(request)
         return redirect('account:login')
+
+class UserProfile(View):
+    template_name = 'account/user_profile.html'
+    @user_role_required_cbv(['super_user'])
+    def get(self, request, user_id):
+        user = get_object_or_404(User, id=user_id)
+        context = {
+            'user': user,
+            'tasks': Task.objects.filter(allocator_user=user),
+            'departments': Department.objects.all()
+        }
+        return render(request, self.template_name, context)
+    def post(self, request, user_id):
+        post = request.POST
+        user = User.objects.get(id=user_id)
+        print(user.first_name)
+        user.email = post.get('email', None)
+        user.first_name = post.get('name', None)
+        user.role = post.get('role', None)
+        department_id = post.get('department', None)
+        user.department = Department.objects.get(id=department_id)
+        user.save()
+        return redirect ('departments.general:users_list')

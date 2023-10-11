@@ -1,0 +1,168 @@
+{% extends 'base/base_template.html' %}
+{% load static %}
+
+{% block Title %}
+     لیست کاربرها
+    {{ department }}
+{% endblock %}
+
+{% block Link %}
+    <link rel="stylesheet" href="{% static 'frontend/styles/task-prioritization.css' %}">
+{% endblock %}
+
+{% block Content %}
+
+    <!--Reason Followed up popup -->
+    {% for user in users %}
+        <div class="content-modal-two modal-allocation-information">
+            <div class="inner-modal">
+                <form class="p-4">
+                    <div class="information-section">
+                        <div class="information-item">
+                            {{ task.allocator_user.get_full_name }}
+                        </div>
+                        <div class="information-item">
+                            {{ task.from_department.name }}
+                        </div>
+                        <div class="information-item">
+                            {{ task.description_allocate|default:'چیزی یافت نشد' }}
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+    <!--Reason Followed up popup -->
+    <!--morde-descriptin popup -->
+    {% for task in tasks %}
+        <div class="content-modal-two modal-more-description">
+            <div class="inner-modal">
+                <form class="p-4">
+                    <div class="close-modal close-modal-description">
+                        <img src="{% static 'frontend/images/close.png' %}" alt="">
+                    </div>
+                    <div class="hhh">
+                        <div class="more-des">
+                            {{ task.description }}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+
+
+    <!--morde-descriptin popup -->
+    <form action="{% url 'public:task_list_state_update' %}" method="post">
+        {% csrf_token %}
+        <main class="main content-page container">
+            <h5 class="title-page">لیست کاربرها</h5>
+            <section class="col-12 project-content">
+                <div class="inner-project">
+                    <!--task-prioritization table -->
+                    <div class="content-items p-2">
+                        <section class="section-table">
+                            <!-- table -->
+                            <div class="table">
+                                <!-- title table -->
+                                <div class="table-title">
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            ردیف
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            نام
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            واحد 
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            نقش 
+                                        </div>
+                                    </div>
+
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            ایمیل 
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            وضعیت
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- title table -->
+                                <!-- content table -->
+                                <div class="table-content">
+                                    {% for user in users %}
+                                        <div class="row-table">
+                                            <!-- each column -->
+                                            <div class="col-2 p-2">
+                                                <div class="table-content-item">
+                                                    {{ forloop.counter }}
+                                                </div>
+                                            </div>
+                                            <!-- each column -->
+                                            <div class="col-2 p-2">
+                                                <div class="table-content-item">
+                                                    <a href="{{ user.get_absolute_url }}">
+                                                        {{ user.first_name }}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="col-2 p-2">
+                                                <div class="table-content-item datetime-convert">
+                                                    {{ user.department }}
+                                                </div>
+                                            </div>
+                                            <div class="col-2 p-2">
+                                                <div class="table-content-item datetime-convert">
+                                                    {{ user.role }}
+                                                </div>
+                                            </div>
+                                            <div class="col-2 p-2">
+                                                <div class="table-content-item datetime-convert">
+                                                    {{ user.email }}
+                                                </div>
+                                            </div>
+                                            <div class="col-2 p-2">
+                                                <div class="table-content-item datetime-convert">
+                                                    {{ user.department.get_state_busy }}
+                                                </div>
+                                            </div>
+            
+                                        </div>
+                                    {% empty %}
+                                        <div class="container-not-found-base">
+                                            <p>چیزی یافت نشد</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <!-- content table -->
+                            </div>
+                            <!-- table -->
+                        </section>
+                    </div>
+                    <!--task-prioritization table -->
+                </div>
+            </section>
+            {% if tasks.count > 0 %}
+                <button class="sabt-page">
+                    ثبت
+                </button>
+            {% endif %}
+        </main>
+    </form>
+{% endblock %}
+
+{% block Script %}
+    <script type="module" src="{% static 'frontend/js/task-prioritization.js' %}"></script>
+{% endblock %}

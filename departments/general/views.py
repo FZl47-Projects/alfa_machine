@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import View
 from public.models import Project, Task, Department, Inquiry
 from account.auth.decorators import user_role_required_cbv
+from account.models import User
 
 
 class Index(View):
@@ -23,3 +24,13 @@ class Index(View):
             }
         }
         return render(request, self.template_name, context)
+
+class UsersList(View):
+    template_name = 'general/users_list.html'
+    @user_role_required_cbv(['super_user'])
+    def get(self, request):
+        context = {
+            'users': User.objects.all()
+        }
+        return render(request, self.template_name, context)
+

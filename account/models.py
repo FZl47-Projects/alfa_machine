@@ -100,4 +100,6 @@ class User(AbstractUser):
         elif role == 'technical_user':
             return reverse('dp_technical:index')
         return reverse('public:error')
-    
+  
+    def get_absolute_url(self):
+            return reverse('account:user_profile', args=(self.id,))
