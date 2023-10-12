@@ -7,6 +7,8 @@ urlpatterns = [
     path('success', views.Success.as_view(), name='success'),
     path('', views.Index.as_view(), name='index'),
 
+    path('department_detail/<int:department_id>', views.DepartmentDetail.as_view(), name='department_detail'),
+
     path('project', views.Project.as_view(), name='project'),
     path('project/file', views.ProjectFile.as_view(), name='project_file'),
     path('project/<int:project_id>', views.ProjectDetail.as_view(), name='project_detail'),

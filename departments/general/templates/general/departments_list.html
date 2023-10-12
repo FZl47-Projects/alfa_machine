@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block Title %}
-     لیست کاربرها
+     لیست واحدها
     {{ department }}
 {% endblock %}
 
@@ -57,7 +57,7 @@
     <form action="{% url 'public:task_list_state_update' %}" method="post">
         {% csrf_token %}
         <main class="main content-page container">
-            <h5 class="title-page">لیست کاربرها</h5>
+            <h5 class="title-page">لیست واحدها</h5>
             <section class="col-12 project-content">
                 <div class="inner-project">
                     <!--task-prioritization table -->
@@ -98,16 +98,11 @@
                                             وضعیت
                                         </div>
                                     </div>
-                                    <div class="col-2">
-                                        <div class="table-title-item">
-                                            حذف
-                                        </div>
-                                    </div>
                                 </div>
                                 <!-- title table -->
                                 <!-- content table -->
                                 <div class="table-content">
-                                    {% for user in users %}
+                                    {% for department in departments %}
                                         <div class="row-table">
                                             <!-- each column -->
                                             <div class="col-2 p-2">
@@ -118,8 +113,8 @@
                                             <!-- each column -->
                                             <div class="col-2 p-2">
                                                 <div class="table-content-item">
-                                                    <a href="{{ user.get_absolute_url }}">
-                                                        {{ user.first_name }}
+                                                    <a href="{{ department.get_absolute_url }}">
+                                                        {{ department.name }}
                                                     </a>
                                                 </div>
                                             </div>
@@ -139,12 +134,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-2 p-2">
-                                                <div class="table-content-item datetime-convert">
-                                                    {{ user.department.get_state_busy }}
-                                                </div>
-                                            </div>
-                                            <div class="col-2 p-2">
-                                                <a href="{{ user.get_delete_url }}">حذف</a>
+                                                <a href="{{ department.get_delete_url }}">حذف</a>
                                             </div>
             
                                         </div>

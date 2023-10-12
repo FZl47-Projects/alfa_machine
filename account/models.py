@@ -103,3 +103,5 @@ class User(AbstractUser):
   
     def get_absolute_url(self):
             return reverse('account:user_profile', args=(self.id,))
+    def get_delete_url(self):
+            return reverse('departments.general:delete_user', args=(self.id,))

@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.shortcuts import render, Http404, redirect, HttpResponse
+from django.shortcuts import render, Http404, redirect, HttpResponse, get_object_or_404
 from django.views.generic import View
 from core.utils import form_validate_err
 from public import models, forms
@@ -246,3 +246,21 @@ class InquiryStatus(View):
         f.save()
         messages.success(request, 'عملیات با موفقیت ثبت شد')
         return redirect(referer_url or '/success')
+
+class DepartmentDetail(View):
+    template_name = 'public/department/department_detail.html'
+    @user_role_required_cbv(['super_user'])
+    def get(self, request, department_id):
+        department = get_object_or_404(models.Department, id=department_id)
+        context = {
+            'department': department,
+            'tasks': models.Task.objects.filter(to_department=department),
+        }
+        return render(request, self.template_name, context)
+    def post(self, request, department_id):
+        post = request.POST
+        department = models.Department.objects.get(id=department_id)
+        department.name = post.get('name', None)
+        department.save()
+        return redirect ('departments.general:departments_list')
+

@@ -23,6 +23,13 @@ class Department(BaseModel):
     def get_absolute_url_manage_tasks(self):
         return reverse('public:task_owner_department', args=(self.id,))
 
+    def get_absolute_url(self):
+        return reverse('public:department_detail', args=(self.id,))
+    
+    def get_delete_url(self):
+        return reverse('departments.general:delete_department', args=(self.id,))
+
+
     def get_notifications(self):
         return self.notificationdepartment_set.filter(is_showing=True)
 
