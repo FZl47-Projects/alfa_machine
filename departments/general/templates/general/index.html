@@ -174,7 +174,7 @@
                 <span class="d-flex justify-content-center align-item-center">
 {#                <a href="#">مشاهده همه</a>#}
 {#                <img src="./assets/images/back-icon.png" alt="">#}
-            </span>
+                </span>
             </div>
             <!-- section-task -->
             <section class="tasks">
@@ -239,6 +239,38 @@
                 </div>
             </section>
             <!-- section-task -->
+            <div class="title px-4">
+                <span style="padding-left:3px;">صفحات</span>
+                <span class="d-flex justify-content-center align-item-center">
+{#                <a href="#">مشاهده همه</a>#}
+{#                <img src="./assets/images/back-icon.png" alt="">#}
+                </span>
+            </div>
+            <section>
+                <div class="box-section">
+                    <!-- each category task -->
+                    <div class="col-12 col-md-6 p-2">
+                        <div class="box-item-2">
+                            <img src="{% static 'frontend/images/22.png' %}" alt="" class="icon-box">
+                            <div class=" style-conent-box">
+                                <span> لیست واحد ها</span>
+                            </div>
+                            <div class="btn--ta"><a href="{% url 'departments.general:departments_list' %}">مشاهده
+                            </a></div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 p-2">
+                        <div class="box-item-2">
+                            <img src="{% static 'frontend/images/22.png' %}" alt="" class="icon-box">
+                            <div class=" style-conent-box">
+                                <span>لیست کاربران</span>
+                            </div>
+                            <div class="btn--ta"><a href="{% url 'departments.general:users_list' %}">مشاهده
+                            </a></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
             <!--Start Access panel -->
             <section class="collection-units" style="background-color:#fff ; margin-top:30px;">
                 <div class="box-section">
