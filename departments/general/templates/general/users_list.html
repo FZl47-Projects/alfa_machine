@@ -13,48 +13,48 @@
 {% block Content %}
 
     <!--Reason Followed up popup -->
-    {% for user in users %}
-        <div class="content-modal-two modal-allocation-information">
-            <div class="inner-modal">
-                <form class="p-4">
-                    <div class="information-section">
-                        <div class="information-item">
-                            {{ task.allocator_user.get_full_name }}
-                        </div>
-                        <div class="information-item">
-                            {{ task.from_department.name }}
-                        </div>
-                        <div class="information-item">
-                            {{ task.description_allocate|default:'چیزی یافت نشد' }}
-                        </div>
-                    </div>
-
-                </form>
-            </div>
-        </div>
-    {% endfor %}
+{#    {% for user in users %}#}
+{#        <div class="content-modal-two modal-allocation-information">#}
+{#            <div class="inner-modal">#}
+{#                <form class="p-4">#}
+{#                    <div class="information-section">#}
+{#                        <div class="information-item">#}
+{#                            {{ task.allocator_user.get_full_name }}#}
+{#                        </div>#}
+{#                        <div class="information-item">#}
+{#                            {{ task.from_department.name }}#}
+{#                        </div>#}
+{#                        <div class="information-item">#}
+{#                            {{ task.description_allocate|default:'چیزی یافت نشد' }}#}
+{#                        </div>#}
+{#                    </div>#}
+{##}
+{#                </form>#}
+{#            </div>#}
+{#        </div>#}
+{#    {% endfor %}#}
     <!--Reason Followed up popup -->
     <!--morde-descriptin popup -->
-    {% for task in tasks %}
-        <div class="content-modal-two modal-more-description">
-            <div class="inner-modal">
-                <form class="p-4">
-                    <div class="close-modal close-modal-description">
-                        <img src="{% static 'frontend/images/close.png' %}" alt="">
-                    </div>
-                    <div class="hhh">
-                        <div class="more-des">
-                            {{ task.description }}
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    {% endfor %}
+{#    {% for task in tasks %}#}
+{#        <div class="content-modal-two modal-more-description">#}
+{#            <div class="inner-modal">#}
+{#                <form class="p-4">#}
+{#                    <div class="close-modal close-modal-description">#}
+{#                        <img src="{% static 'frontend/images/close.png' %}" alt="">#}
+{#                    </div>#}
+{#                    <div class="hhh">#}
+{#                        <div class="more-des">#}
+{#                            {{ task.description }}#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </form>#}
+{#            </div>#}
+{#        </div>#}
+{#    {% endfor %}#}
 
 
     <!--morde-descriptin popup -->
-    <form action="{% url 'public:task_list_state_update' %}" method="post">
+    <form action="#" method="post">
         {% csrf_token %}
         <main class="main content-page container">
             <h5 class="title-page">لیست کاربرها</h5>
@@ -67,7 +67,7 @@
                             <div class="table">
                                 <!-- title table -->
                                 <div class="table-title">
-                                    <div class="col-2">
+                                    <div class="col-1">
                                         <div class="table-title-item">
                                             ردیف
                                         </div>
@@ -98,7 +98,7 @@
                                             وضعیت
                                         </div>
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col-1">
                                         <div class="table-title-item">
                                             حذف
                                         </div>
@@ -110,7 +110,7 @@
                                     {% for user in users %}
                                         <div class="row-table">
                                             <!-- each column -->
-                                            <div class="col-2 p-2">
+                                            <div class="col-1 p-2">
                                                 <div class="table-content-item">
                                                     {{ forloop.counter }}
                                                 </div>
@@ -119,13 +119,13 @@
                                             <div class="col-2 p-2">
                                                 <div class="table-content-item">
                                                     <a href="{{ user.get_absolute_url }}">
-                                                        {{ user.first_name }}
+                                                        {{ user.get_full_name }}
                                                     </a>
                                                 </div>
                                             </div>
                                             <div class="col-2 p-2">
                                                 <div class="table-content-item datetime-convert">
-                                                    {{ user.department }}
+                                                    {{ user.department|default:'-' }}
                                                 </div>
                                             </div>
                                             <div class="col-2 p-2">
@@ -143,7 +143,7 @@
                                                     {{ user.department.get_state_busy }}
                                                 </div>
                                             </div>
-                                            <div class="col-2 p-2">
+                                            <div class="col-1 p-2">
                                                 <a href="{{ user.get_delete_url }}">حذف</a>
                                             </div>
             
