@@ -67,33 +67,22 @@
                             <div class="table">
                                 <!-- title table -->
                                 <div class="table-title">
-                                    <div class="col-2">
+                                    <div class="col-3">
                                         <div class="table-title-item">
                                             ردیف
                                         </div>
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col-3">
                                         <div class="table-title-item">
-                                            نام
+                                            نام واحد
                                         </div>
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col-3">
                                         <div class="table-title-item">
-                                            واحد 
+                                            تعداد کاربران
                                         </div>
                                     </div>
-                                    <div class="col-2">
-                                        <div class="table-title-item">
-                                            نقش 
-                                        </div>
-                                    </div>
-
-                                    <div class="col-2">
-                                        <div class="table-title-item">
-                                            ایمیل 
-                                        </div>
-                                    </div>
-                                    <div class="col-2">
+                                    <div class="col-3">
                                         <div class="table-title-item">
                                             وضعیت
                                         </div>
@@ -105,38 +94,27 @@
                                     {% for department in departments %}
                                         <div class="row-table">
                                             <!-- each column -->
-                                            <div class="col-2 p-2">
+                                            <div class="col-3 p-2">
                                                 <div class="table-content-item">
                                                     {{ forloop.counter }}
                                                 </div>
                                             </div>
                                             <!-- each column -->
-                                            <div class="col-2 p-2">
+                                            <div class="col-3 p-2">
                                                 <div class="table-content-item">
                                                     <a href="{{ department.get_absolute_url }}">
                                                         {{ department.name }}
                                                     </a>
                                                 </div>
                                             </div>
-                                            <div class="col-2 p-2">
-                                                <div class="table-content-item datetime-convert">
-                                                    {{ user.department }}
+                                            <div class="col-3 p-2">
+                                                <div class="table-content-item">
+                                                    {{ department.user_set.count }}
                                                 </div>
                                             </div>
-                                            <div class="col-2 p-2">
-                                                <div class="table-content-item datetime-convert">
-                                                    {{ user.role }}
-                                                </div>
-                                            </div>
-                                            <div class="col-2 p-2">
-                                                <div class="table-content-item datetime-convert">
-                                                    {{ user.email }}
-                                                </div>
-                                            </div>
-                                            <div class="col-2 p-2">
+                                            <div class="col-3 p-2">
                                                 <a href="{{ department.get_delete_url }}">حذف</a>
                                             </div>
-            
                                         </div>
                                     {% empty %}
                                         <div class="container-not-found-base">

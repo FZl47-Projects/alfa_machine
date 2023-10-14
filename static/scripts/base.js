@@ -207,3 +207,15 @@ try{
     });
 
 }catch(e){}
+
+
+// price elements
+document.querySelectorAll('.price-el').forEach((el) => {
+    let p = el.innerText
+    el.setAttribute('price-val', p)
+    el.innerHTML = numberWithCommas(p)
+})
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}

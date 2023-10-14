@@ -24,6 +24,9 @@
     <link rel="stylesheet" href="{% static 'frontend/static/css/lib/persian-datepicker.min.css' %}">
     <link rel="stylesheet" href="{% static 'frontend/static/css/main.css' %}">
 
+    <link rel="stylesheet" href="{% static 'vendors/datetime-picker/jquery.mpdatepicker.min.css' %}">
+
+
 
     {% block Link %}
     {% endblock %}
@@ -36,6 +39,10 @@
 {% block Content %}
 
 {% endblock %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.43/moment-timezone.min.js"></script>
+
 
 <script src="{% static 'scripts/urls.js' %}"></script>
 <script src="{% static 'scripts/notify.js' %}"></script>

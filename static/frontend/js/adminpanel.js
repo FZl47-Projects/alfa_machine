@@ -16,27 +16,27 @@ btns.forEach((item, index) => {
 
 
 // ---------------------chart---------------------//
-tasks_progress_count = (100 / tasks_count) * tasks_progress_count
-tasks_queue_count = (100 / tasks_count) * tasks_queue_count
-tasks_finished_count = (100 / tasks_count) * tasks_finished_count
-var options = {
-    chart: {
-        type: 'donut'
-    },
-    series: [
-        tasks_progress_count,
-        tasks_queue_count,
-        tasks_finished_count
-    ],
-    labels: ['درحال انجام', 'در صف', 'انجام شده'],
-    colors: ['#6590f6', '#f1cb89', '#40e76b'],
-
-    xaxis: {
-        categories: [1996, 1997, 1998, 1999]
-    }
-
-}
-
-var chart = new ApexCharts(document.querySelector("#chart"), options);
-chart.render();
-// ---------------------chart---------------------//
+// tasks_progress_count = (100 / tasks_count) * tasks_progress_count
+// tasks_queue_count = (100 / tasks_count) * tasks_queue_count
+// tasks_finished_count = (100 / tasks_count) * tasks_finished_count
+// var options = {
+//     chart: {
+//         type: 'donut'
+//     },
+//     series: [
+//         tasks_progress_count,
+//         tasks_queue_count,
+//         tasks_finished_count
+//     ],
+//     labels: ['درحال انجام', 'در صف', 'انجام شده'],
+//     colors: ['#6590f6', '#f1cb89', '#40e76b'],
+//
+//     xaxis: {
+//         categories: [1996, 1997, 1998, 1999]
+//     }
+//
+// }
+//
+// var chart = new ApexCharts(document.querySelector("#chart"), options);
+// chart.render();
+// // ---------------------chart---------------------//

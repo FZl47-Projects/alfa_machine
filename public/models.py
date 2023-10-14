@@ -16,7 +16,7 @@ class Department(BaseModel):
 
     def get_state_busy(self):
         tasks_count = self.task_set.exclude(status__status='finished').count()
-        if tasks_count != 0 :
+        if tasks_count != 0:
             return 'مشغول'
         return 'بیکار'
 
@@ -25,16 +25,22 @@ class Department(BaseModel):
 
     def get_absolute_url(self):
         return reverse('public:department_detail', args=(self.id,))
-    
+
     def get_delete_url(self):
         return reverse('departments.general:delete_department', args=(self.id,))
-
 
     def get_notifications(self):
         return self.notificationdepartment_set.filter(is_showing=True)
 
 
 class Project(BaseModel):
+    number_id = models.IntegerField()
+    prepayment_datetime = models.DateTimeField()
+    item = models.TextField(null=True)
+    count_remaining = models.BigIntegerField()
+    count_total = models.BigIntegerField()
+    sample_delivery_date = models.DateField()
+    mass_delivery_date = models.DateField()
     name = models.CharField(max_length=100)
     task_master = models.CharField(max_length=100)
     time_start = models.DateField()
@@ -42,6 +48,7 @@ class Project(BaseModel):
     is_active = models.BooleanField(default=True)
     price = models.BigIntegerField()
     is_paid = models.BooleanField(default=False)
+    description = models.TextField(null=True)
 
     def __str__(self):
         return self.name
@@ -57,7 +64,7 @@ class Project(BaseModel):
             all_count = self.get_tasks().count()
             finished_count = self.get_tasks().filter(state='finished').count()
             p = (100 / all_count) * finished_count
-            return round(p,1)
+            return round(p, 1)
         except:
             return 0
 
@@ -106,6 +113,30 @@ class Project(BaseModel):
 
     def get_tickets(self):
         return self.ticketdepartment_set.all()
+
+    def get_prepayment_datetime(self):
+        return self.prepayment_datetime.strftime('%Y-%m-%d %H:%M')
+
+    def get_sample_delivery_date(self):
+        return self.sample_delivery_date.strftime('%Y-%m-%d %H:%M')
+
+    def get_mass_delivery_date(self):
+        return self.mass_delivery_date.strftime('%Y-%m-%d %H:%M')
+
+    def get_mass_delivery_date_input(self):
+        return self.mass_delivery_date.strftime('%Y-%m-%d')
+
+    def get_sample_delivery_date_input(self):
+        return self.sample_delivery_date.strftime('%Y-%m-%d')
+
+    def get_prepayment_datetime_input(self):
+        return self.prepayment_datetime.strftime('%Y-%m-%d')
+
+    def get_time_end_input(self):
+        return self.time_end.strftime('%Y-%m-%d')
+
+    def get_time_start_input(self):
+        return self.time_start.strftime('%Y-%m-%d')
 
 
 class ProjectFile(BaseModel, File):
@@ -182,7 +213,7 @@ class TaskStatus(BaseModel, File):
 
 
 class Inquiry(BaseModel):
-    from_department = models.ForeignKey('Department',on_delete=models.CASCADE)
+    from_department = models.ForeignKey('Department', on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     description = models.TextField()
     time_submited = models.DateTimeField()
@@ -194,7 +225,7 @@ class Inquiry(BaseModel):
         return self.title
 
     def get_status(self):
-        status = getattr(self,'status',None)
+        status = getattr(self, 'status', None)
         if status:
             return status.status
         return 'progress'
@@ -209,7 +240,7 @@ class InquiryStatus(BaseModel, File):
         ('rejected', 'رد شد'),
     )
     status = models.CharField(max_length=20, choices=STATUS_OPTIONS)
-    inquiry = models.OneToOneField('Inquiry', on_delete=models.CASCADE,related_name='status')
+    inquiry = models.OneToOneField('Inquiry', on_delete=models.CASCADE, related_name='status')
     description = models.TextField()
 
     def __str__(self):

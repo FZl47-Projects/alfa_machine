@@ -15,3 +15,9 @@ class CustomUserChangeForm(UserChangeForm):
         fields = ('email',)
 
 
+class CreateUserForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput(), min_length=7, max_length=64)
+
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email', 'role', 'department', 'password')

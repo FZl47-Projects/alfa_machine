@@ -20,12 +20,12 @@
     <main class="main container">
         <!-- form-user -->
         <section class="new_user">
-            <div class="content form-new_user col-12 col-md-6">
+            <div class="content form-new_user col-12 col-md-6 mx-auto mt-5">
                 <div class="forms">
                     <form class="form form-new_user" action="{% url 'account:new_user' %}" method="post">
                         {% csrf_token %}
                         <div class="titlee">کاربر جدید</div>
-                        <div>
+                        <div class="col-12">
                             <div class="group-form">
                                 <input type="email" id="email" name="email" required>
                                 <label for="email"> :ایمیل</label>
@@ -35,22 +35,37 @@
                                 <label for="first_name"> :نام</label>
                             </div>
                             <div class="group-form">
-                                <input type="text" id="role" name="role" required>
+                                <input type="text" id="last_name" name="last_name" required>
+                                <label for="last_name"> :نام خانوادگی</label>
+                            </div>
+                            <div class="group-form">
+                                <input type="password" id="password" name="password" required>
+                                <label for="password">: گذرواژه </label>
+                            </div>
+                            <div class="group-form">
+                                <select name="role" id="role" required class="form-select form-control">
+                                    {% for role in roles %}
+                                        <option value="{{ role.0 }}">{{ role.1 }}</option>
+                                    {% endfor %}
+                                </select>
                                 <label for="role"> :نقش</label>
                             </div>
                             <div class="group-form">
-                                    <label for="department">نام واحد:</label>
-                                    <select name="department" id="department" required>
-                                        {% for department in departments %}
-                                            <option value="{{ department.id }}">{{ department.name }}</option>
-                                        {% endfor %}
-                                    </select>
-                            <small></small>
-                        </div>
+                                <select name="department" class="form-select form-control" id="department" required>
+                                    {% for department in departments %}
+                                        <option value="{{ department.id }}">{{ department.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <label for="department">
+                                    :
+                                    نام واحد
+                                </label>
+                                <small></small>
+                            </div>
 
-                        <button type="submit" id="btn-login"
-                                class="btn-submit">ثبت
-                        </button>
+                            <button type="submit" id="btn-login"
+                                    class="btn-submit">ثبت
+                            </button>
                     </form>
                 </div>
             </div>

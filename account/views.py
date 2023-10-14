@@ -4,6 +4,7 @@ from django.views.generic import View
 from django.contrib.auth import authenticate, login, logout as logout_handler
 from public.models import Department, Task
 from .models import User
+from . import forms
 from account.auth.decorators import user_role_required_cbv
 
 
@@ -11,7 +12,7 @@ class Login(View):
     template_name = 'account/login.html'
 
     def get(self, request):
-        return render(request,self.template_name)
+        return render(request, self.template_name)
 
     def post(self, request):
         data = request.POST
@@ -35,8 +36,10 @@ class Login(View):
 
 class SignUp(View):
     template_name = 'account/signup.html'
+
     def get(self, request):
-         return render(request, self.template_name)
+        return render(request, self.template_name)
+
     def post(self, request):
         post = request.POST
         email = post.get('email', None)
@@ -45,44 +48,48 @@ class SignUp(View):
         if password != password2:
             messages.error(request, 'رمز های وارد شده یکسان نیستند')
             return redirect('account:signup')
-        user = get_object_or_404(User, email= email)
+        user = get_object_or_404(User, email=email)
         if user.password is None:
             user.set_password(password)
             user.save()
-            return redirect ('account:login')
-        messages.error(request,'کاربری با این مشخصات ثبت نام شده')
+            return redirect('account:login')
+        messages.error(request, 'کاربری با این مشخصات ثبت نام شده')
         return redirect('account:signup')
-        
+
 
 class NewUser(View):
     template_name = 'account/new_user.html'
+
     def get(self, request):
-        context={
-        'departments': Department.objects.all(),
+        context = {
+            'departments': Department.objects.all(),
+            'roles':User.ROLE_USER_OPTIONS
         }
         return render(request, self.template_name, context)
+
     def post(self, request):
-        post = request.POST
-        email = post.get('email', None)
-        first_name = post.get('first_name', None)
-        role = post.get('role', None)
-        department_id = post.get('department', None)
-        department = Department.objects.get(id=department_id)
-        if email and role and department and first_name:
-            user = User(first_name=first_name, email= email, department= department, role= role)
-            user.save()
-        else:
+        data = request.POST
+        f = forms.CreateUserForm(data)
+        if not f.is_valid():
             messages.error(request, 'لطفا فیلد هارا به درستی وارد نمایید')
-        return redirect ('account:new_user')
+            return redirect('account:new_user')
+        user = f.save(commit=False)
+        user.set_password(f.cleaned_data['password'])
+        user.save()
+        messages.success(request,'کاربر با موفقیت ایجاد شد')
+        return redirect('account:new_user')
+
 
 class Logout(View):
 
-    def get(self,request):
+    def get(self, request):
         logout_handler(request)
         return redirect('account:login')
 
+
 class UserProfile(View):
     template_name = 'account/user_profile.html'
+
     @user_role_required_cbv(['super_user'])
     def get(self, request, user_id):
         user = get_object_or_404(User, id=user_id)
@@ -92,14 +99,14 @@ class UserProfile(View):
             'departments': Department.objects.all()
         }
         return render(request, self.template_name, context)
+
     def post(self, request, user_id):
         post = request.POST
         user = User.objects.get(id=user_id)
-        print(user.first_name)
         user.email = post.get('email', None)
         user.first_name = post.get('name', None)
         user.role = post.get('role', None)
         department_id = post.get('department', None)
         user.department = Department.objects.get(id=department_id)
         user.save()
-        return redirect ('departments.general:users_list')
+        return redirect('departments.general:users_list')

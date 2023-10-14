@@ -30,6 +30,24 @@ class ProjectFile(forms.ModelForm):
         fields = '__all__'
 
 
+class ProjectAdd(forms.ModelForm):
+    item = forms.CharField(required=False)
+    description = forms.CharField(required=False)
+
+    class Meta:
+        model = models.Project
+        exclude = ('is_active',)
+
+
+class ProjectUpdate(forms.ModelForm):
+    item = forms.CharField(required=False)
+    description = forms.CharField(required=False)
+
+    class Meta:
+        model = models.Project
+        exclude = ('is_active',)
+
+
 class InquiryForm(forms.ModelForm):
     class Meta:
         model = models.Inquiry
@@ -43,7 +61,6 @@ class InquiryUpdateForm(forms.ModelForm):
 
 
 class InquiryStatusForm(forms.ModelForm):
-
     class Meta:
         model = models.InquiryStatus
         fields = '__all__'

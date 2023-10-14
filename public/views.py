@@ -42,6 +42,28 @@ class Project(View):
         return render(request, self.template_name, context)
 
 
+class ProjectUpdate(View):
+
+    def post(self, request, project_id):
+        project = models.Project.objects.get(id=project_id)
+        f = forms.ProjectUpdate(data=request.POST, instance=project)
+        if not f.is_valid():
+            messages.error(request, 'لطفا فیلد هارا به درستی پر نمایید')
+            return redirect(project.get_absolute_url())
+        f.save()
+        messages.success(request, 'پروژه با موفقیت بروزرسانی شد')
+        return redirect(project.get_absolute_url())
+
+
+class ProjectDelete(View):
+
+    def get(self, request, project_id):
+        project = models.Project.objects.get(id=project_id)
+        project.delete()
+        messages.success(request, 'پروژه با موفقیت حذف شد')
+        return redirect('public:project')
+
+
 class ProjectFile(View):
 
     def post(self, request):
@@ -247,8 +269,10 @@ class InquiryStatus(View):
         messages.success(request, 'عملیات با موفقیت ثبت شد')
         return redirect(referer_url or '/success')
 
+
 class DepartmentDetail(View):
     template_name = 'public/department/department_detail.html'
+
     @user_role_required_cbv(['super_user'])
     def get(self, request, department_id):
         department = get_object_or_404(models.Department, id=department_id)
@@ -257,10 +281,28 @@ class DepartmentDetail(View):
             'tasks': models.Task.objects.filter(to_department=department),
         }
         return render(request, self.template_name, context)
+
     def post(self, request, department_id):
         post = request.POST
         department = models.Department.objects.get(id=department_id)
         department.name = post.get('name', None)
         department.save()
-        return redirect ('departments.general:departments_list')
+        return redirect('departments.general:departments_list')
 
+
+class ProjectAdd(View):
+
+    @user_role_required_cbv(['super_user'])
+    def get(self, request):
+        return render(request, 'public/project/add.html')
+
+    @user_role_required_cbv(['super_user'])
+    def post(self, request):
+        data = request.POST
+        f = forms.ProjectAdd(data)
+        if not f.is_valid():
+            messages.error(request, 'لطفا فیلد هارا به درستی پر نمایید')
+            return redirect('public:project_add')
+        f.save()
+        messages.success(request, 'پروژه با موفقیت ایجاد شد')
+        return redirect('public:project_add')

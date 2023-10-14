@@ -8,15 +8,32 @@
 {% block Link %}
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <link rel="stylesheet" href="{% static 'frontend/styles/project.css' %}"/>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+
+        .group-form {
+            margin: 10px 2px;
+        }
+
+        .group-form label {
+            direction: ltr;
+            margin-bottom: 10px;
+        }
+    </style>
 {% endblock %}
 
 {% block Content %}
+
+
     <main class="main content-page container">
         <h5 class="title-page">{{ project.name }}</h5>
         <section class="col-12 project-content">
             <div class="inner-project">
                 <!-- btn tab page -->
-                <div class="btn-content" style="border-bottom:1px solid #a2a2a2 ;">
+                <div class="btn-content d-flex justify-content-between" style="border-bottom:1px solid #a2a2a2 ;">
                     <div class="btns col-12 col-md-7">
                         <div class="btn-change col-2 text-center active">مشخصات پروژه</div>
                         <div class="btn-change col-2 text-center">مواد اولیه</div>
@@ -24,6 +41,12 @@
                         <div class="btn-change col-2 text-center d-none">بازرگانی</div>
                         <div class="btn-change col-2 text-center">مکاتبات پروژه</div>
                         <div class="btn-change col-2 text-center">امور مالی</div>
+                    </div>
+                    <div>
+                        <button class="btn btn-outline-primary text-center mx-1 p-2 px-4" data-bs-toggle="modal"
+                                data-bs-target="#project-edit">ویرایش
+                        </button>
+                        <a href="{% url 'public:project_delete' project_id=project.id %}" class="btn btn-outline-danger text-center p-2 px-4">حذف</a>
                     </div>
                 </div>
                 <!-- btn tab page -->
@@ -33,6 +56,12 @@
                     <div class="Project-specifications">
                         <div class="col-12 col-md-8 d-flex flex-column justify-content-center align-items-start">
                             <div class="right">
+                                <div class="col-12 col-md-6 p-2">
+                                    <div class="right-item">
+                                        <span>شماره درخواست:</span>
+                                        <span>{{ project.number_id }}</span>
+                                    </div>
+                                </div>
                                 <div class="col-12 col-md-6 p-2">
                                     <div class="right-item">
                                         <span>نام پروژه:</span>
@@ -57,16 +86,73 @@
                                         <span class="datetime-convert">{{ project.time_end }}</span>
                                     </div>
                                 </div>
-                                <div class="col-12 p-2">
+                                <div class="col-12 col-md-6 p-2">
+                                    <div class="right-item">
+                                        <span>قیمت</span>
+                                        <span class="price-el">{{ project.price }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 p-2">
+                                    <div class="right-item">
+                                        <span> وضعیت پرداخت :</span>
+                                        <span>{% if project.is_paid %}پرداخت شده است{% else %}پرداخت نشده
+                                            است{% endif %}</span>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 p-2">
+                                    <div class="right-item">
+                                        <span>تاریخ پیش پرداخت</span>
+                                        <span class="datetime-convert">{{ project.get_prepayment_datetime }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 p-2">
+                                    <div class="right-item">
+                                        <span>تعداد کل :</span>
+                                        <span class="price-el">{{ project.count_total }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 p-2">
+                                    <div class="right-item">
+                                        <span>تعداد باقی مانده :</span>
+                                        <span class="price-el">{{ project.count_remaining }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 p-2">
+                                    <div class="right-item">
+                                        <span>ایتم :</span>
+                                        <span>{{ project.item|default:'چیزی ثبت نشده است' }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 p-2">
+                                    <div class="right-item">
+                                        <span>تاریخ تحویل نمونه :</span>
+                                        <span class="datetime-convert">{{ project.get_sample_delivery_date }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 p-2">
+                                    <div class="right-item">
+                                        <span>تاریخ تحویل انبوه :</span>
+                                        <span class="datetime-convert">{{ project.get_mass_delivery_date }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6 p-2">
                                     <div class="right-item">
                                         <span>درصد پیشرفت</span>
                                         <div class="mt-3 text-primary">{{ project.get_progress_percentage }}%</div>
                                     </div>
                                 </div>
+                                <div class="col-12 p-2">
+                                    <div class="right-item">
+                                        <span>توضیحات</span>
+                                        <div class="mt-3">{{ project.description|default:'توضیحی ثبت نشده است' }}</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <!-- chart left -->
-                        <div id="chart" class="col-12 col-md-4 chart-section"></div>
+                        <div id="cnt-chart" class="col-12 col-md-4 chart-section">
+                            <canvas id="chart"></canvas>
+                        </div>
                         <!-- chart left -->
                     </div>
                     <!-- Project-specifications chart and name ddline  -->
@@ -232,7 +318,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        {% empty %}
+                                    {% empty %}
                                         <div class="container-not-found-base">
                                             <p>چیزی یافت نشد</p>
                                         </div>
@@ -310,10 +396,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        {% empty %}
-                                            <div class="container-not-found-base">
-                                                <p>چیزی یافت نشد</p>
-                                            </div>
+                                    {% empty %}
+                                        <div class="container-not-found-base">
+                                            <p>چیزی یافت نشد</p>
+                                        </div>
                                     {% endfor %}
                                 </div>
                             </div>
@@ -535,7 +621,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        {% empty %}
+                                    {% empty %}
                                         <div class="container-not-found-base">
                                             <p>چیزی یافت نشد</p>
                                         </div>
@@ -705,14 +791,141 @@
             </div>
         </section>
     </main>
+
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="project-edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <form action="{% url 'public:project_update' project_id=project.id %}" method="post">
+                {% csrf_token %}
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">ویرایش پروژه</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="col-12">
+                            <div class="group-form">
+                                <label for="number_id"> :شماره درخواست</label>
+                                <input type="text" id="number_id" class="form-control" name="number_id" required value="{{ project.number_id }}">
+                            </div>
+                            <div class="group-form">
+                                <label for="name">نام</label>
+                                <input type="text" id="name" class="form-control" name="name" required value="{{ project.name }}">
+                            </div>
+                            <div class="group-form">
+                                <label for="task_master">کارفرما</label>
+                                <input type="text" id="task_master" class="form-control" name="task_master" required value="{{ project.task_master }}">
+                            </div>
+                            <div class="group-form">
+                                {#                                <input type="text" name="" id="prepayment_datetime_picker"#}
+                                {#                                       class="form-control datetime-picker mpdatepicker" set-on="prepayment_datetime"#}
+                                {#                                       required>#}
+                                <label for="time_start">تاریخ شروع</label>
+                                <input type="date" id="time_start" class="form-control" name="time_start" required value="{{ project.get_time_start_input }}">
+                            </div>
+                            <div class="group-form">
+                                {#                                <input type="text" name="" id="prepayment_datetime_picker"#}
+                                {#                                       class="form-control datetime-picker mpdatepicker" set-on="prepayment_datetime"#}
+                                {#                                       required>#}
+                                <label for="time_end">تاریخ پایان</label>
+                                <input type="date" id="time_end" class="form-control" name="time_end" required value="{{ project.get_time_end_input }}">
+                            </div>
+                            <div class="group-form">
+                                <label for="price">قیمت</label>
+                                <input type="number" id="price" class="form-control" name="price" required value="{{ project.price }}">
+                            </div>
+                            <div class="group-form">
+                                <label for="price">وضعیت پرداخت</label>
+                                <select name="is_paid" id="" required class="form-control form-select">
+                                    <option value="false" {% if not project.is_paid %}selected{% endif %}>پرداخت نشده</option>
+                                    <option value="true" {% if project.is_paid %}selected{% endif %}>پرداخت شده</option>
+                                </select>
+                            </div>
+                            <div class="group-form">
+                                {#                                <input type="text" name="" id="prepayment_datetime_picker"#}
+                                {#                                       class="form-control datetime-picker mpdatepicker" set-on="prepayment_datetime"#}
+                                {#                                       required>#}
+                                <label for="prepayment_datetime_picker"> :تاریخ پیش پرداخت</label>
+                                <input type="date" id="prepayment_datetime" class="form-control"
+                                       name="prepayment_datetime" required value="{{ project.get_prepayment_datetime_input }}">
+                            </div>
+                            <div class="group-form">
+                                <label for="item">ایتم</label>
+                                <textarea id="item" name="item" class="form-control">{{ project.item|default:'' }}</textarea>
+                            </div>
+                            <div class="group-form">
+                                <label for="count_total">تعداد کل</label>
+                                <input type="number" id="count_total" class="form-control" name="count_total"
+                                       required value="{{ project.count_total }}">
+                            </div>
+                            <div class="group-form">
+                                <label for="count_remaining">تعداد باقی مانده</label>
+                                <input type="number" id="count_remaining" class="form-control" name="count_remaining"
+                                       required value="{{ project.count_remaining }}">
+                            </div>
+                            <div class="group-form">
+                                {#                                <input type="text" name="" id="sample_delivery_datetime_picker"#}
+                                {#                                       class="form-control datetime-picker mpdatepicker" set-on="sample_delivery_date"#}
+                                {#                                       required>#}
+                                <label for="sample_delivery_datetime_picker"> :تاریخ تحویل نمونه</label>
+                                <input type="date" id="sample_delivery_date" class="form-control"
+                                       name="sample_delivery_date" value="{{ project.get_sample_delivery_date_input }}" required>
+                            </div>
+                            <div class="group-form">
+                                {#                                <input type="text" name="" id="mass_delivery_datetime_picker"#}
+                                {#                                       class="form-control datetime-picker mpdatepicker" set-on="mass_delivery_date"#}
+                                {#                                       required>#}
+                                <label for="mass_delivery_datetime_picker"> :تاریخ تحویل انبوه</label>
+                                <input type="date" id="mass_delivery_date" class="form-control"
+                                       name="mass_delivery_date" required value="{{ project.get_mass_delivery_date_input }}">
+                            </div>
+                            <div class="group-form">
+                                <label for="description">توضیحات</label>
+                                <textarea type="number" id="description" class="form-control" name="description"
+                                          required>{{ project.description }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">لغو</button>
+                        <button type="submit" class="btn btn-primary">ثبت و بروزرسانی</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block Script %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         let tasks_count = '{{ project.get_tasks.count }}'
         let tasks_progress_count = '{{ project.get_tasks_progress.count }}'
         let tasks_queue_count = '{{ project.get_tasks_queue.count }}'
         let tasks_finished_count = '{{ project.get_tasks_finished.count }}'
+
+        const chart_data = {
+            labels: ['درحال انجام', 'در صف', 'انجام شده'],
+            datasets: [{
+                label: 'تسک ها',
+                data: [tasks_progress_count, tasks_queue_count, tasks_finished_count],
+                backgroundColor: [
+                    'rgb(70,101,255)',
+                    'rgb(204,181,7)',
+                    'rgb(28,201,97)'
+                ],
+                hoverOffset: 4
+            }]
+        }
+        const chart_config = {
+            type: 'doughnut',
+            data: chart_data,
+        };
+
+        new Chart(document.querySelector("#chart"), chart_config)
     </script>
     <script type="module" src="{% static 'frontend/js/adminpanel.js' %}"></script>
 {% endblock %}

@@ -249,7 +249,7 @@
             <section>
                 <div class="box-section">
                     <!-- each category task -->
-                    <div class="col-12 col-md-6 p-2">
+                    <div class="col-12 col-md-6 p-2 d-none">
                         <div class="box-item-2">
                             <img src="{% static 'frontend/images/22.png' %}" alt="" class="icon-box">
                             <div class=" style-conent-box">
@@ -263,9 +263,41 @@
                         <div class="box-item-2">
                             <img src="{% static 'frontend/images/22.png' %}" alt="" class="icon-box">
                             <div class=" style-conent-box">
+                                <span> افزودن کاربر</span>
+                            </div>
+                            <div class="btn--ta"><a href="{% url 'account:new_user' %}">مشاهده
+                            </a></div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 p-2">
+                        <div class="box-item-2">
+                            <img src="{% static 'frontend/images/22.png' %}" alt="" class="icon-box">
+                            <div class=" style-conent-box">
                                 <span>لیست کاربران</span>
                             </div>
                             <div class="btn--ta"><a href="{% url 'departments.general:users_list' %}">مشاهده
+                            </a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-section">
+                    <div class="col-12 col-md-6 p-2">
+                        <div class="box-item-2">
+                            <img src="{% static 'frontend/images/22.png' %}" alt="" class="icon-box">
+                            <div class=" style-conent-box">
+                                <span>افزودن پروژه</span>
+                            </div>
+                            <div class="btn--ta"><a href="{% url 'public:project_add' %}">مشاهده
+                            </a></div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 p-2">
+                        <div class="box-item-2">
+                            <img src="{% static 'frontend/images/22.png' %}" alt="" class="icon-box">
+                            <div class=" style-conent-box">
+                                <span>لیست پروژه ها</span>
+                            </div>
+                            <div class="btn--ta"><a href="{% url 'public:project' %}">مشاهده
                             </a></div>
                         </div>
                     </div>
