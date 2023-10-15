@@ -1,14 +1,15 @@
+
 $(document).ready(function () {
     const datepickerDOM = $(".persianDatapicker");
-    const dateObject = datepickerDOM.persianDatepicker(
-        {
+    for (let datePicker of datepickerDOM) {
+        let dateObject = datepickerDOM.persianDatepicker({
             "inline": false,
-            "format": "LLLL",
+            "format": "YYYY-MM-DD",
             "viewMode": "day",
             "initialValue": false,
             "minDate": false,
             "maxDate": false,
-            "autoClose": false,
+            "autoClose": true,
             "position": "auto",
             "altFormat": "lll",
             "altField": "#altfieldExample",
@@ -95,20 +96,18 @@ $(document).ready(function () {
             },
             "responsive": true,
             "onSelect": function () {
-                let state = dateObject.getState();
-                let datetime_obj = secToDateTime(state.selected.unixDate / 1000)
                 let set_on_field = this.model.inputElement.getAttribute('set-on')
                 if (!set_on_field) {
                     alert('you must set attr "set-on" in date picker')
                 } else {
-                    let datetime = getFormattedDate(datetime_obj)
-                    document.getElementById(set_on_field).setAttribute('value', datetime)
+                    let date = this.model.state.selected.dateObject.State.gregorian
+                    let dateString =  date.year + "-" + (date.month + 1) + "-" + date.day
+                    document.getElementById(set_on_field).setAttribute('value', dateString)
                 }
-                // alert(`تاریخ انتخاب شده : ${date.year}/${date.month}/${date.date} ~ ${date.hour}:${date.minute}:${date.second}`);
             },
         });
+    }
 
-    const date = dateObject.getState().view;
 });
 
 function secToDateTime(secs) {

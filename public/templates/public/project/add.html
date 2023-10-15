@@ -45,18 +45,18 @@
                                 <label for="task_master">کارفرما</label>
                             </div>
                             <div class="group-form">
-                                {#                                <input type="text" name="" id="prepayment_datetime_picker"#}
-                                {#                                       class="form-control datetime-picker mpdatepicker" set-on="prepayment_datetime"#}
-                                {#                                       required>#}
-                                <input type="date" id="time_start" name="time_start" required>
-                                <label for="time_start">تاریخ شروع</label>
+                                <input type="text" name="" id="time_start_picker"
+                                       class="form-control persianDatapicker" set-on="time_start"
+                                       required readonly>
+                                <input type="hidden" id="time_start" name="time_start" required>
+                                <label for="time_start_picker">تاریخ شروع</label>
                             </div>
                             <div class="group-form">
-                                {#                                <input type="text" name="" id="prepayment_datetime_picker"#}
-                                {#                                       class="form-control datetime-picker mpdatepicker" set-on="prepayment_datetime"#}
-                                {#                                       required>#}
-                                <input type="date" id="time_end" name="time_end" required>
-                                <label for="time_end">تاریخ پایان</label>
+                                <input type="text" name="" id="time_end_picker"
+                                       class="form-control persianDatapicker" set-on="time_end"
+                                       required readonly>
+                                <input type="hidden" id="time_end" name="time_end" required>
+                                <label for="time_end_picker">تاریخ پایان</label>
                             </div>
                             <div class="group-form">
                                 <input type="number" id="price" class="form-control" name="price" required>
@@ -70,10 +70,10 @@
                                 <label for="price">وضعیت پرداخت</label>
                             </div>
                             <div class="group-form">
-                                {#                                <input type="text" name="" id="prepayment_datetime_picker"#}
-                                {#                                       class="form-control datetime-picker mpdatepicker" set-on="prepayment_datetime"#}
-                                {#                                       required>#}
-                                <input type="date" id="prepayment_datetime" name="prepayment_datetime" required>
+                                <input type="text" name="" id="prepayment_datetime_picker"
+                                       class="form-control persianDatapicker" set-on="prepayment_datetime"
+                                       required readonly>
+                                <input type="hidden" id="prepayment_datetime" name="prepayment_datetime" required>
                                 <label for="prepayment_datetime_picker"> :تاریخ پیش پرداخت</label>
                             </div>
                             <div class="group-form">
@@ -91,22 +91,22 @@
                                 <label for="count_remaining">تعداد باقی مانده</label>
                             </div>
                             <div class="group-form">
-                                {#                                <input type="text" name="" id="sample_delivery_datetime_picker"#}
-                                {#                                       class="form-control datetime-picker mpdatepicker" set-on="sample_delivery_date"#}
-                                {#                                       required>#}
-                                <input type="date" id="sample_delivery_date" name="sample_delivery_date" required>
+                                   <input type="text" name="" id="sample_delivery_datetime_picker"
+                                       class="form-control persianDatapicker" set-on="sample_delivery_date"
+                                       required readonly>
+                                <input type="hidden" id="sample_delivery_date" name="sample_delivery_date" required>
                                 <label for="sample_delivery_datetime_picker"> :تاریخ تحویل نمونه</label>
                             </div>
                             <div class="group-form">
-                                {#                                <input type="text" name="" id="mass_delivery_datetime_picker"#}
-                                {#                                       class="form-control datetime-picker mpdatepicker" set-on="mass_delivery_date"#}
-                                {#                                       required>#}
-                                <input type="date" id="mass_delivery_date" name="mass_delivery_date" required>
+                                <input type="text" name="" id="mass_delivery_datetime_picker"
+                                       class="form-control persianDatapicker" set-on="mass_delivery_date"
+                                       required readonly>
+                                <input type="hidden" id="mass_delivery_date" name="mass_delivery_date" required>
                                 <label for="mass_delivery_datetime_picker"> :تاریخ تحویل انبوه</label>
                             </div>
                                      <div class="group-form">
                                 <textarea type="number" id="description" class="form-control" name="description"
-                                          required></textarea>
+                                          ></textarea>
                                 <label for="description">توضیحات</label>
                             </div>
                             <button type="submit" id="btn-login"

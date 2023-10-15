@@ -46,7 +46,8 @@
                         <button class="btn btn-outline-primary text-center mx-1 p-2 px-4" data-bs-toggle="modal"
                                 data-bs-target="#project-edit">ویرایش
                         </button>
-                        <a href="{% url 'public:project_delete' project_id=project.id %}" class="btn btn-outline-danger text-center p-2 px-4">حذف</a>
+                        <a href="{% url 'public:project_delete' project_id=project.id %}"
+                           class="btn btn-outline-danger text-center p-2 px-4">حذف</a>
                     </div>
                 </div>
                 <!-- btn tab page -->
@@ -808,52 +809,63 @@
                         <div class="col-12">
                             <div class="group-form">
                                 <label for="number_id"> :شماره درخواست</label>
-                                <input type="text" id="number_id" class="form-control" name="number_id" required value="{{ project.number_id }}">
+                                <input type="text" id="number_id" class="form-control" name="number_id" required
+                                       value="{{ project.number_id }}">
                             </div>
                             <div class="group-form">
                                 <label for="name">نام</label>
-                                <input type="text" id="name" class="form-control" name="name" required value="{{ project.name }}">
+                                <input type="text" id="name" class="form-control" name="name" required
+                                       value="{{ project.name }}">
                             </div>
                             <div class="group-form">
                                 <label for="task_master">کارفرما</label>
-                                <input type="text" id="task_master" class="form-control" name="task_master" required value="{{ project.task_master }}">
+                                <input type="text" id="task_master" class="form-control" name="task_master" required
+                                       value="{{ project.task_master }}">
                             </div>
                             <div class="group-form">
-                                {#                                <input type="text" name="" id="prepayment_datetime_picker"#}
-                                {#                                       class="form-control datetime-picker mpdatepicker" set-on="prepayment_datetime"#}
-                                {#                                       required>#}
-                                <label for="time_start">تاریخ شروع</label>
-                                <input type="date" id="time_start" class="form-control" name="time_start" required value="{{ project.get_time_start_input }}">
+                                <label for="time_start_picker">تاریخ شروع</label>
+                                <input type="text" name="" id="time_start_picker"
+                                       class="form-control persianDatapicker" set-on="time_start"
+                                       required readonly value="{{ project.get_time_start_input }}">
+                                <input type="hidden" id="time_start" name="time_start" required
+                                       value="{{ project.get_time_start_input }}">
+
                             </div>
                             <div class="group-form">
-                                {#                                <input type="text" name="" id="prepayment_datetime_picker"#}
-                                {#                                       class="form-control datetime-picker mpdatepicker" set-on="prepayment_datetime"#}
-                                {#                                       required>#}
-                                <label for="time_end">تاریخ پایان</label>
-                                <input type="date" id="time_end" class="form-control" name="time_end" required value="{{ project.get_time_end_input }}">
+                                <label for="time_end_picker">تاریخ پایان</label>
+                                <input type="text" name="" id="time_end_picker"
+                                       class="form-control persianDatapicker" set-on="time_end"
+                                       required readonly value="{{ project.get_time_end_input }}">
+                                <input type="hidden" id="time_end" name="time_end" required
+                                       value="{{ project.get_time_end_input }}">
+
                             </div>
                             <div class="group-form">
                                 <label for="price">قیمت</label>
-                                <input type="number" id="price" class="form-control" name="price" required value="{{ project.price }}">
+                                <input type="number" id="price" class="form-control" name="price" required
+                                       value="{{ project.price }}">
                             </div>
                             <div class="group-form">
                                 <label for="price">وضعیت پرداخت</label>
                                 <select name="is_paid" id="" required class="form-control form-select">
-                                    <option value="false" {% if not project.is_paid %}selected{% endif %}>پرداخت نشده</option>
+                                    <option value="false" {% if not project.is_paid %}selected{% endif %}>پرداخت نشده
+                                    </option>
                                     <option value="true" {% if project.is_paid %}selected{% endif %}>پرداخت شده</option>
                                 </select>
                             </div>
                             <div class="group-form">
-                                {#                                <input type="text" name="" id="prepayment_datetime_picker"#}
-                                {#                                       class="form-control datetime-picker mpdatepicker" set-on="prepayment_datetime"#}
-                                {#                                       required>#}
                                 <label for="prepayment_datetime_picker"> :تاریخ پیش پرداخت</label>
-                                <input type="date" id="prepayment_datetime" class="form-control"
-                                       name="prepayment_datetime" required value="{{ project.get_prepayment_datetime_input }}">
+                                <input type="text" name="" id="prepayment_datetime_picker"
+                                       class="form-control persianDatapicker" set-on="prepayment_datetime"
+                                       required readonly value="{{ project.get_prepayment_datetime_input }}">
+                                <input type="hidden" id="prepayment_datetime" name="prepayment_datetime" required
+                                       value="{{ project.get_prepayment_datetime_input }}">
+
                             </div>
                             <div class="group-form">
                                 <label for="item">ایتم</label>
-                                <textarea id="item" name="item" class="form-control">{{ project.item|default:'' }}</textarea>
+                                <textarea id="item" name="item"
+                                          class="form-control">{{ project.item|default:'' }}</textarea>
                             </div>
                             <div class="group-form">
                                 <label for="count_total">تعداد کل</label>
@@ -866,25 +878,26 @@
                                        required value="{{ project.count_remaining }}">
                             </div>
                             <div class="group-form">
-                                {#                                <input type="text" name="" id="sample_delivery_datetime_picker"#}
-                                {#                                       class="form-control datetime-picker mpdatepicker" set-on="sample_delivery_date"#}
-                                {#                                       required>#}
                                 <label for="sample_delivery_datetime_picker"> :تاریخ تحویل نمونه</label>
-                                <input type="date" id="sample_delivery_date" class="form-control"
-                                       name="sample_delivery_date" value="{{ project.get_sample_delivery_date_input }}" required>
+                                <input type="text" name="" id="sample_delivery_datetime_picker"
+                                       class="form-control persianDatapicker" set-on="sample_delivery_date"
+                                       required readonly value="{{ project.get_sample_delivery_date_input }}">
+                                <input type="hidden" id="sample_delivery_date" name="sample_delivery_date" required
+                                       value="{{ project.get_sample_delivery_date_input }}">
+
                             </div>
                             <div class="group-form">
-                                {#                                <input type="text" name="" id="mass_delivery_datetime_picker"#}
-                                {#                                       class="form-control datetime-picker mpdatepicker" set-on="mass_delivery_date"#}
-                                {#                                       required>#}
-                                <label for="mass_delivery_datetime_picker"> :تاریخ تحویل انبوه</label>
-                                <input type="date" id="mass_delivery_date" class="form-control"
-                                       name="mass_delivery_date" required value="{{ project.get_mass_delivery_date_input }}">
+                                   <label for="mass_delivery_datetime_picker"> :تاریخ تحویل انبوه</label>
+                                <input type="text" name="" id="mass_delivery_datetime_picker"
+                                       class="form-control persianDatapicker" set-on="mass_delivery_date"
+                                       required readonly value="{{ project.get_mass_delivery_date_input }}">
+                                <input type="hidden" id="mass_delivery_date" name="mass_delivery_date" required value="{{ project.get_mass_delivery_date_input }}">
+
                             </div>
                             <div class="group-form">
                                 <label for="description">توضیحات</label>
                                 <textarea type="number" id="description" class="form-control" name="description"
-                                          required>{{ project.description }}</textarea>
+                                          >{{ project.description }}</textarea>
                             </div>
                         </div>
                     </div>
