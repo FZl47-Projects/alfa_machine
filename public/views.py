@@ -35,9 +35,18 @@ class ProjectDetail(View):
 class Project(View):
     template_name = 'public/project/list.html'
 
+    def search(self, request, projects):
+        search = request.GET.get('search')
+        if not search:
+            return projects
+        projects = projects.filter(name__icontains=search)
+        return projects
+
     def get(self, request):
+        projects = models.Project.objects.filter(is_active=True)
+        projects = self.search(request, projects)
         context = {
-            'projects': models.Project.objects.filter(is_active=True)
+            'projects': projects
         }
         return render(request, self.template_name, context)
 
