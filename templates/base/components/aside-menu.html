@@ -3,13 +3,15 @@
     <div class="overly">
         <div class="inner-notfication">
             <div class="btns">
-                <div class="btn-change col-5 text-center active {% if request.user.have_new_ticket %}text-danger{% endif %}">تیکت ها
-                    <span class="font-70">(نیاز به بررسی)</span>
+                <div class="btn-change col-3 text-center font-80 active {% if request.user.have_new_ticket %}text-danger{% endif %}">تیکت ها
                     {% if request.user.have_new_ticket %}
                         <img src="{% static 'frontend/images/alert-icon.png' %}" alt="" class="d-inline-block" style="width: 15px">
                     {% endif %}
                 </div>
-                <div class="btn-change col-5 text-center">اعلانات</div>
+                <div class="btn-change col-3 text-center">اعلانات</div>
+                 <div class="col-2 font-80">
+                    <a href="{% url 'support:report_department_list' %}">گزارشات</a>
+                </div>
                 <div class="col-2">
                     <a href="{% url 'account:logout' %}">خروج</a>
                 </div>

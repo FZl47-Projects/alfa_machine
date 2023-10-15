@@ -10,7 +10,7 @@ from . import models, forms
 class Index(View):
     template_name = 'warehouse/index.html'
 
-    @user_role_required_cbv(['warehouse_user'])
+    @user_role_required_cbv(['warehouse_user', 'control_project_user', 'super_user'])
     def get(self, request):
         context = {
             'tickets': request.user.get_tickets(),
@@ -24,14 +24,14 @@ class Index(View):
 class Items(View):
     template_name = 'warehouse/items.html'
 
-    @user_role_required_cbv(['warehouse_user'])
+    @user_role_required_cbv(['warehouse_user', 'control_project_user', 'super_user'])
     def get(self, request):
         context = {
             'items': models.MaterialItem.objects.all(),
         }
         return render(request, self.template_name, context)
 
-    @user_role_required_cbv(['warehouse_user'])
+    @user_role_required_cbv(['warehouse_user', 'control_project_user', 'super_user'])
     def post(self, request):
         data = request.POST
         items = models.MaterialItem.objects.all()
@@ -46,7 +46,7 @@ class Items(View):
 class Registration(View):
     template_name = 'warehouse/registration.html'
 
-    @user_role_required_cbv(['warehouse_user'])
+    @user_role_required_cbv(['warehouse_user', 'control_project_user', 'super_user'])
     def get(self, request):
         context = {
             'items': models.MaterialItem.objects.all(),
@@ -54,7 +54,7 @@ class Registration(View):
         }
         return render(request, self.template_name, context)
 
-    @user_role_required_cbv(['warehouse_user'])
+    @user_role_required_cbv(['warehouse_user', 'control_project_user', 'super_user'])
     def post(self, request):
         data = request.POST
         f = forms.ItemRegisterForm(data)
@@ -67,7 +67,7 @@ class Registration(View):
 
 class RegisterDetail(View):
 
-    @user_role_required_cbv(['warehouse_user'])
+    @user_role_required_cbv(['warehouse_user', 'control_project_user', 'super_user'])
     def post(self, request, item_id):
         referer_url = request.META.get('HTTP_REFERER', None)
         data = request.POST
@@ -82,7 +82,7 @@ class RegisterDetail(View):
 
 class ItemsQualityPass(View):
 
-    @user_role_required_cbv(['warehouse_user'])
+    @user_role_required_cbv(['warehouse_user', 'control_project_user', 'super_user'])
     def post(self, request):
         referer_url = request.META.get('HTTP_REFERER', None)
         data = request.POST.copy()
@@ -101,7 +101,7 @@ class ItemsQualityPass(View):
 class ItemsAllocationProject(View):
     template_name = 'warehouse/allocation-materials.html'
 
-    @user_role_required_cbv(['warehouse_user'])
+    @user_role_required_cbv(['warehouse_user', 'control_project_user', 'super_user'])
     def get(self, request):
         context = {
             'projects': Project.objects.filter(is_active=True),
@@ -109,7 +109,7 @@ class ItemsAllocationProject(View):
         }
         return render(request, self.template_name, context)
 
-    @user_role_required_cbv(['warehouse_user'])
+    @user_role_required_cbv(['warehouse_user', 'control_project_user', 'super_user'])
     def post(self, request):
         data = request.POST
         items = models.MaterialItem.objects.all()

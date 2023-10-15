@@ -73,8 +73,10 @@ class User(AbstractUser):
         return '-'
 
     def get_tickets(self):
-        # TODO: should be complete
         return self.department.ticketdepartment_set.filter(is_open=True)
+
+    def get_reports(self):
+        return self.department.report_set.all()
 
     def have_new_ticket(self):
         # TODO: should be complete
@@ -100,8 +102,9 @@ class User(AbstractUser):
         elif role == 'technical_user':
             return reverse('dp_technical:index')
         return reverse('public:error')
-  
+
     def get_absolute_url(self):
-            return reverse('account:user_profile', args=(self.id,))
+        return reverse('account:user_profile', args=(self.id,))
+
     def get_delete_url(self):
-            return reverse('departments.general:delete_user', args=(self.id,))
+        return reverse('departments.general:delete_user', args=(self.id,))

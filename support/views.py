@@ -1,9 +1,10 @@
 from django.contrib import messages
 from django.views.generic import View
 from django.shortcuts import redirect, render
+from account.auth.decorators import user_role_required_cbv
 from core.utils import form_validate_err
 from public.models import Department, Project
-from . import forms
+from . import forms, models
 
 
 class Ticket(View):
@@ -49,3 +50,59 @@ class TicketDepartment(View):
         ticket_obj = f.save()
         messages.success(request, 'عملیات مورد نظر با موفقیت انجام شد')
         return redirect(referer_url or '/success')
+
+
+class ReportList(View):
+    template_name = 'support/report/list.html'
+
+    @user_role_required_cbv(['control_project_user', 'super_user'])
+    def get(self, request):
+        context = {
+            'reports': models.Report.objects.all()
+        }
+        return render(request, self.template_name, context)
+
+
+class ReportDepartmentCreate(View):
+
+    def post(self, request):
+        referer_url = request.META.get('HTTP_REFERER', None)
+        data = request.POST.copy()
+        is_all_departments = True if data.get('select_department_ticket', 'all') == 'all' else False
+        is_all_projects = True if data.get('select_project_ticket', 'all') == 'all' else False
+        # set default values
+
+        departments = []
+        projects = []
+        if is_all_departments is False:
+            departments = data.getlist('departments', [])
+        else:
+            departments = list(Department.objects.all().values_list('id', flat=True))
+
+        if is_all_projects is False:
+            projects = data.getlist('projects', [])
+        else:
+            projects = list(Project.objects.filter(is_active=True).values_list('id', flat=True))
+
+        data['from_department'] = request.user.department
+        data['is_all_departments'] = is_all_departments
+        data['is_all_projects'] = is_all_projects
+        data.setlist('projects', projects)
+        data.setlist('departments', departments)
+
+        f = forms.ReportDepartmentForm(data, request.FILES)
+        if form_validate_err(request, f) is False:
+            return redirect(referer_url or '/error')
+        f.save()
+        messages.success(request, 'عملیات مورد نظر با موفقیت انجام شد')
+        return redirect(referer_url or '/success')
+
+
+class ReportDepartmentList(View):
+    template_name = 'support/report/department/list.html'
+
+    def get(self, request):
+        context = {
+            'reports': request.user.get_reports()
+        }
+        return render(request, self.template_name, context)

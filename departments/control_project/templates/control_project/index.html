@@ -14,13 +14,15 @@
 
     <!-- request unit -->
     {% include 'support/components/new-ticket.html' with departments=departments projects=projects %}
+
+    {% include 'support/components/new-report.html' with departments=departments projects=projects %}
     <!--  request unit -->
     <!-- modal tarif task jadid -->
 
     {% include 'public/task/components/new-task.html' with projects=projects departments=departments %}
 
     <!-- START SECTION NOTIFATION -->
-     {% include 'base/components/aside-menu.html' with notifications=notifications tickets=tickets %}
+    {% include 'base/components/aside-menu.html' with notifications=notifications tickets=tickets %}
     <!-- END SECTION NOTIFATION -->
     <!-- END SECTION NOTIFATION -->
     <div class="container-fluid col-md-10 content-page">
@@ -38,12 +40,38 @@
                     <!--Access panel item  -->
                     <div class="col-12 col-md-3  col-lg-2 ">
                         <div class="box-item-2 ddd">
-                            <img src="./assets/images/درخواست از سایر واحد ها 2@2x.png" alt="" class="icon-box"
+                            <img src="{% static 'frontend/images/درخواست از سایر واحد ها 2@2x.png' %}" alt=""
+                                 class="icon-box"
                                  style="margin-bottom:15px ;">
                             <div class="style-conent-box" style="margin-bottom:15px ;">
                                 <span>درخواست از سایر واحدها</span>
                             </div>
                             <div class="tarif-task btn-request-unit" id="one">مشاهده</div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3  col-lg-2 ">
+                        <div class="box-item-2 ddd">
+                            <img src="{% static 'frontend/images/2 (لیست استعلامات(حتی رد شده ها با دلیل@2x.png' %}"
+                                 alt="" class="icon-box"
+                                 style="margin-bottom:15px ;">
+                            <div class="style-conent-box" style="margin-bottom:15px ;">
+                                <span>لیست گزارشات</span>
+                            </div>
+                            <div class="tarif-task" id="one">
+                                <a href="{% url 'support:report_list' %}">
+                                    مشاهده
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3  col-lg-2 ">
+                        <div class="box-item-2 ddd">
+                            <img src="{% static 'frontend/images/Path 3652.png' %}" alt="" class="icon-box"
+                                 style="margin-bottom:15px ;">
+                            <div class="style-conent-box" style="margin-bottom:15px ;">
+                                <span>ایجاد گزارش</span>
+                            </div>
+                            <div class="tarif-task btn-create-report" id="one">ایجاد</div>
                         </div>
                     </div>
                     <!--Access panel item  -->
@@ -154,4 +182,15 @@
 
 {% block Script %}
     <script type="module" src="{% static 'frontend/js/control-project.js' %}"></script>
+    <script>
+        document.querySelector('.btn-create-report').addEventListener('click', function () {
+            document.querySelector('.modal-report').classList.add('active')
+        })
+        let overalyModals_New = document.querySelector(".modal-report .inner-modal");
+        overalyModals_New.addEventListener("click", (e) => {
+            if (e.target.className === "inner-modal") {
+                document.querySelector('.modal-report').classList.remove("active");
+            }
+        });
+    </script>
 {% endblock %}
