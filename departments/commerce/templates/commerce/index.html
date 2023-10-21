@@ -265,7 +265,7 @@
                 <span style="padding-left:3px;">پروژه های درحال اجرا</span>
                 <span class="d-flex justify-content-center align-item-center">
                 <a href="{% url 'public:project' %}">مشاهده همه</a>
-                <img src="./assets/images/back-icon.png" alt="">
+                <img src="{% static 'frontend/images/back-icon.png' %}" alt="">
             </span>
             </div>
             <!-- project section -->
@@ -280,12 +280,12 @@
             </section>
             <!-- project section -->
             <!-- title section email -->
-            <div class="title px-4">
+            <div class="title px-4 d-none">
                 <span style="padding:10px;">ایمیل ها</span>
             </div>
             <!-- title section email -->
             <!--  start section email -->
-            <section class="emails m-1">
+            <section class="emails m-1 d-none">
                 <div class="section-table">
                     <div class="table" style="height:400px;">
                         <!--start titles table -->

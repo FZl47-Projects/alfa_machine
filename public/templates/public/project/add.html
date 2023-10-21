@@ -91,6 +91,13 @@
                                 <label for="count_remaining">تعداد باقی مانده</label>
                             </div>
                             <div class="group-form">
+                                <select name="status" class="form-control form-select" required>
+                                    <option value="under_construction" selected>در حال ساخت</option>
+                                    <option value="paused">متوقف شده</option>
+                                </select>
+                                <label for="">وضعیت</label>
+                            </div>
+                            <div class="group-form">
                                    <input type="text" name="" id="sample_delivery_datetime_picker"
                                        class="form-control persianDatapicker" set-on="sample_delivery_date"
                                        required readonly>

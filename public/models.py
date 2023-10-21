@@ -34,6 +34,10 @@ class Department(BaseModel):
 
 
 class Project(BaseModel):
+    STATUS_OPTIONS = (
+        ('paused', 'متوقف شده'),
+        ('under_construction', 'در حال ساخت'),
+    )
     number_id = models.IntegerField()
     prepayment_datetime = models.DateTimeField()
     item = models.TextField(null=True)
@@ -49,6 +53,7 @@ class Project(BaseModel):
     price = models.BigIntegerField()
     is_paid = models.BooleanField(default=False)
     description = models.TextField(null=True)
+    status = models.CharField(max_length=20, choices=STATUS_OPTIONS, default='under_construction')
 
     def __str__(self):
         return self.name
@@ -163,6 +168,7 @@ class Task(BaseModel, File):
         ('queue', 'در صف'),
         ('hold', 'نگه داشته شده'),
         ('need-to-check', 'نیاز به بررسی'),
+        ('need-to-replan', 'نیاز به برنامه ریزی مجدد'),
     )
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
