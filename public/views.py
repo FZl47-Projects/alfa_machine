@@ -27,6 +27,7 @@ class ProjectDetail(View):
 
     def get(self, request, project_id):
         context = {
+            'has_perm_to_modify': models.Project.has_perm_to_modify(request.user),
             'project': models.Project.objects.get(id=project_id)
         }
         return render(request, self.template_name, context)
@@ -219,7 +220,7 @@ class Inquiry(View):
     def post(self, request):
         referer_url = request.META.get('HTTP_REFERER', None)
         data = request.POST.copy()
-        # set default values
+        # set additional values
         data['from_department'] = request.user.department
         f = forms.InquiryForm(data)
         if form_validate_err(request, f) is False:

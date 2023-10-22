@@ -13,26 +13,29 @@
 {% block Content %}
 
     <!--Reason Followed up popup -->
-    {% for task in tasks %}
-        <div class="content-modal-two modal-allocation-information">
-            <div class="inner-modal">
-                <form class="p-4">
-                    <div class="information-section">
-                        <div class="information-item">
-                            {{ task.allocator_user.get_full_name }}
-                        </div>
-                        <div class="information-item">
-                            {{ task.from_department.name }}
-                        </div>
-                        <div class="information-item">
-                            {{ task.description_allocate|default:'چیزی یافت نشد' }}
-                        </div>
-                    </div>
 
-                </form>
-            </div>
-        </div>
-    {% endfor %}
+{#    {% for task in tasks %}#}
+{#        <div class="content-modal-two modal-allocation-information">#}
+{#            <div class="inner-modal">#}
+{#                <form class="p-4">#}
+{#                    <div class="information-section">#}
+{#                        <div class="information-item">#}
+{#                            {{ task.allocator_user.get_full_name }}#}
+{#                        </div>#}
+{#                        <div class="information-item">#}
+{#                            {{ task.from_department.name }}#}
+{#                        </div>#}
+{#                        <div class="information-item">#}
+{#                            {{ task.description_allocate|default:'چیزی یافت نشد' }}#}
+{#                        </div>#}
+{#                    </div>#}
+{##}
+{#                </form>#}
+{#            </div>#}
+{#        </div>#}
+{#    {% endfor %}#}
+
+
     <!--Reason Followed up popup -->
     <!--morde-descriptin popup -->
     {% for task in tasks %}
@@ -94,7 +97,7 @@
                                     </div>
                                     <div class="col-2">
                                         <div class="table-title-item">
-                                            اطلاعات تخصیص
+                                           واحد تخصیص داده
                                         </div>
                                     </div>
                                     <div class="col-1">
@@ -127,23 +130,23 @@
                                             </div>
                                             <div class="col-1 p-2">
                                                 <div class="table-content-item datetime-convert">
-                                                    {{ task.time_start }}
+                                                    {{ task.get_time_start|default:'-' }}
                                                 </div>
                                             </div>
                                             <div class="col-2 p-2">
                                                 <div class="table-content-item datetime-convert">
-                                                    {{ task.time_end }}
+                                                    {{ task.get_time_end|default:'-' }}
                                                 </div>
                                             </div>
                                             <div class="col-2 p-2">
                                                 <div class="table-content-item">
-                                                    <p class="description">{{ task.description|truncatechars:30 }}</p>
+                                                    <p class="description">{{ task.description|truncatechars:30|default:'بدون توضیحات' }}</p>
                                                 </div>
                                             </div>
                                             <div class="col-2 p-2">
                                                 <div class="table-content-item btn-allocation-information"
                                                      style="cursor:pointer;">
-                                                    کلیک کنید
+                                                    {{ task.from_department }}
                                                 </div>
                                             </div>
                                             <div class="col-1 p-2">

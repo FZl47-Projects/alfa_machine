@@ -11,23 +11,23 @@
                 <label for="lihh">نام تسک</label>
                 <input type="text" placeholder="تسک شماره یک" value="{{ task.name }}" name="name" required>
             </div>
-            <div class="d-flex ">
+            <div class="d-flex">
                 <div class="col-6" style="padding:0px 5px ;">
                     <div class="information-item date">
                         <label>تاریخ شروع</label>
-                        <input type="text " class="persianDatapicker" value="{{ task.get_time_start }}" name=""
-                               set-on="task_time_start" required>
-                        <input type="hidden" name="time_start" value="{{ task.get_time_start }}" required
-                               id="task_time_start">
+                        <input type="text " class="persianDatapicker datetime-convert" value="{% if task.get_time_start %}{{ task.get_time_start }}{% endif %}" name=""
+                               set-on="task_time_start_{{ task.id }}">
+                        <input type="hidden" name="time_start" value="{% if task.get_time_start %}{{ task.get_time_start }}{% endif %}"
+                               id="task_time_start_{{ task.id }}">
                     </div>
                 </div>
                 <div class="col-6" style="padding:0px 5px ;">
                     <div class="information-item date">
                         <label>تاریخ پایان</label>
-                        <input type="text " class="persianDatapicker" name="" value="{{ task.get_time_end }}"
-                               set-on="task_time_end" required>
-                        <input type="hidden" name="time_end" value="{{ task.get_time_end }}" required
-                               id="task_time_end">
+                        <input type="text " class="persianDatapicker datetime-convert" name="" value="{% if task.get_time_end %}{{ task.get_time_end }}{% endif %}"
+                               set-on="task_time_end_{{ task.id }}">
+                        <input type="hidden" name="time_end" value="{% if task.get_time_end %}{{ task.get_time_end }}{% endif %}"
+                               id="task_time_end_{{ task.id }}">
                     </div>
                 </div>
 
@@ -36,18 +36,18 @@
                 <div class="col-6" style="padding:0px 5px ;">
                     <div class="information-item">
                         <label for="lihh">میزان انجام کار</label>
-                        <input type="number" placeholder="ساعت" value="{{ task.work_hour }}" name="work_hour" required>
+                        <input type="number" placeholder="ساعت" value="{{ task.work_hour }}" name="work_hour">
                     </div>
                 </div>
             </div>
             <div class="information-item">
-                <label for="lihh">توضیحات</label>
+                <label for="lihh">شرح تسک</label>
                 <textarea name="description" id="description" cols="30" rows="10"
-                          required>{{ task.description }}</textarea>
+                >{{ task.description }}</textarea>
             </div>
             <div class="information-item">
                 <label for="lihh">نام واحد:</label>
-                <select name="to_department" id="" required>
+                <select name="to_department" id="">
                     {% for department in departments %}
                         <option value="{{ department.id }}"
                                 {% if department.id == task.to_department.id %}selected{% endif %}>{{ department.name }}</option>
@@ -56,7 +56,7 @@
             </div>
             <div class="information-item">
                 <label for="lihh">پروژه :</label>
-                <select name="project" id="" required>
+                <select name="project" id="">
                     {% for project in projects %}
                         <option value="{{ project.id }}"
                                 {% if project.id == task.project.id %}selected{% endif %}>{{ project.name }}</option>
@@ -64,16 +64,11 @@
                 </select>
             </div>
             <div class="information-item">
-                <label for="lihh">توضیحات تحصیص</label>
-                <textarea name="description_allocate" id="" cols="20" rows="10"
-                          required>{{ task.description_allocate }}</textarea>
-            </div>
-            <div class="information-item">
                 <label for="lihh">اولویت</label>
-                <input type="number" placeholder="اولویت" value="{{ task.priority }}" name="priority" required>
+                <input type="number" placeholder="اولویت" value="{{ task.priority }}" name="priority">
             </div>
             <div class="d-flex justify-content-between">
-                 <span class="des">فایل های مربوط به تسک</span>
+                <span class="des">فایل های مربوط به تسک</span>
                 <div class="uploade-imge">
                     <label class="item-upload" for="add">
                         آپلود فایل

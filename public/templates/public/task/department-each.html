@@ -52,7 +52,7 @@
                                         ردیف
                                     </div>
                                 </div>
-                                <div class="col-2">
+                                <div class="col-1">
                                     <div class="table-title-item">
                                         نام تسک
                                     </div>
@@ -101,12 +101,12 @@
                                                 {{ forloop.counter }}
                                             </div>
                                         </div>
-                                        <div class="col-2 p-2">
+                                        <div class="col-1 p-2">
                                             <div class="table-content-item">
                                                 {{ task.name }}
                                             </div>
                                         </div>
-                                        <div class="col-2 p-1">
+                                        <div class="col-1 p-1">
                                             <div class="table-content-item">
                                                 {{ task.get_state_label }}
                                             </div>
@@ -123,12 +123,12 @@
                                         </div>
                                         <div class="col-2 p-2">
                                             <div class="table-content-item datetime-convert">
-                                                {{ task.time_start }}
+                                                {{ task.get_time_start|default:'-' }}
                                             </div>
                                         </div>
                                         <div class="col-2 p-2">
                                             <div class="table-content-item datetime-convert">
-                                                {{ task.time_end }}
+                                                {{ task.get_time_end|default:'-' }}
                                             </div>
                                         </div>
                                         <div class="col-1 p-2">

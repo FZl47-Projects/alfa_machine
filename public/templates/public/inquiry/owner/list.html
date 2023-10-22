@@ -9,6 +9,27 @@
     <link rel="stylesheet" href="{% static 'frontend/styles/query-list.css' %}">
 {% endblock %}
 
+{% block Style %}
+    <style>
+
+        .inquiry > div{
+            background: none;
+        }
+
+        .inquiry[inquiry-state="canceled"]  {
+            background: #fce5e5 !important;
+        }
+
+        .inquiry[inquiry-state="waiting_for_price"]  {
+            background: #f4fbff !important;
+        }
+
+        .inquiry[inquiry-state="price_recorded"]  {
+            background: #d2ffed !important;
+        }
+
+    </style>
+{% endblock %}
 
 {% block Content %}
 
@@ -26,15 +47,57 @@
                             <input type="text" name="title" required value="{{ inquiry.title }}">
                         </div>
                         <div class="information-item">
-                            <label for="lihh">تاریخ</label>
-                            <input type="text " set-on="inquiry-time-submited"
-                                   class="persianDatapicker pwt-datepicker-input-element datetime-convert" required
-                                   value="{{ inquiry.get_time_submited }}">
-                            <input type="hidden" name="time_submited" id="inquiry-time-submited" required
-                                   value="{{ inquiry.get_time_submited }}">
+                            <label for="lihh">شماره درخواست</label>
+                            <input type="number" name="number_id" required value="{{ inquiry.number_id }}">
                         </div>
                         <div class="information-item">
-                            <label for="lihh">توضیح</label>
+                            <label for="lihh">ارسال کننده</label>
+                            <input type="text" name="sender" required value="{{ inquiry.sender }}">
+                        </div>
+                        <div class="information-item">
+                            <label for="lihh">تاریخ دریافت</label>
+                            <input type="text " set-on="inquiry-time-receive-{{ inquiry.id }}"
+                                   class="persianDatapicker pwt-datepicker-input-element datetime-convert" required
+                                   value="{{ inquiry.time_receive }}">
+                            <input type="hidden" name="time_receive" id="inquiry-time-receive-{{ inquiry.id }}"
+                                   required
+                                   value="{{ inquiry.time_receive }}">
+                        </div>
+                        <div class="information-item">
+                            <label for="lihh">تاریخ ارسال</label>
+                            <input type="text " set-on="inquiry-time-submited-{{ inquiry.id }}"
+                                   class="persianDatapicker pwt-datepicker-input-element datetime-convert" required
+                                   value="{{ inquiry.time_submit }}">
+                            <input type="hidden" name="time_submit" id="inquiry-time-submited-{{ inquiry.id }}"
+                                   required
+                                   value="{{ inquiry.time_submit }}">
+                        </div>
+                        <div class="information-item">
+                            <label for="lihh">مهلت پاسخ(تاریخ ددلاین)</label>
+                            <input type="text " set-on="inquiry-time-deadline-response-{{ inquiry.id }}"
+                                   class="persianDatapicker pwt-datepicker-input-element datetime-convert" required
+                                   value="{{ inquiry.time_deadline_response }}">
+                            <input type="hidden" name="time_deadline_response"
+                                   id="inquiry-time-deadline-response-{{ inquiry.id }}"
+                                   required
+                                   value="{{ inquiry.time_deadline_response }}">
+                        </div>
+                        <div class="information-item">
+                            <label for="lihh">وضعیت</label>
+                            <select name="state" required>
+                                <option value="waiting_for_price"
+                                        {% if inquiry.state == 'waiting_for_price' %}selected{% endif %}>در انتظار قیمت
+                                </option>
+                                <option value="price_recorded"
+                                        {% if inquiry.state == 'price_recorded' %}selected{% endif %}>قیمت ارسال شده
+                                </option>
+                                <option value="canceled" {% if inquiry.state == 'canceled' %}selected{% endif %}>
+                                    انصراف
+                                </option>
+                            </select>
+                        </div>
+                        <div class="information-item">
+                            <label for="lihh">شرح درخواست</label>
                             <textarea name="description" id="" cols="30" rows="10"
                                       required>{{ inquiry.description }}</textarea>
                         </div>
@@ -89,7 +152,8 @@
                         </div>
                         <div class="information-item">
                             {% if inquiry.status.get_file_url %}
-                                <a class="btn btn-success mx-auto col-12 d-block" href="{{ inquiry.status.get_file_url }}" download="">دانلود</a>
+                                <a class="btn btn-success mx-auto col-12 d-block"
+                                   href="{{ inquiry.status.get_file_url }}" download="">دانلود</a>
                             {% else %}
                                 -
                             {% endif %}
@@ -144,7 +208,7 @@
                                             استعلام دهنده
                                         </div>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <div class="table-title-item">
                                             توضیحات
                                         </div>
@@ -161,6 +225,11 @@
                                     </div>
                                     <div class="col-1">
                                         <div class="table-title-item">
+                                            وضعیت بررسی
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="table-title-item">
                                             وضعیت
                                         </div>
                                     </div>
@@ -170,7 +239,7 @@
                                 <div class="table-content">
                                     <!-- each row table -->
                                     {% for inquiry in inquiries %}
-                                        <div class="row-table">
+                                        <div class="row-table inquiry" inquiry-state="{{ inquiry.state }}">
                                             <!-- each row table -->
                                             <div class="col-1 p-1">
                                                 <div class="table-content-item">
@@ -184,7 +253,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-4 p-1">
+                                            <div class="col-3 p-1">
                                                 <div class="table-content-item">
                                                     <p class="description">
                                                         {{ inquiry.description|truncatechars:25 }}
@@ -219,6 +288,19 @@
                                                         <div class="btn-table red btn-Reason-rejection">ردشده</div>
                                                     {% elif inquiry.get_status == 'progress' %}
                                                         <div class="btn-table blue">درحال بررسی</div>
+                                                    {% endif %}
+                                                    <!-- btn column table -->
+                                                </div>
+                                            </div>
+                                            <div class="col-1 p-1">
+                                                <div class="table-content-item font-70">
+                                                    <!-- btn column table -->
+                                                    {% if inquiry.state == 'canceled' %}
+                                                        <div class="btn-table red btn-Reason-rejection">انصراف</div>
+                                                    {% elif inquiry.state == 'waiting_for_price' %}
+                                                        <div class="btn-table blue ">در انتظار قیمت</div>
+                                                    {% elif inquiry.state == 'price_recorded' %}
+                                                        <div class="btn-table btn-Followed-up">قیمت ارسال شده</div>
                                                     {% endif %}
                                                     <!-- btn column table -->
                                                 </div>

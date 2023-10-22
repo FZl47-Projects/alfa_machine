@@ -58,6 +58,12 @@ class Project(BaseModel):
     def __str__(self):
         return self.name
 
+    @classmethod
+    def has_perm_to_modify(cls, user):
+        if user.role in ('super_user', 'control_project_user'):
+            return True
+        return False
+
     def get_state_label(self):
         pr = self.get_progress_percentage()
         if pr == 100:
@@ -84,6 +90,15 @@ class Project(BaseModel):
 
     def get_tasks_queue(self):
         return self.get_tasks().filter(state='queue')
+
+    def get_tasks_need_to_check(self):
+        return self.get_tasks().filter(state='need-to-check')
+
+    def get_tasks_need_to_replan(self):
+        return self.get_tasks().filter(state='need-to-replan')
+
+    def get_tasks_hold(self):
+        return self.get_tasks().filter(state='hold')
 
     def get_tasks_finished(self):
         return self.get_tasks().filter(state='finished')
@@ -172,16 +187,15 @@ class Task(BaseModel, File):
     )
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
-    description_allocate = models.TextField(null=True, blank=True)
     # status = models.CharField(max_length=20, choices=STATUS_OPTIONS,default='allocation')
     state = models.CharField(max_length=20, choices=STATE_OPTIONS, default='queue')
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
     from_department = models.ForeignKey('Department', on_delete=models.CASCADE, related_name='from_department')
     to_department = models.ForeignKey('Department', on_delete=models.CASCADE)
     allocator_user = models.ForeignKey('account.User', on_delete=models.CASCADE)  # who created task
-    work_hour = models.IntegerField()
-    time_start = models.DateTimeField()
-    time_end = models.DateTimeField()
+    work_hour = models.IntegerField(null=True)
+    time_start = models.DateField(null=True)
+    time_end = models.DateField(null=True)
     priority = models.IntegerField(default=1)
     is_active = models.BooleanField(default=True)
 
@@ -198,9 +212,13 @@ class Task(BaseModel, File):
         return reverse('public:task_detail', args=(self.id,))
 
     def get_time_start(self):
+        if not self.time_start:
+            return
         return self.time_start.strftime('%Y-%m-%d')
 
     def get_time_end(self):
+        if not self.time_end:
+            return
         return self.time_end.strftime('%Y-%m-%d')
 
 
@@ -219,10 +237,20 @@ class TaskStatus(BaseModel, File):
 
 
 class Inquiry(BaseModel):
+    STATE_OPTIONS = (
+        ('canceled', 'انصارف'),
+        ('waiting_for_price', 'در انتظار قیمت'),
+        ('price_recorded', 'قیمت ارسال شده'),
+    )
     from_department = models.ForeignKey('Department', on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
-    description = models.TextField()
-    time_submited = models.DateTimeField()
+    number_id = models.IntegerField()
+    state = models.CharField(max_length=20, choices=STATE_OPTIONS)
+    sender = models.CharField(max_length=200)
+    description = models.TextField(null=True)
+    time_receive = models.DateField()
+    time_deadline_response = models.DateField()
+    time_submit = models.DateField()
 
     class Meta:
         ordering = '-id',
@@ -237,7 +265,7 @@ class Inquiry(BaseModel):
         return 'progress'
 
     def get_time_submited(self):
-        return self.time_submited.strftime('%Y-%m-%d %H:%M')
+        return self.time_submit.strftime('%Y-%m-%d')
 
 
 class InquiryStatus(BaseModel, File):
@@ -251,3 +279,12 @@ class InquiryStatus(BaseModel, File):
 
     def __str__(self):
         return self.status
+
+
+class InquiryFile(BaseModel, File):
+    inquiry = models.ForeignKey('Inquiry', on_delete=models.CASCADE)
+    description = models.TextField(null=True)
+    departments = models.ManyToManyField('Department')  # departments can access to this file
+
+    def __str__(self):
+        return f'{self.inquiry} - File'

@@ -42,13 +42,15 @@
                         <div class="btn-change col-2 text-center">مکاتبات پروژه</div>
                         <div class="btn-change col-2 text-center">امور مالی</div>
                     </div>
-                    <div>
-                        <button class="btn btn-outline-primary text-center mx-1 p-2 px-4" data-bs-toggle="modal"
-                                data-bs-target="#project-edit">ویرایش
-                        </button>
-                        <a href="{% url 'public:project_delete' project_id=project.id %}"
-                           class="btn btn-outline-danger text-center p-2 px-4">حذف</a>
-                    </div>
+                    {% if has_perm_to_modify %}
+                        <div>
+                            <button class="btn btn-outline-primary text-center mx-1 p-2 px-4" data-bs-toggle="modal"
+                                    data-bs-target="#project-edit">ویرایش
+                            </button>
+                            <a href="{% url 'public:project_delete' project_id=project.id %}"
+                               class="btn btn-outline-danger text-center p-2 px-4">حذف</a>
+                        </div>
+                    {% endif %}
                 </div>
                 <!-- btn tab page -->
 
@@ -939,16 +941,36 @@
         let tasks_progress_count = '{{ project.get_tasks_progress.count }}'
         let tasks_queue_count = '{{ project.get_tasks_queue.count }}'
         let tasks_finished_count = '{{ project.get_tasks_finished.count }}'
+        let tasks_need_to_check_count = '{{ project.get_tasks_need_to_check.count }}'
+        let tasks_need_to_replan_count = '{{ project.get_tasks_need_to_replan.count }}'
+        let tasks_hold_count = '{{ project.get_tasks_hold.count }}'
 
         const chart_data = {
-            labels: ['درحال انجام', 'در صف', 'انجام شده'],
+            labels: [
+                'درحال انجام',
+                'در صف',
+                'انجام شده',
+                'نگه داشته شده',
+                'نیاز به بررسی',
+                'نیاز به بررسی مجدد',
+            ],
             datasets: [{
                 label: 'تسک ها',
-                data: [tasks_progress_count, tasks_queue_count, tasks_finished_count],
+                data: [
+                    tasks_progress_count,
+                    tasks_queue_count,
+                    tasks_finished_count,
+                    tasks_hold_count,
+                    tasks_need_to_check_count,
+                    tasks_need_to_replan_count
+                ],
                 backgroundColor: [
                     'rgb(70,101,255)',
                     'rgb(204,181,7)',
-                    'rgb(28,201,97)'
+                    'rgb(28,201,97)',
+                    'rgb(222,113,10)',
+                    'rgb(245,102,160)',
+                    'rgb(241,29,52)',
                 ],
                 hoverOffset: 4
             }]

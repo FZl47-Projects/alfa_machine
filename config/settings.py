@@ -114,11 +114,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fa-ir'
 
 TIME_ZONE = 'Asia/Tehran'
 
 USE_I18N = True
+
+USE_L10N = False
 
 USE_TZ = False
 
@@ -152,3 +154,5 @@ EXCEPT_USER_AUTH_URLS = [
     '/admin',
     '/project'
 ]
+
+DATE_FORMAT = "Y-m-d"

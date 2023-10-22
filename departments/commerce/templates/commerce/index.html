@@ -159,12 +159,41 @@
                         <input type="text" name="title" required>
                     </div>
                     <div class="information-item">
-                        <label for="lihh">تاریخ</label>
-                        <input type="text " set-on="inquiry-time-submited" class="persianDatapicker pwt-datepicker-input-element" required>
-                        <input type="hidden" name="time_submited" id="inquiry-time-submited" required>
+                        <label for="lihh">شماره درخواست</label>
+                        <input type="number" name="number_id" required>
                     </div>
                     <div class="information-item">
-                        <label for="lihh">توضیح</label>
+                        <label for="lihh">ارسال کننده</label>
+                        <input type="text" name="sender" required>
+                    </div>
+                    <div class="information-item">
+                        <label for="lihh">تاریخ دریافت</label>
+                        <input type="text" set-on="inquiry-time-receive"
+                               class="persianDatapicker pwt-datepicker-input-element" required>
+                        <input type="hidden" name="time_receive" id="inquiry-time-receive" required>
+                    </div>
+                    <div class="information-item">
+                        <label for="lihh">تاریخ ارسال</label>
+                        <input type="text" set-on="inquiry-time-submited"
+                               class="persianDatapicker pwt-datepicker-input-element" required>
+                        <input type="hidden" name="time_submit" id="inquiry-time-submited" required>
+                    </div>
+                    <div class="information-item">
+                        <label for="lihh">مهلت پاسخ(تاریخ ددلاین)</label>
+                        <input type="text" set-on="inquiry-time-deadline-response"
+                               class="persianDatapicker pwt-datepicker-input-element" required>
+                        <input type="hidden" name="time_deadline_response" id="inquiry-time-deadline-response" required>
+                    </div>
+                    <div class="information-item">
+                        <label for="lihh">وضعیت</label>
+                        <select name="state" id="" required>
+                            <option value="waiting_for_price" selected>در انتظار قیمت</option>
+                            <option value="price_recorded">قیمت ارسال شده</option>
+                            <option value="canceled">انصراف</option>
+                        </select>
+                    </div>
+                    <div class="information-item">
+                        <label for="lihh">شرح درخواست</label>
                         <textarea name="description" id="" cols="30" rows="10" required></textarea>
                     </div>
                 </div>
@@ -181,7 +210,7 @@
     <!--  request unit -->
 
     <!-- START SECTION NOTIFATION -->
-     {% include 'base/components/aside-menu.html' with notifications=notifications tickets=tickets %}
+    {% include 'base/components/aside-menu.html' with notifications=notifications tickets=tickets %}
 
     <div class="container-fluid col-md-10 content-page">
         <main class="main">
@@ -199,7 +228,8 @@
                     <div class="col-12 col-md-3 col-lg-2">
                         <div class="box-item-2 ddd">
                             <!-- image box  -->
-                            <img src="{% static 'frontend/images/لیست خرید تایید شده مدیریت 2@2x.png' %}" alt="" class="icon-box"
+                            <img src="{% static 'frontend/images/لیست خرید تایید شده مدیریت 2@2x.png' %}" alt=""
+                                 class="icon-box"
                                  style="margin-bottom:15px ;">
                             <!-- image box  -->
                             <!-- discription -->
@@ -217,7 +247,8 @@
                     <!--Access panel item  -->
                     <div class="col-12 col-md-3 col-lg-2 ">
                         <div class="box-item-2 ddd">
-                            <img src="{% static 'frontend/images/تسک خای اولویت بندی شده 2@2x.png' %}" alt="" class="icon-box"
+                            <img src="{% static 'frontend/images/تسک خای اولویت بندی شده 2@2x.png' %}" alt=""
+                                 class="icon-box"
                                  style="margin-bottom:15px ;">
                             <div class="style-conent-box" style="margin-bottom:15px ;">
                                 <span>تسک های الویت بندی شده</span>
@@ -229,7 +260,8 @@
                     </div>
                     <div class="col-12 col-md-3 col-lg-2 ">
                         <div class="box-item-2 ddd">
-                            <img src="{% static 'frontend/images/1.png' %}" alt="" class="icon-box" style="margin-bottom:15px ;">
+                            <img src="{% static 'frontend/images/1.png' %}" alt="" class="icon-box"
+                                 style="margin-bottom:15px ;">
                             <div class="style-conent-box" style="margin-bottom:15px ;">
                                 <span>استعلام</span>
                             </div>
@@ -238,7 +270,8 @@
                     </div>
                     <div class="col-12 col-md-3 col-lg-2 ">
                         <div class="box-item-2 ddd">
-                            <img src="{% static 'frontend/images/2 (لیست استعلامات(حتی رد شده ها با دلیل@2x.png' %}" alt=""
+                            <img src="{% static 'frontend/images/2 (لیست استعلامات(حتی رد شده ها با دلیل@2x.png' %}"
+                                 alt=""
                                  class="icon-box" style="margin-bottom:15px ;">
                             <div class="style-conent-box" style="margin-bottom:15px ;">
                                 <span>لیست استعلامات </span>
@@ -250,7 +283,8 @@
                     </div>
                     <div class="col-12 col-md-3  col-lg-2 ">
                         <div class="box-item-2 ddd">
-                            <img src="{% static 'frontend/images/درخواست از سایر واحد ها 2@2x.png' %}" alt="" class="icon-box"
+                            <img src="{% static 'frontend/images/درخواست از سایر واحد ها 2@2x.png' %}" alt=""
+                                 class="icon-box"
                                  style="margin-bottom:15px ;">
                             <div class="style-conent-box" style="margin-bottom:15px ;">
                                 <span>درخواست از سایر واحدها</span>
@@ -272,7 +306,7 @@
             <section class="ongoing-projects">
                 <!-- inner project section -->
                 <div class="box-section">
-                    {% for project in projects %}
+                    {% for project in projects|slice:':4' %}
                         {% include 'public/project/components/list-project.html' with project=project %}
                     {% endfor %}
                 </div>

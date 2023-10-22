@@ -76,9 +76,9 @@
                                         <span>تاریخ پایان:</span>
                                         <span class="datetime-convert">{{ project.time_end }}</span>
                                     </div>
-                                    <div class="style-conent-box blue">
+                                    <div class="style-conent-box {% if project.status == 'paused' %}text-danger{% else %}blue{% endif %}">
                                         <span>وضعیت فعلی</span>
-                                        <span>{{ project.get_state_label }}</span>
+                                        <span>{{ project.get_status_display }}</span>
                                     </div>
                                     <div class="style-conent-box">
                                         <span>درصد پیشرفت:</span>

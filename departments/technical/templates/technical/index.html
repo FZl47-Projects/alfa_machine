@@ -653,7 +653,7 @@
             <section class="ongoing-projects">
                 <!-- inner project section -->
                 <div class="box-section">
-                    {% for project in projects %}
+                    {% for project in projects|slice:':4' %}
                         {% include 'public/project/components/list-project.html' with project=project %}
                     {% empty %}
                         <div class="container-not-found-base">
@@ -665,11 +665,11 @@
             </section>
 
             <!-- project section -->
-            <div class="title px-4">
+            <div class="title px-4 d-none">
                 <span style="padding:10px;">ایمیل ها</span>
             </div>
             <!-- section email -->
-            <section class="emails m-1">
+            <section class="emails m-1 d-none">
                 <div class="section-table">
                     <!--start table email -->
                     <div class="table" style="height:400px;">

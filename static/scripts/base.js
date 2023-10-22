@@ -138,8 +138,8 @@ for (let dt_el of all_datetime_convert) {
     let dt = dt_el.innerHTML || dt_el.value
     dt_el.setAttribute('datetime', dt)
     let dt_persian = new Date(dt).toLocaleDateString('fa-IR', {
-        hour: '2-digit',
-        minute: '2-digit'
+        // hour: '2-digit',
+        // minute: '2-digit'
     });
     if (dt_persian != 'Invalid Date') {
         dt_el.innerHTML = dt_persian

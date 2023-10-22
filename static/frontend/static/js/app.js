@@ -64,7 +64,7 @@ $(document).ready(function () {
                 }
             },
             "timePicker": {
-                "enabled": true,
+                "enabled": false,
                 "step": 1,
                 "hour": {
                     "enabled": true,

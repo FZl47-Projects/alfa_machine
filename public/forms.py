@@ -3,19 +3,25 @@ from . import models
 
 
 class TaskCreateForm(forms.ModelForm):
-    file = forms.FileField(required=False)
+    def __init__(self, *args, **kwargs):
+        super(TaskCreateForm, self).__init__(*args, **kwargs)
+        for field_name, field_inp in self.fields.items():
+            if field_name not in self.Meta.required:
+                field_inp.required = False
 
     class Meta:
         model = models.Task
         exclude = ('is_active',)
+        required = ('name', 'project', 'to_department', 'from_department')
 
 
-class TaskUpdateForm(forms.ModelForm):
+class TaskUpdateForm(TaskCreateForm, forms.ModelForm):
     file = forms.FileField(required=False)
 
     class Meta:
         model = models.Task
         exclude = ('is_active', 'allocator_user', 'from_department', 'state')
+        required = ('name', 'project', 'to_department', 'from_department')
 
 
 class TaskStateUpdate(forms.Form):

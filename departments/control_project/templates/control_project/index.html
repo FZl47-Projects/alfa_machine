@@ -154,7 +154,7 @@
             <section class="ongoing-projects">
                 <!-- inner project section -->
                 <div class="box-section">
-                    {% for project in projects %}
+                    {% for project in projects|slice:':4' %}
                         {% include 'public/project/components/list-project.html' with project=project %}
                     {% empty %}
                         <div class="container-not-found-base">
