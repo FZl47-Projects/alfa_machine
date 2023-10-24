@@ -10,16 +10,17 @@ class Index(View):
     @user_role_required_cbv(['control_project_user'])
     def get(self, request):
         user = request.user
+        department = user.department
         context = {
-            'tickets': request.user.get_tickets(),
-            'notifications': request.user.department.get_notifications(),
+            'tickets': user.get_tickets(),
+            'notifications': department.get_notifications(),
             'projects': Project.objects.filter(is_active=True),
             'departments': Department.objects.all(),
             'tasks': {
-                'progress': Task.objects.filter(state='progress', to_department=user.department).count(),
-                'queue': Task.objects.filter(state='queue', to_department=user.department).count(),
-                'finished': Task.objects.filter(state='finished', to_department=user.department).count(),
-                'need_to_check': Task.objects.filter(state='need-to-check', to_department=user.department).count(),
+                'progress': Task.objects.filter(state='progress', from_department=department).count(),
+                'queue': Task.objects.filter(state='queue', from_department=department).count(),
+                'finished': Task.objects.filter(state='finished', from_department=department).count(),
+                'need_to_check': Task.objects.filter(state='need-to-check', from_department=department).count(),
             }
         }
         return render(request, self.template_name, context)

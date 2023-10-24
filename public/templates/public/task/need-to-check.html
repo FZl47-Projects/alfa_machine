@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block Title %}
-   تسک های نیاز به بررسی
+    تسک های نیاز به بررسی
 {% endblock %}
 
 
@@ -16,7 +16,7 @@
     {% for task in tasks %}
         <div class="content-modal modal-edit-task">
             <div class="inner-modal">
-               {% include 'public/task/components/update-nav.html' with task=task projects=projects departments=departments %}
+                {% include 'public/task/components/update-nav.html' with task=task projects=projects departments=departments %}
             </div>
 
         </div>
@@ -134,6 +134,13 @@
                                                         <input type="hidden" name="type_request" value="delete">
                                                         <button class="btn-item m-1 remov">
                                                             حذف
+                                                        </button>
+                                                    </form>
+                                                    <form action="{% url 'public:task_remind' task_id=task.id %}"
+                                                          method="post">
+                                                        {% csrf_token %}
+                                                        <button class="btn-item m-1 text-success">
+                                                            یاداوری
                                                         </button>
                                                     </form>
                                                     <div class="btn-item m-1 edit edit-task ">ویرایش</div>

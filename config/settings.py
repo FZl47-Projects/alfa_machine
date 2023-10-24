@@ -156,3 +156,4 @@ EXCEPT_USER_AUTH_URLS = [
 ]
 
 DATE_FORMAT = "Y-m-d"
+

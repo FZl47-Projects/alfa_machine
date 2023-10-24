@@ -79,7 +79,7 @@
                                 </div>
                                 <div class="col-2">
                                     <div class="table-title-item">
-                                         تاریخ پایان
+                                        تاریخ پایان
                                     </div>
                                 </div>
 
@@ -140,6 +140,13 @@
                                                         <input type="hidden" name="type_request" value="delete">
                                                         <button class="btn-item m-1 remov">
                                                             حذف
+                                                        </button>
+                                                    </form>
+                                                    <form action="{% url 'public:task_remind' task_id=task.id %}"
+                                                          method="post">
+                                                        {% csrf_token %}
+                                                        <button class="btn-item m-1 text-success">
+                                                            یاداوری
                                                         </button>
                                                     </form>
                                                 </div>

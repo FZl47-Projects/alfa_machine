@@ -1,9 +1,11 @@
 from django.contrib import messages
 from django.shortcuts import render, Http404, redirect, HttpResponse, get_object_or_404
 from django.views.generic import View
+from django.contrib.auth.mixins import LoginRequiredMixin
 from core.utils import form_validate_err
 from public import models, forms
 from account.auth.decorators import user_role_required_cbv
+from notification.models import NotificationDepartment
 
 
 class Success(View):
@@ -184,6 +186,26 @@ class Task(View):
         if form_validate_err(request, f) is False:
             return redirect(referer_url or '/error')
         f.save()
+        messages.success(request, 'عملیات مورد نظر با موفقیت ایجاد شد')
+        return redirect(referer_url or '/success')
+
+
+class TaskRemind(LoginRequiredMixin, View):
+
+    def post(self, request, task_id):
+        referer_url = request.META.get('HTTP_REFERER', None)
+        user = request.user
+        department = user.department
+        task = get_object_or_404(models.Task, id=task_id, from_department=department)
+        notif = NotificationDepartment.objects.create(
+            from_department=department,
+            title='یاداوری انجام تسک',
+            description=f"""
+                یاداوری جهت انجام تسک ({task.name})
+            """
+        )
+        notif.departments.set([task.to_department])
+        notif.projects.set([task.project])
         messages.success(request, 'عملیات مورد نظر با موفقیت ایجاد شد')
         return redirect(referer_url or '/success')
 

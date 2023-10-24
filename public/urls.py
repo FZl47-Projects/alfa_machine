@@ -17,6 +17,7 @@ urlpatterns = [
     path('project/<int:project_id>', views.ProjectDetail.as_view(), name='project_detail'),
 
     path('task', views.Task.as_view(), name='task'),
+    path('task/remind/<int:task_id>', views.TaskRemind.as_view(), name='task_remind'),
     path('task/owner', views.TaskOwner.as_view(), name='task_owner'),
     path('task/owner/<int:task_id>', views.TaskOwner.as_view(), name='task_owner_detail'),
     path('task/owner/department/<int:department_id>', views.TaskOwnerDepartment.as_view(),

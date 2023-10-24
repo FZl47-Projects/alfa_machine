@@ -1,4 +1,3 @@
-
 $(document).ready(function () {
     const datepickerDOM = $(".persianDatapicker");
     for (let datePicker of datepickerDOM) {
@@ -101,7 +100,7 @@ $(document).ready(function () {
                     alert('you must set attr "set-on" in date picker')
                 } else {
                     let date = this.model.state.selected.dateObject.State.gregorian
-                    let dateString =  date.year + "-" + (date.month + 1) + "-" + date.day
+                    let dateString = date.year + "-" + (date.month + 1) + "-" + date.day
                     document.getElementById(set_on_field).setAttribute('value', dateString)
                 }
             },
@@ -119,4 +118,25 @@ function secToDateTime(secs) {
 function getFormattedDate(date) {
     let str = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
     return str
+}
+
+
+try {
+    let BtnTaskconfirm = document.querySelectorAll(".task-confirm");
+    let Modal_TaskConfirm = document.querySelectorAll(".modal-confirm-task");
+    let overalyTaskConfirm = document.querySelectorAll(".modal-confirm-task .inner-modal");
+
+    BtnTaskconfirm.forEach((item, index) => {
+        item.addEventListener("click", () => {
+            Modal_TaskConfirm[index].classList.add("active");
+        });
+    });
+    overalyTaskConfirm.forEach((item, index) => {
+        item.addEventListener("click", (e) => {
+            if (e.target.className === "inner-modal") {
+                Modal_TaskConfirm[index].classList.remove("active");
+            }
+        });
+    });
+} catch (e) {
 }

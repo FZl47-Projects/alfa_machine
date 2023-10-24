@@ -7,7 +7,7 @@
         <div class="style-conent-box">
             <span>{{ department.get_state_busy }}</span>
         </div>
-        <div class="btn-new-task tarif-task">تعریف تسک</div>
+        <div class="btn-new-task tarif-task" department-id="{{ department.id }}">تعریف تسک</div>
         <a href="{{ department.get_absolute_url_manage_tasks }}"><span class="manage-task">مدیریت تسک ها</span></a>
     </div>
 </div>

@@ -11,6 +11,48 @@
 
 {% block Content %}
 
+    <div class="content-modal-two modal-confirm-task">
+        <div class="inner-modal">
+            <form class="p-4" action="{% url 'public:project_file' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="information-section">
+                    <div class="information-item">
+                        <label for="lihh">نام فایل</label>
+                        <input type="text" name="name">
+                    </div>
+                    <div class="information-item">
+                        <label for="lihh">توضیحات</label>
+                        <textarea name="description" id="" cols="30" rows="10" required></textarea>
+                    </div>
+                    <div class="information-item">
+                        <div class="uploade-imge">
+                            <label class="item-upload" for="add5">
+                                آپلود فایل
+                            </label>
+                            <input type="file" name="file" id="add5" hidden="">
+                        </div>
+                    </div>
+                    <div class="information-item">
+                        <label class="item-upload" for="add">
+                            پروژه
+                        </label>
+                        <!-- status task -->
+                        <select name="project" required>
+                            {% for project in projects %}
+                                <option value="{{ project.id }}" label="{{ project.name }}">{{ project.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <!-- status task -->
+                    </div>
+                </div>
+                <div class="information-section">
+                    <button class="sabt-modal col-12 btn-primary">ثبت</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!--morde-descriptin popup -->
     <!--modal-materials  -->
     <div class="content-modal-two modal-materials">
@@ -82,7 +124,7 @@
     </div>
     <!-- popup taid keyfiat -->
     <!-- START SECTION NOTIFATION -->
-      {% include 'base/components/aside-menu.html' with notifications=notifications tickets=tickets %}
+    {% include 'base/components/aside-menu.html' with notifications=notifications tickets=tickets %}
     <!-- END SECTION NOTIFATION -->
     <div class="container-fluid col-md-10 content-page">
         <main class="main">
@@ -96,7 +138,7 @@
             <section class="collection-units" style="background-color:#fff ; margin-top:30px;">
                 <div class="box-section">
                     <!-- item Access panel-->
-                    <div class="col-12 col-md-4 ">
+                    <div class="col-12 col-md-3 ">
                         <div class="box-item-2 ddd">
                             <img src="{% static 'frontend/images/لیست خرید تایید شده مدیریت 2@2x.png' %}" alt=""
                                  class="icon-box"
@@ -109,7 +151,7 @@
                         </div>
                     </div>
                     <!-- item Access panel-->
-                    <div class="col-12 col-md-4 ">
+                    <div class="col-12 col-md-3 ">
                         <div class="box-item-2 ddd">
                             <img src="{% static 'frontend/images/2 (لیست استعلامات(حتی رد شده ها با دلیل@2x.png' %}"
                                  alt=""
@@ -123,7 +165,7 @@
                         </div>
                     </div>
                     <!-- item Access panel-->
-                    <div class="col-12 col-md-4 ">
+                    <div class="col-12 col-md-3 ">
                         <div class="box-item-2 ddd">
                             <img src="{% static 'frontend/images/2 (لیست استعلامات(حتی رد شده ها با دلیل@2x.png' %}"
                                  alt=""
@@ -134,6 +176,17 @@
                             <a href="{% url 'dp_warehouse:registration' %}">
                                 <div class="tarif-task btn-upload-book" id="one">مشاهده</div>
                             </a>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3">
+                        <div class="box-item-2 ddd">
+                            <img src="{% static 'frontend/images/لیست خرید تایید شده مدیریت 2@2x.png' %}" alt=""
+                                 class="icon-box"
+                                 style="margin-bottom:15px ;">
+                            <div class="style-conent-box" style="margin-bottom:15px ;">
+                                <span>فایل پروژه</span>
+                            </div>
+                            <div class="tarif-task btn-create-report btn--ta1 task-confirm" id="one">اپلود</div>
                         </div>
                     </div>
                 </div>

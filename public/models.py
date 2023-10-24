@@ -162,7 +162,7 @@ class Project(BaseModel):
 class ProjectFile(BaseModel, File):
     name = models.CharField(max_length=100)
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
-    description = models.TextField()
+    description = models.TextField(null=True)
 
     class Meta:
         ordering = '-id',
