@@ -37,12 +37,20 @@ class ProjectFile(forms.ModelForm):
 
 
 class ProjectAdd(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(ProjectAdd, self).__init__(*args, **kwargs)
+        for field_name, field_inp in self.fields.items():
+            if field_name in self.Meta.not_required:
+                field_inp.required = False
+
     item = forms.CharField(required=False)
     description = forms.CharField(required=False)
 
     class Meta:
         model = models.Project
         exclude = ('is_active',)
+        not_required = ('inquiry',)
 
 
 class ProjectUpdate(forms.ModelForm):
@@ -73,8 +81,6 @@ class InquiryStatusForm(forms.ModelForm):
 
 
 class InquiryFileForm(forms.ModelForm):
-
     class Meta:
         model = models.InquiryFile
         fields = '__all__'
-
