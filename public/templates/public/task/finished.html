@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block Title %}
-   تسک های به پایان رسیده
+    تسک های به پایان رسیده
 {% endblock %}
 
 
@@ -30,11 +30,49 @@
             </div>
         </div>
     {% endfor %}
-
-
+    <h3 class="title-page mx-auto text-center"> تسک های به پایان رسیده</h3>
+    <div class="col-12 col-md-5 col-lg-6 mx-auto mb-4 p-4">
+        <div>
+            <div class="filters-radio">
+                <div class="title">
+                    مرتب بر اساس :
+                </div>
+                <div class="container">
+                    <div>
+                        <a class="{% if request.GET.sort_by == 'latest' or not request.GET.sort_by %}active{% endif %}"
+                           href="{% url 'public:task_owner' %}?sort_by=latest&task_state={{ request.GET.task_state }}">
+                            جدید ترین
+                        </a>
+                    </div>
+                    <div>
+                        <a class="{% if request.GET.sort_by == 'oldest' %}active{% endif %}"
+                           href="{% url 'public:task_owner' %}?sort_by=oldest&task_state={{ request.GET.task_state }}">
+                            قدیمی ترین
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <form action="{% url 'public:task_owner' %}" method="get">
+                    <input type="hidden" name="task_state" value="{{ request.GET.task_state }}">
+                    <input type="hidden" name="sort_by" value="{{ request.GET.sort_by }}">
+                    <p class="title">جست و جو :</p>
+                    <div class="cnt-search col-11 col-md-7">
+                        <input type="text" name="search" value="{{ request.GET.search }}"
+                               placeholder="نام تسک ، واحد تسک و ..">
+                        <div>
+                            <button>
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <!--morde-descriptin popup -->
     <main class="main content-page container">
-        <h5 class="title-page">  تسک های به پایان رسیده</h5>
+
         <section class="col-12 project-content" style="padding-bottom:60px ;">
             <div class="inner-project">
                 <div class="content-items p-2">

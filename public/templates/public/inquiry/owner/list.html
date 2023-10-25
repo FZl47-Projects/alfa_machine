@@ -12,19 +12,19 @@
 {% block Style %}
     <style>
 
-        .inquiry > div{
+        .inquiry > div {
             background: none;
         }
 
-        .inquiry[inquiry-state="canceled"]  {
+        .inquiry[inquiry-state="canceled"] {
             background: #fce5e5 !important;
         }
 
-        .inquiry[inquiry-state="waiting_for_price"]  {
+        .inquiry[inquiry-state="waiting_for_price"] {
             background: #f4fbff !important;
         }
 
-        .inquiry[inquiry-state="price_recorded"]  {
+        .inquiry[inquiry-state="price_recorded"] {
             background: #d2ffed !important;
         }
 
@@ -32,6 +32,60 @@
 {% endblock %}
 
 {% block Content %}
+
+
+
+    {% for inquiry in inquiries %}
+        <div class="content-modal-two modal-confirm-task">
+            <div class="inner-modal">
+                <form class="p-4" action="{% url 'public:inquiry_file' inquiry_id=inquiry.id %}" method="post"
+                      enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="information-section">
+                        <div class="information-item">
+                            <label for="lihh">نام فایل</label>
+                            <input type="text" name="name">
+                        </div>
+                        <div class="information-item">
+                            <label for="lihh">توضیحات</label>
+                            <textarea name="description" id="" cols="30" rows="10" required=""></textarea>
+                        </div>
+                        <div class="information-item">
+                            <div class="uploade-imge">
+                                <label class="item-upload" for="add5">
+                                    آپلود فایل
+                                </label>
+                                <input type="file" name="file" id="add5" hidden="">
+                            </div>
+                        </div>
+                        <div class="information-item">
+                            <div>
+                                <label for="lihh">
+                                    واحد
+                                    <span class="font-70">(واحد هایی که میتوانند به فایل دسترسی داشته باشند)</span>
+                                    :</label>
+                                <div class="units d-flex flex-wrap">
+                                    {% for department in departments %}
+                                        <div class="d-flex align-items-center justify-content-center col-6 col-md-3 p-2">
+                                            <label class="mt-2" for="inp-to-dep-{{ department.id }}">
+                                                {{ department.name }}
+                                            </label>
+                                            <input type="checkbox" id="inp-to-dep-{{ department.id }}" multiple
+                                                   name="departments" value="{{ department.id }}" checked>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="information-section">
+                        <button class="sabt-modal col-12 btn-primary">ثبت</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
 
 
     <!-- popup edit-query -->
@@ -185,8 +239,45 @@
     {% endfor %}
     <!--morde-descriptin popup -->
 
-
-    <main class="main content-page container">
+    <div class="col-12 col-md-5 col-lg-6 mx-auto mb-4 p-4">
+        <div>
+            <div class="filters-radio">
+                <div class="title">
+                    مرتب بر اساس :
+                </div>
+                <div class="container">
+                    <div>
+                        <a class="{% if request.GET.sort_by == 'latest' or not request.GET.sort_by %}active{% endif %}"
+                           href="{% url 'public:inquiry_owner' %}?sort_by=latest">
+                            جدید ترین
+                        </a>
+                    </div>
+                    <div>
+                        <a class="{% if request.GET.sort_by == 'oldest' %}active{% endif %}"
+                           href="{% url 'public:inquiry_owner' %}?sort_by=oldest">
+                            قدیمی ترین
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <form action="{% url 'public:inquiry_owner' %}" method="get" class="overflow-hidden">
+                    <input type="hidden" name="sort_by" value="{{ request.GET.sort_by }}">
+                    <p class="title">جست و جو :</p>
+                    <div class="cnt-search col-11 col-md-7">
+                        <input type="text" name="search" value="{{ request.GET.search }}"
+                               placeholder="عنوان ، شماره استعلام و ..">
+                        <div>
+                            <button>
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <main class="main content-page container" style="max-width: none;">
         <h5 class="title-page">لیست استعلامات </h5>
         <section class="col-12 project-content">
             <div class="inner-project">
@@ -203,22 +294,52 @@
                                             ردیف
                                         </div>
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col-1">
                                         <div class="table-title-item">
-                                            استعلام دهنده
+                                            واحد استعلام دهنده
                                         </div>
                                     </div>
-                                    <div class="col-3">
+                                    <div class="col-1">
                                         <div class="table-title-item">
-                                            توضیحات
+                                            ارسال کننده
                                         </div>
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            شماره استعلام
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            تاریخ دریافت
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            تاریخ ارسال
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            مهلت پاسخ(تاریخ ددلاین)
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            عنوان
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            شرح درخواست
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
                                         <div class="table-title-item">
                                             ویرایش
                                         </div>
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col-1">
                                         <div class="table-title-item">
                                             حذف
                                         </div>
@@ -231,6 +352,16 @@
                                     <div class="col-1">
                                         <div class="table-title-item">
                                             وضعیت
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            فایل
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            پروژه
                                         </div>
                                     </div>
                                 </div>
@@ -246,28 +377,56 @@
                                                     {{ forloop.counter }}
                                                 </div>
                                             </div>
-                                            <!-- each row table -->
-                                            <div class="col-2 p-1">
+                                            <div class="col-1 p-2">
                                                 <div class="table-content-item">
                                                     {{ inquiry.from_department.name }}
                                                 </div>
                                             </div>
-
-                                            <div class="col-3 p-1">
+                                            <div class="col-1 p-2">
+                                                <div class="table-content-item">
+                                                    {{ inquiry.sender }}
+                                                </div>
+                                            </div>
+                                            <div class="col-1 p-2">
+                                                <div class="table-content-item">
+                                                    {{ inquiry.number_id }}
+                                                </div>
+                                            </div>
+                                            <div class="col-1 p-2">
+                                                <div class="table-content-item datetime-convert">
+                                                    {{ inquiry.time_receive }}
+                                                </div>
+                                            </div>
+                                            <div class="col-1 p-2">
+                                                <div class="table-content-item datetime-convert">
+                                                    {{ inquiry.time_submit }}
+                                                </div>
+                                            </div>
+                                            <div class="col-1 p-2">
+                                                <div class="table-content-item datetime-convert">
+                                                    {{ inquiry.time_deadline_response }}
+                                                </div>
+                                            </div>
+                                            <div class="col-1 p-2">
+                                                <div class="table-content-item">
+                                                    {{ inquiry.title }}
+                                                </div>
+                                            </div>
+                                            <div class="col-1 p-2">
                                                 <div class="table-content-item">
                                                     <p class="description">
-                                                        {{ inquiry.description|truncatechars:25 }}
+                                                        {{ inquiry.description|truncatechars:10 }}
                                                     </p>
                                                 </div>
                                             </div>
-                                            <div class="col-2 p-1">
+                                            <div class="col-1 p-1">
                                                 <div class="table-content-item">
                                                     <!-- btn column table -->
                                                     <div class="query-item btn-edit-query">کلیک کنید</div>
                                                     <!-- btn column table -->
                                                 </div>
                                             </div>
-                                            <div class="col-2 p-1">
+                                            <div class="col-1 p-1">
                                                 <div class="table-content-item">
                                                     <!-- btn column table -->
                                                     <form action="{% url 'public:inquiry_detail' inquiry_id=inquiry.id %}"
@@ -304,6 +463,19 @@
                                                     {% endif %}
                                                     <!-- btn column table -->
                                                 </div>
+                                            </div>
+                                            <div class="col-1">
+                                                <div class="tarif-task btn-create-report btn btn-outline-primary task-confirm">
+                                                    اپلود
+                                                </div>
+                                            </div>
+                                            <div class="col-1">
+                                                {% if inquiry.project is None %}
+                                                    <a href="{% url 'public:project_add' %}?inquiry-id={{ inquiry.id }}"
+                                                       class="btn btn-outline-success">تبدیل به پروژه</a>
+                                                {% else %}
+                                                    <a href="{{ inquiry.project.get_absolute_url }}">{{ inquiry.project.name|truncatechars:10 }}</a>
+                                                {% endif %}
                                             </div>
                                         </div>
                                     {% empty %}

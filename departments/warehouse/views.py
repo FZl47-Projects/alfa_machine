@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.generic import View
+from django.db.models import Q
 from core.utils import form_validate_err
 from public.models import Project
 from account.auth.decorators import user_role_required_cbv
@@ -24,10 +25,33 @@ class Index(View):
 class Items(View):
     template_name = 'warehouse/items.html'
 
+    def search(self, request, items):
+        search = request.GET.get('search', None)
+        if not search:
+            return items
+        if search.isdigit():
+            lookup = Q(code=search)
+            items = items.filter(lookup)
+        else:
+            lookup = Q(name__icontains=search) | Q(size=search) | Q(receiver__icontains=search)
+            items = items.filter(lookup)
+        return items
+
+    def sort(self, request, items):
+        sort_by = request.GET.get('sort_by', 'latest')
+        if sort_by == 'latest':
+            items = items.order_by('-id')
+        elif sort_by == 'oldest':
+            items = items.order_by('id')
+        return items
+
     @user_role_required_cbv(['warehouse_user', 'control_project_user', 'super_user', 'commerce_user'])
     def get(self, request):
+        items = models.MaterialItem.objects.all()
+        items = self.search(request, items)
+        items = self.sort(request, items)
         context = {
-            'items': models.MaterialItem.objects.all(),
+            'items': items
         }
         return render(request, self.template_name, context)
 
@@ -46,10 +70,33 @@ class Items(View):
 class Registration(View):
     template_name = 'warehouse/registration.html'
 
+    def search(self, request, items):
+        search = request.GET.get('search', None)
+        if not search:
+            return items
+        if search.isdigit():
+            lookup = Q(code=search)
+            items = items.filter(lookup)
+        else:
+            lookup = Q(name__icontains=search) | Q(size=search) | Q(receiver__icontains=search)
+            items = items.filter(lookup)
+        return items
+
+    def sort(self, request, items):
+        sort_by = request.GET.get('sort_by', 'latest')
+        if sort_by == 'latest':
+            items = items.order_by('-id')
+        elif sort_by == 'oldest':
+            items = items.order_by('id')
+        return items
+
     @user_role_required_cbv(['warehouse_user', 'control_project_user', 'super_user', 'commerce_user'])
     def get(self, request):
+        items = models.MaterialItem.objects.all()
+        items = self.search(request, items)
+        items = self.sort(request, items)
         context = {
-            'items': models.MaterialItem.objects.all(),
+            'items': items,
             'projects': Project.objects.filter(is_active=True)
         }
         return render(request, self.template_name, context)

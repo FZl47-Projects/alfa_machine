@@ -11,18 +11,18 @@
 
 body {
     font-family: 'Vazir';
-    background: #f0f0f0!important;
+    background: #f0f0f0 !important;
 }
 
-.text-left{
+.text-left {
     text-align: left;
 }
 
-.d-none{
+.d-none {
     display: none;
 }
 
-.border-1-gray{
+.border-1-gray {
     border: 1px solid #ddd;
 }
 
@@ -167,7 +167,7 @@ body {
 
 .detail-row:last-of-type {
     border-bottom: none;
-    border-radius: 0 0 10px 10px ;
+    border-radius: 0 0 10px 10px;
 }
 
 .detail-row > div {
@@ -176,32 +176,32 @@ body {
 }
 
 .font-80 {
-    font-size: 80%!important;
+    font-size: 80% !important;
 }
 
 .font-70 {
-    font-size: 70%!important;
+    font-size: 70% !important;
 }
 
 .font-60 {
-    font-size: 60%!important;
+    font-size: 60% !important;
 }
 
-.pagination{
+.pagination {
     direction: ltr;
-    display: block!important;
+    display: block !important;
     text-align: left;
     margin: 15px 0;
 }
 
-.pagination .step-links{
+.pagination .step-links {
     background: #f0f0f0;
     border: 1px solid #d2d2d2;
     display: inline-block;
     border-radius: 7px;
 }
 
-.pagination .step-links a{
+.pagination .step-links a {
     padding: 5px 11px;
     margin: 0;
     /*width: 40px;*/
@@ -211,17 +211,17 @@ body {
     display: inline-block;
 }
 
-.pagination-previous a:first-of-type{
-    border-radius: 7px 0 0 7px ;
+.pagination-previous a:first-of-type {
+    border-radius: 7px 0 0 7px;
     border-right: 1px solid #d2d2d2;
 }
 
-.pagination-next a:last-of-type{
+.pagination-next a:last-of-type {
     border-radius: 0 7px 7px 0;
     border-left: 1px solid #d2d2d2;
 }
 
-.pagination .current{
+.pagination .current {
     font-size: 65%;
     padding: 0 3px;
     color: #888;
@@ -243,11 +243,11 @@ body {
     color: #fff;
 }
 
-.select-choices{
+.select-choices {
     width: 100%;
     display: flex;
     justify-content: space-around;
-    flex-direction:row!important;
+    flex-direction: row !important;
     align-content: center;
     text-align: center;
     padding: 10px 8px;
@@ -256,18 +256,86 @@ body {
     margin: 7px auto;
 }
 
-.select-choices-content{
+.select-choices-content {
     width: 100%;
-    display: none!important;
+    display: none !important;
 }
 
-.select-choices-content select{
+.select-choices-content select {
     width: 95%;
     margin: auto;
     display: block;
 }
 
-.select-choices[choice-val='select'] + .select-choices-content{
-    display: block!important;
+.select-choices[choice-val='select'] + .select-choices-content {
+    display: block !important;
 }
 
+
+.filters-radio .container {
+    margin-top: 10px;
+}
+
+.filters-radio .title {
+    /*margin: 10px 15px;*/
+}
+
+.filters-radio .container > div {
+    display: inline-block;
+    margin: 2px;
+}
+
+.filters-radio a {
+    /*font-size: 75%;*/
+    color: #0886a6;
+    display: inline-block;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    padding: 7px 15px;
+    transition: all .3s;
+}
+
+.filters-radio a:hover {
+    background: #095ecc;
+    color: #fff;
+}
+
+.filters-radio a.active {
+    background: #095ecc;
+    color: #fff;
+}
+
+.cnt-search {
+    margin: 10px auto;
+    padding: 0 10px;
+    max-width: 90%;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cnt-search input {
+    height: 38px;
+    width: 80%;
+    border-radius: inherit;
+    border: none;
+    outline: none;
+}
+
+
+.cnt-search > div {
+    /*width: 20%;*/
+    text-align: left;
+    border-radius: inherit;
+}
+
+.cnt-search button {
+    border: none;
+    outline: none;
+    background: none;
+    padding: 5px;
+    color: #9aaeb9;
+}

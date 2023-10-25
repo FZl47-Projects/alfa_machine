@@ -31,13 +31,21 @@
                     <form class="form form-new_user" action="{% url 'public:project_add' %}" method="post">
                         {% csrf_token %}
                         <div class="titlee">پروژه جدید</div>
+                        {% if inquiry %}
+                            <input type="hidden" name="inquiry" value="{{ inquiry.id }}">
+                            <br>
+                            <p>تبدیل استعلام به پروژه</p>
+                        {% endif %}
                         <div class="col-12">
+
+
                             <div class="group-form">
-                                <input type="text" id="number_id" class="form-control" name="number_id" required>
+                                <input type="text" id="number_id" class="form-control" name="number_id" required
+                                       value="{{ inquiry.number_id }}">
                                 <label for="number_id"> :شماره درخواست</label>
                             </div>
                             <div class="group-form">
-                                <input type="text" id="name" class="form-control" name="name" required>
+                                <input type="text" id="name" class="form-control" name="name" required value="{{ inquiry.title }}">
                                 <label for="name">نام</label>
                             </div>
                             <div class="group-form">
@@ -98,7 +106,7 @@
                                 <label for="">وضعیت</label>
                             </div>
                             <div class="group-form">
-                                   <input type="text" name="" id="sample_delivery_datetime_picker"
+                                <input type="text" name="" id="sample_delivery_datetime_picker"
                                        class="form-control persianDatapicker" set-on="sample_delivery_date"
                                        required readonly>
                                 <input type="hidden" id="sample_delivery_date" name="sample_delivery_date" required>
@@ -111,9 +119,9 @@
                                 <input type="hidden" id="mass_delivery_date" name="mass_delivery_date" required>
                                 <label for="mass_delivery_datetime_picker"> :تاریخ تحویل انبوه</label>
                             </div>
-                                     <div class="group-form">
+                            <div class="group-form">
                                 <textarea type="number" id="description" class="form-control" name="description"
-                                          ></textarea>
+                                >{{ inquiry.description }}</textarea>
                                 <label for="description">توضیحات</label>
                             </div>
                             <button type="submit" id="btn-login"

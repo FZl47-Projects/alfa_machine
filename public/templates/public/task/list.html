@@ -14,26 +14,26 @@
 
     <!--Reason Followed up popup -->
 
-{#    {% for task in tasks %}#}
-{#        <div class="content-modal-two modal-allocation-information">#}
-{#            <div class="inner-modal">#}
-{#                <form class="p-4">#}
-{#                    <div class="information-section">#}
-{#                        <div class="information-item">#}
-{#                            {{ task.allocator_user.get_full_name }}#}
-{#                        </div>#}
-{#                        <div class="information-item">#}
-{#                            {{ task.from_department.name }}#}
-{#                        </div>#}
-{#                        <div class="information-item">#}
-{#                            {{ task.description_allocate|default:'چیزی یافت نشد' }}#}
-{#                        </div>#}
-{#                    </div>#}
-{##}
-{#                </form>#}
-{#            </div>#}
-{#        </div>#}
-{#    {% endfor %}#}
+    {#    {% for task in tasks %}#}
+    {#        <div class="content-modal-two modal-allocation-information">#}
+    {#            <div class="inner-modal">#}
+    {#                <form class="p-4">#}
+    {#                    <div class="information-section">#}
+    {#                        <div class="information-item">#}
+    {#                            {{ task.allocator_user.get_full_name }}#}
+    {#                        </div>#}
+    {#                        <div class="information-item">#}
+    {#                            {{ task.from_department.name }}#}
+    {#                        </div>#}
+    {#                        <div class="information-item">#}
+    {#                            {{ task.description_allocate|default:'چیزی یافت نشد' }}#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {##}
+    {#                </form>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    {% endfor %}#}
 
 
     <!--Reason Followed up popup -->
@@ -54,13 +54,48 @@
             </div>
         </div>
     {% endfor %}
-
-
+    <div class="text-center mb-3">
+        <h3 class="title-page ">لیست تسک های الویت بندی شده</h3>
+    </div>
+    <div class="col-12 col-md-5 col-lg-6 mx-auto mb-4 p-4">
+        <div>
+            <div class="filters-radio">
+                <div class="title">
+                    مرتب بر اساس :
+                </div>
+                <div class="container">
+                    <div>
+                        <a class="{% if request.GET.sort_by == 'latest' or not request.GET.sort_by %}active{% endif %}" href="{% url 'public:task' %}?sort_by=latest">
+                            جدید ترین
+                        </a>
+                    </div>
+                    <div>
+                        <a class="{% if request.GET.sort_by == 'oldest' %}active{% endif %}" href="{% url 'public:task' %}?sort_by=oldest">
+                            قدیمی ترین
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <form action="" method="get">
+                    <input type="hidden" name="sort_by" value="{{ request.GET.sort_by }}">
+                    <p class="title">جست و جو :</p>
+                    <div class="cnt-search col-11 col-md-7">
+                        <input type="text" name="search" value="{{ request.GET.search }}" placeholder="نام تسک ، واحد تسک و ..">
+                        <div>
+                            <button>
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <!--morde-descriptin popup -->
     <form action="{% url 'public:task_list_state_update' %}" method="post">
         {% csrf_token %}
         <main class="main content-page container">
-            <h5 class="title-page">لیست تسک های الویت بندی شده</h5>
             <section class="col-12 project-content">
                 <div class="inner-project">
                     <!--task-prioritization table -->
@@ -97,7 +132,7 @@
                                     </div>
                                     <div class="col-2">
                                         <div class="table-title-item">
-                                           واحد تخصیص داده
+                                            واحد تخصیص داده
                                         </div>
                                     </div>
                                     <div class="col-1">

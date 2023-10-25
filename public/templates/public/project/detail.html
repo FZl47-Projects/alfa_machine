@@ -41,6 +41,9 @@
                         <div class="btn-change col-2 text-center d-none">بازرگانی</div>
                         <div class="btn-change col-2 text-center">مکاتبات پروژه</div>
                         <div class="btn-change col-2 text-center">امور مالی</div>
+                        {% if project.inquiry %}
+                            <div class="btn-change col-2 text-center">استعلام مربوطه</div>
+                        {% endif %}
                     </div>
                     {% if has_perm_to_modify %}
                         <div>
@@ -796,6 +799,82 @@
                         </section>
                     </div>
                     <!-- financial department -->
+
+                    <!-- inquiry content -->
+                    <div class="content-items p-2">
+                        <section class="section-table">
+                            <p style="text-align: right">فایل های استعلام</p>
+                            <div class="table">
+                                <!-- start title table -->
+                                <div class="table-title">
+                                    <!-- each column title table -->
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            ردیف
+                                        </div>
+                                    </div>
+                                    <!-- each column title table -->
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            نام
+                                        </div>
+                                    </div>
+                                    <div class="col-5">
+                                        <div class="table-title-item">
+                                            توضیحات
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            فایل
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end title table -->
+                                <!-- start content table -->
+                                <div class="table-content">
+                                    {% for inquiry_file in project.inquiry.get_files %}
+                                        {% if user.department.id in inquiry_file.get_department_ids %}
+                                            <div class="row-table">
+                                                <!-- each column content table -->
+                                                <div class="col-1 p-2">
+                                                    <div class="table-content-item">
+                                                        {{ forloop.counter }}
+                                                    </div>
+                                                </div>
+                                                <!-- each column content table -->
+                                                <div class="col-2 p-2">
+                                                    <div class="table-content-item">
+                                                        {{ inquiry_file.name }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-5 p-2">
+                                                    <div class="table-content-item spread-price">
+                                                        {{ inquiry_file.description }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-2 p-2">
+                                                    <div class="table-content-item">
+                                                        {% if inquiry_file.get_file_url %}
+                                                            <a href="{{ inquiry_file.get_file_url }}" download>دانلود</a>
+                                                        {% else %}
+                                                            -
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% empty %}
+                                        <div class="container-not-found-base">
+                                            <p>چیزی یافت نشد</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <!-- start content table -->
+                            </div>
+                        </section>
+                    </div>
+                    <!-- inquiry content end -->
                 </section>
             </div>
         </section>

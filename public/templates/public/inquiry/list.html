@@ -84,7 +84,45 @@
     {% endfor %}
 
 
-    <div class="container-fluid col-md-12 content-page">
+    <div class="container-fluid col-md-12 content-page" style="max-width: none;">
+        <div class="col-12 col-md-5 col-lg-6 mx-auto mb-4 p-4">
+            <div>
+                <div class="filters-radio">
+                    <div class="title">
+                        مرتب بر اساس :
+                    </div>
+                    <div class="container">
+                        <div>
+                            <a class="{% if request.GET.sort_by == 'latest' or not request.GET.sort_by %}active{% endif %}"
+                               href="{% url 'public:inquiry' %}?sort_by=latest">
+                                جدید ترین
+                            </a>
+                        </div>
+                        <div>
+                            <a class="{% if request.GET.sort_by == 'oldest' %}active{% endif %}"
+                               href="{% url 'public:inquiry' %}?sort_by=oldest">
+                                قدیمی ترین
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <form action="{% url 'public:inquiry' %}" method="get" class="overflow-hidden">
+                        <input type="hidden" name="sort_by" value="{{ request.GET.sort_by }}">
+                        <p class="title">جست و جو :</p>
+                        <div class="cnt-search col-11 col-md-7">
+                            <input type="text" name="search" value="{{ request.GET.search }}"
+                                   placeholder="عنوان ، شماره استعلام و ..">
+                            <div>
+                                <button>
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
         <main class="main">
             <section class="query m-1">
                 <div class="section-table">
@@ -97,24 +135,44 @@
                                     ردیف
                                 </div>
                             </div>
-                            <div class="col-2">
+                            <div class="col-1">
                                 <div class="table-title-item">
                                     واحد استعلام دهنده
                                 </div>
                             </div>
-                            <div class="col-2">
+                            <div class="col-1">
+                                <div class="table-title-item">
+                                    ارسال کننده
+                                </div>
+                            </div>
+                            <div class="col-1">
+                                <div class="table-title-item">
+                                    شماره استعلام
+                                </div>
+                            </div>
+                            <div class="col-1">
+                                <div class="table-title-item">
+                                    تاریخ دریافت
+                                </div>
+                            </div>
+                            <div class="col-1">
+                                <div class="table-title-item">
+                                    تاریخ ارسال
+                                </div>
+                            </div>
+                            <div class="col-1">
+                                <div class="table-title-item">
+                                    مهلت پاسخ(تاریخ ددلاین)
+                                </div>
+                            </div>
+                            <div class="col-1">
                                 <div class="table-title-item">
                                     عنوان
                                 </div>
                             </div>
-                            <div class="col-2">
+                            <div class="col-1">
                                 <div class="table-title-item">
-                                    تاریخ
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <div class="table-title-item">
-                                    توضیحات
+                                    شرح درخواست
                                 </div>
                             </div>
                             <div class="col-2">
@@ -122,8 +180,6 @@
                                     وضعیت
                                 </div>
                             </div>
-
-
                         </div>
                         <!-- title table -->
                         <!--  start content table -->
@@ -138,22 +194,42 @@
                                         </div>
                                     </div>
                                     <!-- each column  -->
-                                    <div class="col-2 p-2">
+                                    <div class="col-1 p-2">
                                         <div class="table-content-item">
                                             {{ inquiry.from_department.name }}
                                         </div>
                                     </div>
-                                    <div class="col-2 p-2">
+                                    <div class="col-1 p-2">
+                                        <div class="table-content-item">
+                                            {{ inquiry.sender }}
+                                        </div>
+                                    </div>
+                                    <div class="col-1 p-2">
+                                        <div class="table-content-item">
+                                            {{ inquiry.number_id }}
+                                        </div>
+                                    </div>
+                                    <div class="col-1 p-2">
+                                        <div class="table-content-item datetime-convert">
+                                            {{ inquiry.time_receive }}
+                                        </div>
+                                    </div>
+                                    <div class="col-1 p-2">
+                                        <div class="table-content-item datetime-convert">
+                                            {{ inquiry.time_submit }}
+                                        </div>
+                                    </div>
+                                    <div class="col-1 p-2">
+                                        <div class="table-content-item datetime-convert">
+                                            {{ inquiry.time_deadline_response }}
+                                        </div>
+                                    </div>
+                                    <div class="col-1 p-2">
                                         <div class="table-content-item">
                                             {{ inquiry.title }}
                                         </div>
                                     </div>
-                                    <div class="col-2 p-2">
-                                        <div class="table-content-item datetime-convert">
-                                            {{ inquiry.get_time_submited }}
-                                        </div>
-                                    </div>
-                                    <div class="col-2 p-2">
+                                    <div class="col-1 p-2">
                                         <div class="table-content-item">
                                             <p class="description">
                                                 {{ inquiry.description|truncatechars:30 }}

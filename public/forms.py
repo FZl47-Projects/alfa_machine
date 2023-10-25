@@ -70,3 +70,11 @@ class InquiryStatusForm(forms.ModelForm):
     class Meta:
         model = models.InquiryStatus
         fields = '__all__'
+
+
+class InquiryFileForm(forms.ModelForm):
+
+    class Meta:
+        model = models.InquiryFile
+        fields = '__all__'
+

@@ -97,12 +97,52 @@
         </div>
 
     </div>
+
+    <div class="col-12 col-md-5 col-lg-6 mx-auto mb-4 p-4">
+        <div>
+            <div class="filters-radio">
+                <div class="title">
+                    مرتب بر اساس :
+                </div>
+                <div class="container">
+                    <div>
+                        <a class="{% if request.GET.sort_by == 'latest' or not request.GET.sort_by %}active{% endif %}"
+                           href="{% url 'departments.warehouse:registration' %}?sort_by=latest">
+                            جدید ترین
+                        </a>
+                    </div>
+                    <div>
+                        <a class="{% if request.GET.sort_by == 'oldest' %}active{% endif %}"
+                           href="{% url 'departments.warehouse:registration' %}?sort_by=oldest">
+                            قدیمی ترین
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <form action="{% url 'departments.warehouse:registration' %}" method="get" class="overflow-hidden">
+                    <input type="hidden" name="sort_by" value="{{ request.GET.sort_by }}">
+                    <p class="title">جست و جو :</p>
+                    <div class="cnt-search col-11 col-md-7">
+                        <input type="text" name="search" value="{{ request.GET.search }}"
+                               placeholder="نام ، کد و ..">
+                        <div>
+                            <button>
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <!-- sabt dar anbar -->
     <!-- edit item anbar -->
     {% for item in items %}
         <div class="content-modal modal-warehouse-item-edit">
             <div class="inner-modal">
-                <form action="{% url 'dp_warehouse:register_detail' item_id=item.id %}" method="post" class="px-4 pt-2 task">
+                <form action="{% url 'dp_warehouse:register_detail' item_id=item.id %}" method="post"
+                      class="px-4 pt-2 task">
                     {% csrf_token %}
                     <div class="py-2">
                         <div class="title">
@@ -111,19 +151,22 @@
                         <div class="information-section">
                             <div class="information-item">
                                 <label for="lihh">دریافت کننده</label>
-                                <input type="text" placeholder="تسک شماره یک" name="receiver" value="{{ item.receiver }}" required>
+                                <input type="text" placeholder="تسک شماره یک" name="receiver"
+                                       value="{{ item.receiver }}" required>
                             </div>
                             <div class="d-flex ">
                                 <div class="col-6" style="padding:0px 5px ;">
                                     <div class="information-item">
                                         <label for="lihh">تاریخ ورود</label>
-                                        <input type="date" placeholder="1401/2/8" name="time_enter" value="{{ item.get_time_enter }}" required>
+                                        <input type="date" placeholder="1401/2/8" name="time_enter"
+                                               value="{{ item.get_time_enter }}" required>
                                     </div>
                                 </div>
                                 <div class="col-6" style="padding:0px 5px ;">
                                     <div class="information-item">
                                         <label for="lihh">تاریخ خروج</label>
-                                        <input type="date" placeholder="1402/2/5" name="time_leave" value="{{ item.get_time_leave }}" required>
+                                        <input type="date" placeholder="1402/2/5" name="time_leave"
+                                               value="{{ item.get_time_leave }}" required>
                                     </div>
                                 </div>
 
@@ -132,7 +175,8 @@
                                 <div class="col-12" style="padding:0px 5px ;">
                                     <div class="information-item">
                                         <label for="lihh">اسم</label>
-                                        <input type="text" placeholder="نام" name="name" value="{{ item.name }}" required>
+                                        <input type="text" placeholder="نام" name="name" value="{{ item.name }}"
+                                               required>
                                     </div>
                                 </div>
                             </div>
@@ -145,13 +189,15 @@
                                 <div class="col-6" style="padding:0px 5px ;">
                                     <div class="information-item">
                                         <label for="lihh">کد</label>
-                                        <input type="text" placeholder="1234" name="code" value="{{ item.code }}" required>
+                                        <input type="text" placeholder="1234" name="code" value="{{ item.code }}"
+                                               required>
                                     </div>
                                 </div>
                                 <div class="col-6" style="padding:0px 5px ;">
                                     <div class="information-item">
                                         <label for="lihh">ابعاد</label>
-                                        <input type="text" placeholder="44" name="size" value="{{ item.size }}" required>
+                                        <input type="text" placeholder="44" name="size" value="{{ item.size }}"
+                                               required>
                                     </div>
                                 </div>
 
@@ -160,13 +206,15 @@
                                 <div class="col-6" style="padding:0px 5px ;">
                                     <div class="information-item">
                                         <label for="lihh">موجودی</label>
-                                        <input type="number" placeholder="1401/2/8" name="amount" value="{{ item.amount }}" required>
+                                        <input type="number" placeholder="1401/2/8" name="amount"
+                                               value="{{ item.amount }}" required>
                                     </div>
                                 </div>
                                 <div class="col-6" style="padding:0px 5px ;">
                                     <div class="information-item">
                                         <label for="lihh">موجودی قابل برداشت</label>
-                                        <input type="number" placeholder="1402/2/5" name="amount_withdrawable" value="{{ item.amount_withdrawable }}" required>
+                                        <input type="number" placeholder="1402/2/5" name="amount_withdrawable"
+                                               value="{{ item.amount_withdrawable }}" required>
                                     </div>
                                 </div>
 
@@ -174,7 +222,8 @@
                             <div class="col-12" style="padding:0px 5px ;">
                                 <div class="information-item">
                                     <label for="lihh">موجودی تخصیص داده شده</label>
-                                    <input type="number" placeholder="1401/2/8" name="amount_allocated" value="{{ item.amount_allocated }}" required>
+                                    <input type="number" placeholder="1401/2/8" name="amount_allocated"
+                                           value="{{ item.amount_allocated }}" required>
                                 </div>
                             </div>
 
@@ -257,7 +306,8 @@
                                 <td class="item-row">{{ item.amount }}</td>
                                 <td class="item-row">{{ item.amount_withdrawable }}</td>
                                 <td class="item-row">{{ item.amount_allocated }}</td>
-                                <td class="item-row">{% if item.has_quality_passed %}تایید شده{% else %}تایید نشده{% endif %}</td>
+                                <td class="item-row">{% if item.has_quality_passed %}تایید شده{% else %}تایید
+                                    نشده{% endif %}</td>
                                 <td><span class="item-row btn-warehouse-item-edit"
                                           style="cursor:pointer ;">ویرایش</span>
                                 </td>

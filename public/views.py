@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, Http404, redirect, HttpResponse, get_object_or_404
 from django.views.generic import View
+from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from core.utils import form_validate_err
 from public import models, forms
@@ -94,6 +95,22 @@ class TaskOwner(View):
         get tasks who created and crud task with post method
     """
 
+    def search(self, request, tasks):
+        search = request.GET.get('search', None)
+        if not search:
+            return tasks
+        lookup = Q(name__icontains=search) | Q(from_department__name__icontains=search)
+        tasks = tasks.filter(lookup)
+        return tasks
+
+    def sort(self, request, tasks):
+        sort_by = request.GET.get('sort_by', 'latest')
+        if sort_by == 'latest':
+            tasks = tasks.order_by('-id')
+        elif sort_by == 'oldest':
+            tasks = tasks.order_by('id')
+        return tasks
+
     def get_template_name(self, request):
         task_state = request.GET.get('task_state', None)
         template_name = None
@@ -119,6 +136,8 @@ class TaskOwner(View):
         tasks = models.Task.objects.filter(from_department=department)
         if task_state:
             tasks = tasks.filter(state=task_state)
+        tasks = self.search(request, tasks)
+        tasks = self.sort(request, tasks)
         context = {
             'tasks': tasks,
             'departments': models.Department.objects.all(),
@@ -148,9 +167,27 @@ class TaskOwner(View):
 class TaskOwnerDepartment(View):
     template_name = 'public/task/department-each.html'
 
+    def search(self, request, tasks):
+        search = request.GET.get('search', None)
+        if not search:
+            return tasks
+        lookup = Q(name__icontains=search) | Q(from_department__name__icontains=search)
+        tasks = tasks.filter(lookup)
+        return tasks
+
+    def sort(self, request, tasks):
+        sort_by = request.GET.get('sort_by', 'latest')
+        if sort_by == 'latest':
+            tasks = tasks.order_by('-id')
+        elif sort_by == 'oldest':
+            tasks = tasks.order_by('id')
+        return tasks
+
     def get(self, request, department_id):
         department = models.Department.objects.get(id=department_id)
         tasks = models.Task.objects.filter(to_department=department)
+        tasks = self.search(request, tasks)
+        tasks = self.sort(request, tasks)
         context = {
             'tasks': tasks,
             'department': department,
@@ -165,12 +202,31 @@ class Task(View):
          get and create task
     """
 
+    def search(self, request, tasks):
+        search = request.GET.get('search', None)
+        if not search:
+            return tasks
+        lookup = Q(name__icontains=search) | Q(from_department__name__icontains=search)
+        tasks = tasks.filter(lookup)
+        return tasks
+
+    def sort(self, request, tasks):
+        sort_by = request.GET.get('sort_by', 'latest')
+        if sort_by == 'latest':
+            tasks = tasks.order_by('-id')
+        elif sort_by == 'oldest':
+            tasks = tasks.order_by('id')
+        return tasks
+
     def get(self, request):
         user_department = request.user.department
+        tasks = models.Task.objects.filter(to_department=user_department, is_active=True)
+        tasks = self.search(request, tasks)
+        tasks = self.sort(request, tasks)
         context = {
             'department': user_department,
             'task_states': models.Task.STATE_OPTIONS,
-            'tasks': models.Task.objects.filter(to_department=user_department, is_active=True)
+            'tasks': tasks
         }
         return render(request, 'public/task/list.html', context)
 
@@ -232,9 +288,33 @@ class TaskListStateUpdate(View):
 
 class Inquiry(View):
 
+    def search(self, request, inquiries):
+        search = request.GET.get('search', None)
+        if not search:
+            return inquiries
+        if search.isdigit():
+            lookup = Q(number_id=search)
+            inquiries = inquiries.filter(lookup)
+        else:
+            lookup = Q(title__icontains=search) | Q(from_department__name__icontains=search) | Q(state=search) | Q(
+                sender__icontains=search)
+            inquiries = inquiries.filter(lookup)
+        return inquiries
+
+    def sort(self, request, inquiries):
+        sort_by = request.GET.get('sort_by', 'latest')
+        if sort_by == 'latest':
+            inquiries = inquiries.order_by('-id')
+        elif sort_by == 'oldest':
+            inquiries = inquiries.order_by('id')
+        return inquiries
+
     def get(self, request):
+        inquiries = models.Inquiry.objects.filter(status=None)
+        inquiries = self.search(request, inquiries)
+        inquiries = self.sort(request, inquiries)
         context = {
-            'inquiries': models.Inquiry.objects.filter(status=None)
+            'inquiries': inquiries
         }
         return render(request, 'public/inquiry/list.html', context)
 
@@ -276,12 +356,37 @@ class InquiryDetail(View):
 class InquiryOwner(View):
     template_name = 'public/inquiry/owner/list.html'
 
+    def search(self, request, inquiries):
+        search = request.GET.get('search', None)
+        if not search:
+            return inquiries
+        if search.isdigit():
+            lookup = Q(number_id=search)
+            inquiries = inquiries.filter(lookup)
+        else:
+            lookup = Q(title__icontains=search) | Q(from_department__name__icontains=search) | Q(state=search) | Q(
+                sender__icontains=search)
+            inquiries = inquiries.filter(lookup)
+        return inquiries
+
+    def sort(self, request, inquiries):
+        sort_by = request.GET.get('sort_by', 'latest')
+        if sort_by == 'latest':
+            inquiries = inquiries.order_by('-id')
+        elif sort_by == 'oldest':
+            inquiries = inquiries.order_by('id')
+        return inquiries
+
     @user_role_required_cbv(['commerce_user'])
     def get(self, request):
+        inquiries = models.Inquiry.objects.all()
+        inquiries = self.search(request, inquiries)
+        inquiries = self.sort(request, inquiries)
         context = {
-            'inquiries': models.Inquiry.objects.all(),
+            'inquiries': inquiries,
             'inquiries_accepted': models.Inquiry.objects.filter(status__status='accepted'),
             'inquiries_rejected': models.Inquiry.objects.filter(status__status='rejected'),
+            'departments': models.Department.objects.all()
         }
         return render(request, self.template_name, context)
 
@@ -295,6 +400,21 @@ class InquiryStatus(View):
         # set default values
         data['inquiry'] = inquiry_id
         f = forms.InquiryStatusForm(data, request.FILES)
+        if form_validate_err(request, f) is False:
+            return redirect(referer_url or '/error')
+        f.save()
+        messages.success(request, 'عملیات با موفقیت ثبت شد')
+        return redirect(referer_url or '/success')
+
+
+class InquiryFile(View):
+
+    def post(self, request, inquiry_id):
+        referer_url = request.META.get('HTTP_REFERER', None)
+        data = request.POST.copy()
+        # set additional values
+        data['inquiry'] = inquiry_id
+        f = forms.InquiryFileForm(data, request.FILES)
         if form_validate_err(request, f) is False:
             return redirect(referer_url or '/error')
         f.save()
@@ -324,12 +444,17 @@ class DepartmentDetail(View):
 
 class ProjectAdd(View):
 
-    @user_role_required_cbv(['super_user'])
+    @user_role_required_cbv(['super_user', 'commerce_user'])
     def get(self, request):
-        return render(request, 'public/project/add.html')
+        context = {}
+        inquiry_id = request.GET.get('inquiry-id', None)
+        if inquiry_id:
+            context['inquiry'] = models.Inquiry.objects.get(id=inquiry_id, project=None)
+        return render(request, 'public/project/add.html', context)
 
-    @user_role_required_cbv(['super_user'])
+    @user_role_required_cbv(['super_user', 'commerce_user'])
     def post(self, request):
+        referer_url = request.META.get('HTTP_REFERER', None)
         data = request.POST
         f = forms.ProjectAdd(data)
         if not f.is_valid():
@@ -337,4 +462,4 @@ class ProjectAdd(View):
             return redirect('public:project_add')
         f.save()
         messages.success(request, 'پروژه با موفقیت ایجاد شد')
-        return redirect('public:project_add')
+        return redirect(referer_url or '/success')

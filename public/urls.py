@@ -28,4 +28,5 @@ urlpatterns = [
     path('inquiry/<int:inquiry_id>', views.InquiryDetail.as_view(), name='inquiry_detail'),
     path('inquiry/<int:inquiry_id>/status', views.InquiryStatus.as_view(), name='inquiry_status'),
     path('inquiry/owner', views.InquiryOwner.as_view(), name='inquiry_owner'),
+    path('inquiry/<int:inquiry_id>/file', views.InquiryFile.as_view(), name='inquiry_file'),
 ]

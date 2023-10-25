@@ -54,6 +54,7 @@ class Project(BaseModel):
     is_paid = models.BooleanField(default=False)
     description = models.TextField(null=True)
     status = models.CharField(max_length=20, choices=STATUS_OPTIONS, default='under_construction')
+    inquiry = models.OneToOneField('Inquiry', on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.name
@@ -267,6 +268,9 @@ class Inquiry(BaseModel):
     def get_time_submited(self):
         return self.time_submit.strftime('%Y-%m-%d')
 
+    def get_files(self):
+        return self.inquiryfile_set.all()
+
 
 class InquiryStatus(BaseModel, File):
     STATUS_OPTIONS = (
@@ -282,9 +286,13 @@ class InquiryStatus(BaseModel, File):
 
 
 class InquiryFile(BaseModel, File):
+    name = models.CharField(max_length=100)
     inquiry = models.ForeignKey('Inquiry', on_delete=models.CASCADE)
     description = models.TextField(null=True)
     departments = models.ManyToManyField('Department')  # departments can access to this file
 
     def __str__(self):
-        return f'{self.inquiry} - File'
+        return f'{self.name} - {self.inquiry} - File'
+
+    def get_department_ids(self):
+        return list(self.departments.values_list('id', flat=True))
