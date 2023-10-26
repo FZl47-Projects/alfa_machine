@@ -470,7 +470,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-1">
-                                                {% if inquiry.project is None %}
+                                                {% if not inquiry.project %}
                                                     <a href="{% url 'public:project_add' %}?inquiry-id={{ inquiry.id }}"
                                                        class="btn btn-outline-success">تبدیل به پروژه</a>
                                                 {% else %}
