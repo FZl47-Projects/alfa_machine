@@ -81,3 +81,26 @@ overaly_EditQuery.forEach((item, index) => {
   });
 });
 // ---------------------------------edit query-------------------------------------//
+//
+//
+// ---------------------------------files -------------------------------------//
+// ---------------------------------edit query-------------------------------------//
+let BtnFilesQuery = document.querySelectorAll(".btn-files-query");
+let Modal_FilesQuery = document.querySelectorAll(".modal-files");
+let overaly_FilesQuery= document.querySelectorAll(".modal-files .inner-modal");
+
+BtnFilesQuery.forEach((item, index) =>{
+  item.addEventListener("click", () => {
+    Modal_FilesQuery[index].classList.add("active");
+  });
+})
+
+
+overaly_FilesQuery.forEach((item, index) => {
+  item.addEventListener("click", (e) => {
+    if (e.target.className === "inner-modal") {
+      Modal_FilesQuery[index].classList.remove("active");
+    }
+  });
+});
+// ---------------------------------edit query-------------------------------------//
