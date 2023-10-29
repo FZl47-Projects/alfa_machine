@@ -310,11 +310,12 @@ class Inquiry(View):
         return inquiries
 
     def get(self, request):
-        inquiries = models.Inquiry.objects.filter(status=None)
+        inquiries = models.Inquiry.objects.all()
         inquiries = self.search(request, inquiries)
         inquiries = self.sort(request, inquiries)
         context = {
-            'inquiries': inquiries
+            'inquiries': inquiries,
+            'departments': models.Department.objects.all()
         }
         return render(request, 'public/inquiry/list.html', context)
 

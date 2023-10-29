@@ -13,7 +13,7 @@
 
     <h5 class="title-page">لیست استعلامات</h5>
 
-    <!--morde-descriptin popup -->
+
     {% for inquiry in inquiries %}
         <div class="content-modal-two modal-more-description">
             <div class="inner-modal">
@@ -29,11 +29,6 @@
                 </form>
             </div>
         </div>
-    {% endfor %}
-
-    <!--morde-descriptin popup -->
-    <!-- popup taid -->
-    {% for inquiry in inquiries %}
         <div class="content-modal-two modal-query-approval">
             <div class="inner-modal">
                 <form class="p-4" action="{% url 'public:inquiry_status' inquiry_id=inquiry.id %}" method="post"
@@ -60,10 +55,6 @@
                 </form>
             </div>
         </div>
-    {% endfor %}
-
-
-    {% for inquiry in inquiries %}
         <div class="content-modal-two modal-query-no-approval"> --&gt;
             <div class="inner-modal">
                 <form class="p-4" action="{% url 'public:inquiry_status' inquiry_id=inquiry.id %}" method="post">
@@ -77,6 +68,96 @@
                     </div>
                     <div class="information-section">
                         <button class="sabt-modal btn-primary col-12">ثبت</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="content-modal-two modal-confirm-task">
+            <div class="inner-modal">
+                <form class="p-4" action="{% url 'public:inquiry_file' inquiry_id=inquiry.id %}" method="post"
+                      enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="information-section">
+                        <div class="information-item">
+                            <label for="lihh">نام فایل</label>
+                            <input type="text" name="name">
+                        </div>
+                        <div class="information-item">
+                            <label for="lihh">توضیحات</label>
+                            <textarea name="description" id="" cols="30" rows="10" required=""></textarea>
+                        </div>
+                        <div class="information-item">
+                            <div class="uploade-imge">
+                                <label class="item-upload" for="add5">
+                                    آپلود فایل
+                                </label>
+                                <input type="file" name="file" id="add5" hidden="">
+                            </div>
+                        </div>
+                        <div class="information-item">
+                            <div>
+                                <label for="lihh">
+                                    واحد
+                                    <span class="font-70">(واحد هایی که میتوانند به فایل دسترسی داشته باشند)</span>
+                                    :</label>
+                                <div class="units d-flex flex-wrap">
+                                    {% for department in departments %}
+                                        <div class="d-flex align-items-center justify-content-center col-6 col-md-3 p-2">
+                                            <label class="mt-2" for="inp-to-dep-{{ department.id }}">
+                                                {{ department.name }}
+                                            </label>
+                                            <input type="checkbox" id="inp-to-dep-{{ department.id }}" multiple
+                                                   name="departments" value="{{ department.id }}" checked>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="information-section">
+                        <button class="sabt-modal col-12 btn-primary">ثبت</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="content-modal-two modal-files">
+            <div class="inner-modal">
+                <form class="p-4">
+                    <div class="close-modal close-modal-description">
+                        <img src="{% static 'frontend/images/close.png' %}" alt="">
+                    </div>
+                    <div class="text-center my-2">
+                        <h3>فایل ها</h3>
+                    </div>
+                    <div class="hhh">
+                        <table class="table">
+                            <tr>
+                                <th>نام فایل</th>
+                                <th>توضیحات</th>
+                                <th>فایل</th>
+                            </tr>
+                            {% for file in inquiry.get_files %}
+                                <tr>
+                                    <td class="font-80">
+                                        {{ file.name }}
+                                    </td>
+
+                                    <td class="font-70">
+                                        {{ file.description }}
+                                    </td>
+
+                                    <td>
+                                        <a href="{{ file.get_file_url }}" class="text-primary">دانلود</a>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr class="container-not-found-base">
+                                    <td colspan="1000">چیزی ثبت نشده است</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
                     </div>
                 </form>
             </div>
@@ -175,6 +256,11 @@
                                     شرح درخواست
                                 </div>
                             </div>
+                            <div class="col-1">
+                                <div class="table-title-item">
+                                    فایل
+                                </div>
+                            </div>
                             <div class="col-2">
                                 <div class="table-title-item">
                                     وضعیت
@@ -236,13 +322,29 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <div class="col-2 p-2">
-                                        <div class="table-content-item">
-                                            <div class="btn-table-takhsis d-flex">
-                                                <div class="btn-item m-1 taeid btn-taeid-query">تایید</div>
-                                                <div class="btn-item m-1 notaeid  btn-notaeid-query">رد</div>
+                                    <div class="col-1 p-2">
+                                        <div class="text-center">
+                                            <div class="tarif-task btn-create-report btn btn-outline-primary task-confirm">
+                                                اپلود
+                                            </div>
+                                            <div class="tarif-task  btn btn-outline-secondary btn-files-query mt-1">
+                                                نمایش
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="col-2 p-2">
+                                        {% if not inquiry.status %}
+                                            <div class="table-content-item">
+                                                <div class="btn-table-takhsis d-flex">
+                                                    <div class="btn-item m-1 taeid btn-taeid-query">تایید</div>
+                                                    <div class="btn-item m-1 notaeid  btn-notaeid-query">رد</div>
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            <p class="text-center {% if inquiry.status.status == 'accepted' %}text-success{% else %}text-danger{% endif %}">
+                                                {{ inquiry.status.get_status_display }}
+                                            </p>
+                                        {% endif %}
                                     </div>
                                 </div>
                             {% empty %}
@@ -266,5 +368,5 @@
 {% endblock %}
 
 {% block Script %}
-    <script type="module" src="{% static 'frontend/js/all-query.js' %}"></script>
+    <script src="{% static 'frontend/js/all-query.js' %}"></script>
 {% endblock %}

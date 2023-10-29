@@ -269,7 +269,7 @@ class Inquiry(BaseModel):
         return self.time_submit.strftime('%Y-%m-%d')
 
     def get_files(self):
-        return self.inquiryfile_set.all()
+        return self.inquiryfile_set.all().order_by('-id')
 
 
 class InquiryStatus(BaseModel, File):
