@@ -38,7 +38,7 @@ class Project(BaseModel):
         ('paused', 'متوقف شده'),
         ('under_construction', 'در حال ساخت'),
     )
-    number_id = models.IntegerField()
+    number_id = models.CharField(max_length=150)
     prepayment_datetime = models.DateTimeField()
     item = models.TextField(null=True)
     count_remaining = models.BigIntegerField()
