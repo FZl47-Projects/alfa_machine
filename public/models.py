@@ -239,7 +239,7 @@ class TaskStatus(BaseModel, File):
 
 class Inquiry(BaseModel):
     STATE_OPTIONS = (
-        ('canceled', 'انصارف'),
+        ('canceled', 'انصراف'),
         ('waiting_for_price', 'در انتظار قیمت'),
         ('price_recorded', 'قیمت ارسال شده'),
     )

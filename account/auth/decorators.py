@@ -14,7 +14,7 @@ def user_role_required_cbv(roles):
             role = user.role
             if not (role in roles):
                 return redirect('account:login')
-            department = getattr(user,'department',None)
+            department = getattr(user, 'department', None)
             if department is None:
                 return redirect('account:login')
             return func(self, request, *args, **kwargs)

@@ -67,19 +67,25 @@ class ReportDepartmentCreate(View):
 
     def post(self, request):
         referer_url = request.META.get('HTTP_REFERER', None)
-        data = request.POST.copy()
-        is_all_departments = True if data.get('select_department_ticket', 'all') == 'all' else False
-        is_all_projects = True if data.get('select_project_ticket', 'all') == 'all' else False
-        # set default values
 
-        departments = []
-        projects = []
+        data = request.POST.copy()
+
+        # Get selected departments & projects
+        department_selection = data.get('select_department_ticket', 'all')
+        project_selection = data.get('select_project_ticket', 'all')
+
+        # Set default values
+        is_all_departments = True if department_selection == 'all' else False
+        is_all_projects = True if project_selection == 'all' else False
+
         if is_all_departments is False:
             departments = data.getlist('departments', [])
         else:
             departments = list(Department.objects.all().values_list('id', flat=True))
 
-        if is_all_projects is False:
+        if project_selection == 'null':
+            projects = []
+        elif is_all_projects is False:
             projects = data.getlist('projects', [])
         else:
             projects = list(Project.objects.filter(is_active=True).values_list('id', flat=True))
@@ -94,7 +100,9 @@ class ReportDepartmentCreate(View):
         if form_validate_err(request, f) is False:
             return redirect(referer_url or '/error')
         f.save()
+
         messages.success(request, 'عملیات مورد نظر با موفقیت انجام شد')
+
         return redirect(referer_url or '/success')
 
 

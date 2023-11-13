@@ -12,11 +12,18 @@ def random_str(size=15, chars=string.ascii_lowercase + string.ascii_uppercase + 
     return ''.join(random.choice(chars) for _ in range(size))
 
 
+def get_random_code(size: int = 12):
+    # Generate a random n-digit code
+    new_code = ''.join([str(random.randint(0, 9)) for _ in range(size)])
+    return new_code
+
+
 def get_time(frmt='%Y-%m-%d_%H:%M'):
     t = timezone.now()
     if frmt is not None:
         t = t.strftime(frmt)
     return t
+
 
 def get_timesince_persian(time):
     time_server = get_time(None)
@@ -43,7 +50,6 @@ def get_timesince_persian(time):
         result = f'{day}  روز پیش'
 
     return result
-
 
 
 def send_sms(phonenumber, content, **kwargs):

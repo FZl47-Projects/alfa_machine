@@ -20,8 +20,7 @@ urlpatterns = [
     path('task/remind/<int:task_id>', views.TaskRemind.as_view(), name='task_remind'),
     path('task/owner', views.TaskOwner.as_view(), name='task_owner'),
     path('task/owner/<int:task_id>', views.TaskOwner.as_view(), name='task_owner_detail'),
-    path('task/owner/department/<int:department_id>', views.TaskOwnerDepartment.as_view(),
-         name='task_owner_department'),
+    path('task/owner/department/<int:department_id>', views.TaskOwnerDepartment.as_view(), name='task_owner_department'),
     path('task/list/state', views.TaskListStateUpdate.as_view(), name='task_list_state_update'),
 
     path('inquiry', views.Inquiry.as_view(), name='inquiry'),

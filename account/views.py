@@ -63,7 +63,7 @@ class NewUser(View):
     def get(self, request):
         context = {
             'departments': Department.objects.all(),
-            'roles':User.ROLE_USER_OPTIONS
+            'roles': User.ROLE_USER_OPTIONS
         }
         return render(request, self.template_name, context)
 

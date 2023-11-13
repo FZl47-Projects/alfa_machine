@@ -11,8 +11,6 @@
 
 
 {% block Content %}
-
-
     <div class="content-modal-two modal-confirm-task">
         <div class="inner-modal">
             <form class="p-4" action="{% url 'public:project_file' %}" method="post" enctype="multipart/form-data">
@@ -55,10 +53,6 @@
         </div>
     </div>
 
-
-
-
-
     <!-- request unit -->
     {% include 'support/components/new-ticket.html' with departments=departments projects=projects %}
 
@@ -79,9 +73,9 @@
             <div class="allocation-of-materials d-flex justify-content-between align-item-center">
                 <a href="{% url 'dp_warehouse:items_allocation_project' %}"><span class="allocation-btn">تخصیص مواد اولیه</span></a>
                 <div class="notif-btn-mobile d-none">اعلانات</div>
-
             </div>
             <!-- btn allocation-of-materials -->
+
             <!--Start Access panel -->
             <section class="collection-units mb-4" style="background-color:#fff ; margin-top:30px;">
                 <div class="box-section">
@@ -105,14 +99,14 @@
                             <div class="style-conent-box" style="margin-bottom:15px ;">
                                 <span>لیست گزارشات</span>
                             </div>
-                            <div class="tarif-task" id="one">
-                                <a href="{% url 'support:report_list' %}">
+                            <a href="{% url 'support:report_list' %}" class="tarif-task" id="one">
+                                <span>
                                     مشاهده
-                                </a>
-                            </div>
+                                </span>
+                            </a>
                         </div>
                     </div>
-                    <div class="col-12 col-md-3  col-lg-2 ">
+                    <div class="col-12 col-md-3  col-lg-2">
                         <div class="box-item-2 ddd">
                             <img src="{% static 'frontend/images/Path 3652.png' %}" alt="" class="icon-box"
                                  style="margin-bottom:15px ;">
@@ -122,22 +116,22 @@
                             <div class="tarif-task btn-create-report" id="one">ایجاد</div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-3  col-lg-2 ">
+                    <div class="col-12 col-md-3  col-lg-2">
                         <div class="box-item-2 ddd">
                             <img src="{% static 'frontend/images/لیست خرید تایید شده مدیریت 2@2x.png' %}" alt=""
                                  class="icon-box"
-                                 style="margin-bottom:15px ;">
+                                 style="margin-bottom:15px;">
                             <div class="style-conent-box" style="margin-bottom:15px ;">
                                 <span>فایل پروژه</span>
                             </div>
                             <div class="tarif-task btn-create-report btn--ta1 task-confirm" id="one">اپلود</div>
                         </div>
                     </div>
-
                     <!--Access panel item  -->
                 </div>
             </section>
-            <!--Start Access panel -->
+            <!-- .End Access panel -->
+
             <!-- tasks category -->
             <section class="tasks">
                 <div class="box-section">
@@ -168,7 +162,6 @@
                             <div class="btn--ta"><a href="{% url 'public:task_owner' %}?task_state=queue">مشاهده همه</a>
                             </div>
                         </div>
-
                     </div>
                     <div class="col-12 col-md-3 p-2">
                         <div class="box-item-2">
@@ -182,7 +175,6 @@
                             <div class="btn--ta"><a href="{% url 'public:task_owner' %}?task_state=need-to-check">مشاهده
                                 همه</a></div>
                         </div>
-
                     </div>
                     <div class="col-12 col-md-3 p-2">
                         <div class="box-item-2">
@@ -196,9 +188,7 @@
                             <div class="btn--ta"><a href="{% url 'public:task_owner' %}?task_state=finished">مشاهده
                                 همه</a></div>
                         </div>
-
                     </div>
-
 
                 </div>
             </section>
@@ -210,7 +200,7 @@
               <img src="{% static 'frontend/images/back-icon.png' %}" alt="">
           </span>
             </div>
-            <!-- sectin project -->
+            <!-- section project -->
             <section class="ongoing-projects">
                 <!-- inner project section -->
                 <div class="box-section">
@@ -224,7 +214,7 @@
                 </div>
                 <!-- inner project section -->
             </section>
-            <!-- sectin project -->
+            <!-- section project -->
             <!--Start Access panel -->
             <section class="collection-units" style="background-color:#fff ; margin-top:30px;">
                 <div class="box-section">
@@ -235,7 +225,6 @@
             </section>
             <!--end Access panel -->
         </main>
-
     </div>
 
 {% endblock %}

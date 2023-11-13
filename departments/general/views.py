@@ -59,5 +59,5 @@ def delete_department(request, department_id):
 def delete_user(request, user_id):
     user = User.objects.get(id=user_id)
     user.delete()
-    messages.success(request,'کاربر با موفقیت حذف شد')
+    messages.success(request, 'کاربر با موفقیت حذف شد')
     return redirect('departments.general:users_list')

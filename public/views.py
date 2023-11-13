@@ -20,7 +20,6 @@ class Error(View):
 
 
 class Index(View):
-
     def get(self, request):
         return redirect(request.user.get_absolute_url_dashboard())
 

@@ -18,16 +18,16 @@
                 <div class="information-item container-select-choices">
                     <div class="select-choices">
                         <div>
-                            <label for="">
+                            <label for="select_department_all">
                                 همه واحد ها
                             </label>
-                            <input type="radio" name="select_department_ticket" value="all" checked>
+                            <input type="radio" id="select_department_all" name="select_department_ticket" value="all" checked>
                         </div>
                         <div>
-                            <label for="">
+                            <label for="select_department_select">
                                 انتخاب واحد
                             </label>
-                            <input type="radio" name="select_department_ticket" value="select">
+                            <input type="radio" id="select_department_select" name="select_department_ticket" value="select">
                         </div>
                     </div>
                     <div class="select-choices-content">
@@ -49,21 +49,27 @@
                 <div class="information-item container-select-choices">
                     <div class="select-choices">
                         <div>
-                            <label for="">
+                            <label for="select_project_all">
                                 همه پروژه ها
                             </label>
-                            <input type="radio" name="select_project_ticket" value="all" checked>
+                            <input type="radio" id="select_project_all" name="select_project_ticket" value="all" checked>
                         </div>
                         <div>
-                            <label for="">
+                            <label for="select_project_select">
                                 انتخاب پروژه
                             </label>
-                            <input type="radio" name="select_project_ticket" value="select">
+                            <input type="radio" id="select_project_select" name="select_project_ticket" value="select">
+                        </div>
+                        <div>
+                            <label for="select_project_different">
+                                متفرقه
+                            </label>
+                            <input type="radio" id="select_project_different" name="select_project_ticket" value="null">
                         </div>
                     </div>
                     <div class="select-choices-content">
                         <label for="lihh"> پروژه ها :</label>
-                        <select name="projects" multiple>
+                        <select id="lihh" name="projects" multiple>
                             {% for project in projects %}
                                 <option value="{{ project.id }}">{{ project.name }}</option>
                             {% endfor %}
