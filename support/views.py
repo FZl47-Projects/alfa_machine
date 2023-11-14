@@ -93,6 +93,7 @@ class ReportDepartmentCreate(View):
         data['from_department'] = request.user.department
         data['is_all_departments'] = is_all_departments
         data['is_all_projects'] = is_all_projects
+        data['project_selection'] = project_selection
         data.setlist('projects', projects)
         data.setlist('departments', departments)
 

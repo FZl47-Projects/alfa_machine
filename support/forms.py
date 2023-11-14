@@ -36,10 +36,13 @@ class ReportDepartmentForm(forms.ModelForm):
     def clean_is_all_projects(self):
         cleaned_data = self.clean()
 
+        project_selection = self.data.get('project_selection')
         is_all_projects = cleaned_data.get('is_all_projects')
         projects = cleaned_data.get('projects')
 
-        if is_all_projects is False and not projects:
+        if project_selection == 'null':
+            pass
+        elif is_all_projects is False and not projects:
             self.add_error('projects', 'please enter project object')
 
         return is_all_projects
