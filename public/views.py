@@ -110,24 +110,6 @@ class TaskOwner(View):
             tasks = tasks.order_by('id')
         return tasks
 
-    def get_template_name(self, request):
-        task_state = request.GET.get('task_state', None)
-        template_name = None
-        if task_state == 'progress':
-            template_name = 'public/task/progress.html'
-        elif task_state == 'queue':
-            template_name = 'public/task/queue.html'
-        elif task_state == 'need-to-check':
-            template_name = 'public/task/need-to-check.html'
-        elif task_state == 'finished':
-            template_name = 'public/task/finished.html'
-        elif task_state == 'department-each':
-            template_name = 'public/task/department-each.html'
-
-        if template_name is None:
-            raise Http404
-        return template_name
-
     def get(self, request):
         # get task list by type state
         task_state = request.GET.get('task_state', None)
@@ -142,8 +124,7 @@ class TaskOwner(View):
             'departments': models.Department.objects.all(),
             'projects': models.Project.objects.filter(is_active=True)
         }
-        template_name = self.get_template_name(request)
-        return render(request, template_name, context)
+        return render(request, 'public/task/list-state.html', context)
 
     def post(self, request, task_id):
         type_request = request.POST.get('type_request', None)
@@ -251,7 +232,7 @@ class TaskRemind(LoginRequiredMixin, View):
         referer_url = request.META.get('HTTP_REFERER', None)
         user = request.user
         department = user.department
-        task = get_object_or_404(models.Task, id=task_id, from_department=department)
+        task = get_object_or_404(models.Task, id=task_id)
         notif = NotificationDepartment.objects.create(
             from_department=department,
             title='یاداوری انجام تسک',
