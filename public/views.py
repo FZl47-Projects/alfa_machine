@@ -436,10 +436,12 @@ class ProjectAdd(View):
     @user_role_required_cbv(['super_user', 'commerce_user'])
     def post(self, request):
         data = request.POST
+
         f = forms.ProjectAdd(data)
         if not f.is_valid():
-            messages.error(request, 'لطفا فیلد هارا به درستی پر نمایید')
+            messages.error(request, 'لطفا فیلد هارا به درستی وارد نمایید')
             return redirect('public:project_add')
         f.save()
+
         messages.success(request, 'پروژه با موفقیت ایجاد شد')
         return redirect('public:project_add')

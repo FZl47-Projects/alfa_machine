@@ -82,7 +82,7 @@
                                        class="form-control persianDatapicker" set-on="prepayment_datetime"
                                        required readonly>
                                 <input type="hidden" id="prepayment_datetime" name="prepayment_datetime" required>
-                                <label for="prepayment_datetime_picker"> :تاریخ پیش پرداخت</label>
+                                <label for="prepayment_datetime_picker">تاریخ پیش پرداخت</label>
                             </div>
                             <div class="group-form">
                                 <textarea id="item" name="item" class="form-control"></textarea>
@@ -105,11 +105,24 @@
                                 </select>
                                 <label for="">وضعیت</label>
                             </div>
-                            <div class="group-form">
+                            <div class="group-form justify-content-end gap-4">
+                                <div class="d-flex flex-row-reverse gap-4">
+                                    <label class="d-flex gap-1">
+                                        ندارد
+                                        <input type="radio" value="false" checked name="has_sample" oninput="toggleRelatedField('sample_date_div', false)">
+                                    </label>
+                                    <label class="d-flex gap-1">
+                                         دارد
+                                        <input type="radio" value="true" name="has_sample" oninput="toggleRelatedField('sample_date_div', true)">
+                                    </label>
+                                </div>
+                                <label for="has_sample">:نمونه</label>
+                            </div>
+                            <div class="group-form d-none" id="sample_date_div">
                                 <input type="text" name="" id="sample_delivery_datetime_picker"
                                        class="form-control persianDatapicker" set-on="sample_delivery_date"
                                        required readonly>
-                                <input type="hidden" id="sample_delivery_date" name="sample_delivery_date" required>
+                                <input type="hidden" id="sample_delivery_date" name="sample_delivery_date">
                                 <label for="sample_delivery_datetime_picker"> :تاریخ تحویل نمونه</label>
                             </div>
                             <div class="group-form">
@@ -139,4 +152,15 @@
 
 {% block Script %}
     <script src="{% static 'frontend/js/login.js' %}" type="module"></script>
+
+    <script>
+        function toggleRelatedField(fieldId, show=true) {
+            const field = document.getElementById(fieldId);
+            if(show) {
+              field.classList.remove('d-none');
+            } else {
+                field.classList.add('d-none');
+            }
+        }
+    </script>
 {% endblock %}
