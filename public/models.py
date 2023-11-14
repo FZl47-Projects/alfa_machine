@@ -33,6 +33,14 @@ class Department(BaseModel):
         return self.notificationdepartment_set.filter(is_showing=True)
 
 
+# TaskMasters model
+class TaskMaster(BaseModel):
+    title = models.CharField('Task Master name', max_length=128)
+
+    def __str__(self):
+        return self.title
+
+
 class Project(BaseModel):
     STATUS_OPTIONS = (
         ('paused', 'متوقف شده'),
@@ -43,10 +51,11 @@ class Project(BaseModel):
     item = models.TextField(null=True)
     count_remaining = models.BigIntegerField()
     count_total = models.BigIntegerField()
-    sample_delivery_date = models.DateField()
+    has_sample = models.BooleanField(default=False)
+    sample_delivery_date = models.DateField(null=True, blank=True)
     mass_delivery_date = models.DateField()
     name = models.CharField(max_length=100)
-    task_master = models.CharField(max_length=100)
+    task_master = models.ForeignKey(TaskMaster, on_delete=models.CASCADE, related_name='projects')
     time_start = models.DateField()
     time_end = models.DateField()
     is_active = models.BooleanField(default=True)
