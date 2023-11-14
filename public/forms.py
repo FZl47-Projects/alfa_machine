@@ -28,6 +28,13 @@ class TaskStateUpdate(forms.Form):
     state = forms.ChoiceField(choices=models.Task.STATE_OPTIONS)
 
 
+# TaskMasterAdd form
+class TaskMasterAddForm(forms.ModelForm):
+    class Meta:
+        model = models.TaskMaster
+        fields = '__all__'
+
+
 class ProjectFile(forms.ModelForm):
     file = forms.FileField(required=True)
 
