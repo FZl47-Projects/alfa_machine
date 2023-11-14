@@ -131,16 +131,26 @@
                                 </div>
                                 <div class="col-12 col-md-6 p-2">
                                     <div class="right-item">
-                                        <span>ایتم :</span>
+                                        <span>آیتم :</span>
                                         <span>{{ project.item|default:'چیزی ثبت نشده است' }}</span>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6 p-2">
                                     <div class="right-item">
-                                        <span>تاریخ تحویل نمونه :</span>
-                                        <span class="datetime-convert">{{ project.get_sample_delivery_date }}</span>
+                                        <span>نمونه :</span>
+                                        <span class="datetime-convert">{{ project.get_has_sample_state }}</span>
                                     </div>
                                 </div>
+                                {% if project_has_sample %}
+                                    <div class="col-12 col-md-6 p-2">
+                                        <div class="right-item">
+                                            <span>تاریخ تحویل نمونه :</span>
+                                            <span class="datetime-convert">
+                                                    {{ project.get_sample_delivery_date }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                {% endif %}
                                 <div class="col-12 col-md-6 p-2">
                                     <div class="right-item">
                                         <span>تاریخ تحویل انبوه :</span>
@@ -155,7 +165,7 @@
                                 </div>
                                 <div class="col-12 p-2">
                                     <div class="right-item">
-                                        <span>توضیحات</span>
+                                        <span>توضیحات:</span>
                                         <div class="mt-3">{{ project.description|default:'توضیحی ثبت نشده است' }}</div>
                                     </div>
                                 </div>
@@ -906,8 +916,11 @@
                             </div>
                             <div class="group-form">
                                 <label for="task_master">کارفرما</label>
-                                <input type="text" id="task_master" class="form-control" name="task_master" required
-                                       value="{{ project.task_master }}">
+                                <select class="form-select text-end" name="task_master" id="task_master" required>
+                                    {% for task_master in task_masters %}
+                                        <option value="{{ task_master.id }}">{{ task_master.title }}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                             <div class="group-form">
                                 <label for="time_start_picker">تاریخ شروع</label>
@@ -916,7 +929,6 @@
                                        required readonly value="{{ project.get_time_start_input }}">
                                 <input type="hidden" id="time_start" name="time_start" required
                                        value="{{ project.get_time_start_input }}">
-
                             </div>
                             <div class="group-form">
                                 <label for="time_end_picker">تاریخ پایان</label>
@@ -925,7 +937,6 @@
                                        required readonly value="{{ project.get_time_end_input }}">
                                 <input type="hidden" id="time_end" name="time_end" required
                                        value="{{ project.get_time_end_input }}">
-
                             </div>
                             <div class="group-form">
                                 <label for="price">قیمت</label>
@@ -943,7 +954,6 @@
                                         شده
                                     </option>
                                 </select>
-
                             </div>
                             <div class="group-form">
                                 <label for="price">وضعیت پرداخت</label>
@@ -964,7 +974,7 @@
 
                             </div>
                             <div class="group-form">
-                                <label for="item">ایتم</label>
+                                <label for="item">آیتم</label>
                                 <textarea id="item" name="item"
                                           class="form-control">{{ project.item|default:'' }}</textarea>
                             </div>
@@ -978,14 +988,26 @@
                                 <input type="number" id="count_remaining" class="form-control" name="count_remaining"
                                        required value="{{ project.count_remaining }}">
                             </div>
-                            <div class="group-form">
+                            <div class="group-form justify-content-center">
+                                <label for="has_sample">:نمونه</label>
+                                <div class="d-flex gap-4">
+                                    <label class="d-flex gap-1">
+                                        ندارد
+                                        <input type="radio" value="false" {% if not project.has_sample %}checked{% endif %} name="has_sample" oninput="toggleRelatedField('sample_date_div', false)">
+                                    </label>
+                                    <label class="d-flex gap-1">
+                                         دارد
+                                        <input type="radio" value="true" {% if project.has_sample %}checked{% endif %} name="has_sample" oninput="toggleRelatedField('sample_date_div', true)">
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="group-form {% if not project.has_sample %}d-none{% endif %}" id="sample_date_div">
                                 <label for="sample_delivery_datetime_picker"> :تاریخ تحویل نمونه</label>
                                 <input type="text" name="" id="sample_delivery_datetime_picker"
                                        class="form-control persianDatapicker" set-on="sample_delivery_date"
                                        required readonly value="{{ project.get_sample_delivery_date_input }}">
                                 <input type="hidden" id="sample_delivery_date" name="sample_delivery_date" required
                                        value="{{ project.get_sample_delivery_date_input }}">
-
                             </div>
                             <div class="group-form">
                                 <label for="mass_delivery_datetime_picker"> :تاریخ تحویل انبوه</label>
@@ -1062,6 +1084,16 @@
         new Chart(document.querySelector("#chart"), chart_config)
     </script>
     <script type="module" src="{% static 'frontend/js/adminpanel.js' %}"></script>
+    <script>
+        function toggleRelatedField(fieldId, show=true) {
+            const field = document.getElementById(fieldId);
+            if(show) {
+              field.classList.remove('d-none');
+            } else {
+                field.classList.add('d-none');
+            }
+        }
+    </script>
 {% endblock %}
 
 

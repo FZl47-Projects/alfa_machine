@@ -30,7 +30,8 @@ class ProjectDetail(View):
     def get(self, request, project_id):
         context = {
             'has_perm_to_modify': models.Project.has_perm_to_modify(request.user),
-            'project': models.Project.objects.get(id=project_id)
+            'project': models.Project.objects.get(id=project_id),
+            'task_masters': models.TaskMaster.objects.all()
         }
         return render(request, self.template_name, context)
 
@@ -59,10 +60,12 @@ class ProjectUpdate(View):
     def post(self, request, project_id):
         project = models.Project.objects.get(id=project_id)
         f = forms.ProjectUpdate(data=request.POST, instance=project)
+
         if not f.is_valid():
             messages.error(request, 'لطفا فیلد هارا به درستی پر نمایید')
             return redirect(project.get_absolute_url())
         f.save()
+
         messages.success(request, 'پروژه با موفقیت بروزرسانی شد')
         return redirect(project.get_absolute_url())
 
