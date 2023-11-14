@@ -1,0 +1,93 @@
+{% extends 'base/base_template.html' %}
+{% load static %}
+
+{% block Title %}
+     لیست کاربرها
+    {{ department }}
+{% endblock %}
+
+{% block Link %}
+    <link rel="stylesheet" href="{% static 'frontend/styles/task-prioritization.css' %}">
+{% endblock %}
+
+{% block Content %}
+    {% include 'public/task_master/components/add.html' %}
+
+    <!--morde-descriptin popup -->
+    <form action="#" method="post">
+        {% csrf_token %}
+        <main class="main content-page container">
+            <h5 class="title-page">لیست کارفرمایان</h5>
+
+            <div class="d-flex justify-content-between p-2">
+                <button type="button" data-bs-toggle="modal" data-bs-target="#addTaskMasterModal" class="btn btn-primary">
+                    افزودن
+                </button>
+                <a href="{{ request.user.get_absolute_url_dashboard }}" class="btn btn-danger">
+                    بازگشت
+                </a>
+            </div>
+
+            <section class="col-12 project-content">
+                <div class="inner-project">
+                    <!--task-prioritization table -->
+                    <div class="content-items p-2">
+                        <section class="section-table">
+                            <!-- table -->
+                            <table class="table">
+                                <!-- title table -->
+                                <thead class="">
+                                    <tr>
+                                        <th scope="col">
+                                            <div class="table-title-item">
+                                                ردیف
+                                            </div>
+                                        </th>
+                                        <th scope="col">
+                                            <div class="table-title-item">
+                                                عنوان
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <!-- title table -->
+                                <!-- content table -->
+                                <tbody class="">
+                                    {% for task_master in task_masters %}
+                                        <tr class="row-table">
+                                            <!-- each column -->
+                                            <td class="p-2">
+                                                <div class="table-content-item">
+                                                    {{ forloop.counter }}
+                                                </div>
+                                            </td>
+                                            <!-- each column -->
+                                            <td class="p-2">
+                                                <div class="table-content-item">
+                                                    <a href="#" class="link-secondary">
+                                                        {{ task_master.title }}
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% empty %}
+                                        <div class="container-not-found-base">
+                                            <p>چیزی یافت نشد</p>
+                                        </div>
+                                    {% endfor %}
+                                </tbody>
+                                <!-- content table -->
+                            </table>
+                            <!-- table -->
+                        </section>
+                    </div>
+                    <!--task-prioritization table -->
+                </div>
+            </section>
+        </main>
+    </form>
+{% endblock %}
+
+{% block Script %}
+    <script type="module" src="{% static 'frontend/js/task-prioritization.js' %}"></script>
+{% endblock %}
