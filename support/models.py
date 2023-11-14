@@ -21,6 +21,8 @@ class TicketDepartment(BaseModel, File):
 
     def get_projects_name(self):
         p = self.projects.values_list('name', flat=True)
+        if not p:
+            return None
         return p
 
 
