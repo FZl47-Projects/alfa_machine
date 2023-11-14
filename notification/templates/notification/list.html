@@ -79,11 +79,17 @@
                                         </div>
                                         <div class="col-2 p-2">
                                             <div class="table-content-item">
-                                                <select>
-                                                    {% for name in notification.get_projects_name %}
-                                                        <option>{{ name }}</option>
-                                                    {% endfor %}
-                                                </select>
+                                                {% if notification.is_all_projects %}
+                                                    <span>همه پروژه‌ها</span>
+                                                {% elif not notification.get_projects_name %}
+                                                    <span>متفرقه</span>
+                                                {% else %}
+                                                    <select>
+                                                        {% for name in notification.get_projects_name %}
+                                                            <option>{{ name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                {% endif %}
                                             </div>
                                         </div>
                                         <div class="col-3 p-2">
