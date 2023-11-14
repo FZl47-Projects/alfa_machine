@@ -70,11 +70,17 @@
 
                                         <div class="col-4 p-2">
                                             <div class="table-content-item">
-                                                <select>
-                                                    {% for name in report.get_projects_name %}
-                                                        <option>{{ name }}</option>
-                                                    {% endfor %}
-                                                </select>
+                                                {% if report.is_all_projects %}
+                                                    <span>همه پروژه‌ها</span>
+                                                {% elif not report.get_projects_name %}
+                                                    <span>متفرقه</span>
+                                                {% else %}
+                                                    <select>
+                                                        {% for name in report.get_projects_name %}
+                                                            <option>{{ name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                {% endif %}
                                             </div>
                                         </div>
                                         <div class="col-3 p-2">
