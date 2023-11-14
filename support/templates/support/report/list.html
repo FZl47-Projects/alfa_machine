@@ -28,7 +28,6 @@
         </div>
     {% endfor %}
 
-
     <main class="main content-page container">
         <h5 class="title-page">لیست گزارشات </h5>
         <section class="col-12 project-content">
@@ -37,9 +36,14 @@
                     <section class="section-table">
                         <!-- notif table -->
                         <div class="table">
-                            <!--section title table -->
+                            <!-- Start section title table -->
                             <div class="table-title">
-                                <div class="col-4">
+                                <div class="col-2">
+                                    <div class="table-title-item">
+                                        شماره
+                                    </div>
+                                </div>
+                                <div class="col-3">
                                     <div class="table-title-item">
                                         پروژه ها
                                     </div>
@@ -61,20 +65,31 @@
                                 </div>
 
                             </div>
-                            <!--section title table -->
-                            <!-- section content table -->
+                            <!-- .End section title table -->
+
+                            <!-- Start section content table -->
                             <div class="table-content">
                                 <!-- each row table -->
                                 {% for report in reports %}
                                     <div class="row-table">
-
-                                        <div class="col-4 p-2">
+                                        <div class="col-2 p-2">
                                             <div class="table-content-item">
-                                                <select>
-                                                    {% for name in report.get_projects_name %}
-                                                        <option>{{ name }}</option>
-                                                    {% endfor %}
-                                                </select>
+                                                {{ report.code }}
+                                            </div>
+                                        </div>
+                                        <div class="col-3 p-2">
+                                            <div class="table-content-item">
+                                                {% if report.is_all_projects %}
+                                                    <span>همه پروژه‌ها</span>
+                                                {% elif not report.get_projects_name %}
+                                                    <span>متفرقه</span>
+                                                {% else %}
+                                                    <select>
+                                                        {% for name in report.get_projects_name %}
+                                                            <option>{{ name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                {% endif %}
                                             </div>
                                         </div>
                                         <div class="col-3 p-2">
@@ -94,7 +109,7 @@
                                         </div>
                                         <div class="col-2 p-2">
                                             <div class="table-content-item">
-                                                {% if ticket.get_file_url %}
+                                                {% if report.get_file_url %}
                                                     <a href="{{ report.get_file_url }}" download="">دانلود</a>
                                                 {% else %}
                                                     -

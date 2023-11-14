@@ -1,6 +1,7 @@
 from django.db import models
 from core.models import BaseModel, File
 from core.utils import get_random_code
+from public.models import Project
 
 
 class TicketDepartment(BaseModel, File):
@@ -46,14 +47,17 @@ class Report(BaseModel, File):
         super().save(*args, **kwargs)
 
     def create_unique_code(self):
-        while True:
-            # Generate a random 12-digit code
+        # Generate a random 12-digit code
+        new_code = get_random_code(12)
+
+        while Report.objects.filter(code=new_code).exists():
+            # Check if the generated code is unique
             new_code = get_random_code(12)
 
-            # Check if the generated code is unique
-            if not Report.objects.filter(code=new_code).exists():
-                return new_code
+        return new_code
 
     def get_projects_name(self):
         p = self.projects.values_list('name', flat=True)
+        if not p:
+            return None
         return p
