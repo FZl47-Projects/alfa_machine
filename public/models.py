@@ -63,7 +63,7 @@ class Project(BaseModel):
     is_paid = models.BooleanField(default=False)
     description = models.TextField(null=True)
     status = models.CharField(max_length=20, choices=STATUS_OPTIONS, default='under_construction')
-    inquiry = models.OneToOneField('Inquiry', on_delete=models.SET_NULL, null=True)
+    inquiry = models.OneToOneField('Inquiry', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -79,6 +79,11 @@ class Project(BaseModel):
         if pr == 100:
             return 'تمام شده'
         return 'در حال انجام'
+
+    def get_has_sample_state(self):
+        if self.has_sample:
+            return 'دارد'
+        return 'ندارد'
 
     def get_progress_percentage(self):
         try:
