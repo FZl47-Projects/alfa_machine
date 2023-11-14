@@ -24,6 +24,29 @@ class Index(View):
         return redirect(request.user.get_absolute_url_dashboard())
 
 
+# TaskMaster list/add view
+class TaskMasterView(View):
+    template = 'public/task_master/list.html'
+
+    def get(self, request):
+        task_masters = models.TaskMaster.objects.all()
+        contexts = {'task_masters': task_masters}
+
+        return render(request, self.template, contexts)
+
+    def post(self, request):
+        data = request.POST
+
+        f = forms.TaskMasterAddForm(data=data)
+        if not f.is_valid():
+            messages.error(request, 'لطفا فیلد هارا به درستی پر نمایید')
+            return redirect('public:task_master')
+        f.save()
+
+        messages.success(request, 'پروژه با موفقیت بروزرسانی شد')
+        return redirect('public:task_master')
+
+
 class ProjectDetail(View):
     template_name = 'public/project/detail.html'
 

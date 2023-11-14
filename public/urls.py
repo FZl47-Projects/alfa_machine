@@ -1,13 +1,17 @@
 from django.urls import path
 from . import views
 
+
 app_name = 'public'
+
 urlpatterns = [
     path('error', views.Error.as_view(), name='error'),
     path('success', views.Success.as_view(), name='success'),
     path('', views.Index.as_view(), name='index'),
 
     path('department_detail/<int:department_id>', views.DepartmentDetail.as_view(), name='department_detail'),
+
+    path('task_masters/', views.TaskMasterView.as_view(), name='task_master'),
 
     path('project', views.Project.as_view(), name='project'),
     path('project/<int:project_id>/update', views.ProjectUpdate.as_view(), name='project_update'),
