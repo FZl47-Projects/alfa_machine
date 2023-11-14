@@ -1,8 +1,16 @@
-<div class="content-modal-two modal-request-unit modal-ticket">
+<div class="content-modal-two modal-request-unit modal-notification">
     <div class="inner-modal">
-        <form class="p-4" action="{% url 'support:ticket_department' %}" method="post" enctype="multipart/form-data">
+        <form class="p-4" action="{% url 'notification:list_department' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="information-section">
+                <div class="information-item">
+                    <label for="lihh">عنوان</label>
+                    <input name="title" type="text" id="" class="col-12" required>
+                </div>
+                <div class="information-item">
+                    <label for="lihh">اولویت</label>
+                     <input name="priority" type="number" value="1" id="" class="col-12" required>
+                </div>
                 <div class="information-item">
                     <label for="lihh">توضیحات</label>
                     <textarea name="description" id="" cols="30" rows="10" required></textarea>
@@ -49,22 +57,22 @@
                 <div class="information-item container-select-choices">
                     <div class="select-choices">
                         <div>
-                            <label for="select_project_ticket_all">
+                            <label for="select_project_notif_all">
                                 همه پروژه ها
                             </label>
-                            <input type="radio" id="select_project_ticket_all" name="select_project_ticket" value="all" checked>
+                            <input type="radio" id="select_project_notif_all" name="select_project_ticket" value="all" checked>
                         </div>
                         <div>
-                            <label for="select_project_ticket_select">
+                            <label for="select_project_notif_select">
                                 انتخاب پروژه
                             </label>
-                            <input type="radio" id="select_project_ticket_select" name="select_project_ticket" value="select">
+                            <input type="radio" id="select_project_notif_select" name="select_project_ticket" value="select">
                         </div>
                         <div>
-                            <label for="select_project_ticket_null">
+                            <label for="select_project_notif_null">
                                 متفرقه
                             </label>
-                            <input type="radio" id="select_project_ticket_null" name="select_project_ticket" value="null">
+                            <input type="radio" id="select_project_notif_null" name="select_project_ticket" value="null">
                         </div>
                     </div>
                     <div class="select-choices-content">

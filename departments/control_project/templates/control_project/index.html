@@ -58,13 +58,12 @@
 
     {% include 'support/components/new-report.html' with departments=departments projects=projects %}
     <!--  request unit -->
-    <!-- modal tarif task jadid -->
 
+    <!-- modal tarif task jadid -->
     {% include 'public/task/components/new-task.html' with projects=projects departments=departments %}
 
     <!-- START SECTION NOTIFATION -->
     {% include 'base/components/aside-menu.html' with notifications=notifications tickets=tickets %}
-    <!-- END SECTION NOTIFATION -->
     <!-- END SECTION NOTIFATION -->
 
     <div class="container-fluid col-md-10 content-page">
