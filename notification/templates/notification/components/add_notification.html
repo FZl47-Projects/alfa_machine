@@ -1,0 +1,93 @@
+<div class="content-modal-two modal-request-unit modal-notification">
+    <div class="inner-modal">
+        <form class="p-4" action="{% url 'notification:list_department' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="information-section">
+                <div class="information-item">
+                    <label for="lihh">عنوان</label>
+                    <input name="title" type="text" id="" class="col-12" required>
+                </div>
+                <div class="information-item">
+                    <label for="lihh">اولویت</label>
+                     <input name="priority" type="number" value="1" id="" class="col-12" required>
+                </div>
+                <div class="information-item">
+                    <label for="lihh">توضیحات</label>
+                    <textarea name="description" id="" cols="30" rows="10" required></textarea>
+                </div>
+                <div class="information-item">
+                    <div class="uploade-imge">
+                        <label class="item-upload" for="add">
+                            آپلود فایل
+                        </label>
+                        <input type="file" name="file" id="add" hidden="">
+                    </div>
+                </div>
+                <div class="information-item container-select-choices">
+                    <div class="select-choices">
+                        <div>
+                            <label for="">
+                                همه واحد ها
+                            </label>
+                            <input type="radio" name="select_department_ticket" value="all" checked>
+                        </div>
+                        <div>
+                            <label for="">
+                                انتخاب واحد
+                            </label>
+                            <input type="radio" name="select_department_ticket" value="select">
+                        </div>
+                    </div>
+                    <div class="select-choices-content">
+                        <label for="lihh">نام واحد:</label>
+                        <div class="units d-flex flex-wrap">
+                            {% for department in departments %}
+                                <div class="d-flex align-items-center justify-content-center col-6 col-md-3 p-2">
+                                    <label class="mt-2" for="inp-to-dep-{{ forloop.counter }}">
+                                        {{ department.name }}
+                                    </label>
+                                    <input type="checkbox" id="inp-to-dep-{{ forloop.counter }}" name="departments"
+                                           value="{{ department.id }}"
+                                    >
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="information-item container-select-choices">
+                    <div class="select-choices">
+                        <div>
+                            <label for="select_project_notif_all">
+                                همه پروژه ها
+                            </label>
+                            <input type="radio" id="select_project_notif_all" name="select_project_ticket" value="all" checked>
+                        </div>
+                        <div>
+                            <label for="select_project_notif_select">
+                                انتخاب پروژه
+                            </label>
+                            <input type="radio" id="select_project_notif_select" name="select_project_ticket" value="select">
+                        </div>
+                        <div>
+                            <label for="select_project_notif_null">
+                                متفرقه
+                            </label>
+                            <input type="radio" id="select_project_notif_null" name="select_project_ticket" value="null">
+                        </div>
+                    </div>
+                    <div class="select-choices-content">
+                        <label for="lihh"> پروژه ها :</label>
+                        <select name="projects" multiple>
+                            {% for project in projects %}
+                                <option value="{{ project.id }}">{{ project.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="information-section">
+                <button class="d-inline-block col-12 p-2 bg-primary text-white">ثبت</button>
+            </div>
+        </form>
+    </div>
+</div>
