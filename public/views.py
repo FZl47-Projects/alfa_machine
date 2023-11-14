@@ -428,9 +428,14 @@ class ProjectAdd(View):
     @user_role_required_cbv(['super_user', 'commerce_user'])
     def get(self, request):
         context = {}
+
+        task_masters = models.TaskMaster.objects.all()
+        context['task_masters'] = task_masters
+
         inquiry_id = request.GET.get('inquiry-id', None)
         if inquiry_id:
             context['inquiry'] = models.Inquiry.objects.get(id=inquiry_id, project=None)
+
         return render(request, 'public/project/add.html', context)
 
     @user_role_required_cbv(['super_user', 'commerce_user'])

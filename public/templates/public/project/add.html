@@ -49,7 +49,11 @@
                                 <label for="name">نام</label>
                             </div>
                             <div class="group-form">
-                                <input type="text" id="task_master" class="form-control" name="task_master" required>
+                                <select class="form-select text-end" name="task_master" id="task_master" required>
+                                    {% for task_master in task_masters %}
+                                        <option value="{{ task_master.id }}">{{ task_master.title }}</option>
+                                    {% endfor %}
+                                </select>
                                 <label for="task_master">کارفرما</label>
                             </div>
                             <div class="group-form">
