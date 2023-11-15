@@ -141,7 +141,7 @@
                                         <span class="datetime-convert">{{ project.get_has_sample_state }}</span>
                                     </div>
                                 </div>
-                                {% if project_has_sample %}
+                                {% if project.has_sample %}
                                     <div class="col-12 col-md-6 p-2">
                                         <div class="right-item">
                                             <span>تاریخ تحویل نمونه :</span>
@@ -163,7 +163,7 @@
                                         <div class="mt-3 text-primary">{{ project.get_progress_percentage }}%</div>
                                     </div>
                                 </div>
-                                <div class="col-12 p-2">
+                                <div class="col-12 col-md-6 p-2">
                                     <div class="right-item">
                                         <span>توضیحات:</span>
                                         <div class="mt-3">{{ project.description|default:'توضیحی ثبت نشده است' }}</div>
