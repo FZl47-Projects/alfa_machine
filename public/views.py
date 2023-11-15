@@ -421,6 +421,7 @@ class InquiryFile(View):
         data = request.POST.copy()
         # set additional values
         data['inquiry'] = inquiry_id
+        data['from_department'] = request.user.department
         f = forms.InquiryFileForm(data, request.FILES)
         if form_validate_err(request, f) is False:
             return redirect(referer_url or '/error')
