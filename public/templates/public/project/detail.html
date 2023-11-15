@@ -62,12 +62,22 @@
                     <div class="Project-specifications">
                         <div class="col-12 col-md-8 d-flex flex-column justify-content-center align-items-start">
                             <div class="right">
-                                <div class="col-12 col-md-12 p-2">
+                                <div class="col-12 col-md-6 p-2">
                                     <div class="right-item">
                                         <span>وضعیت:</span>
                                         <span><b>{{ project.get_status_display }}</b></span>
                                     </div>
                                 </div>
+                                {% if project.inquiry %}
+                                    <div class="col-12 col-md-6 p-2">
+                                        <div class="right-item">
+                                            <span>استعلام:</span>
+                                            <span>
+                                                <a href="{{ project.inquiry.get_absolute_url }}">مشاهده</a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                {% endif %}
                                 <div class="col-12 col-md-6 p-2">
                                     <div class="right-item">
                                         <span>شماره درخواست:</span>
@@ -875,7 +885,8 @@
                                                 <div class="col-2 p-2">
                                                     <div class="table-content-item">
                                                         {% if inquiry_file.get_file_url %}
-                                                            <a href="{{ inquiry_file.get_file_url }}" download>دانلود</a>
+                                                            <a href="{{ inquiry_file.get_file_url }}"
+                                                               download>دانلود</a>
                                                         {% else %}
                                                             -
                                                         {% endif %}
@@ -1002,15 +1013,19 @@
                                 <div class="d-flex gap-4">
                                     <label class="d-flex gap-1">
                                         ندارد
-                                        <input type="radio" value="false" {% if not project.has_sample %}checked{% endif %} name="has_sample" oninput="toggleRelatedField('sample_date_div', false)">
+                                        <input type="radio" value="false"
+                                               {% if not project.has_sample %}checked{% endif %} name="has_sample"
+                                               oninput="toggleRelatedField('sample_date_div', false)">
                                     </label>
                                     <label class="d-flex gap-1">
-                                         دارد
-                                        <input type="radio" value="true" {% if project.has_sample %}checked{% endif %} name="has_sample" oninput="toggleRelatedField('sample_date_div', true)">
+                                        دارد
+                                        <input type="radio" value="true" {% if project.has_sample %}checked{% endif %}
+                                               name="has_sample" oninput="toggleRelatedField('sample_date_div', true)">
                                     </label>
                                 </div>
                             </div>
-                            <div class="group-form {% if not project.has_sample %}d-none{% endif %}" id="sample_date_div">
+                            <div class="group-form {% if not project.has_sample %}d-none{% endif %}"
+                                 id="sample_date_div">
                                 <label for="sample_delivery_datetime_picker"> :تاریخ تحویل نمونه</label>
                                 <input type="text" name="" id="sample_delivery_datetime_picker"
                                        class="form-control persianDatapicker" set-on="sample_delivery_date"
@@ -1094,10 +1109,10 @@
     </script>
     <script type="module" src="{% static 'frontend/js/adminpanel.js' %}"></script>
     <script>
-        function toggleRelatedField(fieldId, show=true) {
+        function toggleRelatedField(fieldId, show = true) {
             const field = document.getElementById(fieldId);
-            if(show) {
-              field.classList.remove('d-none');
+            if (show) {
+                field.classList.remove('d-none');
             } else {
                 field.classList.add('d-none');
             }

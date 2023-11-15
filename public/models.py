@@ -156,6 +156,8 @@ class Project(BaseModel):
         return self.prepayment_datetime.strftime('%Y-%m-%d %H:%M')
 
     def get_sample_delivery_date(self):
+        if not self.sample_delivery_date:
+            return '-'
         return self.sample_delivery_date.strftime('%Y-%m-%d %H:%M')
 
     def get_mass_delivery_date(self):
@@ -165,6 +167,8 @@ class Project(BaseModel):
         return self.mass_delivery_date.strftime('%Y-%m-%d')
 
     def get_sample_delivery_date_input(self):
+        if not self.sample_delivery_date:
+            return '-'
         return self.sample_delivery_date.strftime('%Y-%m-%d')
 
     def get_prepayment_datetime_input(self):
@@ -294,6 +298,9 @@ class Inquiry(BaseModel):
     def get_files(self):
         return self.inquiryfile_set.all().order_by('-id')
 
+    def get_absolute_url(self):
+        return f"{reverse('public:inquiry')}?search={self.number_id}"
+
 
 class InquiryStatus(BaseModel, File):
     STATUS_OPTIONS = (
@@ -312,6 +319,7 @@ class InquiryFile(BaseModel, File):
     name = models.CharField(max_length=100)
     inquiry = models.ForeignKey('Inquiry', on_delete=models.CASCADE)
     description = models.TextField(null=True)
+    from_department = models.ForeignKey('Department', on_delete=models.CASCADE, null=True, related_name='inquiry_file')
     departments = models.ManyToManyField('Department')  # departments can access to this file
 
     def __str__(self):
