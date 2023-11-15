@@ -43,8 +43,11 @@ class TaskMaster(BaseModel):
 
 class Project(BaseModel):
     STATUS_OPTIONS = (
-        ('paused', 'متوقف شده'),
+        ('checking', 'در حال بررسی قبل ساخت'),
         ('under_construction', 'در حال ساخت'),
+        ('posted', 'ارسال شده'),
+        ('completed', 'تایید و اتمام'),
+        ('paused', 'متوقف شده'),
     )
     number_id = models.CharField(max_length=150)
     prepayment_datetime = models.DateTimeField()
@@ -56,8 +59,8 @@ class Project(BaseModel):
     mass_delivery_date = models.DateField()
     name = models.CharField(max_length=100)
     task_master = models.ForeignKey(TaskMaster, on_delete=models.CASCADE, related_name='projects')
-    time_start = models.DateField()
-    time_end = models.DateField()
+    time_start = models.DateField(null=True)
+    time_end = models.DateField(null=True)
     is_active = models.BooleanField(default=True)
     price = models.BigIntegerField()
     is_paid = models.BooleanField(default=False)
