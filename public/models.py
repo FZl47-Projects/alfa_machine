@@ -207,6 +207,7 @@ class Task(BaseModel, File):
     description = models.TextField(null=True, blank=True)
     # status = models.CharField(max_length=20, choices=STATUS_OPTIONS,default='allocation')
     state = models.CharField(max_length=20, choices=STATE_OPTIONS, default='queue')
+    state_modify_time = models.DateTimeField(null=True, blank=True)
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
     from_department = models.ForeignKey('Department', on_delete=models.CASCADE, related_name='from_department')
     to_department = models.ForeignKey('Department', on_delete=models.CASCADE)
@@ -228,6 +229,11 @@ class Task(BaseModel, File):
 
     def get_absolute_url(self):
         return reverse('public:task_detail', args=(self.id,))
+
+    def get_state_modify_time(self):
+        if not self.state_modify_time:
+            return
+        return self.state_modify_time.strftime('%Y-%m-%d %H:%M')
 
     def get_time_start(self):
         if not self.time_start:
