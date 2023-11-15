@@ -72,7 +72,7 @@
                                                 {{ department.name }}
                                             </label>
                                             <input type="checkbox" id="inp-to-dep-{{ department.id }}" multiple
-                                                   name="departments" value="{{ department.id }}" checked>
+                                                   name="departments" value="{{ department.id }}">
                                         </div>
                                     {% endfor %}
                                 </div>
@@ -218,7 +218,8 @@
             <div class="inner-modal">
                 <form class="p-4">
                     <div class="close-modal close-modal-description">
-                        <img src="{% static 'frontend/images/close.png' %}" alt="">
+                        <img src="{% static 'frontend/images/close.png' %}" alt=""
+                             onclick="this.parentElement.parentElement.parentElement.parentElement.classList.remove('active')">
                     </div>
                     <div class="text-center my-2">
                         <h3>فایل ها</h3>
@@ -226,25 +227,31 @@
                     <div class="hhh">
                         <table class="table">
                             <tr>
+                                <th>تاریخ</th>
+                                <th>واحد فرستنده</th>
                                 <th>نام فایل</th>
                                 <th>توضیحات</th>
                                 <th>فایل</th>
                             </tr>
                             {% for file in inquiry.get_files %}
                                 <tr>
+                                    <td class="font-80 datetime-convert">
+                                        {{ file.get_created_at }}
+                                    </td>
+                                    <td class="font-80">
+                                        {{ file.from_department.name }}
+                                    </td>
                                     <td class="font-80">
                                         {{ file.name }}
                                     </td>
-
                                     <td class="font-70">
                                         {{ file.description }}
                                     </td>
-
                                     <td>
                                         <a href="{{ file.get_file_url }}" class="text-primary">دانلود</a>
                                     </td>
                                 </tr>
-                                {% empty %}
+                            {% empty %}
                                 <tr class="container-not-found-base">
                                     <td colspan="1000">چیزی ثبت نشده است</td>
                                 </tr>
@@ -349,7 +356,7 @@
                                     </div>
                                     <div class="col-1">
                                         <div class="table-title-item">
-                                           توضیحات
+                                            توضیحات
                                         </div>
                                     </div>
                                     <div class="col-1">

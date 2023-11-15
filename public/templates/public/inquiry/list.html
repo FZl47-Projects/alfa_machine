@@ -109,7 +109,7 @@
                                                 {{ department.name }}
                                             </label>
                                             <input type="checkbox" id="inp-to-dep-{{ department.id }}" multiple
-                                                   name="departments" value="{{ department.id }}" checked>
+                                                   name="departments" value="{{ department.id }}">
                                         </div>
                                     {% endfor %}
                                 </div>
@@ -126,7 +126,8 @@
             <div class="inner-modal">
                 <form class="p-4">
                     <div class="close-modal close-modal-description">
-                        <img src="{% static 'frontend/images/close.png' %}" alt="">
+                        <img src="{% static 'frontend/images/close.png' %}" alt=""
+                             onclick="this.parentElement.parentElement.parentElement.parentElement.classList.remove('active')">
                     </div>
                     <div class="text-center my-2">
                         <h3>فایل ها</h3>
@@ -140,14 +141,18 @@
                             </tr>
                             {% for file in inquiry.get_files %}
                                 <tr>
+                                    <td class="font-80 datetime-convert">
+                                        {{ file.get_created_at }}
+                                    </td>
+                                    <td class="font-80">
+                                        {{ file.from_department.name }}
+                                    </td>
                                     <td class="font-80">
                                         {{ file.name }}
                                     </td>
-
                                     <td class="font-70">
                                         {{ file.description }}
                                     </td>
-
                                     <td>
                                         <a href="{{ file.get_file_url }}" class="text-primary">دانلود</a>
                                     </td>
@@ -261,11 +266,13 @@
                                     فایل
                                 </div>
                             </div>
-                            <div class="col-2">
-                                <div class="table-title-item">
-                                    وضعیت
+                            {% if user.role == 'super_user' %}
+                                <div class="col-2">
+                                    <div class="table-title-item">
+                                        وضعیت
+                                    </div>
                                 </div>
-                            </div>
+                            {% endif %}
                         </div>
                         <!-- title table -->
                         <!--  start content table -->
@@ -332,20 +339,22 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-2 p-2">
-                                        {% if not inquiry.status %}
-                                            <div class="table-content-item">
-                                                <div class="btn-table-takhsis d-flex">
-                                                    <div class="btn-item m-1 taeid btn-taeid-query">تایید</div>
-                                                    <div class="btn-item m-1 notaeid  btn-notaeid-query">رد</div>
+                                    {% if user.role == 'super_user' %}
+                                        <div class="col-2 p-2">
+                                            {% if not inquiry.status %}
+                                                <div class="table-content-item">
+                                                    <div class="btn-table-takhsis d-flex">
+                                                        <div class="btn-item m-1 taeid btn-taeid-query">تایید</div>
+                                                        <div class="btn-item m-1 notaeid  btn-notaeid-query">رد</div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        {% else %}
-                                            <p class="text-center {% if inquiry.status.status == 'accepted' %}text-success{% else %}text-danger{% endif %}">
-                                                {{ inquiry.status.get_status_display }}
-                                            </p>
-                                        {% endif %}
-                                    </div>
+                                            {% else %}
+                                                <p class="text-center {% if inquiry.status.status == 'accepted' %}text-success{% else %}text-danger{% endif %}">
+                                                    {{ inquiry.status.get_status_display }}
+                                                </p>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
                                 </div>
                             {% empty %}
                                 <div class="container-not-found-base">
