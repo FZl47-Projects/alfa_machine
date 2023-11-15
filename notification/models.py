@@ -11,8 +11,8 @@ class NotificationDepartment(BaseModel, File):
     departments = models.ManyToManyField('public.Department')
     priority = models.IntegerField(default=1)
     is_showing = models.BooleanField(default=True)
-    is_all_departments = models.BooleanField(default=True)
-    is_all_projects = models.BooleanField(default=True)
+    is_all_departments = models.BooleanField(default=False)
+    is_all_projects = models.BooleanField(default=False)
 
     class Meta:
         ordering = 'priority', '-id'
