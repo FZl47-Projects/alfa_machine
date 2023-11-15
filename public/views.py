@@ -452,7 +452,7 @@ class DepartmentDetail(View):
 
 class ProjectAdd(View):
 
-    @user_role_required_cbv(['super_user', 'commerce_user'])
+    @user_role_required_cbv(['super_user', 'commerce_user', 'control_project_user'])
     def get(self, request):
         context = {}
 
@@ -465,7 +465,7 @@ class ProjectAdd(View):
 
         return render(request, 'public/project/add.html', context)
 
-    @user_role_required_cbv(['super_user', 'commerce_user'])
+    @user_role_required_cbv(['super_user', 'commerce_user', 'control_project_user'])
     def post(self, request):
         data = request.POST
 
