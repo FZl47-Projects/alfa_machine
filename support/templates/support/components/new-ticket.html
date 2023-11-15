@@ -1,85 +1,95 @@
-<div class="content-modal-two modal-request-unit modal-ticket">
-    <div class="inner-modal">
-        <form class="p-4" action="{% url 'support:ticket_department' %}" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="information-section">
-                <div class="information-item">
-                    <label for="lihh">توضیحات</label>
-                    <textarea name="description" id="" cols="30" rows="10" required></textarea>
-                </div>
-                <div class="information-item">
-                    <div class="uploade-imge">
-                        <label class="item-upload" for="add">
-                            آپلود فایل
-                        </label>
-                        <input type="file" name="file" id="add" hidden="">
-                    </div>
-                </div>
-                <div class="information-item container-select-choices">
-                    <div class="select-choices">
-                        <div>
-                            <label for="">
-                                همه واحد ها
-                            </label>
-                            <input type="radio" name="select_department_ticket" value="all" checked>
+<div class="modal fade" id="addTicketModal" tabindex="-1" aria-labelledby="addTicket" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">ایجاد تیکت</h5>
+            </div>
+            <div class="modal-body">
+                <form class="p-4" action="{% url 'support:ticket_department' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="information-section">
+                        <div class="information-item">
+                            <label for="lihh">توضیحات</label>
+                            <textarea name="description" id="" cols="30" rows="10" required></textarea>
                         </div>
-                        <div>
-                            <label for="">
-                                انتخاب واحد
-                            </label>
-                            <input type="radio" name="select_department_ticket" value="select">
+                        <div class="information-item">
+                            <div class="uploade-imge">
+                                <label class="item-upload" for="add">
+                                    آپلود فایل
+                                </label>
+                                <input type="file" name="file" id="add" hidden="">
+                            </div>
                         </div>
-                    </div>
-                    <div class="select-choices-content">
-                        <label for="lihh">نام واحد:</label>
-                        <div class="units d-flex flex-wrap">
-                            {% for department in departments %}
-                                <div class="d-flex align-items-center justify-content-center col-6 col-md-3 p-2">
-                                    <label class="mt-2" for="inp-to-dep-{{ forloop.counter }}">
-                                        {{ department.name }}
+                        <div class="information-item container-select-choices">
+                            <div class="select-choices">
+                                <div>
+                                    <label for="">
+                                        همه واحد ها
                                     </label>
-                                    <input type="checkbox" id="inp-to-dep-{{ forloop.counter }}" name="departments"
-                                           value="{{ department.id }}"
-                                    >
+                                    <input type="radio" name="select_department_ticket" value="all" checked>
                                 </div>
-                            {% endfor %}
+                                <div>
+                                    <label for="">
+                                        انتخاب واحد
+                                    </label>
+                                    <input type="radio" name="select_department_ticket" value="select">
+                                </div>
+                            </div>
+                            <div class="select-choices-content">
+                                <label for="lihh">نام واحد:</label>
+                                <div class="units d-flex flex-wrap">
+                                    {% for department in departments %}
+                                        <div class="d-flex align-items-center justify-content-center col-6 col-md-3 p-2">
+                                            <label class="mt-2" for="inp-to-dep-{{ forloop.counter }}">
+                                                {{ department.name }}
+                                            </label>
+                                            <input type="checkbox" id="inp-to-dep-{{ forloop.counter }}" name="departments"
+                                                   value="{{ department.id }}"
+                                            >
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="information-item container-select-choices">
+                            <div class="select-choices">
+                                <div>
+                                    <label for="select_project_ticket_all">
+                                        همه پروژه ها
+                                    </label>
+                                    <input type="radio" id="select_project_ticket_all" name="select_project_ticket" value="all" checked>
+                                </div>
+                                <div>
+                                    <label for="select_project_ticket_select">
+                                        انتخاب پروژه
+                                    </label>
+                                    <input type="radio" id="select_project_ticket_select" name="select_project_ticket" value="select">
+                                </div>
+                                <div>
+                                    <label for="select_project_ticket_null">
+                                        متفرقه
+                                    </label>
+                                    <input type="radio" id="select_project_ticket_null" name="select_project_ticket" value="null">
+                                </div>
+                            </div>
+                            <div class="select-choices-content">
+                                <label for="lihh"> پروژه ها :</label>
+                                <select name="projects" multiple>
+                                    {% for project in projects %}
+                                        <option value="{{ project.id }}">{{ project.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="information-item container-select-choices">
-                    <div class="select-choices">
-                        <div>
-                            <label for="select_project_ticket_all">
-                                همه پروژه ها
-                            </label>
-                            <input type="radio" id="select_project_ticket_all" name="select_project_ticket" value="all" checked>
-                        </div>
-                        <div>
-                            <label for="select_project_ticket_select">
-                                انتخاب پروژه
-                            </label>
-                            <input type="radio" id="select_project_ticket_select" name="select_project_ticket" value="select">
-                        </div>
-                        <div>
-                            <label for="select_project_ticket_null">
-                                متفرقه
-                            </label>
-                            <input type="radio" id="select_project_ticket_null" name="select_project_ticket" value="null">
-                        </div>
+                    <div class="information-section">
+                        <button class="d-inline-block col-12 p-2 bg-primary text-white">ثبت</button>
                     </div>
-                    <div class="select-choices-content">
-                        <label for="lihh"> پروژه ها :</label>
-                        <select name="projects" multiple>
-                            {% for project in projects %}
-                                <option value="{{ project.id }}">{{ project.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
+                </form>
             </div>
-            <div class="information-section">
-                <button class="d-inline-block col-12 p-2 bg-primary text-white">ثبت</button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
             </div>
-        </form>
+        </div>
     </div>
 </div>
