@@ -37,7 +37,7 @@
                     <div class="btns col-12 col-md-7">
                         <div class="btn-change col-2 text-center active">مشخصات پروژه</div>
                         <div class="btn-change col-2 text-center">مواد اولیه</div>
-                        <div class="btn-change col-2 text-center">اسنادآپلود شده</div>
+                        <div class="btn-change col-2 text-center">اسناد آپلود شده</div>
                         <div class="btn-change col-2 text-center d-none">بازرگانی</div>
                         <div class="btn-change col-2 text-center">مکاتبات پروژه</div>
                         <div class="btn-change col-2 text-center">امور مالی</div>
@@ -596,6 +596,7 @@
                     <!-- ticket -->
                     <div class="content-items p-2">
                         <section class="section-table">
+                            <p class="pt-3" style="text-align: right">تیکت‌ها</p>
                             <div class="table">
                                 <div class="table-title">
                                     <div class="col-1">
@@ -654,6 +655,186 @@
                                                 <div class="table-content-item">
                                                     {% if ticket.get_file_url %}
                                                         <a href="{{ ticket.get_file_url }}" download=""
+                                                           class="btn-table">دانلود</a>
+                                                    {% else %}
+                                                        -
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% empty %}
+                                        <div class="container-not-found-base">
+                                            <p>چیزی یافت نشد</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <p class="pt-3" style="text-align: right">اعلانات</p>
+                            <div class="table">
+                                <div class="table-title">
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            ردیف
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            واحد فرستنده
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            عنوان
+                                        </div>
+                                    </div>
+                                    <div class="col-5">
+                                        <div class="table-title-item">
+                                            متن اعلان
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            تاریخ
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            اولویت
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            فایل
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-content">
+                                    {% for notif in project.get_notifications %}
+                                        <div class="row-table">
+                                            <div class="col-1 p-2">
+                                                <div class="table-content-item">
+                                                    {{ forloop.counter }}
+                                                </div>
+                                            </div>
+                                            <div class="col-1 p-2">
+                                                <div class="table-content-item">
+                                                    {{ notif.from_department.name }}
+                                                </div>
+                                            </div>
+                                            <div class="col-2 p-2">
+                                                <div class="table-content-item">
+                                                    <span class="description">
+                                                        {{ notif.get_title|truncatechars:24 }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-5 p-2">
+                                                <div class="table-content-item">
+                                                    <span class="description">
+                                                        {{ notif.description|truncatechars:86 }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-1 p-2">
+                                                <div class="table-content-item datetime-convert">
+                                                    {{ notif.get_created_at }}
+                                                </div>
+                                            </div>
+                                            <div class="col-1 p-2">
+                                                <div class="table-content-item">
+                                                    {{ notif.priority }}
+                                                </div>
+                                            </div>
+                                            <div class="col-1 p-2">
+                                                <div class="table-content-item">
+                                                    {% if notif.get_file_url %}
+                                                        <a href="{{ notif.get_file_url }}" download=""
+                                                           class="btn-table">دانلود</a>
+                                                    {% else %}
+                                                        -
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% empty %}
+                                        <div class="container-not-found-base">
+                                            <p>چیزی یافت نشد</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <p class="pt-3" style="text-align: right">درخواست از سایر واحدها</p>
+                            <div class="table">
+                                <div class="table-title">
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            ردیف
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            واحد فرستنده
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            عنوان
+                                        </div>
+                                    </div>
+                                    <div class="col-5">
+                                        <div class="table-title-item">
+                                            متن درخواست
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            تاریخ
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            فایل
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-content">
+                                    {% for ask in '' %}
+                                        <div class="row-table">
+                                            <div class="col-1 p-2">
+                                                <div class="table-content-item">
+                                                    {{ forloop.counter }}
+                                                </div>
+                                            </div>
+                                            <div class="col-1 p-2">
+                                                <div class="table-content-item">
+                                                    {{ notif.from_department.name }}
+                                                </div>
+                                            </div>
+                                            <div class="col-2 p-2">
+                                                <div class="table-content-item">
+                                                    <span class="description">
+                                                        {{ notif.get_title|truncatechars:24 }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-5 p-2">
+                                                <div class="table-content-item">
+                                                    <span class="description">
+                                                        {{ notif.description|truncatechars:86 }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-2 p-2">
+                                                <div class="table-content-item datetime-convert">
+                                                    {{ notif.get_created_at }}
+                                                </div>
+                                            </div>
+                                            <div class="col-1 p-2">
+                                                <div class="table-content-item">
+                                                    {% if notif.get_file_url %}
+                                                        <a href="{{ notif.get_file_url }}" download=""
                                                            class="btn-table">دانلود</a>
                                                     {% else %}
                                                         -
@@ -909,8 +1090,6 @@
             </div>
         </section>
     </main>
-
-
 
 
     <!-- Modal -->

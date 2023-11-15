@@ -121,6 +121,9 @@ class Project(BaseModel):
     def get_tasks_finished(self):
         return self.get_tasks().filter(state='finished')
 
+    def get_notifications(self):
+        return self.notificationdepartment_set.all()
+
     def get_prepayment(self):
         p = self.prepayment_set.first()
         return p
