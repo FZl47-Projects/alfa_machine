@@ -59,6 +59,38 @@
                     {% endfor %}
                 </div>
             </section>
+
+            <!-- Start page section -->
+            <div class="title px-4">
+                <span style="padding-left:3px;">صفحات</span>
+                <span class="d-flex justify-content-center align-item-center">
+                </span>
+            </div>
+            <section>
+                <div class="box-section">
+                    <div class="col-12 col-md-4 p-2">
+                        <div class="box-item-2">
+                            <i class="icon-box fa fa-gears fa-2xl p-3"></i>
+                            <div class=" style-conent-box">
+                                <span>لیست پروژه ها</span>
+                            </div>
+                            <div class="btn--ta"><a href="{% url 'public:project' %}">مشاهده
+                            </a></div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4 p-2">
+                        <div class="box-item-2">
+                            <i class="icon-box fa fa-question-circle fa-2xl p-3"></i>
+                            <div class=" style-conent-box">
+                                <span>لیست استعلامات</span>
+                            </div>
+                            <div class="btn--ta"><a href="{% url 'public:inquiry' %}">مشاهده
+                            </a></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- .End page section -->
         </main>
 
     </div>
