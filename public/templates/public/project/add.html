@@ -40,16 +40,16 @@
 
 
                             <div class="group-form">
-                                <input type="text" id="number_id" class="form-control" name="number_id" required
+                                <input type="text" id="number_id" class="form-control" name="number_id" 
                                        value="{{ inquiry.number_id }}">
                                 <label for="number_id"> :شماره درخواست</label>
                             </div>
                             <div class="group-form">
-                                <input type="text" id="name" class="form-control" name="name" required value="{{ inquiry.title }}">
+                                <input type="text" id="name" class="form-control" name="name"  value="{{ inquiry.title }}">
                                 <label for="name">نام</label>
                             </div>
                             <div class="group-form">
-                                <select class="form-select text-end" name="task_master" id="task_master" required>
+                                <select class="form-select text-end" name="task_master" id="task_master" >
                                     {% for task_master in task_masters %}
                                         <option value="{{ task_master.id }}">{{ task_master.title }}</option>
                                     {% endfor %}
@@ -59,23 +59,23 @@
                             <div class="group-form">
                                 <input type="text" name="" id="time_start_picker"
                                        class="form-control persianDatapicker" set-on="time_start"
-                                       required readonly>
-                                <input type="hidden" id="time_start" name="time_start" required>
+                                        readonly>
+                                <input type="hidden" id="time_start" name="time_start" >
                                 <label for="time_start_picker">تاریخ شروع</label>
                             </div>
                             <div class="group-form">
                                 <input type="text" name="" id="time_end_picker"
                                        class="form-control persianDatapicker" set-on="time_end"
-                                       required readonly>
-                                <input type="hidden" id="time_end" name="time_end" required>
+                                        readonly>
+                                <input type="hidden" id="time_end" name="time_end" >
                                 <label for="time_end_picker">تاریخ پایان</label>
                             </div>
                             <div class="group-form">
-                                <input type="number" id="price" class="form-control" name="price" required>
+                                <input type="number" id="price" class="form-control" name="price" >
                                 <label for="price">قیمت</label>
                             </div>
                             <div class="group-form">
-                                <select name="is_paid" id="" required class="form-control form-select">
+                                <select name="is_paid" id=""  class="form-control form-select">
                                     <option value="false">پرداخت نشده</option>
                                     <option value="true">پرداخت شده</option>
                                 </select>
@@ -84,8 +84,8 @@
                             <div class="group-form">
                                 <input type="text" name="" id="prepayment_datetime_picker"
                                        class="form-control persianDatapicker" set-on="prepayment_datetime"
-                                       required readonly>
-                                <input type="hidden" id="prepayment_datetime" name="prepayment_datetime" required>
+                                        readonly>
+                                <input type="hidden" id="prepayment_datetime" name="prepayment_datetime" >
                                 <label for="prepayment_datetime_picker">تاریخ پیش پرداخت</label>
                             </div>
                             <div class="group-form">
@@ -94,18 +94,21 @@
                             </div>
                             <div class="group-form">
                                 <input type="number" id="count_total" class="form-control" name="count_total"
-                                       required>
+                                       >
                                 <label for="count_total">تعداد کل</label>
                             </div>
                             <div class="group-form">
                                 <input type="number" id="count_remaining" class="form-control" name="count_remaining"
-                                       required>
+                                       >
                                 <label for="count_remaining">تعداد باقی مانده</label>
                             </div>
                             <div class="group-form">
-                                <select name="status" class="form-control form-select" required>
-                                    <option value="under_construction" selected>در حال ساخت</option>
+                                <select name="status" class="form-control form-select" >
+                                    <option value="checking" selected>در حال بررسی قبل اجرا</option>
+                                    <option value="under_construction">در حال ساخت</option>
+                                    <option value="posted">ارسال شده</option>
                                     <option value="paused">متوقف شده</option>
+                                    <option value="completed">تایید و اتمام</option>
                                 </select>
                                 <label for="">وضعیت</label>
                             </div>
@@ -125,15 +128,15 @@
                             <div class="group-form d-none" id="sample_date_div">
                                 <input type="text" name="" id="sample_delivery_datetime_picker"
                                        class="form-control persianDatapicker" set-on="sample_delivery_date"
-                                       required readonly>
+                                        readonly>
                                 <input type="hidden" id="sample_delivery_date" name="sample_delivery_date">
                                 <label for="sample_delivery_datetime_picker"> :تاریخ تحویل نمونه</label>
                             </div>
                             <div class="group-form">
                                 <input type="text" name="" id="mass_delivery_datetime_picker"
                                        class="form-control persianDatapicker" set-on="mass_delivery_date"
-                                       required readonly>
-                                <input type="hidden" id="mass_delivery_date" name="mass_delivery_date" required>
+                                        readonly>
+                                <input type="hidden" id="mass_delivery_date" name="mass_delivery_date" >
                                 <label for="mass_delivery_datetime_picker"> :تاریخ تحویل انبوه</label>
                             </div>
                             <div class="group-form">
