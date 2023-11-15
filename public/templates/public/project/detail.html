@@ -178,6 +178,7 @@
                         <!-- chart left -->
                     </div>
                     <!-- Project-specifications chart and name ddline  -->
+
                     <!--start content list task -->
                     <div class="content-items p-2 active">
                         <section class="section-table">
@@ -199,12 +200,17 @@
                                             وضعیت
                                         </div>
                                     </div>
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            آخرین تغییر
+                                        </div>
+                                    </div>
                                     <div class="col-2">
                                         <div class="table-title-item">
                                             واحد
                                         </div>
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col-1">
                                         <div class="table-title-item">
                                             الویت
                                         </div>
@@ -219,11 +225,6 @@
                                             تاریخ پایان
                                         </div>
                                     </div>
-                                    {#                                    <div class="col-1">#}
-                                    {#                                        <div class="table-title-item">#}
-                                    {##}
-                                    {#                                        </div>#}
-                                    {#                                    </div>#}
                                 </div>
                                 <div class="table-content">
                                     {% for task in project.get_tasks %}
@@ -243,12 +244,20 @@
                                                     {{ task.get_state_label }}
                                                 </div>
                                             </div>
+                                            <div class="col-1 p-2 d-flex align-items-center">
+                                                <div class="table-content-item datetime-convert">
+                                                    {{ task.get_state_modify_time|default:'-' }}
+                                                </div>
+                                                <span class="font-80">
+                                                    ({{ task.state_modify_time|date:'H:i' }})
+                                                </span>
+                                            </div>
                                             <div class="col-2 p-2">
                                                 <div class="table-content-item">
                                                     {{ task.to_department }}
                                                 </div>
                                             </div>
-                                            <div class="col-2 p-2">
+                                            <div class="col-1 p-2">
                                                 <div class="table-content-item">
                                                     {{ task.priority }}
                                                 </div>
@@ -263,11 +272,6 @@
                                                     {{ task.get_time_end }}
                                                 </div>
                                             </div>
-                                            {#                                                                                        <div class="col-1 p-2">#}
-                                            {#                                                                                            <div class="table-content-item">#}
-                                            {#                                                                                                <div class="btn-table blue">انجام شد</div>#}
-                                            {#                                                                                            </div>#}
-                                            {#                                                                                        </div>#}
                                         </div>
                                     {% empty %}
                                         <div class="container-not-found-base">
@@ -279,6 +283,7 @@
                         </section>
                     </div>
                     <!--end content list task -->
+
                     <!--start List of raw materials -->
                     <div class="content-items p-2">
                         <section class="section-table">
@@ -350,6 +355,7 @@
                         </section>
                     </div>
                     <!--end List of raw materials -->
+
                     <!--start Uploaded documents -->
                     <div class="content-items p-2">
                         <section class="section-table">
@@ -428,6 +434,7 @@
                         </section>
                     </div>
                     <!--end Uploaded documents -->
+
                     <!-- start Commerce -->
                     <div class="content-items p-2">
                         <section class="section-table">
@@ -575,6 +582,7 @@
                         </section>
                     </div>
                     <!--end Commerce -->
+
                     <!-- ticket -->
                     <div class="content-items p-2">
                         <section class="section-table">
@@ -653,6 +661,7 @@
                         </section>
                     </div>
                     <!-- ticket -->
+
                     <!-- financial department -->
                     <div class="content-items p-2">
                         <section class="section-table">
