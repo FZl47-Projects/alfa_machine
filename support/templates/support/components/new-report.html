@@ -67,9 +67,9 @@
                             <input type="radio" id="select_project_different" name="select_project_ticket" value="null">
                         </div>
                     </div>
-                    <div class="select-choices-content">
-                        <label for="lihh"> پروژه ها :</label>
-                        <select id="lihh" name="projects" multiple>
+                    <div class="select-choices-content mt-2">
+                        <label for="projectsSelect" class="me-3 mb-2"> پروژه ها :</label>
+                        <select id="projectsSelect" name="projects" multiple class="">
                             {% for project in projects %}
                                 <option value="{{ project.id }}">{{ project.name }}</option>
                             {% endfor %}

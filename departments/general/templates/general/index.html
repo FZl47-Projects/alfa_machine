@@ -33,12 +33,12 @@
                             <input type="file" name="file" id="add5" hidden="">
                         </div>
                     </div>
-                    <div class="information-item">
-                        <label class="item-upload" for="add">
+                    <div class="information-item mt-3">
+                        <label class="item-upload mb-2" for="add">
                             پروژه
                         </label>
                         <!-- status task -->
-                        <select name="project" required>
+                        <select id="projectSelect" name="project" required>
                             {% for project in projects %}
                                 <option value="{{ project.id }}" label="{{ project.name }}">{{ project.name }}</option>
                             {% endfor %}
@@ -388,4 +388,12 @@
 
 {% block Script %}
     <script type="module" src="{% static 'frontend/js/control-managment.js' %}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#projectSelect').select2({
+                width: '100%',
+            });
+        });
+    </script>
 {% endblock %}

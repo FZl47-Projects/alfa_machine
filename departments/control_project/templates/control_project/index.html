@@ -33,12 +33,12 @@
                             <input type="file" name="file" id="add5" hidden="">
                         </div>
                     </div>
-                    <div class="information-item">
-                        <label class="item-upload" for="add">
+                    <div class="information-item mt-3">
+                        <label class="item-upload mb-2" for="projectSelect">
                             پروژه
                         </label>
                         <!-- status task -->
-                        <select name="project" required>
+                        <select id="projectSelect" name="project" required>
                             {% for project in projects %}
                                 <option value="{{ project.id }}" label="{{ project.name }}">{{ project.name }}</option>
                             {% endfor %}
@@ -276,6 +276,7 @@
 
 {% block Script %}
     <script type="module" src="{% static 'frontend/js/control-project.js' %}"></script>
+
     <script>
         document.querySelector('.btn-create-report').addEventListener('click', function () {
             document.querySelector('.modal-report').classList.add('active')
@@ -285,6 +286,19 @@
             if (e.target.className === "inner-modal") {
                 document.querySelector('.modal-report').classList.remove("active");
             }
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#projectsSelect').select2({
+                width: '100%',
+            });
+        });
+
+        $(document).ready(function() {
+            $('#projectSelect').select2({
+                width: '100%',
+            });
         });
     </script>
 {% endblock %}
