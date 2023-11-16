@@ -9,9 +9,6 @@
     <!-- BOOTSTRAP -->
     <link rel="stylesheet" href="{% static 'frontend/vendors/bootstrap.min.css' %}"/>
 
-    <!-- SWIPER -->
-    <link rel="stylesheet" href="{% static 'frontend/vendors/swiper.css' %}"/>
-
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="{% static 'frontend/styles/login.css' %}"/>
 
@@ -26,8 +23,8 @@
     <main class="main container">
         <!-- form-user -->
         <section class="new_user">
-            <div class="content form-new_user col-12 col-md-6 mx-auto mt-5">
-                <div class="forms">
+            <div class="content form-new_user col-12 col-md-6 mx-auto my-5">
+                <div class="forms rounded-3">
                     <form class="form form-new_user" action="{% url 'public:project_add' %}" method="post">
                         {% csrf_token %}
                         <div class="titlee">پروژه جدید</div>
@@ -36,84 +33,81 @@
                             <br>
                             <p>تبدیل استعلام به پروژه</p>
                         {% endif %}
-                        <div class="col-12">
-
-
-                            <div class="group-form">
-                                <input type="text" id="number_id" class="form-control" name="number_id" 
+                        <div class="col-12" style="direction: rtl;">
+                            <div class="group-form d-flex flex-column align-items-start gap-2 rounded-2 py-3">
+                                <label for="number_id">شماره درخواست:</label>
+                                <input type="text" id="number_id" class="form-control border-2 bg-white" name="number_id"
                                        value="{{ inquiry.number_id }}">
-                                <label for="number_id"> :شماره درخواست</label>
                             </div>
-                            <div class="group-form">
-                                <input type="text" id="name" class="form-control" name="name"  value="{{ inquiry.title }}">
-                                <label for="name">نام</label>
+                            <div class="group-form d-flex flex-column align-items-start gap-2 rounded-2 py-3">
+                                <label for="name">نام پروژه:</label>
+                                <input type="text" id="name" class="form-control border-2 bg-white" name="name" value="{{ inquiry.title }}" required>
                             </div>
-                            <div class="group-form">
-                                <select class="form-select text-end" name="task_master" id="task_master" >
+                            <div class="group-form d-flex flex-column align-items-start gap-2 rounded-2 py-3">
+                                <label for="task_master">کارفرما:</label>
+                                <select class="form-control form-select text-end border-2 bg-white" name="task_master" id="task_master">
                                     {% for task_master in task_masters %}
                                         <option value="{{ task_master.id }}">{{ task_master.title }}</option>
                                     {% endfor %}
                                 </select>
-                                <label for="task_master">کارفرما</label>
                             </div>
-                            <div class="group-form">
+                            <div class="group-form d-flex flex-column align-items-start gap-2 rounded-2 py-3">
+                                <label for="time_start_picker">تاریخ ابلاغ به کار:</label>
                                 <input type="text" name="" id="time_start_picker"
-                                       class="form-control persianDatapicker" set-on="time_start"
+                                       class="form-control border-2 bg-white persianDatapicker" set-on="time_start"
                                         readonly>
-                                <input type="hidden" id="time_start" name="time_start" >
-                                <label for="time_start_picker">تاریخ شروع</label>
+                                <input type="hidden" id="time_start" name="time_start">
                             </div>
-                            <div class="group-form">
+                            <div class="group-form d-flex flex-column align-items-start gap-2 rounded-2 py-3">
+                                <label for="time_end_picker">تاریخ اتمام قرارداد:</label>
                                 <input type="text" name="" id="time_end_picker"
-                                       class="form-control persianDatapicker" set-on="time_end"
+                                       class="form-control border-2 bg-white persianDatapicker" set-on="time_end"
                                         readonly>
                                 <input type="hidden" id="time_end" name="time_end" >
-                                <label for="time_end_picker">تاریخ پایان</label>
                             </div>
-                            <div class="group-form">
-                                <input type="number" id="price" class="form-control" name="price" >
-                                <label for="price">قیمت</label>
+                            <div class="group-form d-none flex-column align-items-start gap-2 rounded-2 py-3">
+                                <label for="price">قیمت:</label>
+                                <input type="number" id="price" class="form-control border-2 bg-white" name="price">
                             </div>
-                            <div class="group-form">
-                                <select name="is_paid" id=""  class="form-control form-select">
+                            <div class="group-form d-flex flex-column align-items-start gap-2 rounded-2 py-3">
+                                <label for="price">وضعیت پرداخت:</label>
+                                <select name="is_paid" id=""  class="form-control form-select text-end bg-white border-2">
                                     <option value="false">پرداخت نشده</option>
                                     <option value="true">پرداخت شده</option>
                                 </select>
-                                <label for="price">وضعیت پرداخت</label>
                             </div>
-                            <div class="group-form">
+                            <div class="group-form d-flex flex-column align-items-start gap-2 rounded-2 py-3">
+                                <label for="prepayment_datetime_picker">تاریخ پیش پرداخت:</label>
                                 <input type="text" name="" id="prepayment_datetime_picker"
-                                       class="form-control persianDatapicker" set-on="prepayment_datetime"
+                                       class="form-control border-2 bg-white persianDatapicker" set-on="prepayment_datetime"
                                         readonly>
-                                <input type="hidden" id="prepayment_datetime" name="prepayment_datetime" >
-                                <label for="prepayment_datetime_picker">تاریخ پیش پرداخت</label>
+                                <input type="hidden" id="prepayment_datetime" name="prepayment_datetime">
                             </div>
-                            <div class="group-form">
+                            <div class="group-form d-flex flex-column align-items-start gap-2 rounded-2 py-3">
+                                <label for="item">آیتم پروژه:</label>
                                 <textarea id="item" name="item" class="form-control"></textarea>
-                                <label for="item">آیتم</label>
                             </div>
-                            <div class="group-form">
-                                <input type="number" id="count_total" class="form-control" name="count_total"
-                                       >
-                                <label for="count_total">تعداد کل</label>
+                            <div class="group-form d-flex flex-column align-items-start gap-2 rounded-2 py-3">
+                                <label for="count_total">تعداد کل:</label>
+                                <input type="number" id="count_total" class="form-control border-2 bg-white" name="count_total">
                             </div>
-                            <div class="group-form">
-                                <input type="number" id="count_remaining" class="form-control" name="count_remaining"
-                                       >
-                                <label for="count_remaining">تعداد باقی مانده</label>
+                            <div class="group-form d-flex flex-column align-items-start gap-2 rounded-2 py-3">
+                                <label for="count_remaining">تعداد باقی مانده:</label>
+                                <input type="number" id="count_remaining" class="form-control border-2 bg-white" name="count_remaining">
                             </div>
-                            <div class="group-form">
-                                <select name="status" class="form-control form-select" >
+                            <div class="group-form d-flex flex-column align-items-start gap-2 rounded-2 py-3">
+                                <label for="status">وضعیت:</label>
+                                <select id="status" name="status" class="form-control form-select bg-white border-2">
                                     <option value="checking" selected>در حال بررسی قبل اجرا</option>
                                     <option value="under_construction">در حال ساخت</option>
                                     <option value="posted">ارسال شده</option>
                                     <option value="paused">متوقف شده</option>
                                     <option value="completed">تایید و اتمام</option>
                                 </select>
-                                <label for="">وضعیت</label>
                             </div>
-                            <div class="group-form justify-content-end gap-4">
-                                <div class="d-flex flex-row-reverse gap-4">
+                            <div class="group-form d-flex justify-content-start rounded-2 gap-4 py-3">
+                                <label for="has_sample">نمونه:</label>
+                                <div class="d-flex flex-row-reverse gap-3">
                                     <label class="d-flex gap-1">
                                         ندارد
                                         <input type="radio" value="false" checked name="has_sample" oninput="toggleRelatedField('sample_date_div', false)">
@@ -123,30 +117,35 @@
                                         <input type="radio" value="true" name="has_sample" oninput="toggleRelatedField('sample_date_div', true)">
                                     </label>
                                 </div>
-                                <label for="has_sample">:نمونه</label>
                             </div>
-                            <div class="group-form d-none" id="sample_date_div">
+                            <div class="group-form d-flex flex-column align-items-start gap-2 rounded-2 py-3 d-none" id="sample_date_div">
+                                <label for="sample_delivery_datetime_picker">تاریخ تحویل نمونه:</label>
                                 <input type="text" name="" id="sample_delivery_datetime_picker"
-                                       class="form-control persianDatapicker" set-on="sample_delivery_date"
+                                       class="form-control border-2 bg-white persianDatapicker" set-on="sample_delivery_date"
                                         readonly>
                                 <input type="hidden" id="sample_delivery_date" name="sample_delivery_date">
-                                <label for="sample_delivery_datetime_picker"> :تاریخ تحویل نمونه</label>
                             </div>
-                            <div class="group-form">
+                            <div class="group-form d-flex flex-column align-items-start gap-2 rounded-2 py-3">
+                                <label for="mass_delivery_datetime_picker">تاریخ تحویل انبوه:</label>
                                 <input type="text" name="" id="mass_delivery_datetime_picker"
-                                       class="form-control persianDatapicker" set-on="mass_delivery_date"
+                                       class="form-control border-2 bg-white persianDatapicker" set-on="mass_delivery_date"
                                         readonly>
-                                <input type="hidden" id="mass_delivery_date" name="mass_delivery_date" >
-                                <label for="mass_delivery_datetime_picker"> :تاریخ تحویل انبوه</label>
+                                <input type="hidden" id="mass_delivery_date" name="mass_delivery_date">
                             </div>
-                            <div class="group-form">
-                                <textarea type="number" id="description" class="form-control" name="description"
+                            <div class="group-form d-flex flex-column align-items-start gap-2 rounded-2 py-3">
+                                <label for="description">توضیحات:</label>
+                                <textarea type="number" id="description" class="form-control border-2 bg-white" name="description"
                                 >{{ inquiry.description }}</textarea>
-                                <label for="description">توضیحات</label>
                             </div>
-                            <button type="submit" id="btn-login"
-                                    class="btn-submit">ثبت
-                            </button>
+
+                            <div class="d-flex justify-content-between mt-3 px-2">
+                                <button type="submit" id="btn-login" class="btn-lg btn-primary px-4">
+                                    ثبت
+                                </button>
+                                <a href="{{ user.get_absolute_url_dashboard }}" id="btn-login" class="btn-lg btn-danger">
+                                    انصراف
+                                </a>
+                            </div>
 
                         </div>
                     </form>
