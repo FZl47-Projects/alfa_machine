@@ -101,10 +101,13 @@
                                         </div>
                                         <div class="col-3 p-2">
                                             <div class="table-content-item">
-                                                <span class="datetime-convert">{{ report.created_at }}</span>
+                                                <span class="font-80" dir="rtl">
+                                                    ({{ report.created_at|time:'H:i' }})
+                                                </span>
                                                 &nbsp;
-                                                <span class="font-70"
-                                                      dir="rtl">({{ report.get_created_at_timepast }})</span>
+                                                <span class="datetime-convert">
+                                                    {{ report.created_at|date:'Y/m/d' }}
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="col-2 p-2">
