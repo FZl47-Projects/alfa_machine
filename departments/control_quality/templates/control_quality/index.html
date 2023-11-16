@@ -218,15 +218,15 @@
             </section>
             <!--end Access panel -->
 
-            <div class="title px-4">
+            <div class="title px-4 mt-4">
                 <span style="padding-left:3px;">پروژه های درحال اجرا</span>
                 <span class="d-flex justify-content-center align-item-center">
-                <a href="{% url 'public:project' %}">مشاهده همه</a>
-                <img src="./assets/images/back-icon.png" alt="">
-            </span>
+                    <a href="{% url 'public:project' %}">مشاهده همه</a>
+                    <img src="{% static 'frontend/images/back-icon.png' %}" alt="">
+                </span>
             </div>
             <!-- project section -->
-            <section class="ongoing-projects">
+            <section class="ongoing-projects" style="margin-top: -1.25rem;">
                 <!-- inner project section -->
                 <div class="box-section">
                     {% for project in projects|slice:':4' %}

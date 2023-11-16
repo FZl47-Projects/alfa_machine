@@ -589,7 +589,7 @@
     <div class="container-fluid col-md-10 content-page">
         <main class="main">
             <div class="title px-4">
-                <span style="padding-left:3px;">پنل مدیر فنی</span>
+                <span style="padding: 0.5rem 0 1.5rem 1rem;">پنل مدیر فنی</span>
                 <!-- btn-notif in mobile -->
                 <div class="notif-btn-mobile d-none">اعلانات</div>
                 <!-- btn-notif in mobile -->
@@ -689,15 +689,15 @@
                     </div>
                 </div>
             </section>
-            <div class="title px-4">
-                <span style="padding-left:3px;">پروژه های درحال اجرا</span>
+            <div class="title px-4 mt-4">
+                <span>پروژه های درحال اجرا</span>
                 <span class="d-flex justify-content-center align-item-center">
-                <a href="{% url 'public:project' %}">مشاهده همه</a>
-                <img src="{% static 'frontend/images/back-icon.png' %}" alt="">
-            </span>
+                    <a href="{% url 'public:project' %}">مشاهده همه</a>
+                    <img src="{% static 'frontend/images/back-icon.png' %}" alt="">
+                </span>
             </div>
             <!-- project section -->
-            <section class="ongoing-projects">
+            <section class="ongoing-projects" style="margin-top: -1rem;">
                 <!-- inner project section -->
                 <div class="box-section">
                     {% for project in projects|slice:':4' %}

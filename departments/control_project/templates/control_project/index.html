@@ -121,7 +121,7 @@
                             <div class="style-conent-box" style="margin-bottom:15px ;">
                                 <span>فایل پروژه</span>
                             </div>
-                            <div class="tarif-task btn-create-report btn--ta1 task-confirm" id="one">اپلود</div>
+                            <div class="tarif-task btn-create-report btn--ta1 task-confirm" id="one">آپلود</div>
                         </div>
                     </div>
                     <!--Access panel item  -->
@@ -130,7 +130,12 @@
             <!-- .End Access panel -->
 
             <!-- tasks category -->
-            <section class="tasks">
+            <div class="title px-4 mt-2">
+                <span style="padding-left:3px;">تسک ها</span>
+                <span class="d-flex justify-content-center align-item-center">
+                </span>
+            </div>
+            <section class="tasks" style="margin-top: -1.25rem;">
                 <div class="box-section">
                     <!-- each category task -->
                     <div class="col-12 col-md-3 p-2">
@@ -190,7 +195,8 @@
                 </div>
             </section>
             <!-- tasks category -->
-            <div class="title px-4">
+
+            <div class="title px-4 mt-3">
                 <span style="padding-left:3px;">پروژه های درحال اجرا</span>
                 <span class="d-flex justify-content-center align-item-center">
                     <a href="{% url 'public:project' %}">مشاهده همه</a>
@@ -198,7 +204,7 @@
                 </span>
             </div>
             <!-- section project -->
-            <section class="ongoing-projects">
+            <section class="ongoing-projects" style="margin-top: -1rem;">
                 <!-- inner project section -->
                 <div class="box-section">
                     {% for project in projects|slice:':4' %}
