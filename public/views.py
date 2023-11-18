@@ -140,16 +140,24 @@ class TaskOwner(View):
         # get task list by type state
         task_state = request.GET.get('task_state', None)
         department = request.user.department
-        tasks = models.Task.objects.filter(from_department=department)
+
+        if request.user.role == 'super_user':
+            tasks = models.Task.objects.filter(is_active=True)
+        else:
+            tasks = models.Task.objects.filter(from_department=department)
+
         if task_state:
             tasks = tasks.filter(state=task_state)
+
         tasks = self.search(request, tasks)
         tasks = self.sort(request, tasks)
+
         context = {
             'tasks': tasks,
             'departments': models.Department.objects.all(),
             'projects': models.Project.objects.filter(is_active=True)
         }
+
         return render(request, 'public/task/list-state.html', context)
 
     def post(self, request, task_id):
@@ -192,14 +200,17 @@ class TaskOwnerDepartment(View):
     def get(self, request, department_id):
         department = models.Department.objects.get(id=department_id)
         tasks = models.Task.objects.filter(to_department=department)
+
         tasks = self.search(request, tasks)
         tasks = self.sort(request, tasks)
+
         context = {
             'tasks': tasks,
             'department': department,
             'departments': models.Department.objects.all(),
             'projects': models.Project.objects.filter(is_active=True)
         }
+
         return render(request, self.template_name, context)
 
 

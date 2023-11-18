@@ -5,6 +5,11 @@ let overalyModals_New= document.querySelectorAll(".modal-new-task .inner-modal")
 
 BtnNewTask.forEach((item, index) => {
   item.addEventListener("click", () => {
+      try {
+        let department_id = item.getAttribute('department-id')
+            document.querySelector('[name="to_department"]').querySelector(`option[value="${department_id}"]`).setAttribute('selected', '')
+        } catch (e) {
+      }
     Modal_NewTask[0].classList.add("active");
   });
 });
