@@ -48,8 +48,8 @@
                         </select>
                     </div>
                     <div class="information-item">
-                        <label for="lihh">پروژه :</label>
-                        <select name="project" id="">
+                        <label for="taskProjectSelect">پروژه :</label>
+                        <select name="project" id="taskProjectSelect">
                             {% for project in projects %}
                                 <option value="{{ project.id }}">{{ project.name }}</option>
                             {% endfor %}
@@ -73,5 +73,4 @@
             </div>
         </form>
     </div>
-
 </div>

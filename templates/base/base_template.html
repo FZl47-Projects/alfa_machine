@@ -72,6 +72,22 @@
             theme: '{{ message.tags }}'
         })
     {% endfor %}
+
+    $(document).ready(function() {
+        $('#taskProjectSelect').select2({
+            width: '100%',
+        });
+
+        $('#ticketProjectsSelect').select2({
+            width: '100%',
+            dropdownParent: $('#addTicketForm'),
+        });
+
+        $('#notifProjectsSelect').select2({
+            width: '100%',
+            dropdownParent: $('#addNotifForm'),
+        });
+    });
 </script>
 {% block Script %}
 {% endblock %}

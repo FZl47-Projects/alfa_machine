@@ -5,7 +5,7 @@
                 <h5 class="modal-title">ایجاد اعلان</h5>
             </div>
             <div class="modal-body">
-                <form class="p-4" action="{% url 'notification:list_department' %}" method="post" enctype="multipart/form-data">
+                <form class="p-4" id="addNotifForm" action="{% url 'notification:list_department' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="information-section">
                         <div class="information-item">
@@ -81,8 +81,8 @@
                                 </div>
                             </div>
                             <div class="select-choices-content">
-                                <label for="lihh"> پروژه ها :</label>
-                                <select name="projects" multiple>
+                                <label for="notifProjectsSelect"> پروژه ها :</label>
+                                <select name="projects" id="notifProjectsSelect" style="z-index: 10;" multiple>
                                     {% for project in projects %}
                                         <option value="{{ project.id }}">{{ project.name }}</option>
                                     {% endfor %}

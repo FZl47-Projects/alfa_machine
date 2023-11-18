@@ -53,10 +53,6 @@
         </div>
     </div>
 
-    <!-- new task -->
-    {% include 'public/task/components/new-task.html' with projects=projects departments=departments %}
-
-    <!-- new task -->
     <!-- popup taid -->
     {% for inquiry in inquiries %}
         <div class="content-modal-two modal-management-approval">
@@ -382,8 +378,11 @@
             </section>
             <!--end Access panel -->
         </main>
-
     </div>
+
+    <!-- new task -->
+    {% include 'public/task/components/new-task.html' with projects=projects departments=departments %}
+    <!-- new task -->
 {% endblock %}
 
 {% block Script %}

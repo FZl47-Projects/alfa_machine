@@ -1,11 +1,11 @@
-<div class="modal fade" id="addTicketModal" tabindex="-1" aria-labelledby="addTicket" aria-hidden="true">
+<div class="modal fade" id="addTicketModal" tabindex="-1" role="dialog" aria-labelledby="addTicket" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">ایجاد تیکت</h5>
             </div>
             <div class="modal-body">
-                <form class="p-4" action="{% url 'support:ticket_department' %}" method="post" enctype="multipart/form-data">
+                <form class="p-4" id="addTicketForm" action="{% url 'support:ticket_department' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="information-section">
                         <div class="information-item">
@@ -72,9 +72,9 @@
                                     <input type="radio" id="select_project_ticket_null" name="select_project_ticket" value="null">
                                 </div>
                             </div>
-                            <div class="select-choices-content">
-                                <label for="lihh"> پروژه ها :</label>
-                                <select name="projects" multiple>
+                            <div class="select-choices-content mt-2">
+                                <label for="ticketProjectsSelect" class="me-3 mb-2"> پروژه ها :</label>
+                                <select name="projects" id="ticketProjectsSelect" multiple>
                                     {% for project in projects %}
                                         <option value="{{ project.id }}">{{ project.name }}</option>
                                     {% endfor %}
