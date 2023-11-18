@@ -66,15 +66,18 @@
 
     <div class="container-fluid col-md-10 content-page">
         <main class="main">
+            <div class="mt-2 px-2">
+                <span>پنل کنترل پروژه</span>
+            </div>
             <!-- btn allocation-of-materials -->
-            <div class="allocation-of-materials d-flex justify-content-between align-item-center">
+            <div class="allocation-of-materials d-flex justify-content-between align-item-center mt-4" style="margin-right: -1rem;">
                 <a href="{% url 'dp_warehouse:items_allocation_project' %}"><span class="allocation-btn">تخصیص مواد اولیه</span></a>
                 <div class="notif-btn-mobile d-none">اعلانات</div>
             </div>
             <!-- btn allocation-of-materials -->
 
             <!--Start Access panel -->
-            <section class="collection-units mb-4" style="background-color:#fff ; margin-top:30px;">
+            <section class="collection-units mb-4 mt-2" style="background-color: #fff;">
                 <div class="box-section">
                     <!--Access panel item  -->
                     <div class="col-12 col-md-3  col-lg-2 ">
@@ -130,7 +133,7 @@
             <!-- .End Access panel -->
 
             <!-- tasks category -->
-            <div class="title px-4 mt-2">
+            <div class="title px-4 mt-4">
                 <span style="padding-left:3px;">تسک ها</span>
                 <span class="d-flex justify-content-center align-item-center">
                 </span>
@@ -138,60 +141,91 @@
             <section class="tasks" style="margin-top: -1.25rem;">
                 <div class="box-section">
                     <!-- each category task -->
-                    <div class="col-12 col-md-3 p-2">
+                    <div class="col-12 col-sm-6 col-md-2 p-1">
                         <div class="box-item-2">
-                            <img src="{% static 'frontend/images/22.png' %}" alt="" class="icon-box">
+                            <img src="{% static 'frontend/images/22.png' %}" alt="" class="icon-box" style="padding-top: 0.125rem;">
                             <div class=" style-conent-box">
                                 <span>درحال اجرا</span>
                             </div>
                             <div class="style-conent-box">
                                 <span>{{ tasks.progress }}</span>
                             </div>
-                            <div class="btn--ta"><a href="{% url 'public:task_owner' %}?task_state=progress">مشاهده
-                                همه</a></div>
+                            <div class="btn--ta text-nowrap">
+                                <a href="{% url 'public:task_owner' %}?task_state=progress">مشاهده همه</a>
+                            </div>
                         </div>
                     </div>
                     <!--each category task -->
-                    <div class="col-12 col-md-3 p-2">
+                    <div class="col-12 col-sm-6 col-md-2 p-1">
                         <div class="box-item-2">
-                            <img src="{% static 'frontend/images/33.png' %}" alt="" class="icon-box">
+                            <img src="{% static 'frontend/images/33.png' %}" alt="" class="icon-box" style="padding-top: 0.125rem;">
                             <div class=" style-conent-box">
                                 <span>درصف</span>
                             </div>
                             <div class="style-conent-box">
                                 <span>{{ tasks.queue }}</span>
                             </div>
-                            <div class="btn--ta"><a href="{% url 'public:task_owner' %}?task_state=queue">مشاهده همه</a>
+                            <div class="btn--ta text-nowrap">
+                                <a href="{% url 'public:task_owner' %}?task_state=queue">مشاهده همه</a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-3 p-2">
+                    <div class="col-12 col-sm-6 col-md-2 p-1">
                         <div class="box-item-2">
-                            <img src="{% static 'frontend/images/44.png' %}" alt="" class="icon-box">
+                            <img src="{% static 'frontend/images/44.png' %}" alt="" class="icon-box" style="padding-top: 0.125rem;">
                             <div class=" style-conent-box">
                                 <span>نیاز به بررسی</span>
                             </div>
                             <div class="style-conent-box">
                                 <span>{{ tasks.need_to_check }}</span>
                             </div>
-                            <div class="btn--ta"><a href="{% url 'public:task_owner' %}?task_state=need-to-check">مشاهده
-                                همه</a></div>
+                            <div class="btn--ta text-nowrap">
+                                <a href="{% url 'public:task_owner' %}?task_state=need-to-check">مشاهده همه</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-3 p-2">
+                    <div class="col-12 col-sm-6 col-md-2 p-1">
                         <div class="box-item-2">
-                            <img src="{% static 'frontend/images/55.png' %}" alt="" class="icon-box">
+                            <i class="fa fa-pause fa-3x" style="opacity: 0.9;"></i>
+                            <div class=" style-conent-box">
+                                <span>نگه داشته شده</span>
+                            </div>
+                            <div class="style-conent-box">
+                                <span>{{ tasks.hold }}</span>
+                            </div>
+                            <div class="btn--ta text-nowrap">
+                                <a href="{% url 'public:task_owner' %}?task_state=hold">مشاهده همه</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-2 p-1">
+                        <div class="box-item-2">
+                            <i class="fa fa-rotate-left fa-2x py-2" style="opacity: 0.9;"></i>
+                            <div class=" style-conent-box">
+                                <span>نیاز به برنامه ریزی مجدد</span>
+                            </div>
+                            <div class="style-conent-box">
+                                <span>{{ tasks.need_to_replan }}</span>
+                            </div>
+                            <div class="btn--ta text-nowrap">
+                                <a href="{% url 'public:task_owner' %}?task_state=need-to-replan">مشاهده همه</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-2 p-1">
+                        <div class="box-item-2">
+                            <img src="{% static 'frontend/images/55.png' %}" alt="" class="icon-box" style="padding-top: 0.125rem;">
                             <div class=" style-conent-box">
                                 <span>تمام شده</span>
                             </div>
                             <div class="style-conent-box">
                                 <span>{{ tasks.finished }}</span>
                             </div>
-                            <div class="btn--ta"><a href="{% url 'public:task_owner' %}?task_state=finished">مشاهده
-                                همه</a></div>
+                            <div class="btn--ta text-nowrap">
+                                <a href="{% url 'public:task_owner' %}?task_state=finished">مشاهده همه</a>
+                            </div>
                         </div>
                     </div>
-
                 </div>
             </section>
             <!-- tasks category -->
@@ -222,10 +256,8 @@
             <!-- section-task -->
             <div class="title px-4">
                 <span style="padding-left:3px;">صفحات</span>
-                <span class="d-flex justify-content-center align-item-center">
-                </span>
             </div>
-            <section>
+            <section style="margin-top: -1rem;">
                 <div class="box-section">
                     <div class="col-12 col-md-4 p-2">
                         <div class="box-item-2">

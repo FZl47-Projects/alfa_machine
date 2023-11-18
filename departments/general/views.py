@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.contrib import messages
 from public.models import Project, Task, Department, Inquiry
@@ -21,8 +21,10 @@ class Index(View):
             'tasks': {
                 'progress': Task.objects.filter(state='progress').count(),
                 'queue': Task.objects.filter(state='queue').count(),
-                'finished': Task.objects.filter(state='finished').count(),
                 'need_to_check': Task.objects.filter(state='need-to-check').count(),
+                'hold': Task.objects.filter(state='hold').count(),
+                'need_to_replan': Task.objects.filter(state='need-to-check').count(),
+                'finished': Task.objects.filter(state='finished').count(),
             }
         }
         return render(request, self.template_name, context)

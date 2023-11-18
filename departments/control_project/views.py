@@ -19,8 +19,10 @@ class Index(View):
             'tasks': {
                 'progress': Task.objects.filter(state='progress', from_department=department).count(),
                 'queue': Task.objects.filter(state='queue', from_department=department).count(),
-                'finished': Task.objects.filter(state='finished', from_department=department).count(),
                 'need_to_check': Task.objects.filter(state='need-to-check', from_department=department).count(),
+                'hold': Task.objects.filter(state='hold', from_department=department).count(),
+                'need_to_replan': Task.objects.filter(state='need-to-replan', from_department=department).count(),
+                'finished': Task.objects.filter(state='finished', from_department=department).count(),
             }
         }
         return render(request, self.template_name, context)
