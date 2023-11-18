@@ -3,7 +3,7 @@
     <div class="overly">
         <div class="inner-notfication">
             <div class="btns">
-                <div class="btn-change col-3 text-center font-80 active {% if request.user.have_new_ticket %}text-danger{% endif %}">تیکت ها
+                <div class="btn-change col-3 text-center font-80 active text-nowrap {% if request.user.have_new_ticket %}text-danger{% endif %}">تیکت ها
                     {% if request.user.have_new_ticket %}
                         <img src="{% static 'frontend/images/alert-icon.png' %}" alt="" class="d-inline-block" style="width: 15px">
                     {% endif %}

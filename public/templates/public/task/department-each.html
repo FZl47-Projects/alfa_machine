@@ -218,11 +218,13 @@
                                         <div class="col-2 p-2">
                                             <div class="table-content-item">
                                                 <div class="btn-table-takhsis">
-                                                    <button type="button" class="btn btn-item m-1 remov"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#task-modal-delete-{{ forloop.counter }}">
-                                                        حذف
-                                                    </button>
+                                                    {% if user.role == 'super_user' or task.from_department == user.department %}
+                                                        <button type="button" class="btn btn-item m-1 remov"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#task-modal-delete-{{ forloop.counter }}">
+                                                            حذف
+                                                        </button>
+                                                    {% endif %}
                                                     <form action="{% url 'public:task_remind' task_id=task.id %}" class="overflow-visible"
                                                           method="post">
                                                         {% csrf_token %}
