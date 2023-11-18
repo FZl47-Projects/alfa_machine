@@ -110,8 +110,8 @@
                                 </div>
                                 <div class="col-12 col-md-6 p-2">
                                     <div class="right-item">
-                                        <span>قیمت</span>
-                                        <span class="price-el">{{ project.price }}</span>
+                                        <span>قیمت:</span>
+                                        <span class="price-el">{{ project.price|default:'بدون قیمت' }}</span>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6 p-2">

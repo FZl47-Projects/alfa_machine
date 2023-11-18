@@ -156,7 +156,9 @@ class Project(BaseModel):
         return self.ticketdepartment_set.all()
 
     def get_prepayment_datetime(self):
-        return self.prepayment_datetime.strftime('%Y-%m-%d %H:%M')
+        if self.prepayment_datetime:
+            return self.prepayment_datetime.strftime('%Y-%m-%d %H:%M')
+        return '-'
 
     def get_sample_delivery_date(self):
         if not self.sample_delivery_date:
@@ -175,13 +177,19 @@ class Project(BaseModel):
         return self.sample_delivery_date.strftime('%Y-%m-%d')
 
     def get_prepayment_datetime_input(self):
-        return self.prepayment_datetime.strftime('%Y-%m-%d')
+        if self.prepayment_datetime:
+            return self.prepayment_datetime.strftime('%Y-%m-%d')
+        return '-'
 
     def get_time_end_input(self):
-        return self.time_end.strftime('%Y-%m-%d')
+        if self.time_end:
+            return self.time_end.strftime('%Y-%m-%d')
+        return '-'
 
     def get_time_start_input(self):
-        return self.time_start.strftime('%Y-%m-%d')
+        if self.time_start:
+            return self.time_start.strftime('%Y-%m-%d')
+        return '-'
 
 
 class ProjectFile(BaseModel, File):
