@@ -82,7 +82,7 @@
                             </div>
                             <div class="select-choices-content">
                                 <label for="notifProjectsSelect"> پروژه ها :</label>
-                                <select name="projects" id="notifProjectsSelect" style="z-index: 10;" multiple>
+                                <select name="projects" id="notifProjectsSelect" class="select2-input" multiple>
                                     {% for project in projects %}
                                         <option value="{{ project.id }}">{{ project.name }}</option>
                                     {% endfor %}

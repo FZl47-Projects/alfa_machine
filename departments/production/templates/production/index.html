@@ -38,7 +38,7 @@
                             پروژه
                         </label>
                         <!-- status task -->
-                        <select name="project" required>
+                        <select id="taskProjectSelect" name="project" class="select2-input" required>
                             {% for project in projects %}
                                 <option value="{{ project.id }}" label="{{ project.name }}">{{ project.name }}</option>
                             {% endfor %}

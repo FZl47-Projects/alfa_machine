@@ -38,7 +38,7 @@
                             پروژه
                         </label>
                         <!-- status task -->
-                        <select id="projectSelect" name="project" required>
+                        <select id="projectSelect" name="project" class="select2-input" required>
                             {% for project in projects %}
                                 <option value="{{ project.id }}" label="{{ project.name }}">{{ project.name }}</option>
                             {% endfor %}
@@ -417,12 +417,4 @@
 
 {% block Script %}
     <script type="module" src="{% static 'frontend/js/control-managment.js' %}"></script>
-
-    <script>
-        $(document).ready(function() {
-            $('#projectSelect').select2({
-                width: '100%',
-            });
-        });
-    </script>
 {% endblock %}

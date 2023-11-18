@@ -69,7 +69,7 @@
                     </div>
                     <div class="select-choices-content mt-2">
                         <label for="projectsSelect" class="me-3 mb-2"> پروژه ها :</label>
-                        <select id="projectsSelect" name="projects" multiple class="">
+                        <select id="projectsSelect" name="projects" multiple class="select2-input">
                             {% for project in projects %}
                                 <option value="{{ project.id }}">{{ project.name }}</option>
                             {% endfor %}

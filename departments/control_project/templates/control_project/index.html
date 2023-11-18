@@ -38,7 +38,7 @@
                             پروژه
                         </label>
                         <!-- status task -->
-                        <select id="projectSelect" name="project" required>
+                        <select id="projectSelect" name="project" required class="select2-input">
                             {% for project in projects %}
                                 <option value="{{ project.id }}" label="{{ project.name }}">{{ project.name }}</option>
                             {% endfor %}
@@ -318,17 +318,6 @@
             if (e.target.className === "inner-modal") {
                 document.querySelector('.modal-report').classList.remove("active");
             }
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('#projectsSelect').select2({
-                width: '100%',
-            });
-
-            $('#projectSelect').select2({
-                width: '100%',
-            });
         });
     </script>
 {% endblock %}

@@ -34,11 +34,11 @@
                         </div>
                     </div>
                     <div class="information-item">
-                        <label class="item-upload" for="add">
+                        <label class="item-upload" for="taskProjectSelect">
                             پروژه
                         </label>
                         <!-- status task -->
-                        <select name="project" required>
+                        <select id="taskProjectSelect" name="project" class="select2-input" required>
                             {% for project in projects %}
                                 <option value="{{ project.id }}" label="{{ project.name }}">{{ project.name }}</option>
                             {% endfor %}
@@ -73,11 +73,11 @@
                         </div>
                     </div>
                     <div class="information-item">
-                        <label class="item-upload" for="add">
+                        <label class="item-upload" for="assuranceProjectSelect">
                             پروژه
                         </label>
                         <!-- status task -->
-                        <select name="project" required>
+                        <select id="assuranceProjectSelect" name="project" class="select2-input" required>
                             {% for project in projects %}
                                 <option value="{{ project.id }}" label="{{ project.name }}">{{ project.name }}</option>
                             {% endfor %}
@@ -110,11 +110,11 @@
                         </div>
                     </div>
                     <div class="information-item">
-                        <label class="item-upload" for="add">
+                        <label class="item-upload" for="bookProjectSelect">
                             پروژه
                         </label>
                         <!-- status task -->
-                        <select name="project" required>
+                        <select id="bookProjectSelect" name="project" class="select2-input" required>
                             {% for project in projects %}
                                 <option value="{{ project.id }}" label="{{ project.name }}">{{ project.name }}</option>
                             {% endfor %}
