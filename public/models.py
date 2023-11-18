@@ -227,7 +227,7 @@ class Task(BaseModel, File):
     from_department = models.ForeignKey('Department', on_delete=models.CASCADE, related_name='from_department')
     to_department = models.ForeignKey('Department', on_delete=models.CASCADE)
     allocator_user = models.ForeignKey('account.User', on_delete=models.CASCADE)  # who created task
-    work_hour = models.IntegerField(null=True)
+    work_time = models.CharField(max_length=64, null=True, blank=True)
     time_start = models.DateField(null=True)
     time_end = models.DateField(null=True)
     priority = models.IntegerField(default=1)
