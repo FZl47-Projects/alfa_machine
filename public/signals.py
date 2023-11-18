@@ -11,3 +11,5 @@ def update_state_time(sender, instance, *args, **kwargs):
 
         if original_instance.state != instance.state:
             instance.state_modify_time = timezone.now()
+    else:
+        instance.state_modify_time = timezone.now()
