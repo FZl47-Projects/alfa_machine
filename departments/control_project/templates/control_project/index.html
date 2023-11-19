@@ -67,7 +67,7 @@
     <div class="container-fluid col-md-10 content-page">
         <main class="main">
             <div class="mt-2 px-2">
-                <span>پنل کنترل پروژه</span>
+                <span class="fw-bold">پنل کنترل پروژه</span>
             </div>
             <!-- btn allocation-of-materials -->
             <div class="allocation-of-materials d-flex justify-content-between align-item-center mt-4" style="margin-right: -1rem;">
@@ -132,9 +132,105 @@
             </section>
             <!-- .End Access panel -->
 
+            <!-- Start project section -->
+            <!-- In progress projects -->
+            <div class="title px-4">
+                <span style="padding-left: 3px;">پروژه های درحال اجرا</span>
+                <span class="d-flex justify-content-center align-item-center">
+                    <a href="{% url 'public:project' %}?status=other">مشاهده همه</a>
+                    <img src="{% static 'frontend/images/back-icon.png' %}" alt="">
+                </span>
+            </div>
+            <!-- project section -->
+            <section class="ongoing-projects" style="margin-top: -1.25rem;">
+                <!-- inner project section -->
+                <div class="box-section">
+                    {% for project in projects %}
+                        {% include 'public/project/components/list-project.html' with project=project %}
+                    {% empty %}
+                        <div class="container-not-found-base">
+                            <p>چیزی یافت نشد</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <!-- Other projects -->
+            <div>
+                <div class="title px-4">
+                    <span style="padding-left: 3px;">دیگر پروژه‌ها</span>
+                </div>
+                <div class="box-section" style="margin-top: -1.25rem;">
+                    <!-- Posted projects -->
+                    <div class="col-12 col-md-6 p-2">
+                        <div class="box-item-2">
+                            <i class="icon-box fa fa-truck-field fa-2xl p-3"></i>
+                            <div class=" style-conent-box">
+                                <span>پروژه‌های ارسال شده</span>
+                            </div>
+                            <div class="btn--ta">
+                                <a href="{% url 'public:project' %}?status=posted">مشاهده همه</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Completed projects -->
+                    <div class="col-12 col-md-6 p-2">
+                        <div class="box-item-2">
+                            <i class="icon-box fa fa-list-check fa-2xl p-3"></i>
+                            <div class="style-conent-box">
+                                <span>پروژه‌های تمام شده</span>
+                            </div>
+                            <div class="btn--ta">
+                                <a href="{% url 'public:project' %}?status=completed">مشاهده همه</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- .End project section -->
+
+            <!-- section-task -->
+            <div class="title px-4">
+                <span style="padding-left:3px;">صفحات</span>
+            </div>
+            <section style="margin-top: -1rem;">
+                <div class="box-section">
+                    <div class="col-12 col-md-4 p-2">
+                        <div class="box-item-2">
+                            <i class="icon-box fa fa-gear fa-2xl p-3"></i>
+                            <div class=" style-conent-box">
+                                <span>پروژه</span>
+                            </div>
+                            <div class="btn--ta"><a href="{% url 'public:project_add' %}">افزودن
+                            </a></div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4 p-2">
+                        <div class="box-item-2">
+                            <i class="icon-box fa fa-gears fa-2xl p-3"></i>
+                            <div class=" style-conent-box">
+                                <span>لیست پروژه ها</span>
+                            </div>
+                            <div class="btn--ta"><a href="{% url 'public:project' %}">مشاهده
+                            </a></div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4 p-2">
+                        <div class="box-item-2">
+                            <i class="icon-box fa fa-question-circle fa-2xl p-3"></i>
+                            <div class=" style-conent-box">
+                                <span>لیست استعلامات</span>
+                            </div>
+                            <div class="btn--ta"><a href="{% url 'public:inquiry' %}">مشاهده
+                            </a></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- tasks category -->
             <div class="title px-4 mt-4">
-                <span style="padding-left:3px;">تسک ها</span>
+                <span style="padding-left: 3px;">تسک ها</span>
                 <span class="d-flex justify-content-center align-item-center">
                 </span>
             </div>
@@ -229,68 +325,6 @@
                 </div>
             </section>
             <!-- tasks category -->
-
-            <div class="title px-4 mt-3">
-                <span style="padding-left:3px;">پروژه های درحال اجرا</span>
-                <span class="d-flex justify-content-center align-item-center">
-                    <a href="{% url 'public:project' %}">مشاهده همه</a>
-                    <img src="{% static 'frontend/images/back-icon.png' %}" alt="">
-                </span>
-            </div>
-            <!-- section project -->
-            <section class="ongoing-projects" style="margin-top: -1rem;">
-                <!-- inner project section -->
-                <div class="box-section">
-                    {% for project in projects|slice:':4' %}
-                        {% include 'public/project/components/list-project.html' with project=project %}
-                    {% empty %}
-                        <div class="container-not-found-base">
-                            <p>چیزی یافت نشد</p>
-                        </div>
-                    {% endfor %}
-                </div>
-                <!-- inner project section -->
-            </section>
-            <!-- section project -->
-
-            <!-- section-task -->
-            <div class="title px-4">
-                <span style="padding-left:3px;">صفحات</span>
-            </div>
-            <section style="margin-top: -1rem;">
-                <div class="box-section">
-                    <div class="col-12 col-md-4 p-2">
-                        <div class="box-item-2">
-                            <i class="icon-box fa fa-gear fa-2xl p-3"></i>
-                            <div class=" style-conent-box">
-                                <span>پروژه</span>
-                            </div>
-                            <div class="btn--ta"><a href="{% url 'public:project_add' %}">افزودن
-                            </a></div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-4 p-2">
-                        <div class="box-item-2">
-                            <i class="icon-box fa fa-gears fa-2xl p-3"></i>
-                            <div class=" style-conent-box">
-                                <span>لیست پروژه ها</span>
-                            </div>
-                            <div class="btn--ta"><a href="{% url 'public:project' %}">مشاهده
-                            </a></div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-4 p-2">
-                        <div class="box-item-2">
-                            <i class="icon-box fa fa-question-circle fa-2xl p-3"></i>
-                            <div class=" style-conent-box">
-                                <span>لیست استعلامات</span>
-                            </div>
-                            <div class="btn--ta"><a href="{% url 'public:inquiry' %}">مشاهده
-                            </a></div>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
             <!--Start Access panel -->
             <section class="collection-units" style="background-color:#fff ; margin-top:30px;">

@@ -202,10 +202,12 @@
                 </div>
             </section>
 
+            <!-- Start project section -->
+            <!-- In progress projects -->
             <div class="title px-4">
                 <span style="padding-left: 3px;">پروژه های درحال اجرا</span>
                 <span class="d-flex justify-content-center align-item-center">
-                    <a href="{% url 'public:project' %}">مشاهده همه</a>
+                    <a href="{% url 'public:project' %}?status=other">مشاهده همه</a>
                     <img src="{% static 'frontend/images/back-icon.png' %}" alt="">
                 </span>
             </div>
@@ -213,7 +215,7 @@
             <section class="ongoing-projects" style="margin-top: -1.25rem;">
                 <!-- inner project section -->
                 <div class="box-section">
-                    {% for project in projects|slice:':4' %}
+                    {% for project in projects %}
                         {% include 'public/project/components/list-project.html' with project=project %}
                     {% empty %}
                         <div class="container-not-found-base">
@@ -221,10 +223,122 @@
                         </div>
                     {% endfor %}
                 </div>
-                <!-- inner project section -->
             </section>
-            <!-- project section -->
+
+            <!-- Other projects -->
+            <div>
+                <div class="title px-4">
+                    <span style="padding-left: 3px;">دیگر پروژه‌ها</span>
+                </div>
+                <div class="box-section" style="margin-top: -1.25rem;">
+                    <!-- Posted projects -->
+                    <div class="col-12 col-md-6 p-2">
+                        <div class="box-item-2">
+                            <i class="icon-box fa fa-truck-field fa-2xl p-3"></i>
+                            <div class=" style-conent-box">
+                                <span>پروژه‌های ارسال شده</span>
+                            </div>
+                            <div class="btn--ta">
+                                <a href="{% url 'public:project' %}?status=posted">مشاهده همه</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Completed projects -->
+                    <div class="col-12 col-md-6 p-2">
+                        <div class="box-item-2">
+                            <i class="icon-box fa fa-list-check fa-2xl p-3"></i>
+                            <div class="style-conent-box">
+                                <span>پروژه‌های تمام شده</span>
+                            </div>
+                            <div class="btn--ta">
+                                <a href="{% url 'public:project' %}?status=completed">مشاهده همه</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- .End project section -->
+
             <div class="title px-4">
+                <span style="padding-left:3px;">صفحات</span>
+                <span class="d-flex justify-content-center align-item-center">
+                </span>
+            </div>
+            <section>
+                <div class="box-section" style="margin-top: -1.25rem;">
+                    <!-- each category task -->
+                    <div class="col-12 col-md-6 p-2 d-none">
+                        <div class="box-item-2">
+                            <img src="{% static 'frontend/images/22.png' %}" alt="" class="icon-box">
+                            <div class=" style-conent-box">
+                                <span> لیست واحد ها</span>
+                            </div>
+                            <div class="btn--ta">
+                                <a href="{% url 'departments.general:departments_list' %}">مشاهده</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 p-2">
+                        <div class="box-item-2">
+                            <i class="icon-box fa fa-user fa-2xl p-3"></i>
+                            <div class=" style-conent-box">
+                                <span>کاربر</span>
+                            </div>
+                            <div class="btn--ta">
+                                <a href="{% url 'account:new_user' %}">افزودن</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 p-2">
+                        <div class="box-item-2">
+                            <i class="icon-box fa fa-users fa-2xl p-3"></i>
+                            <div class=" style-conent-box">
+                                <span>لیست کاربران</span>
+                            </div>
+                            <div class="btn--ta"><a href="{% url 'departments.general:users_list' %}">مشاهده
+                            </a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-section" style="margin-top: -3rem;">
+                    <div class="col-12 col-md-4 p-2">
+                        <div class="box-item-2">
+                            <i class="icon-box fa fa-gear fa-2xl p-3"></i>
+                            <div class=" style-conent-box">
+                                <span>پروژه</span>
+                            </div>
+                            <div class="btn--ta">
+                                <a href="{% url 'public:project_add' %}">افزودن</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4 p-2">
+                        <div class="box-item-2">
+                            <i class="icon-box fa fa-gears fa-2xl p-3"></i>
+                            <div class=" style-conent-box">
+                                <span>لیست پروژه ها</span>
+                            </div>
+                            <div class="btn--ta">
+                                <a href="{% url 'public:project' %}">مشاهده</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4 p-2">
+                        <div class="box-item-2">
+                            <i class="icon-box fa fa-person-walking-luggage fa-2xl p-3"></i>
+                            <div class=" style-conent-box">
+                                <span>کارفرمایان</span>
+                            </div>
+                            <div class="btn--ta">
+                                <a href="{% url 'public:task_master' %}">مشاهده</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Start task section -->
+            <div class="title px-4 mt-2">
                 <span style="padding-left: 3px;">تسک ها</span>
                 <span class="d-flex justify-content-center align-item-center">
                 </span>
@@ -321,83 +435,7 @@
                 </div>
             </section>
             <!-- section-task -->
-            <div class="title px-4">
-                <span style="padding-left:3px;">صفحات</span>
-                <span class="d-flex justify-content-center align-item-center">
-                </span>
-            </div>
-            <section>
-                <div class="box-section" style="margin-top: -1.25rem;">
-                    <!-- each category task -->
-                    <div class="col-12 col-md-6 p-2 d-none">
-                        <div class="box-item-2">
-                            <img src="{% static 'frontend/images/22.png' %}" alt="" class="icon-box">
-                            <div class=" style-conent-box">
-                                <span> لیست واحد ها</span>
-                            </div>
-                            <div class="btn--ta">
-                                <a href="{% url 'departments.general:departments_list' %}">مشاهده</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 p-2">
-                        <div class="box-item-2">
-                            <i class="icon-box fa fa-user fa-2xl p-3"></i>
-                            <div class=" style-conent-box">
-                                <span>کاربر</span>
-                            </div>
-                            <div class="btn--ta">
-                                <a href="{% url 'account:new_user' %}">افزودن</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 p-2">
-                        <div class="box-item-2">
-                            <i class="icon-box fa fa-users fa-2xl p-3"></i>
-                            <div class=" style-conent-box">
-                                <span>لیست کاربران</span>
-                            </div>
-                            <div class="btn--ta"><a href="{% url 'departments.general:users_list' %}">مشاهده
-                            </a></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="box-section" style="margin-top: -3rem;">
-                    <div class="col-12 col-md-4 p-2">
-                        <div class="box-item-2">
-                            <i class="icon-box fa fa-gear fa-2xl p-3"></i>
-                            <div class=" style-conent-box">
-                                <span>پروژه</span>
-                            </div>
-                            <div class="btn--ta">
-                                <a href="{% url 'public:project_add' %}">افزودن</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-4 p-2">
-                        <div class="box-item-2">
-                            <i class="icon-box fa fa-gears fa-2xl p-3"></i>
-                            <div class=" style-conent-box">
-                                <span>لیست پروژه ها</span>
-                            </div>
-                            <div class="btn--ta">
-                                <a href="{% url 'public:project' %}">مشاهده</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-4 p-2">
-                        <div class="box-item-2">
-                            <i class="icon-box fa fa-person-walking-luggage fa-2xl p-3"></i>
-                            <div class=" style-conent-box">
-                                <span>کارفرمایان</span>
-                            </div>
-                            <div class="btn--ta">
-                                <a href="{% url 'public:task_master' %}">مشاهده</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+
             <!--Start Access panel -->
             <section class="collection-units" style="background-color:#fff ; margin-top:30px;">
                 <div class="box-section">

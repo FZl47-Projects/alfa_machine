@@ -17,7 +17,7 @@ class Index(View):
             'tickets': request.user.get_tickets(),
             'notifications': request.user.department.get_notifications(),
             'items': models.MaterialItem.objects.filter(materialquality=None),
-            'projects': Project.objects.filter(is_active=True)
+            'projects': Project.objects.filter(is_active=True, status__in=['checking', 'paused', 'under_construction'])[:4],
         }
         return render(request, self.template_name, context)
 

@@ -12,7 +12,7 @@ class Index(View):
         context = {
             'tickets': request.user.get_tickets(),
             'notifications': request.user.department.get_notifications(),
-            'projects': Project.objects.filter(is_active=True),
+            'projects': Project.objects.filter(is_active=True, status__in=['checking', 'paused', 'under_construction'])[:4],
             'departments': Department.objects.all(),
         }
         return render(request, self.template_name, context)

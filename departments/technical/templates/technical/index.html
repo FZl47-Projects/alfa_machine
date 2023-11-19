@@ -588,14 +588,14 @@
 
     <div class="container-fluid col-md-10 content-page">
         <main class="main">
-            <div class="title px-4">
-                <span style="padding: 0.5rem 0 1.5rem 1rem;">پنل مدیر فنی</span>
+            <div class="title px-2 pt-2">
+                <span class="fw-bold">مدیر فنی</span>
                 <!-- btn-notif in mobile -->
                 <div class="notif-btn-mobile d-none">اعلانات</div>
                 <!-- btn-notif in mobile -->
             </div>
             <!--Start Access panel -->
-            <section class="collection-units" style="background-color:#fff;">
+            <section class="collection-units bg-white mt-4">
                 <div class="box-section">
                     <!-- item Access panel -->
                     <div class="col-12 col-md-4">
@@ -689,18 +689,21 @@
                     </div>
                 </div>
             </section>
-            <div class="title px-4 mt-4">
-                <span>پروژه های درحال اجرا</span>
+
+            <!-- In progress projects -->
+            <div class="title px-4 mt-2">
+                <span style="padding-left: 3px;">پروژه های درحال اجرا</span>
                 <span class="d-flex justify-content-center align-item-center">
-                    <a href="{% url 'public:project' %}">مشاهده همه</a>
+                    <a href="{% url 'public:project' %}?status=other">مشاهده همه</a>
                     <img src="{% static 'frontend/images/back-icon.png' %}" alt="">
                 </span>
             </div>
+
             <!-- project section -->
-            <section class="ongoing-projects" style="margin-top: -1rem;">
+            <section class="ongoing-projects" style="margin-top: -1.25rem;">
                 <!-- inner project section -->
-                <div class="box-section">
-                    {% for project in projects|slice:':4' %}
+                <div class="box-section justify-content-start">
+                    {% for project in projects %}
                         {% include 'public/project/components/list-project.html' with project=project %}
                     {% empty %}
                         <div class="container-not-found-base">
@@ -708,14 +711,46 @@
                         </div>
                     {% endfor %}
                 </div>
-                <!-- inner project section -->
             </section>
+            <!-- Other projects -->
+            <div>
+                <div class="title px-4">
+                    <span style="padding-left: 3px;">دیگر پروژه‌ها</span>
+                </div>
+                <div class="box-section" style="margin-top: -1.25rem;">
+                    <!-- Posted projects -->
+                    <div class="col-12 col-md-6 p-2">
+                        <div class="box-item-2">
+                            <i class="icon-box fa fa-truck-field fa-2xl p-3"></i>
+                            <div class=" style-conent-box">
+                                <span>پروژه‌های ارسال شده</span>
+                            </div>
+                            <div class="btn--ta">
+                                <a href="{% url 'public:project' %}?status=posted">مشاهده همه</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Completed projects -->
+                    <div class="col-12 col-md-6 p-2">
+                        <div class="box-item-2">
+                            <i class="icon-box fa fa-list-check fa-2xl p-3"></i>
+                            <div class="style-conent-box">
+                                <span>پروژه‌های تمام شده</span>
+                            </div>
+                            <div class="btn--ta">
+                                <a href="{% url 'public:project' %}?status=completed">مشاهده همه</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- .End project section -->
 
             <!-- Start pages section -->
             <div class="title px-4">
-                <span style="padding-left:3px;">صفحات</span>
+                <span>صفحات</span>
             </div>
-            <section>
+            <section style="margin-top: -1.25rem;">
                 <div class="box-section justify-content-start">
                     <div class="col-12 col-md-4 p-2">
                         <div class="box-item-2">

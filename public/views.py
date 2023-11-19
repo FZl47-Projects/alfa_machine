@@ -66,15 +66,24 @@ class Project(View):
         search = request.GET.get('search')
         if not search:
             return projects
+
         projects = projects.filter(name__icontains=search)
         return projects
 
     def get(self, request):
-        projects = models.Project.objects.filter(is_active=True)
+        # Get project status and filter by them (if exists)
+        project_status = request.GET.get('status')
+
+        if not project_status:
+            projects = models.Project.objects.filter(is_active=True)
+        elif project_status == 'other':
+            projects = models.Project.objects.filter(is_active=True, status__in=['checking', 'paused', 'under_construction'])
+        else:
+            projects = models.Project.objects.filter(is_active=True, status=project_status)
+
         projects = self.search(request, projects)
-        context = {
-            'projects': projects
-        }
+
+        context = {'projects': projects}
         return render(request, self.template_name, context)
 
 

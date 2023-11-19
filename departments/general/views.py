@@ -15,7 +15,7 @@ class Index(View):
         context = {
             'tickets': request.user.get_tickets(),
             'notifications': request.user.department.get_notifications(),
-            'projects': Project.objects.filter(is_active=True)[:4],
+            'projects': Project.objects.filter(is_active=True, status__in=['checking', 'paused', 'under_construction'])[:4],
             'inquiries': Inquiry.objects.filter(status=None)[:4],
             'departments': Department.objects.all(),
             'tasks': {

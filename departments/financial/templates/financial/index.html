@@ -16,14 +16,14 @@
     <!-- END SECTION NOTIFATION -->
     <div class="container-fluid col-md-10 content-page">
         <main class="main">
-            <div class="title px-4">
-                <span style="padding-left:3px;">پروژه ها</span>
+            <div class="title px-4 mt-2">
+                <span>پروژه ها</span>
                 <!-- btn-notif in mobile -->
                 <div class="notif-btn-mobile d-none">اعلانات</div>
                 <!-- btn-notif in mobile -->
             </div>
             <!-- project section -->
-            <section class="ongoing-projects">
+            <section class="ongoing-projects" style="margin-top: -1rem;">
                 <div class="box-section">
                     {% for project in projects %}
                         <div class="col-12 col-md-3 p-2">
@@ -59,15 +59,49 @@
                         </div>
                     {% endfor %}
                 </div>
+
+                <!-- Other projects -->
+                <div>
+                    <div class="title px-4">
+                        <span style="padding-left: 3px;">دیگر پروژه‌ها</span>
+                    </div>
+                    <div class="box-section" style="margin-top: -1.25rem;">
+                        <!-- Posted projects -->
+                        <div class="col-12 col-md-6 p-2">
+                            <div class="box-item-2">
+                                <i class="icon-box fa fa-truck-field fa-2xl p-3"></i>
+                                <div class=" style-conent-box">
+                                    <span>پروژه‌های ارسال شده</span>
+                                </div>
+                                <div class="btn--ta">
+                                    <a href="{% url 'public:project' %}?status=posted">مشاهده همه</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Completed projects -->
+                        <div class="col-12 col-md-6 p-2">
+                            <div class="box-item-2">
+                                <i class="icon-box fa fa-list-check fa-2xl p-3"></i>
+                                <div class="style-conent-box">
+                                    <span>پروژه‌های تمام شده</span>
+                                </div>
+                                <div class="btn--ta">
+                                    <a href="{% url 'public:project' %}?status=completed">مشاهده همه</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- .End project section -->
             </section>
 
             <!-- Start page section -->
             <div class="title px-4">
-                <span style="padding-left:3px;">صفحات</span>
+                <span>صفحات</span>
                 <span class="d-flex justify-content-center align-item-center">
                 </span>
             </div>
-            <section>
+            <section style="margin-top: -1.25rem;">
                 <div class="box-section">
                     <div class="col-12 col-md-4 p-2">
                         <div class="box-item-2">

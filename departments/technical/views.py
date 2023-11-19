@@ -13,6 +13,6 @@ class Index(View):
             'tickets': request.user.get_tickets(),
             'notifications': request.user.department.get_notifications(),
             'departments': Department.objects.all(),
-            'projects': Project.objects.filter(is_active=True)
+            'projects': Project.objects.filter(is_active=True, status__in=['checking', 'paused', 'under_construction'])[:4],
         }
         return render(request, self.template_name, context)

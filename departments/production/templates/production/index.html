@@ -62,14 +62,14 @@
 
     <div class="container-fluid col-md-10 content-page">
         <main class="main">
-            <div class="title px-4">
-                <span style="padding-left:3px;">پنل تولید</span>
+            <div class="title px-2">
+                <span class="fw-bold">پنل تولید</span>
                 <!-- btn-notif in mobile -->
                 <div class="notif-btn-mobile d-none">اعلانات</div>
                 <!-- btn-notif in mobile -->
             </div>
             <!--Start Access panel -->
-            <section class="collection-units bg-white">
+            <section class="collection-units bg-white mt-4">
                 <div class="box-section justify-content-start">
                     <div class="col-12 col-md-3">
                         <div class="box-item-2 ddd">
@@ -108,70 +108,63 @@
                     <!-- item access panel -->
                 </div>
             </section>
+            <!-- .End Access panel -->
 
-            <!--Start Access panel -->
+            <!-- Start project section -->
             <div class="title px-4 mt-4">
-                <span style="padding-left:3px;">پروژه های درحال اجرا</span>
+                <span style="padding-left: 3px;">پروژه های درحال اجرا</span>
                 <span class="d-flex justify-content-center align-item-center">
-                    <a href="{% url 'public:project' %}">مشاهده همه</a>
+                    <a href="{% url 'public:project' %}?status=other">مشاهده همه</a>
                     <img src="{% static 'frontend/images/back-icon.png' %}" alt="">
                 </span>
             </div>
             <!-- project section -->
-            <section class="ongoing-projects" style="margin-top: -1rem;">
+            <section class="ongoing-projects" style="margin-top: -1.25rem;">
                 <!-- inner project section -->
-                <div class="box-section">
-                    <!-- each project box -->
-                    {% for project in projects|slice:':4' %}
-                        <div class="col-12 col-md-3 p-2">
-                            <div class="box-item">
-                                <div class="top">
-                                    <!-- title -->
-                                    <div style="color:black; margin-bottom:10px">
-                                        عنوان پروژه
-                                    </div>
-                                    <!-- title -->
-                                    <!-- date -->
-                                    <div class=" style-conent-box">
-                                        <span>تاریخ شروع:</span>
-                                        <span>1377/8/8</span>
-                                    </div>
-                                    <!-- date -->
-                                    <!-- date dedline -->
-                                    <div class="style-conent-box">
-                                        <span>تاریخ پایان:</span>
-                                        <span>1377/8/8</span>
-                                    </div>
-                                    <!-- date dedline -->
-                                    <!-- status -->
-                                    <div class="style-conent-box blue">
-                                        <span>وضعیت فعلی</span>
-                                        <span>درحال انجام</span>
-                                    </div>
-                                    <!-- status -->
-                                    <!-- Percent -->
-                                    <div class="style-conent-box">
-                                        <span>درصد پیشرفت:</span>
-                                        <span>40%</span>
-                                    </div>
-                                    <!-- Percent -->
-                                </div>
-                                <!-- more-btn -->
-                                <div class="bottom">
-                                    <a href="./project.html">اطلاعات بیشتر</a>
-                                </div>
-                                <!-- more-btn -->
-                            </div>
-                        </div>
+                <div class="box-section justify-content-start">
+                    {% for project in projects %}
+                        {% include 'public/project/components/list-project.html' with project=project %}
                     {% empty %}
                         <div class="container-not-found-base">
                             <p>چیزی یافت نشد</p>
                         </div>
                     {% endfor %}
                 </div>
-                <!-- inner project section -->
             </section>
-            <!-- project section -->
+
+            <!-- Other projects -->
+            <div>
+                <div class="title px-4">
+                    <span style="padding-left: 3px;">دیگر پروژه‌ها</span>
+                </div>
+                <div class="box-section" style="margin-top: -1.25rem;">
+                    <!-- Posted projects -->
+                    <div class="col-12 col-md-6 p-2">
+                        <div class="box-item-2">
+                            <i class="icon-box fa fa-truck-field fa-2xl p-3"></i>
+                            <div class=" style-conent-box">
+                                <span>پروژه‌های ارسال شده</span>
+                            </div>
+                            <div class="btn--ta">
+                                <a href="{% url 'public:project' %}?status=posted">مشاهده همه</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Completed projects -->
+                    <div class="col-12 col-md-6 p-2">
+                        <div class="box-item-2">
+                            <i class="icon-box fa fa-list-check fa-2xl p-3"></i>
+                            <div class="style-conent-box">
+                                <span>پروژه‌های تمام شده</span>
+                            </div>
+                            <div class="btn--ta">
+                                <a href="{% url 'public:project' %}?status=completed">مشاهده همه</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- .End project section -->
 
             <!-- Start pages section -->
             <div class="title px-4">
