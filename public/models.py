@@ -73,6 +73,8 @@ class Project(BaseModel):
 
     @classmethod
     def has_perm_to_modify(cls, user):
+        if user.is_anonymous:
+            return False
         if user.role in ('super_user', 'control_project_user'):
             return True
         return False
