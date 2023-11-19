@@ -37,6 +37,35 @@
             font-size: 90%;
             color: #666;
         }
+
+        .link-search-items {
+            overflow: auto;
+            padding: 5px;
+            margin: 10px auto;
+            text-align: center;
+        }
+
+        .link-search-items h5{
+            text-align: right;
+        }
+
+        .link-search-items a {
+            display: inline-block;
+            background: rgba(246, 255, 251, 0.85);
+            color: #0da87c;
+            margin: 4px;
+            font-size: 110%;
+            padding: 8px;
+            min-width: 100px;
+            border-radius: 180px;
+        }
+
+        .link-search-items a.active {
+            background: #0da87c!important;
+            color: #fff!important;
+        }
+
+
     </style>
 {% endblock %}
 
@@ -54,7 +83,8 @@
                                    value="{{ request.GET.search }}">
                             <div>
                                 {% if request.GET.search %}
-                                    <a href="{% url 'public:project' %}?status={{ request.GET.status }}" class="m-2 pt-2 text-danger fw-bold">X</a>
+                                    <a href="{% url 'public:project' %}?status={{ request.GET.status }}"
+                                       class="m-2 pt-2 text-danger fw-bold">X</a>
                                 {% endif %}
                                 <button>جست و جو</button>
                             </div>
@@ -64,9 +94,17 @@
                         <a href="{{ user.get_absolute_url_dashboard }}" class="btn btn-danger">بازگشت</a>
                     </div>
                 </div>
+                <div class="link-search-items">
+                    <h5>فیلتر بر اساس کارفرما :</h5>
+                     <a href="{% url 'public:project' %}" {% if not request.GET.task_master %}class="active"{% endif %}>همه</a>
+                    {% for task_master in task_masters %}
+                        <a href="?task_master={{ task_master.id }}" {% if request.GET.task_master == task_master.id|stringformat:'i' %}class="active" {% endif %}>{{ task_master.title }}</a>
+                    {% endfor %}
+                </div>
 
                 <div class="box-section">
                     {% for project in projects %}
+
                         <div class="col-12 col-md-3 p-2 border-1-gray m-1">
                             <div class="box-item">
                                 <div class="top">

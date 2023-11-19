@@ -37,6 +37,8 @@ class Department(BaseModel):
 class TaskMaster(BaseModel):
     title = models.CharField('Task Master name', max_length=128)
 
+    class Meta:
+        ordering = '-id',
     def __str__(self):
         return self.title
 
@@ -197,6 +199,7 @@ class Project(BaseModel):
 class ProjectFile(BaseModel, File):
     name = models.CharField(max_length=100)
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
+    from_department = models.ForeignKey('Department', on_delete=models.SET_NULL, null=True)
     description = models.TextField(null=True)
 
     class Meta:

@@ -39,7 +39,12 @@
                         <div class="table">
                             <!--section title table -->
                             <div class="table-title">
-                                <div class="col-4">
+                                <div class="col-2">
+                                    <div class="table-title-item">
+                                        شماره
+                                    </div>
+                                </div>
+                                <div class="col-3">
                                     <div class="table-title-item">
                                         پروژه ها
                                     </div>
@@ -67,8 +72,12 @@
                                 <!-- each row table -->
                                 {% for report in reports %}
                                     <div class="row-table">
-
-                                        <div class="col-4 p-2">
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                {{ report.code }}
+                                            </div>
+                                        </div>
+                                        <div class="col-3 p-2">
                                             <div class="table-content-item">
                                                 {% if report.is_all_projects %}
                                                     <span>همه پروژه‌ها</span>
@@ -92,15 +101,18 @@
                                         </div>
                                         <div class="col-3 p-2">
                                             <div class="table-content-item">
-                                                <span class="datetime-convert">{{ report.created_at }}</span>
+                                                <span class="font-80" dir="rtl">
+                                                    ({{ report.created_at|time:'H:i' }})
+                                                </span>
                                                 &nbsp;
-                                                <span class="font-70"
-                                                      dir="rtl">({{ report.get_created_at_timepast }})</span>
+                                                <span class="datetime-convert">
+                                                    {{ report.created_at|date:'Y/m/d' }}
+                                                </span>
                                             </div>
                                         </div>
                                         <div class="col-2 p-2">
                                             <div class="table-content-item">
-                                                {% if ticket.get_file_url %}
+                                                {% if report.get_file_url %}
                                                     <a href="{{ report.get_file_url }}" download="">دانلود</a>
                                                 {% else %}
                                                     -

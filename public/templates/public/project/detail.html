@@ -111,7 +111,11 @@
                                 <div class="col-12 col-md-6 p-2">
                                     <div class="right-item">
                                         <span>قیمت:</span>
-                                        <span class="price-el">{{ project.price|default:'بدون قیمت' }}</span>
+                                        {% if has_perm_to_modify %}
+                                            <span class="price-el">{{ project.price|default:'بدون قیمت' }}</span>
+                                        {% else %}
+                                            غیر قابل مشاهده
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6 p-2">
@@ -205,7 +209,7 @@
                                             نام تسک
                                         </div>
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col-1">
                                         <div class="table-title-item">
                                             وضعیت
                                         </div>
@@ -215,9 +219,14 @@
                                             آخرین تغییر
                                         </div>
                                     </div>
-                                    <div class="col-2">
+                                    <div class="col-1">
                                         <div class="table-title-item">
-                                            واحد
+                                            از واحد
+                                        </div>
+                                    </div>
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            برای واحد
                                         </div>
                                     </div>
                                     <div class="col-1">
@@ -249,7 +258,7 @@
                                                     {{ task.name }}
                                                 </div>
                                             </div>
-                                            <div class="col-2 p-2">
+                                            <div class="col-1 p-2">
                                                 <div class="status">
                                                     {{ task.get_state_label }}
                                                 </div>
@@ -262,7 +271,12 @@
                                                     ({{ task.state_modify_time|date:'H:i' }})
                                                 </span>
                                             </div>
-                                            <div class="col-2 p-2">
+                                            <div class="col-1 p-2">
+                                                <div class="table-content-item">
+                                                    {{ task.from_department }}
+                                                </div>
+                                            </div>
+                                            <div class="col-1 p-2">
                                                 <div class="table-content-item">
                                                     {{ task.to_department }}
                                                 </div>
@@ -274,12 +288,12 @@
                                             </div>
                                             <div class="col-1 p-2">
                                                 <div class="table-content-item datetime-convert">
-                                                    {{ task.get_time_start }}
+                                                    {{ task.get_time_start|default:'-' }}
                                                 </div>
                                             </div>
                                             <div class="col-1 p-2">
                                                 <div class="table-content-item datetime-convert">
-                                                    {{ task.get_time_end }}
+                                                    {{ task.get_time_end|default:'-' }}
                                                 </div>
                                             </div>
                                         </div>
@@ -381,7 +395,12 @@
                                             نام
                                         </div>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-1">
+                                        <div class="table-title-item">
+                                            واحد فرستنده
+                                        </div>
+                                    </div>
+                                    <div class="col-5">
                                         <div class="table-title-item">
                                             توضیحات
                                         </div>
@@ -411,7 +430,12 @@
                                                     {{ file.name }}
                                                 </div>
                                             </div>
-                                            <div class="col-6 p-2">
+                                            <div class="col-1 p-2">
+                                                <div class="table-content-item">
+                                                    {{ file.from_department.name|default:'-' }}
+                                                </div>
+                                            </div>
+                                            <div class="col-5 p-2">
                                                 <div class="table-content-item">
                                                     <span class="description">
                                                         {{ file.description }}

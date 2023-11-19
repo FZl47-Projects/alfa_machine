@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, Http404, redirect, HttpResponse, get_object_or_404
 from django.views.generic import View
+from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from core.utils import form_validate_err
@@ -62,12 +63,13 @@ class ProjectDetail(View):
 class Project(View):
     template_name = 'public/project/list.html'
 
-    def search(self, request, projects):
+    def filter(self, request, projects):
         search = request.GET.get('search')
-        if not search:
-            return projects
-
-        projects = projects.filter(name__icontains=search)
+        task_master = request.GET.get('task_master', None)
+        if search:
+            projects = projects.filter(name__icontains=search)
+        if task_master and task_master.isdigit():
+            projects = projects.filter(task_master_id=task_master)
         return projects
 
     def get(self, request):
@@ -77,45 +79,54 @@ class Project(View):
         if not project_status:
             projects = models.Project.objects.filter(is_active=True)
         elif project_status == 'other':
-            projects = models.Project.objects.filter(is_active=True, status__in=['checking', 'paused', 'under_construction'])
+            projects = models.Project.objects.filter(is_active=True,
+                                                     status__in=['checking', 'paused', 'under_construction'])
         else:
             projects = models.Project.objects.filter(is_active=True, status=project_status)
 
-        projects = self.search(request, projects)
+        projects = self.filter(request, projects)
 
-        context = {'projects': projects}
+        context = {
+            'projects': projects,
+            'task_masters': models.TaskMaster.objects.all()
+        }
         return render(request, self.template_name, context)
 
 
-class ProjectUpdate(View):
+class ProjectUpdate(LoginRequiredMixin, View):
 
     def post(self, request, project_id):
+        if not models.Project.has_perm_to_modify(request.user):
+            raise PermissionDenied
+
         project = models.Project.objects.get(id=project_id)
         f = forms.ProjectUpdate(data=request.POST, instance=project)
-
         if not f.is_valid():
             messages.error(request, 'لطفا فیلد هارا به درستی پر نمایید')
             return redirect(project.get_absolute_url())
         f.save()
-
         messages.success(request, 'پروژه با موفقیت بروزرسانی شد')
         return redirect(project.get_absolute_url())
 
 
-class ProjectDelete(View):
+class ProjectDelete(LoginRequiredMixin, View):
 
     def get(self, request, project_id):
+        if not models.Project.has_perm_to_modify(request.user):
+            raise PermissionDenied
         project = models.Project.objects.get(id=project_id)
         project.delete()
         messages.success(request, 'پروژه با موفقیت حذف شد')
         return redirect('public:project')
 
 
-class ProjectFile(View):
+class ProjectFile(LoginRequiredMixin, View):
 
     def post(self, request):
         referer_url = request.META.get('HTTP_REFERER', None)
-        data = request.POST
+        data = request.POST.copy()
+        # set additional values
+        data['from_department'] = request.user.department
         f = forms.ProjectFile(data, request.FILES)
         if form_validate_err(request, f) is False:
             return redirect(referer_url or '/error')
@@ -124,7 +135,7 @@ class ProjectFile(View):
         return redirect(referer_url or '/success')
 
 
-class TaskOwner(View):
+class TaskOwner(LoginRequiredMixin, View):
     """
         get tasks who created and crud task with post method
     """
