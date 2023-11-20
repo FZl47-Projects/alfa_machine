@@ -54,8 +54,11 @@
             </div>
         </div>
     {% endfor %}
-    <div class="text-center mb-3">
-        <h3 class="title-page ">لیست تسک های الویت بندی شده</h3>
+    <div class="text-center d-flex justify-content-center mb-2 mt-1 px-3">
+        <h3 class="title-page w-100 me-5">لیست تسک های الویت بندی شده</h3>
+        <div class="mt-2">
+            <a href="{{ user.get_absolute_url_dashboard }}" class="btn btn-danger">بازگشت</a>
+        </div>
     </div>
     <div class="col-12 col-md-5 col-lg-6 mx-auto mb-4 p-4">
         <div>

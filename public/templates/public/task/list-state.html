@@ -47,19 +47,29 @@
             </div>
         </div>
     {% endfor %}
-    <h3 class="title-page mx-auto text-center">
-        {% with request.GET.task_state as state %}
-            {% if state == 'progress' %}
-                تسک های در حال اجرا
-            {% elif state == 'queue' %}
-                تسک های در صف
-            {% elif state == 'need-to-check' %}
-                تسک های نیاز به بررسی
-            {% elif state == 'finished' %}
-                تسک های تمام شده
-            {% endif %}
-        {% endwith %}
-    </h3>
+
+    <div class="text-center d-flex justify-content-center mb-2 mt-1 px-3">
+        <h3 class="title-page w-100 text-center me-5">
+            {% with request.GET.task_state as state %}
+                {% if state == 'progress' %}
+                    تسک های در حال اجرا
+                {% elif state == 'queue' %}
+                    تسک های در صف
+                {% elif state == 'need-to-check' %}
+                    تسک های نیاز به بررسی
+                {% elif state == 'need-to-replan' %}
+                    تسک های نیاز به برنامه ریزی مجدد
+                {% elif state == 'hold' %}
+                    تسک های نگه داشته شده
+                {% elif state == 'finished' %}
+                    تسک های تمام شده
+                {% endif %}
+            {% endwith %}
+        </h3>
+        <div class="mt-2">
+            <a href="{{ user.get_absolute_url_dashboard }}" class="btn btn-danger">بازگشت</a>
+        </div>
+    </div>
 
     <div class="col-12 col-md-5 col-lg-6 mx-auto mb-4 p-4">
         <div>

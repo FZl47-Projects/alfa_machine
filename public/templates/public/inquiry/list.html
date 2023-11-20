@@ -11,8 +11,12 @@
 
 {% block Content %}
 
-    <h5 class="title-page">لیست استعلامات</h5>
-
+    <div class="text-center d-flex justify-content-center mt-1 px-3">
+        <h3 class="title-page w-100 me-5">لیست استعلامات</h3>
+        <div class="mt-2">
+            <a href="{{ user.get_absolute_url_dashboard }}" class="btn btn-danger">بازگشت</a>
+        </div>
+    </div>
 
     {% for inquiry in inquiries %}
         <div class="content-modal-two modal-more-description">
