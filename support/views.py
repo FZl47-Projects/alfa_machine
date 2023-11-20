@@ -11,10 +11,15 @@ from . import forms, models
 class Ticket(View):
     template_name = 'support/list.html'
 
+    def set_as_seen(self, tickets):
+        tickets.filter(seen=False).update(seen=True)
+
     def get(self, request):
-        context = {
-            'tickets': request.user.get_tickets()
-        }
+        tickets = request.user.get_tickets()
+
+        self.set_as_seen(tickets)  # Set unseen tickets as seen
+
+        context = {'tickets': tickets}
         return render(request, self.template_name, context)
 
 

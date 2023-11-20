@@ -78,9 +78,23 @@ class User(AbstractUser):
     def get_reports(self):
         return self.department.report_set.all()
 
-    def have_new_ticket(self):
-        # TODO: should be complete
-        pass
+    def has_new_ticket(self):
+        if self.get_unseen_tickets():
+            return True
+        return False
+
+    def has_new_notification(self):
+        if self.get_unseen_notifications():
+            return True
+        return False
+
+    def get_unseen_tickets(self):
+        unseen = self.department.ticketdepartment_set.filter(is_open=True, seen=False)
+        return unseen
+
+    def get_unseen_notifications(self):
+        unseen = self.department.notificationdepartment_set.filter(is_showing=True, seen=False)
+        return unseen
 
     def get_absolute_url_dashboard(self):
 

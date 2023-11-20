@@ -12,12 +12,16 @@ from . import forms
 class NotificationDepartmentList(View):
     template_name = 'notification/list.html'
 
+    def set_as_seen(self, notifications):
+        notifications.filter(seen=False).update(seen=True)
+
     def get(self, request):
         user_department = request.user.department
         notifications = NotificationDepartment.objects.filter(departments__in=[user_department], is_showing=True)
-        context = {
-            'notifications': notifications
-        }
+
+        self.set_as_seen(notifications)  # Set unseen notifications as seen
+
+        context = {'notifications': notifications}
         return render(request, self.template_name, context)
 
     def post(self, request):

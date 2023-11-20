@@ -3,8 +3,7 @@ from core.models import BaseModel, File
 
 
 class NotificationDepartment(BaseModel, File):
-    from_department = models.ForeignKey('public.Department', on_delete=models.CASCADE,
-                                        related_name='from_dp_notification')
+    from_department = models.ForeignKey('public.Department', on_delete=models.CASCADE, related_name='from_dp_notification')
     title = models.CharField(max_length=150)
     description = models.TextField(null=True, blank=True)
     projects = models.ManyToManyField('public.Project', blank=True)
@@ -13,6 +12,7 @@ class NotificationDepartment(BaseModel, File):
     is_showing = models.BooleanField(default=True)
     is_all_departments = models.BooleanField(default=False)
     is_all_projects = models.BooleanField(default=False)
+    seen = models.BooleanField(default=False)
 
     class Meta:
         ordering = 'priority', '-id'

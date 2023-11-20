@@ -12,6 +12,7 @@ class TicketDepartment(BaseModel, File):
     is_open = models.BooleanField(default=True)
     is_all_departments = models.BooleanField(default=True)
     is_all_projects = models.BooleanField(default=True)
+    seen = models.BooleanField(default=False)
 
     class Meta:
         ordering = '-id',

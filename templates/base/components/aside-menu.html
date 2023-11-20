@@ -3,13 +3,29 @@
     <div class="overly">
         <div class="inner-notfication">
             <div class="btns">
-                <div class="btn-change col-3 text-center font-80 active text-nowrap {% if request.user.have_new_ticket %}text-danger{% endif %}">تیکت ها
-                    {% if request.user.have_new_ticket %}
-                        <img src="{% static 'frontend/images/alert-icon.png' %}" alt="" class="d-inline-block" style="width: 15px">
-                    {% endif %}
-                </div>
-                <div class="btn-change col-3 text-center">اعلانات</div>
-                 <div class="col-2 font-80">
+                {% if request.user.has_new_ticket %}
+                    <div class="btn-change col-3 text-center active text-nowrap text-danger align-items-center d-flex position-relative">
+                        تیکت ها
+                        <span class="rounded-circle font-80 text-white position-absolute" style="background-color: #cc0000; left: 0; margin-top: -2px; width: 1rem;">
+                            {{ request.user.get_unseen_tickets.count }}
+                        </span>
+                    </div>
+                {% else %}
+                    <div class="btn-change col-3 text-center active text-nowrap">
+                        تیکت ها
+                    </div>
+                {% endif %}
+                {% if request.user.has_new_notification %}
+                    <div class="btn-change col-3 text-center text-danger d-flex align-items-center position-relative">
+                        اعلانات
+                        <span class="rounded-circle font-80 text-white position-absolute" style="background-color: #cc0000; left: 7px; margin-top: -2px; width: 1rem;">
+                            {{ request.user.get_unseen_notifications.count }}
+                        </span>
+                    </div>
+                {% else %}
+                    <div class="btn-change col-3 text-center">اعلانات</div>
+                {% endif %}
+                <div class="col-3">
                     <a href="{% url 'support:report_department_list' %}">گزارشات</a>
                 </div>
                 <div class="col-2">
