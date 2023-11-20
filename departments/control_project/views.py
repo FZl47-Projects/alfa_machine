@@ -11,10 +11,13 @@ class Index(View):
     def get(self, request):
         user = request.user
         department = user.department
+        projects = Project.objects.filter(is_active=True)
+
         context = {
             'tickets': user.get_tickets(),
             'notifications': department.get_notifications(),
-            'projects': Project.objects.filter(is_active=True, status__in=['checking', 'paused', 'under_construction'])[:4],
+            'projects': projects,
+            'ongoing_projects': projects.filter(status__in=['checking', 'paused', 'under_construction'])[:4],
             'departments': Department.objects.all(),
             'tasks': {
                 'progress': Task.objects.filter(state='progress', from_department=department).count(),

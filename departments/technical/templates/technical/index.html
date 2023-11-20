@@ -703,7 +703,7 @@
             <section class="ongoing-projects" style="margin-top: -1.25rem;">
                 <!-- inner project section -->
                 <div class="box-section justify-content-start">
-                    {% for project in projects %}
+                    {% for project in ongoing_projects %}
                         {% include 'public/project/components/list-project.html' with project=project %}
                     {% empty %}
                         <div class="container-not-found-base">
