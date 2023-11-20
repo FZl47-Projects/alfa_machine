@@ -30,7 +30,13 @@
 
 
     <main class="main content-page container">
-        <h5 class="title-page">لیست گزارشات - {{ user.department.name }}</h5>
+        <div class="text-center d-flex justify-content-center mb-2 mt-2 px-2">
+            <h4 class="title-page w-100 me-5">لیست گزارشات - {{ user.department.name }}</h4>
+            <div class="mt-1">
+                <a href="{{ user.get_absolute_url_dashboard }}" class="btn btn-danger">بازگشت</a>
+            </div>
+        </div>
+
         <section class="col-12 project-content">
             <div class="inner-project">
                 <div class="content-items p-2">

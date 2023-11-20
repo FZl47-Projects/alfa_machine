@@ -96,9 +96,9 @@
                 </div>
                 <div class="link-search-items">
                     <h5>فیلتر بر اساس کارفرما :</h5>
-                     <a href="{% url 'public:project' %}" {% if not request.GET.task_master %}class="active"{% endif %}>همه</a>
+                     <a href="{% url 'public:project' %}?status={{ request.GET.status }}" {% if not request.GET.task_master %}class="active"{% endif %}>همه</a>
                     {% for task_master in task_masters %}
-                        <a href="?task_master={{ task_master.id }}" {% if request.GET.task_master == task_master.id|stringformat:'i' %}class="active" {% endif %}>{{ task_master.title }}</a>
+                        <a href="?task_master={{ task_master.id }}&status={{ request.GET.status }}" {% if request.GET.task_master == task_master.id|stringformat:'i' %}class="active" {% endif %}>{{ task_master.title }}</a>
                     {% endfor %}
                 </div>
 
