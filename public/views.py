@@ -187,10 +187,20 @@ class TaskOwner(LoginRequiredMixin, View):
         if type_request == 'update':
             data = request.POST
             task_obj = models.Task.objects.get(id=task_id, from_department=request.user.department)
+
             f = forms.TaskUpdateForm(data, request.FILES, instance=task_obj)
             if form_validate_err(request, f) is False:
                 return redirect(referer_url or '/error')
-            f.save()
+            task = f.save()
+
+            notif = NotificationDepartment.objects.create(
+                from_department=request.user.department,
+                title='اعلان بروزرسانی تسک',
+                description=f'بروزرسانی برای تسک: "{task.name}"'
+            )
+            notif.departments.set([task.to_department])
+            notif.projects.set([task.project])
+
             messages.success(request, 'تسک با موفقیت بروزرسانی شد')
         elif type_request == 'delete':
             models.Task.objects.get(id=task_id).delete()
@@ -235,9 +245,7 @@ class TaskOwnerDepartment(View):
 
 
 class Task(View):
-    """
-         get and create task
-    """
+    """ get and create task """
 
     def search(self, request, tasks):
         search = request.GET.get('search', None)
@@ -271,15 +279,27 @@ class Task(View):
     def post(self, request):
         referer_url = request.META.get('HTTP_REFERER', None)
         data = request.POST.copy()
+
         # set default values
         data['allocator_user'] = request.user
         data['from_department'] = request.user.department
         data['state'] = 'queue'
+
         f = forms.TaskCreateForm(data, request.FILES)
         if form_validate_err(request, f) is False:
             return redirect(referer_url or '/error')
-        f.save()
+        task = f.save()
+
+        notif = NotificationDepartment.objects.create(
+            from_department=request.user.department,
+            title='اطلاعیه تسک جدید',
+            description=f'عنوان تسک: "{task.name}"'
+        )
+        notif.departments.set([task.to_department])
+        notif.projects.set([task.project])
+
         messages.success(request, 'عملیات مورد نظر با موفقیت ایجاد شد')
+
         return redirect(referer_url or '/success')
 
 
@@ -287,9 +307,11 @@ class TaskRemind(LoginRequiredMixin, View):
 
     def post(self, request, task_id):
         referer_url = request.META.get('HTTP_REFERER', None)
+
         user = request.user
         department = user.department
         task = get_object_or_404(models.Task, id=task_id)
+
         notif = NotificationDepartment.objects.create(
             from_department=department,
             title='یاداوری انجام تسک',
@@ -299,7 +321,9 @@ class TaskRemind(LoginRequiredMixin, View):
         )
         notif.departments.set([task.to_department])
         notif.projects.set([task.project])
+
         messages.success(request, 'عملیات مورد نظر با موفقیت ایجاد شد')
+
         return redirect(referer_url or '/success')
 
 
