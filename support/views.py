@@ -4,6 +4,7 @@ from django.shortcuts import redirect, render
 from account.auth.decorators import user_role_required_cbv
 from core.utils import form_validate_err
 from public.models import Department, Project
+from django.shortcuts import get_object_or_404
 from . import forms, models
 
 
@@ -15,6 +16,23 @@ class Ticket(View):
             'tickets': request.user.get_tickets()
         }
         return render(request, self.template_name, context)
+
+
+# DeleteTicket view
+class DeleteTicketView(View):
+    template_name = 'support/list.html'
+
+    def post(self, request):
+        referer_url = request.META.get('HTTP_REFERER', None)
+
+        ticket_id = request.POST.get('ticket_id')
+        ticket = get_object_or_404(models.TicketDepartment, id=ticket_id)
+
+        ticket.is_open = False
+        ticket.save()
+
+        messages.success(request, 'تیکت با موفقیت حذف گردید.')
+        return redirect(referer_url or '/success')
 
 
 class TicketDepartment(View):

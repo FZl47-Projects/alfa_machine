@@ -1,3 +1,5 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.generic import View
@@ -12,7 +14,7 @@ class NotificationDepartmentList(View):
 
     def get(self, request):
         user_department = request.user.department
-        notifications = NotificationDepartment.objects.filter(departments__in=[user_department])
+        notifications = NotificationDepartment.objects.filter(departments__in=[user_department], is_showing=True)
         context = {
             'notifications': notifications
         }
@@ -56,5 +58,23 @@ class NotificationDepartmentList(View):
         f.save()
 
         messages.success(request, 'عملیات مورد نظر با موفقیت انجام شد')
+
+        return redirect(referer_url or '/success')
+
+
+# DeleteNotificationDepartment view
+class DeleteNotificationView(LoginRequiredMixin, View):
+    template = 'notification/list.html'
+
+    def post(self, request):
+        referer_url = request.META.get('HTTP_REFERER', None)
+
+        notif_id = request.POST.get('notif_id')
+        notification = get_object_or_404(NotificationDepartment, id=notif_id)
+
+        notification.is_showing = False
+        notification.save()
+
+        messages.success(request, 'اعلان با موفقیت حذف گردید.')
 
         return redirect(referer_url or '/success')
