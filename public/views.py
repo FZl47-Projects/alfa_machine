@@ -351,6 +351,7 @@ class Inquiry(View):
 
     def search(self, request, inquiries):
         search = request.GET.get('search', None)
+
         if not search:
             return inquiries
         if search.isdigit():
@@ -372,24 +373,30 @@ class Inquiry(View):
 
     def get(self, request):
         inquiries = models.Inquiry.objects.all()
+
         inquiries = self.search(request, inquiries)
         inquiries = self.sort(request, inquiries)
+
         context = {
             'inquiries': inquiries,
             'departments': models.Department.objects.all()
         }
+
         return render(request, 'public/inquiry/list.html', context)
 
     @user_role_required_cbv(['super_user', 'commerce_user'])
     def post(self, request):
         referer_url = request.META.get('HTTP_REFERER', None)
         data = request.POST.copy()
+
         # set additional values
         data['from_department'] = request.user.department
+
         f = forms.InquiryForm(data)
         if form_validate_err(request, f) is False:
             return redirect(referer_url or '/error')
         f.save()
+
         messages.success(request, 'عملیات با موفقیت ثبت شد')
         return redirect(referer_url or '/success')
 

@@ -288,14 +288,14 @@ class Inquiry(BaseModel):
         ('price_recorded', 'قیمت ارسال شده'),
     )
     from_department = models.ForeignKey('Department', on_delete=models.CASCADE)
-    title = models.CharField(max_length=100)
-    number_id = models.IntegerField()
-    state = models.CharField(max_length=20, choices=STATE_OPTIONS)
-    sender = models.CharField(max_length=200)
-    description = models.TextField(null=True)
-    time_receive = models.DateField()
-    time_deadline_response = models.DateField()
-    time_submit = models.DateField()
+    title = models.CharField(max_length=100, null=True, blank=True)
+    number_id = models.IntegerField(null=True, blank=True)
+    state = models.CharField(max_length=32, choices=STATE_OPTIONS, default='waiting_for_price', blank=True)
+    sender = models.ForeignKey(TaskMaster, on_delete=models.SET_NULL, null=True)
+    description = models.TextField(null=True, blank=True)
+    time_receive = models.DateField(null=True, blank=True)
+    time_deadline_response = models.DateField(null=True, blank=True)
+    time_submit = models.DateField(null=True, blank=True)
 
     class Meta:
         ordering = '-id',

@@ -264,8 +264,15 @@
     {% endfor %}
     <!--morde-descriptin popup -->
 
-    <div class="col-12 col-md-5 col-lg-6 mx-auto mb-4 p-4">
-        <div>
+    <div>
+        <div class="text-center d-flex justify-content-center mt-1 px-3">
+            <h3 class="title-page w-100 me-5">لیست استعلامات</h3>
+            <div class="mt-2">
+                <a href="{{ user.get_absolute_url_dashboard }}" class="btn btn-danger">بازگشت</a>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-5 col-lg-6 mx-auto mb-4 p-4">
             <div class="filters-radio">
                 <div class="title">
                     مرتب بر اساس :
@@ -303,7 +310,6 @@
         </div>
     </div>
     <main class="main content-page container" style="max-width: none;">
-        <h5 class="title-page">لیست استعلامات </h5>
         <section class="col-12 project-content">
             <div class="inner-project">
 
@@ -480,18 +486,15 @@
                                                 <div class="table-content-item font-70">
                                                     <!-- btn column table -->
                                                     {% if inquiry.state == 'canceled' %}
-                                                        <div class="btn-table red btn-Reason-rejection">انصراف</div>
-                                                    {% elif inquiry.state == 'waiting_for_price' %}
-                                                        <div class="btn-table blue ">در انتظار قیمت</div>
-                                                    {% elif inquiry.state == 'price_recorded' %}
-                                                        <div class="btn-table btn-Followed-up">قیمت ارسال شده</div>
+                                                        <div class="btn-table red btn-Reason-rejection">{{ inquiry.get_state_display }}</div>
+                                                    {% else %}
+                                                        <div class="btn-table blue">{{ inquiry.get_state_display }}</div>
                                                     {% endif %}
-                                                    <!-- btn column table -->
                                                 </div>
                                             </div>
                                             <div class="col-1">
                                                 <div class="tarif-task btn-create-report btn btn-outline-primary task-confirm">
-                                                    اپلود
+                                                    آپلود
                                                 </div>
                                                 <div class="tarif-task btn-create-report btn btn-outline-secondary btn-files-query mt-1">
                                                     نمایش

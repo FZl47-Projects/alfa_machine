@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import View
-from public.models import Project, Department
+from public.models import Project, Department, TaskMaster
 from account.auth.decorators import user_role_required_cbv
 
 
@@ -17,6 +17,7 @@ class CommerceIndex(View):
             'projects': projects,
             'ongoing_projects': projects.filter(status__in=['checking', 'paused', 'under_construction'])[:4],
             'departments': Department.objects.all(),
+            'taskmasters': TaskMaster.objects.all(),
         }
         return render(request, self.template_name, context)
 
@@ -35,5 +36,6 @@ class ProcurementCommerceIndex(View):
             'projects': projects,
             'ongoing_projects': projects.filter(status__in=['checking', 'paused', 'under_construction'])[:4],
             'departments': Department.objects.all(),
+            'taskmasters': TaskMaster.objects.all(),
         }
         return render(request, self.template, context)

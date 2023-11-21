@@ -9,50 +9,46 @@
                     {% csrf_token %}
                     <div class="information-section">
                         <div class="information-item">
-                            <label for="lihh">عنوان استعلام</label>
-                            <input type="text" name="title" required>
+                            <label for="inquiryTitle">عنوان استعلام:</label>
+                            <input type="text" name="title" id="inquiryTitle" class="rounded-2" required>
                         </div>
                         <div class="information-item">
-                            <label for="lihh">شماره درخواست</label>
-                            <input type="number" name="number_id" required>
+                            <label for="inquiryNumber">شماره درخواست:</label>
+                            <input type="number" name="number_id" id="inquiryNumber" class="rounded-2" required>
                         </div>
                         <div class="information-item">
-                            <label for="lihh">ارسال کننده</label>
-                            <input type="text" name="sender" required>
-                        </div>
-                        <div class="information-item">
-                            <label for="lihh">تاریخ دریافت</label>
-                            <input type="text" set-on="inquiry-time-receive"
-                                   class="persianDatapicker pwt-datepicker-input-element" required>
-                            <input type="hidden" name="time_receive" id="inquiry-time-receive" required>
-                        </div>
-                        <div class="information-item">
-                            <label for="lihh">تاریخ ارسال</label>
-                            <input type="text" set-on="inquiry-time-submited"
-                                   class="persianDatapicker pwt-datepicker-input-element" required>
-                            <input type="hidden" name="time_submit" id="inquiry-time-submited" required>
-                        </div>
-                        <div class="information-item">
-                            <label for="lihh">مهلت پاسخ (تاریخ ددلاین)</label>
-                            <input type="text" set-on="inquiry-time-deadline-response"
-                                   class="persianDatapicker pwt-datepicker-input-element" required>
-                            <input type="hidden" name="time_deadline_response" id="inquiry-time-deadline-response" required>
-                        </div>
-                        <div class="information-item">
-                            <label for="stateInput">وضعیت</label>
-                            <select name="state" id="stateInput" required>
-                                <option value="waiting_for_price" selected>در انتظار قیمت</option>
-                                <option value="price_recorded">قیمت ارسال شده</option>
-                                <option value="canceled">انصراف</option>
+                            <label for="inquiryTaskMaster">کارفرما:</label>
+                            <select id="inquiryTaskMaster" name="sender" class="rounded-2 form-select border-dark mt-2">
+                                {% for taskmaster in taskmasters %}
+                                    <option value="{{ taskmaster.id }}">{{ taskmaster.title }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                         <div class="information-item">
-                            <label for="descriptionInput">توضیحات</label>
-                            <textarea name="description" id="descriptionInput" cols="30" rows="10" required></textarea>
+                            <label for="inquiryTimeReceive">تاریخ دریافت:</label>
+                            <input type="text" id="inquiryTimeReceive" set-on="inquiry-time-receive"
+                                   class="persianDatapicker pwt-datepicker-input-element rounded-2" required>
+                            <input type="hidden" name="time_receive" id="inquiry-time-receive" required>
+                        </div>
+                        <div class="information-item">
+                            <label for="inquiryDeadline">مهلت پاسخ (تاریخ ددلاین):</label>
+                            <input type="text" id="inquiryDeadline" set-on="inquiry-time-deadline-response"
+                                   class="persianDatapicker pwt-datepicker-input-element rounded-2" required>
+                            <input type="hidden" name="time_deadline_response" id="inquiry-time-deadline-response" required>
+                        </div>
+                        <div class="information-item">
+                            <label for="inquiryTimeSubmitted">تاریخ ارسال:</label>
+                            <input type="text" id="inquiryTimeSubmitted" set-on="inquiry-time-submited"
+                                   class="persianDatapicker pwt-datepicker-input-element rounded-2" required>
+                            <input type="hidden" name="time_submit" id="inquiry-time-submited" required>
+                        </div>
+                        <div class="information-item">
+                            <label for="descriptionInput">توضیحات:</label>
+                            <textarea name="description" id="descriptionInput" cols="30" rows="10" class="rounded-2" required></textarea>
                         </div>
                     </div>
                     <div class="information-section">
-                        <button class="sabt-modal btn-primary col-12">ثبت</button>
+                        <button class="sabt-modal btn-primary col-12 rounded-2">ثبت</button>
                     </div>
                 </form>
             </div>
