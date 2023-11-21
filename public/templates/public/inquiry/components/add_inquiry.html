@@ -1,0 +1,64 @@
+<div class="modal fade" id="createInquiryModal" tabindex="-1" role="dialog" aria-labelledby="createInquiry" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">ایجاد استعلام</h5>
+            </div>
+            <div class="modal-body">
+                <form class="p-4" action="{% url 'public:inquiry' %}" method="post">
+                    {% csrf_token %}
+                    <div class="information-section">
+                        <div class="information-item">
+                            <label for="lihh">عنوان استعلام</label>
+                            <input type="text" name="title" required>
+                        </div>
+                        <div class="information-item">
+                            <label for="lihh">شماره درخواست</label>
+                            <input type="number" name="number_id" required>
+                        </div>
+                        <div class="information-item">
+                            <label for="lihh">ارسال کننده</label>
+                            <input type="text" name="sender" required>
+                        </div>
+                        <div class="information-item">
+                            <label for="lihh">تاریخ دریافت</label>
+                            <input type="text" set-on="inquiry-time-receive"
+                                   class="persianDatapicker pwt-datepicker-input-element" required>
+                            <input type="hidden" name="time_receive" id="inquiry-time-receive" required>
+                        </div>
+                        <div class="information-item">
+                            <label for="lihh">تاریخ ارسال</label>
+                            <input type="text" set-on="inquiry-time-submited"
+                                   class="persianDatapicker pwt-datepicker-input-element" required>
+                            <input type="hidden" name="time_submit" id="inquiry-time-submited" required>
+                        </div>
+                        <div class="information-item">
+                            <label for="lihh">مهلت پاسخ (تاریخ ددلاین)</label>
+                            <input type="text" set-on="inquiry-time-deadline-response"
+                                   class="persianDatapicker pwt-datepicker-input-element" required>
+                            <input type="hidden" name="time_deadline_response" id="inquiry-time-deadline-response" required>
+                        </div>
+                        <div class="information-item">
+                            <label for="stateInput">وضعیت</label>
+                            <select name="state" id="stateInput" required>
+                                <option value="waiting_for_price" selected>در انتظار قیمت</option>
+                                <option value="price_recorded">قیمت ارسال شده</option>
+                                <option value="canceled">انصراف</option>
+                            </select>
+                        </div>
+                        <div class="information-item">
+                            <label for="descriptionInput">توضیحات</label>
+                            <textarea name="description" id="descriptionInput" cols="30" rows="10" required></textarea>
+                        </div>
+                    </div>
+                    <div class="information-section">
+                        <button class="sabt-modal btn-primary col-12">ثبت</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+            </div>
+        </div>
+    </div>
+</div>
