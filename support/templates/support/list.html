@@ -116,13 +116,31 @@
                                             </div>
                                         </div>
                                         <div class="col-1">
-                                            <form method="post" action="{% url 'support:delete_ticket' %}">
-                                                {% csrf_token %}
-                                                <input type="hidden" name="ticket_id" value="{{ ticket.id }}">
-                                                <button type="submit" class="btn btn-danger">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                            </form>
+                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#DeleteTicket-{{ ticket.id }}">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="modal fade" id="DeleteTicket-{{ ticket.id }}" tabindex="-1" aria-labelledby="DeleteTicket-{{ ticket.id }}-Label" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">حذف تیکت</h5>
+                                                </div>
+                                                <form method="post" action="{% url 'support:delete_ticket' %}">
+                                                    <div class="modal-body">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="ticket_id" value="{{ ticket.id }}">
+                                                        <span>
+                                                            آيا از حذف تیکت مربوطه مطمئن هستید؟
+                                                        </span>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">خیر</button>
+                                                        <button type="submit" class="btn btn-danger">حذف</button>
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 {% empty %}
