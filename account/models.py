@@ -36,6 +36,7 @@ class User(AbstractUser):
         ('control_project_user', 'control_project_user'),
         ('control_quality_user', 'quality_control_user'),
         ('commerce_user', 'commerce_user'),
+        ('procurement_commerce_user', 'procurement_commerce_user'),
         ('financial_user', 'financial_user'),
         ('warehouse_user', 'warehouse_user'),
         ('production_user', 'production_user'),
@@ -47,7 +48,7 @@ class User(AbstractUser):
     email = models.EmailField("email address", null=True, blank=True, unique=True)
     department = models.ForeignKey('public.Department', on_delete=models.SET_NULL, null=True)
     # type users|roles
-    role = models.CharField(max_length=20, choices=ROLE_USER_OPTIONS)
+    role = models.CharField(max_length=32, choices=ROLE_USER_OPTIONS)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -107,6 +108,8 @@ class User(AbstractUser):
             return reverse('dp_control_quality:index')
         elif role == 'commerce_user':
             return reverse('dp_commerce:index')
+        elif role == 'procurement_commerce_user':
+            return reverse('dp_commerce:procurement_index')
         elif role == 'financial_user':
             return reverse('dp_financial:index')
         elif role == 'warehouse_user':
