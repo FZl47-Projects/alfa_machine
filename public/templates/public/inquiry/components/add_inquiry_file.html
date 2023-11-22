@@ -1,0 +1,53 @@
+<div class="modal fade" id="addInquiryFileModal-{{ inquiry.id }}" tabindex="-1" role="dialog" aria-labelledby="addInquiryFile" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">افزودن فایل استعلام</h5>
+            </div>
+                <form class="p-4" action="{% url 'public:inquiry_file' inquiry_id=inquiry.id %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="information-section">
+                    <div class="information-item">
+                        <label for="fileName">نام فایل:</label>
+                        <input type="text" name="name" id="fileName" class="rounded-2">
+                    </div>
+                    <div class="information-item">
+                        <label for="fileDescription" class="my-2">توضیحات:</label>
+                        <textarea name="description" id="fileDescription" cols="30" rows="10" required class="rounded-2"></textarea>
+                    </div>
+                    <div class="information-item">
+                        <div class="uploade-imge">
+                            <label class="item-upload" for="add5">
+                                آپلود فایل
+                            </label>
+                            <input type="file" name="file" id="add5" hidden>
+                        </div>
+                    </div>
+                    <div class="information-item">
+                        <div class="mt-1">
+                            <label>
+                                واحد
+                                <span class="font-70">(واحد هایی که می‌توانند به فایل دسترسی داشته باشند)</span>:
+                            </label>
+                            <div class="units d-flex flex-wrap">
+                                {% for department in departments %}
+                                    <div class="d-flex align-items-center col-6 col-md-3 p-2">
+                                        <label class="mt-2 mx-1" for="inp-to-dep-{{ department.id }}">
+                                            {{ department.name }}
+                                        </label>
+                                        <input type="checkbox" id="inp-to-dep-{{ department.id }}" multiple
+                                               name="departments" value="{{ department.id }}">
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="information-section">
+                    <button class="sabt-modal col-12 btn-primary rounded-2">ثبت</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

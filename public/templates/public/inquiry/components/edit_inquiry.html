@@ -1,0 +1,84 @@
+<div class="modal fade" id="editInquiryModal-{{ inquiry.id }}" tabindex="-1" role="dialog" aria-labelledby="editInquiry" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">ویرایش استعلام</h5>
+            </div>
+            <div class="modal-body">
+                <form class="p-4" action="{% url 'public:inquiry_detail' inquiry_id=inquiry.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="type_request" value="update">
+                    <div class="information-section">
+                        <div class="information-item">
+                            <label for="inquiryTitle">عنوان استعلام:</label>
+                            <input type="text" name="title" id="inquiryTitle" required value="{{ inquiry.title }}" class="rounded-2">
+                        </div>
+                        <div class="information-item">
+                            <label for="inquiryNumber">شماره درخواست:</label>
+                            <input type="number" name="number_id" id="inquiryNumber" required value="{{ inquiry.number_id }}" class="rounded-2">
+                        </div>
+                        <div class="information-item">
+                            <label for="inquiryTaskMaster">کارفرما:</label>
+                            <select id="inquiryTaskMaster" name="sender" class="rounded-2 form-select border-dark mt-2">
+                                {% for taskmaster in taskmasters %}
+                                    <option value="{{ taskmaster.id }}" {% if inquiry.sender == taskmaster %}selected{% endif %}>
+                                        {{ taskmaster.title }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="information-item">
+                            <label for="inquiryTimeReceive">تاریخ دریافت:</label>
+                            <input type="text" id="inquiryTimeReceive" set-on="inquiry-time-receive-{{ inquiry.id }}"
+                                   class="persianDatapicker pwt-datepicker-input-element datetime-convert rounded-2" required
+                                   value="{{ inquiry.time_receive }}">
+                            <input type="hidden" name="time_receive" id="inquiry-time-receive-{{ inquiry.id }}" required
+                                   value="{{ inquiry.time_receive }}">
+                        </div>
+                        <div class="information-item">
+                            <label for="inquiryDeadline">مهلت پاسخ(تاریخ ددلاین):</label>
+                            <input type="text" id="inquiryDeadline" set-on="inquiry-time-deadline-response-{{ inquiry.id }}"
+                                   class="persianDatapicker pwt-datepicker-input-element datetime-convert rounded-2" required
+                                   value="{{ inquiry.time_deadline_response }}">
+                            <input type="hidden" name="time_deadline_response"
+                                   id="inquiry-time-deadline-response-{{ inquiry.id }}" required
+                                   value="{{ inquiry.time_deadline_response }}">
+                        </div>
+                        <div class="information-item">
+                            <label for="inquiryTimeSubmitted">تاریخ ارسال:</label>
+                            <input type="text" id="inquiryTimeSubmitted" set-on="inquiry-time-submited-{{ inquiry.id }}"
+                                   class="persianDatapicker pwt-datepicker-input-element datetime-convert rounded-2" required
+                                   value="{{ inquiry.time_submit }}">
+                            <input type="hidden" name="time_submit" id="inquiry-time-submited-{{ inquiry.id }}" required
+                                   value="{{ inquiry.time_submit }}">
+                        </div>
+                        <div class="information-item">
+                            <label for="inquiryState">وضعیت:</label>
+                            <select name="state" id="inquiryState" required class="rounded-2 form-select mt-2 border-dark">
+                                <option value="waiting_for_price" {% if inquiry.state == 'waiting_for_price' %}selected{% endif %}>
+                                    در انتظار قیمت
+                                </option>
+                                <option value="price_recorded" {% if inquiry.state == 'price_recorded' %}selected{% endif %}>
+                                    قیمت ارسال شده
+                                </option>
+                                <option value="canceled" {% if inquiry.state == 'canceled' %}selected{% endif %}>
+                                    انصراف
+                                </option>
+                            </select>
+                        </div>
+                        <div class="information-item">
+                            <label for="descriptionInput">توضیحات:</label>
+                            <textarea name="description" id="descriptionInput" cols="30" rows="10" required class="rounded-2">{{ inquiry.description }}</textarea>
+                        </div>
+                    </div>
+                    <div class="information-section">
+                        <button class="sabt-modal btn-primary col-12 rounded-2">ثبت</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+            </div>
+        </div>
+    </div>
+</div>

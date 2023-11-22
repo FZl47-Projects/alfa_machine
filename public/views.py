@@ -93,6 +93,35 @@ class Project(View):
         return render(request, self.template_name, context)
 
 
+class ProjectAdd(View):
+
+    @user_role_required_cbv(['super_user', 'commerce_user', 'control_project_user'])
+    def get(self, request):
+        context = {}
+
+        task_masters = models.TaskMaster.objects.all()
+        context['task_masters'] = task_masters
+
+        inquiry_id = request.GET.get('inquiry-id', None)
+        if inquiry_id:
+            context['inquiry'] = models.Inquiry.objects.get(id=inquiry_id, project=None)
+
+        return render(request, 'public/project/add.html', context)
+
+    @user_role_required_cbv(['super_user', 'commerce_user', 'control_project_user'])
+    def post(self, request):
+        data = request.POST
+
+        f = forms.ProjectAdd(data)
+        if not f.is_valid():
+            messages.error(request, 'لطفا فیلد هارا به درستی وارد نمایید')
+            return redirect('public:project_add')
+        f.save()
+
+        messages.success(request, 'پروژه با موفقیت ایجاد شد')
+        return redirect('public:project_add')
+
+
 class ProjectUpdate(LoginRequiredMixin, View):
 
     def post(self, request, project_id):
@@ -365,6 +394,7 @@ class Inquiry(View):
 
     def sort(self, request, inquiries):
         sort_by = request.GET.get('sort_by', 'latest')
+
         if sort_by == 'latest':
             inquiries = inquiries.order_by('-id')
         elif sort_by == 'oldest':
@@ -379,7 +409,8 @@ class Inquiry(View):
 
         context = {
             'inquiries': inquiries,
-            'departments': models.Department.objects.all()
+            'departments': models.Department.objects.all(),
+            'taskmasters': models.TaskMaster.objects.all(),
         }
 
         return render(request, 'public/inquiry/list.html', context)
@@ -397,7 +428,7 @@ class Inquiry(View):
             return redirect(referer_url or '/error')
         f.save()
 
-        messages.success(request, 'عملیات با موفقیت ثبت شد')
+        messages.success(request, 'عملیات با موفقیت انجام شد')
         return redirect(referer_url or '/success')
 
 
@@ -408,18 +439,19 @@ class InquiryDetail(View):
         referer_url = request.META.get('HTTP_REFERER', None)
         inquiry_obj = models.Inquiry.objects.get(id=inquiry_id)
         type_request = request.POST.get('type_request', None)
+
         if type_request == 'delete':
             inquiry_obj.delete()
-            messages.success(request, 'عملیات با موفقیت ثبت شد')
-            return redirect(referer_url or '/success')
         elif type_request == 'update':
             data = request.POST
+
             f = forms.InquiryUpdateForm(data, instance=inquiry_obj)
             if form_validate_err(request, f) is False:
                 return redirect(referer_url or '/error')
             f.save()
-            messages.success(request, 'عملیات با موفقیت ثبت شد')
-            return redirect(referer_url or '/success')
+
+        messages.success(request, 'عملیات با موفقیت انجام شد')
+        return redirect(referer_url or '/success')
 
 
 class InquiryOwner(View):
@@ -427,6 +459,7 @@ class InquiryOwner(View):
 
     def search(self, request, inquiries):
         search = request.GET.get('search', None)
+
         if not search:
             return inquiries
         if search.isdigit():
@@ -440,6 +473,7 @@ class InquiryOwner(View):
 
     def sort(self, request, inquiries):
         sort_by = request.GET.get('sort_by', 'latest')
+
         if sort_by == 'latest':
             inquiries = inquiries.order_by('-id')
         elif sort_by == 'oldest':
@@ -451,11 +485,13 @@ class InquiryOwner(View):
         inquiries = models.Inquiry.objects.all()
         inquiries = self.search(request, inquiries)
         inquiries = self.sort(request, inquiries)
+
         context = {
             'inquiries': inquiries,
             'inquiries_accepted': models.Inquiry.objects.filter(status__status='accepted'),
             'inquiries_rejected': models.Inquiry.objects.filter(status__status='rejected'),
-            'departments': models.Department.objects.all()
+            'departments': models.Department.objects.all(),
+            'taskmasters': models.TaskMaster.objects.all(),
         }
         return render(request, self.template_name, context)
 
@@ -510,32 +546,3 @@ class DepartmentDetail(View):
         department.name = post.get('name', None)
         department.save()
         return redirect('departments.general:departments_list')
-
-
-class ProjectAdd(View):
-
-    @user_role_required_cbv(['super_user', 'commerce_user', 'control_project_user'])
-    def get(self, request):
-        context = {}
-
-        task_masters = models.TaskMaster.objects.all()
-        context['task_masters'] = task_masters
-
-        inquiry_id = request.GET.get('inquiry-id', None)
-        if inquiry_id:
-            context['inquiry'] = models.Inquiry.objects.get(id=inquiry_id, project=None)
-
-        return render(request, 'public/project/add.html', context)
-
-    @user_role_required_cbv(['super_user', 'commerce_user', 'control_project_user'])
-    def post(self, request):
-        data = request.POST
-
-        f = forms.ProjectAdd(data)
-        if not f.is_valid():
-            messages.error(request, 'لطفا فیلد هارا به درستی وارد نمایید')
-            return redirect('public:project_add')
-        f.save()
-
-        messages.success(request, 'پروژه با موفقیت ایجاد شد')
-        return redirect('public:project_add')
