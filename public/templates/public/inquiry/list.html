@@ -123,7 +123,7 @@
                         <thead class="table-dark">
                             <tr class="text-center text-nowrap">
                                 <th>ردیف</th>
-                                <th>واحد استعلام گیرنده</th>
+                                <th>استعلام گیرنده</th>
                                 <th>کارفرما</th>
                                 <th>شماره استعلام</th>
                                 <th>تاریخ دریافت</th>
@@ -149,22 +149,22 @@
                                         {{ inquiry.from_department.name }}
                                     </td>
                                     <td class="text-nowrap">
-                                        {{ inquiry.sender|truncatechars:16 }}
+                                        {{ inquiry.sender|truncatechars:16|default:'ندارد' }}
                                     </td>
                                     <td>
-                                        {{ inquiry.number_id }}
+                                        {{ inquiry.number_id|default:'-' }}
                                     </td>
                                     <td class="datetime-convert">
-                                        {{ inquiry.time_receive }}
+                                        {{ inquiry.time_receive|default:'-' }}
                                     </td>
                                     <td class="datetime-convert">
-                                        {{ inquiry.time_submit }}
+                                        {{ inquiry.time_submit|default:'-' }}
                                     </td>
                                     <td class="datetime-convert">
-                                        {{ inquiry.time_deadline_response }}
+                                        {{ inquiry.time_deadline_response|default:'-' }}
                                     </td>
                                     <td>
-                                        {{ inquiry.title|truncatechars:16 }}
+                                        {{ inquiry.title|truncatechars:16|default:'بدون عنوان' }}
                                     </td>
                                     <td data-bs-toggle="modal" data-bs-target="#inquiryDescription-{{ inquiry.id }}">
                                         <i class="fa fa-eye fw-bold btn btn-info btn-sm" title="مشاهده"></i>
@@ -185,18 +185,15 @@
                                                 <div class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#inquiryApprovalModal-{{ inquiry.id }}">تایید</div>
                                                 <div class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#inquiryDisapprovalModal-{{ inquiry.id }}">رد کردن</div>
                                             {% else %}
-                                                <p class="text-center {% if inquiry.status.status == 'accepted' %}text-success{% else %}text-danger{% endif %}">
+                                                <span class="{% if inquiry.status.status == 'accepted' %}text-success{% else %}text-danger{% endif %}">
                                                     {{ inquiry.status.get_status_display }}
-                                                </p>
+                                                </span>
                                             {% endif %}
                                         {% else %}
-                                            {% if inquiry.get_status == 'accepted' %}
-                                                <span class="text-success">تایید شده</span>
-                                            {% elif inquiry.get_status == 'rejected' %}
-                                                <span class="text-danger">رد شده</span>
-                                            {% elif inquiry.get_status == 'progress' %}
-                                                <span class="text-primary">درحال بررسی</span>
-                                            {% endif %}
+                                            <span class="{% if inquiry.status.status == 'accepted' %}text-success{% elif inquiry.status.status == 'rejected' %}
+                                                text-danger{% else %}text-primary{% endif %}">
+                                                {{ inquiry.get_status }}
+                                            </span>
                                         {% endif %}
                                     </td>
                                     {% if user.role == 'super_user' or user.role == 'commerce_user' %}

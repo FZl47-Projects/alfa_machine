@@ -55,18 +55,27 @@
         {% include 'public/inquiry/components/inquiry_files_list.html' %}
         <!-- .End Inquiry files list modal -->
 
-        <div class="content-modal-two modal-Reason-rejection">
-            <div class="inner-modal">
-                <form class="p-4">
-                    <div class="information-section">
-                        <div class="information-item">
-                            <label for="descriptionInput">دلیل رد شدن:</label>
-                            <textarea name="" id="descriptionInput" cols="30" rows="10" disabled>{{ inquiry.status.description }}</textarea>
+        <!-- Inquiry rejection reason -->
+        <div class="modal" id="inquiryRejection-{{ inquiry.id }}" tabindex="-1" role="dialog" aria-labelledby="inquiryRejection" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">دلیل رد شدن استعلام</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="hhh">
+                            <div class="mt-2">
+                                {{ inquiry.status.description }}
+                            </div>
                         </div>
                     </div>
-                </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+                    </div>
+                </div>
             </div>
         </div>
+        <!-- .End Inquiry rejection reason -->
 
         <div class="content-modal-two modal-Followed-up">
             <div class="inner-modal">
@@ -162,7 +171,7 @@
                         <thead class="table-dark">
                             <tr class="text-center text-nowrap">
                                 <th>ردیف</th>
-                                <th>واحد استعلام گیرنده</th>
+                                <th>استعلام گیرنده</th>
                                 <th>کارفرما</th>
                                 <th>شماره استعلام</th>
                                 <th>تاریخ دریافت</th>
@@ -209,13 +218,11 @@
                                         <i class="fa fa-eye fw-bold btn btn-info btn-sm" title="مشاهده"></i>
                                     </td>
                                     <td>
-                                        {% if inquiry.get_status == 'accepted' %}
-                                            <span class="text-success">تایید شده</span>
-                                        {% elif inquiry.get_status == 'rejected' %}
-                                            <span class="text-danger">رد شده</span>
-                                        {% elif inquiry.get_status == 'progress' %}
-                                            <span class="text-primary">درحال بررسی</span>
-                                        {% endif %}
+                                        <span class="{% if inquiry.status.status == 'accepted' %}
+                                            text-success{% elif inquiry.status.status == 'rejected' %}
+                                            text-danger{% else %}text-primary{% endif %}">
+                                            {{ inquiry.get_status }}
+                                        </span>
                                     </td>
                                     <td class="text-nowrap">
                                         {{ inquiry.get_state_display }}

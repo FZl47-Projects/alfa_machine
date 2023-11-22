@@ -305,12 +305,17 @@ class Inquiry(BaseModel):
 
     def get_status(self):
         status = getattr(self, 'status', None)
-        if status:
-            return status.status
-        return 'progress'
+        if not status:
+            return 'درحال بررسی'
+
+        if status.status == 'accepted':
+            return 'تایید شده'
+        elif status.status == 'rejected':
+            return 'رد شده'
 
     def get_time_submited(self):
-        return self.time_submit.strftime('%Y-%m-%d')
+        if self.time_submit:
+            return self.time_submit.strftime('%Y-%m-%d')
 
     def get_files(self):
         return self.inquiryfile_set.all().order_by('-id')
