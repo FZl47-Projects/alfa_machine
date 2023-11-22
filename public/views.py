@@ -378,6 +378,14 @@ class TaskListStateUpdate(View):
 
 class Inquiry(View):
 
+    def filter(self, request, inquiries):
+        task_master = request.GET.get('task_master', None)
+
+        if task_master and task_master.isdigit():
+            inquiries = inquiries.filter(sender_id=task_master)
+
+        return inquiries
+
     def search(self, request, inquiries):
         search = request.GET.get('search', None)
 
@@ -405,6 +413,7 @@ class Inquiry(View):
         inquiries = models.Inquiry.objects.all()
 
         inquiries = self.search(request, inquiries)
+        inquiries = self.filter(request, inquiries)
         inquiries = self.sort(request, inquiries)
 
         context = {
@@ -457,6 +466,14 @@ class InquiryDetail(View):
 class InquiryOwner(View):
     template_name = 'public/inquiry/owner/list.html'
 
+    def filter(self, request, inquiries):
+        task_master = request.GET.get('task_master', None)
+
+        if task_master and task_master.isdigit():
+            inquiries = inquiries.filter(sender_id=task_master)
+
+        return inquiries
+
     def search(self, request, inquiries):
         search = request.GET.get('search', None)
 
@@ -483,7 +500,9 @@ class InquiryOwner(View):
     @user_role_required_cbv(['commerce_user'])
     def get(self, request):
         inquiries = models.Inquiry.objects.all()
+
         inquiries = self.search(request, inquiries)
+        inquiries = self.filter(request, inquiries)
         inquiries = self.sort(request, inquiries)
 
         context = {

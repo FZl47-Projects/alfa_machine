@@ -1,0 +1,62 @@
+<div class="modal fade" id="inquiryApprovalModal-{{ inquiry.id }}" tabindex="-1" role="dialog" aria-labelledby="inquiryApproval"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header justify-content-start align-items-center">
+                <h5 class="modal-title">تایید استعلام</h5>
+                <span class="mx-2 font-80">({{ inquiry.title|default:'بدون عنوان' }})</span>
+            </div>
+            <form action="{% url 'public:inquiry_status' inquiry_id=inquiry.id %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="information-section">
+                        <div class="information-item">
+                            <label for="approvalDescription" class="my-1">توضیحات:</label>
+                            <textarea name="description" id="approvalDescription" cols="30" rows="10" required></textarea>
+                        </div>
+                        <div class="information-item">
+                            <label class="uploade-imge item-upload py-2" role="button">
+                                <span>آپلود فایل</span>
+                                <input type="file" name="file" id="add-{{ forloop.counter }}" required hidden>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">ثبت</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Disapproval modal -->
+<div class="modal fade" id="inquiryDisapprovalModal-{{ inquiry.id }}" tabindex="-1" role="dialog"
+     aria-labelledby="inquiryDisapproval" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header justify-content-start align-items-center">
+                <h5 class="modal-title">رد کردن استعلام</h5>
+                <span class="mx-2 font-80">({{ inquiry.title|default:'بدون عنوان' }})</span>
+            </div>
+            <form action="{% url 'public:inquiry_status' inquiry_id=inquiry.id %}" method="post">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <input type="hidden" name="status" value="rejected">
+                    <div class="information-section">
+                        <div class="information-item">
+                            <label for="deniedDescription" class="my-1">توضیحات:</label>
+                            <textarea name="description" id="deniedDescription" cols="30" rows="10" required></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">ثبت</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

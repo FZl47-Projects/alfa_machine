@@ -11,11 +11,11 @@
                     <div class="information-section">
                         <div class="information-item">
                             <label for="inquiryTitle">عنوان استعلام:</label>
-                            <input type="text" name="title" id="inquiryTitle" required value="{{ inquiry.title }}" class="rounded-2">
+                            <input type="text" name="title" id="inquiryTitle" value="{{ inquiry.title }}" class="rounded-2">
                         </div>
                         <div class="information-item">
                             <label for="inquiryNumber">شماره درخواست:</label>
-                            <input type="number" name="number_id" id="inquiryNumber" required value="{{ inquiry.number_id }}" class="rounded-2">
+                            <input type="number" name="number_id" id="inquiryNumber" value="{{ inquiry.number_id }}" class="rounded-2">
                         </div>
                         <div class="information-item">
                             <label for="inquiryTaskMaster">کارفرما:</label>
@@ -30,31 +30,31 @@
                         <div class="information-item">
                             <label for="inquiryTimeReceive">تاریخ دریافت:</label>
                             <input type="text" id="inquiryTimeReceive" set-on="inquiry-time-receive-{{ inquiry.id }}"
-                                   class="persianDatapicker pwt-datepicker-input-element datetime-convert rounded-2" required
+                                   class="persianDatapicker pwt-datepicker-input-element datetime-convert rounded-2"
                                    value="{{ inquiry.time_receive }}">
-                            <input type="hidden" name="time_receive" id="inquiry-time-receive-{{ inquiry.id }}" required
+                            <input type="hidden" name="time_receive" id="inquiry-time-receive-{{ inquiry.id }}"
                                    value="{{ inquiry.time_receive }}">
                         </div>
                         <div class="information-item">
                             <label for="inquiryDeadline">مهلت پاسخ(تاریخ ددلاین):</label>
                             <input type="text" id="inquiryDeadline" set-on="inquiry-time-deadline-response-{{ inquiry.id }}"
-                                   class="persianDatapicker pwt-datepicker-input-element datetime-convert rounded-2" required
+                                   class="persianDatapicker pwt-datepicker-input-element datetime-convert rounded-2"
                                    value="{{ inquiry.time_deadline_response }}">
                             <input type="hidden" name="time_deadline_response"
-                                   id="inquiry-time-deadline-response-{{ inquiry.id }}" required
+                                   id="inquiry-time-deadline-response-{{ inquiry.id }}"
                                    value="{{ inquiry.time_deadline_response }}">
                         </div>
                         <div class="information-item">
                             <label for="inquiryTimeSubmitted">تاریخ ارسال:</label>
                             <input type="text" id="inquiryTimeSubmitted" set-on="inquiry-time-submited-{{ inquiry.id }}"
-                                   class="persianDatapicker pwt-datepicker-input-element datetime-convert rounded-2" required
+                                   class="persianDatapicker pwt-datepicker-input-element datetime-convert rounded-2"
                                    value="{{ inquiry.time_submit }}">
-                            <input type="hidden" name="time_submit" id="inquiry-time-submited-{{ inquiry.id }}" required
+                            <input type="hidden" name="time_submit" id="inquiry-time-submited-{{ inquiry.id }}"
                                    value="{{ inquiry.time_submit }}">
                         </div>
                         <div class="information-item">
                             <label for="inquiryState">وضعیت:</label>
-                            <select name="state" id="inquiryState" required class="rounded-2 form-select mt-2 border-dark">
+                            <select name="state" id="inquiryState" class="rounded-2 form-select mt-2 border-dark">
                                 <option value="waiting_for_price" {% if inquiry.state == 'waiting_for_price' %}selected{% endif %}>
                                     در انتظار قیمت
                                 </option>
@@ -68,7 +68,7 @@
                         </div>
                         <div class="information-item">
                             <label for="descriptionInput">توضیحات:</label>
-                            <textarea name="description" id="descriptionInput" cols="30" rows="10" required class="rounded-2">{{ inquiry.description }}</textarea>
+                            <textarea name="description" id="descriptionInput" cols="30" rows="10" class="rounded-2">{{ inquiry.description }}</textarea>
                         </div>
                     </div>
                     <div class="information-section">

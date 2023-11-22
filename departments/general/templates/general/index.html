@@ -53,125 +53,61 @@
         </div>
     </div>
 
-    <!-- popup taid -->
+    <!-- Modals popup section -->
     {% for inquiry in inquiries %}
-        <div class="content-modal-two modal-management-approval">
-            <div class="inner-modal">
-                <form class="p-4" action="{% url 'public:inquiry_status' inquiry_id=inquiry.id %}" method="post"
-                      enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <input type="hidden" name="status" value="accepted">
-                    <div class="information-section">
-                        <div class="information-item">
-                            <label for="lihh">توضیحات</label>
-                            <textarea name="description" id="" cols="30" rows="10" required></textarea>
-                        </div>
-                        <div class="information-item">
-                            <div class="uploade-imge">
-                                <label class="item-upload" for="add-{{ forloop.counter }}">
-                                    آپلود فایل
-                                </label>
-                                <input type="file" name="file" id="add-{{ forloop.counter }}" required hidden/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="information-section">
-                        <button class="sabt-modal col-12 btn-primary">ثبت</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    {% endfor %}
+        <!-- Inquiry description modal -->
+        {% include 'public/inquiry/components/inquiry_description.html' %}
+        <!-- .End Inquiry description modal -->
 
-    <!-- popup taid -->
-    <!-- popup no-taeid -->
-    {% for inquiry in inquiries %}
-        <div class="content-modal-two modal-management-no-approval">
-            <div class="inner-modal">
-                <form class="p-4" action="{% url 'public:inquiry_status' inquiry_id=inquiry.id %}" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="status" value="rejected">
-                    <div class="information-section">
-                        <div class="information-item">
-                            <label for="lihh">توضیحات</label>
-                            <textarea name="description" id="" cols="30" rows="10" required></textarea>
-                        </div>
-                    </div>
-                    <div class="information-section">
-                        <button class="sabt-modal btn-primary col-12">ثبت</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+        <!-- Inquiry approval/disapproval modal -->
+        {% include 'public/inquiry/components/acceptance_inquiry.html' %}
+        <!-- .End Inquiry approval/disapproval modal -->
     {% endfor %}
-    <!-- popup no-taeid -->
-    <!--morde-descriptin popup -->
-    {% for inquiry in inquiries %}
-        <div class="content-modal-two modal-more-description">
-            <div class="inner-modal">
-                <form class="p-4">
-                    <div class="close-modal close-modal-description">
-                        <img src="{% static 'frontend/images/close.png' %}" alt="">
-                    </div>
-                    <div class="hhh">
-                        <div class="more-des">
-                            {{ inquiry.description }}
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    {% endfor %}
+    <!-- .End Modals popup section -->
 
-    <!--morde-descriptin popup -->
     <!-- start notifcation section -->
     {% include 'base/components/aside-menu.html' with notifications=notifications tickets=tickets %}
 
-    <!-- start notifcation section -->
+    <!-- start notification section -->
     <div class="container-fluid col-md-10 content-page">
         <main class="main">
-
-            <div class="title px-4">
-                <span style="padding-left:3px;">استعلامات</span>
+            <div class="title px-3 mt-3">
+                <span class="fw-bold">استعلامات</span>
                 <span class="d-flex justify-content-center align-item-center">
-            <a href="{% url 'public:inquiry' %}">مشاهده همه</a>
-            <img src="{% static 'frontend/images/back-icon.png' %}" alt="">
-        </span>
+                    <a href="{% url 'public:inquiry' %}">
+                        مشاهده همه
+                        <img src="{% static 'frontend/images/back-icon.png' %}" alt="">
+                    </a>
+                </span>
             </div>
-            <!-- Query-section -->
-            <section class="queries">
-                <!--inner Query-section  -->
+            <!-- Inquiry-section -->
+            <section class="queries" style="margin-top: -1rem;">
+                <!-- inner Inquiry-section  -->
                 <div class="box-section">
                     {% for inquiry in inquiries %}
                         <div class="col-12 col-md-3 p-2">
                             <div class="box-item">
                                 <div class="top">
-                                    <!-- query title -->
-                                    <div style="color:black; margin-bottom:10px">
+                                    <div class="text-dark pb-3">
                                         {{ inquiry.title }}
                                     </div>
-                                    <!-- query title -->
-                                    <!-- The name of the inquirer -->
                                     <div class=" style-conent-box">
                                         <span>{{ inquiry.from_department.name }}</span>
                                     </div>
-                                    <!-- The name of the inquirer -->
-                                    <!-- date -->
                                     <div class="style-conent-box">
-                                        <span>تاریخ</span>
+                                        <span>تاریخ:</span>
                                         <span class="datetime-convert">{{ inquiry.get_time_submited }}</span>
                                     </div>
-                                    <!-- date -->
-                                    <!-- description -->
                                     <div class="style-conent-box">
-                                        <span style="cursor:pointer ;"
-                                              class="description">{{ inquiry.description|truncatechars:30 }}</span>
+                                        <span role="button" class="description" data-bs-toggle="modal" data-bs-target="#inquiryDescription-{{ inquiry.id }}">
+                                            {{ inquiry.description|truncatechars:30 }}
+                                        </span>
                                     </div>
                                 </div>
                                 <!-- btn approval and noapproval  -->
                                 <div class="btn-two d-flex">
-                                    <div class="col-6 p-1 btn-item taeid btn-management-approval">تایید</div>
-                                    <div class="col-6 p-1 btn-item n-taeid btn-management-noapproval">رد</div>
+                                    <div class="col-6 p-1 btn-item taeid" data-bs-toggle="modal" data-bs-target="#inquiryApprovalModal-{{ inquiry.id }}">تایید</div>
+                                    <div class="col-6 p-1 btn-item n-taeid" data-bs-toggle="modal" data-bs-target="#inquiryDisapprovalModal-{{ inquiry.id }}">رد کردن</div>
                                 </div>
                                 <!-- btn approval and noapproval  -->
                             </div>
@@ -182,9 +118,9 @@
                         </div>
                     {% endfor %}
                 </div>
-                <!--inner Query-section  -->
+                <!--inner Inquiry-section  -->
             </section>
-            <!-- Query-section -->
+            <!-- Inquiry-section -->
 
             <section class="collection-units mb-4" style="background-color:#fff; margin-top:30px;">
                 <div class="box-section d-flex justify-content-start">
