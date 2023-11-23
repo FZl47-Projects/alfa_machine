@@ -1,5 +1,6 @@
 {% extends 'base/base_template.html' %}
 {% load static %}
+{% load filters %}
 
 {% block Title %}
     لیست استعلامات
@@ -35,13 +36,15 @@
 {% block Content %}
 
     {% for inquiry in inquiries %}
-        <!-- Edit inquiry modal -->
-        {% include 'public/inquiry/components/edit_inquiry.html' %}
-        <!-- .End Edit inquiry modal -->
+        {% if user|has_permission %}
+            <!-- Edit inquiry modal -->
+            {% include 'public/inquiry/components/edit_inquiry.html' %}
+            <!-- .End Edit inquiry modal -->
 
-        <!-- Delete inquiry modal -->
-        {% include 'public/inquiry/components/delete_inquiry.html' %}
-        <!-- .End Delete inquiry modal -->
+            <!-- Delete inquiry modal -->
+            {% include 'public/inquiry/components/delete_inquiry.html' %}
+            <!-- .End Delete inquiry modal -->
+        {% endif %}
 
         <!-- Inquiry description modal -->
         {% include 'public/inquiry/components/inquiry_description.html' %}
@@ -133,7 +136,7 @@
                                 <th>توضیحات</th>
                                 <th>فایل</th>
                                 <th>وضعیت بررسی</th>
-                                {% if user.role == 'super_user' or user.role == 'commerce_user' %}
+                                {% if user|has_permission %}
                                     <th>عملیات</th>
                                 {% endif %}
                             </tr>
@@ -180,7 +183,7 @@
                                         </div>
                                     </td>
                                     <td class="text-nowrap">
-                                        {% if user.role == 'super_user' or user.role == 'commerce_user' %}
+                                        {% if user|has_permission:request.resolver_match.url_name %}
                                             {% if not inquiry.status %}
                                                 <div class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#inquiryApprovalModal-{{ inquiry.id }}">تایید</div>
                                                 <div class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#inquiryDisapprovalModal-{{ inquiry.id }}">رد کردن</div>
@@ -196,7 +199,7 @@
                                             </span>
                                         {% endif %}
                                     </td>
-                                    {% if user.role == 'super_user' or user.role == 'commerce_user' %}
+                                    {% if user|has_permission %}
                                         <td>
                                             <div class="text-nowrap">
                                                 <i class="fa fa-edit btn btn-sm btn-warning fw-bold"
