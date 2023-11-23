@@ -417,7 +417,10 @@ class Inquiry(View):
         return inquiries
 
     def get(self, request):
-        inquiries = models.Inquiry.objects.all()
+        if request.user.role == 'super_user':
+            inquiries = models.Inquiry.objects.all()
+        else:
+            inquiries = models.Inquiry.objects.filter(status__status='accepted')
 
         inquiries = self.search(request, inquiries)
         inquiries = self.filter(request, inquiries)
