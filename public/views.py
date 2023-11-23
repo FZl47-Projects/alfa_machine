@@ -1,9 +1,10 @@
-from django.contrib import messages
-from django.shortcuts import render, Http404, redirect, HttpResponse, get_object_or_404
-from django.views.generic import View
-from django.core.exceptions import PermissionDenied
-from django.db.models import Q
+from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
+from django.views.generic import View
+from django.contrib import messages
+from django.utils import timezone
+from django.db.models import Q
 from core.utils import form_validate_err
 from public import models, forms
 from account.auth.decorators import user_role_required_cbv
@@ -379,7 +380,13 @@ class TaskListStateUpdate(View):
 class Inquiry(View):
 
     def filter(self, request, inquiries):
+        archived = request.GET.get('archived', False)
         task_master = request.GET.get('task_master', None)
+
+        if archived:
+            inquiries = inquiries.filter(Q(state='canceled') | Q(time_deadline_response__lt=timezone.now()))
+        else:
+            inquiries = inquiries.filter(~Q(state='canceled') & Q(time_deadline_response__gt=timezone.now()))
 
         if task_master and task_master.isdigit():
             inquiries = inquiries.filter(sender_id=task_master)
@@ -396,7 +403,7 @@ class Inquiry(View):
             inquiries = inquiries.filter(lookup)
         else:
             lookup = Q(title__icontains=search) | Q(from_department__name__icontains=search) | Q(state=search) | Q(
-                sender__icontains=search)
+                sender__title__icontains=search)
             inquiries = inquiries.filter(lookup)
         return inquiries
 
@@ -484,7 +491,7 @@ class InquiryOwner(View):
             inquiries = inquiries.filter(lookup)
         else:
             lookup = Q(title__icontains=search) | Q(from_department__name__icontains=search) | Q(state=search) | Q(
-                sender__icontains=search)
+                sender__title__icontains=search)
             inquiries = inquiries.filter(lookup)
         return inquiries
 

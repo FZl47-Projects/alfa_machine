@@ -89,18 +89,18 @@
                             <div class="box-item">
                                 <div class="top">
                                     <div class="text-dark pb-3">
-                                        {{ inquiry.title }}
+                                        {{ inquiry.title|default:'بدون عنوان' }}
                                     </div>
                                     <div class=" style-conent-box">
                                         <span>{{ inquiry.from_department.name }}</span>
                                     </div>
                                     <div class="style-conent-box">
                                         <span>تاریخ:</span>
-                                        <span class="datetime-convert">{{ inquiry.get_time_submited }}</span>
+                                        <span class="datetime-convert">{{ inquiry.get_time_submited|default:'-' }}</span>
                                     </div>
                                     <div class="style-conent-box">
                                         <span role="button" class="description" data-bs-toggle="modal" data-bs-target="#inquiryDescription-{{ inquiry.id }}">
-                                            {{ inquiry.description|truncatechars:30 }}
+                                            {{ inquiry.description|truncatechars:30|default:'-' }}
                                         </span>
                                     </div>
                                 </div>
@@ -124,7 +124,7 @@
 
             <section class="collection-units mb-4" style="background-color:#fff; margin-top:30px;">
                 <div class="box-section d-flex justify-content-start">
-                    <div class="col-12 col-md-3 col-lg-2 ">
+                    <div class="col-12 col-md-3 col-lg-2">
                         <div class="box-item-2 ddd">
                             <img src="{% static 'frontend/images/لیست خرید تایید شده مدیریت 2@2x.png' %}" alt=""
                                  class="icon-box mb-3">
@@ -132,6 +132,18 @@
                                 <span>فایل پروژه</span>
                             </div>
                             <div class="tarif-task btn-create-report btn--ta1 task-confirm" id="one">آپلود</div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3 col-lg-2">
+                        <div class="box-item-2 ddd">
+                            <img src="{% static 'frontend/images/2 (لیست استعلامات(حتی رد شده ها با دلیل@2x.png' %}" alt=""
+                                 class="icon-box mb-3">
+                            <div class="style-conent-box mb-3">
+                                <span>آرشیو استعلامات</span>
+                            </div>
+                            <a href="{% url 'public:inquiry' %}?archived=true">
+                                <div class="tarif-task" id="one">مشاهده</div>
+                            </a>
                         </div>
                     </div>
                 </div>

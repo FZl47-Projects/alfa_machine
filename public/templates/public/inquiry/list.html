@@ -65,7 +65,10 @@
 
     <div>
         <div class="text-center d-flex justify-content-center mt-1 px-3">
-            <h3 class="title-page w-100" style="margin-right: 4rem;">لیست استعلامات</h3>
+            <h3 class="title-page w-100" style="margin-right: 4rem;">
+                لیست استعلامات
+                {% if request.GET.archived %}<span>آرشیو شده</span>{% endif %}
+            </h3>
             <div class="mt-2">
                 <a href="{{ user.get_absolute_url_dashboard }}" class="btn btn-danger">بازگشت</a>
             </div>
@@ -73,8 +76,10 @@
 
         <div class="d-flex flex-column mb-4 p-4">
             <div>
-                <form action="{% url 'public:inquiry_owner' %}" method="get" class="overflow-hidden d-flex align-items-center">
+                <form action="{% url 'public:inquiry' %}" method="get" class="overflow-hidden d-flex align-items-center">
                     <input type="hidden" name="sort_by" value="{{ request.GET.sort_by }}">
+                    <input type="hidden" name="archived" value="{{ request.GET.archived }}">
+                    <input type="hidden" name="task_master" value="{{ request.GET.task_master }}">
                     <div class="cnt-search col-6 col-md-4">
                         <input type="text" id="q" name="search" value="{{ request.GET.search }}"
                                placeholder="عنوان، شماره استعلام و ...">
@@ -91,13 +96,13 @@
                 <div class="d-flex justify-content-center me-3 gap-2">
                     <div>
                         <a class="{% if request.GET.sort_by == 'latest' or not request.GET.sort_by %}active{% endif %}"
-                           href="?sort_by=latest&task_master={{ request.GET.task_master }}">
+                           href="?sort_by=latest&task_master={{ request.GET.task_master }}&archived={{ request.GET.archived }}">
                             جدید ترین
                         </a>
                     </div>
                     <div>
                         <a class="{% if request.GET.sort_by == 'oldest' %}active{% endif %}"
-                           href="?sort_by=oldest&task_master={{ request.GET.task_master }}">
+                           href="?sort_by=oldest&task_master={{ request.GET.task_master }}&archived={{ request.GET.archived }}">
                             قدیمی ترین
                         </a>
                     </div>
@@ -106,9 +111,14 @@
             <div class="d-flex align-items-center justify-content-center gap-2 link-search-items text-center mt-4">
                 <span class="title">فیلتر بر اساس کارفرما:</span>
                 <div class="d-flex gap-2 me-2">
-                    <a href="?sort_by={{ request.GET.sort_by }}" {% if not request.GET.task_master %}class="active"{% endif %}>همه</a>
+                    <a href="?sort_by={{ request.GET.sort_by }}&archived={{ request.GET.archived }}" {% if not request.GET.task_master %}class="active"{% endif %}>
+                        همه
+                    </a>
                     {% for task_master in taskmasters %}
-                        <a href="?task_master={{ task_master.id }}&sort_by={{ request.GET.sort_by }}" {% if request.GET.task_master == task_master.id|stringformat:'i' %}class="active"{% endif %}>{{ task_master.title }}</a>
+                        <a href="?task_master={{ task_master.id }}&sort_by={{ request.GET.sort_by }}&archived={{ request.GET.archived }}"
+                           {% if request.GET.task_master == task_master.id|stringformat:'i' %}class="active"{% endif %}>
+                            {{ task_master.title }}
+                        </a>
                     {% endfor %}
                 </div>
             </div>
