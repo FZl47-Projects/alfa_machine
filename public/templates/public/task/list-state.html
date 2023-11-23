@@ -9,6 +9,10 @@
             تسک های در صف
         {% elif state == 'need-to-check' %}
             تسک های نیاز به بررسی
+        {% elif state == 'need-to-replan' %}
+            تسک های نیاز به برنامه ریزی مجدد
+        {% elif state == 'hold' %}
+            تسک های نگه داشته شده
         {% elif state == 'finished' %}
             تسک های تمام شده
         {% endif %}
