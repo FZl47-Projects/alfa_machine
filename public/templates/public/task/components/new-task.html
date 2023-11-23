@@ -49,7 +49,7 @@
                     </div>
                     <div class="information-item">
                         <label for="taskProjectSelect">پروژه :</label>
-                        <select name="project" id="taskProjectSelect">
+                        <select name="project" id="taskProjectSelect" class="select2-input">
                             {% for project in projects %}
                                 <option value="{{ project.id }}">{{ project.name }}</option>
                             {% endfor %}

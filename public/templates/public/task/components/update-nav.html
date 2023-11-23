@@ -30,7 +30,6 @@
                                id="task_time_end_{{ task.id }}">
                     </div>
                 </div>
-
             </div>
             <div class="d-flex">
                 <div class="col-6" style="padding:0px 5px ;">
@@ -55,8 +54,8 @@
                 </select>
             </div>
             <div class="information-item">
-                <label for="lihh">پروژه :</label>
-                <select name="project" id="">
+                <label for="taskProjectUpdateInput">پروژه :</label>
+                <select name="project" id="taskProjectUpdateInput" class="select2-input">
                     {% for project in projects %}
                         <option value="{{ project.id }}"
                                 {% if project.id == task.project.id %}selected{% endif %}>{{ project.name }}</option>
