@@ -424,7 +424,7 @@ class Inquiry(View):
 
         return render(request, 'public/inquiry/list.html', context)
 
-    @user_role_required_cbv(['super_user', 'commerce_user'])
+    @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user'])
     def post(self, request):
         referer_url = request.META.get('HTTP_REFERER', None)
         data = request.POST.copy()
@@ -443,7 +443,7 @@ class Inquiry(View):
 
 class InquiryDetail(View):
 
-    @user_role_required_cbv(['super_user', 'commerce_user'])
+    @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user'])
     def post(self, request, inquiry_id):
         referer_url = request.META.get('HTTP_REFERER', None)
         inquiry_obj = models.Inquiry.objects.get(id=inquiry_id)
@@ -497,7 +497,7 @@ class InquiryOwner(View):
             inquiries = inquiries.order_by('id')
         return inquiries
 
-    @user_role_required_cbv(['commerce_user'])
+    @user_role_required_cbv(['commerce_user', 'procurement_commerce_user'])
     def get(self, request):
         inquiries = models.Inquiry.objects.all()
 
