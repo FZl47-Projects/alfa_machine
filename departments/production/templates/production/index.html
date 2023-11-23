@@ -63,7 +63,7 @@
     <div class="container-fluid col-md-10 content-page">
         <main class="main">
             <div class="title px-2">
-                <span class="fw-bold">پنل تولید</span>
+                <span class="fw-bold">پنل مدیر تولید</span>
                 <!-- btn-notif in mobile -->
                 <div class="notif-btn-mobile d-none">اعلانات</div>
                 <!-- btn-notif in mobile -->
@@ -71,35 +71,32 @@
             <!--Start Access panel -->
             <section class="collection-units bg-white mt-4">
                 <div class="box-section justify-content-start">
-                    <div class="col-12 col-md-3">
+                    <div class="col-12 col-md-3 col-lg-2">
                         <div class="box-item-2 ddd">
                             <img src="{% static 'frontend/images/تسک خای اولویت بندی شده 2@2x.png' %}" alt=""
-                                 class="icon-box"
-                                 style="margin-bottom:15px ;">
-                            <div class="style-conent-box" style="margin-bottom:15px ;">
+                                 class="icon-box mb-3">
+                            <div class="style-conent-box mb-3">
                                 <span>تسک ها</span>
                             </div>
                             <a href="{% url 'public:task' %}" class="tarif-task" id="one">مشاهده</a>
                         </div>
                     </div>
                     <!-- item access panel -->
-                    <div class="col-12 col-md-3">
+                    <div class="col-12 col-md-3 col-lg-2">
                         <div class="box-item-2 ddd">
                             <img src="{% static 'frontend/images/درخواست از سایر واحد ها 2@2x.png' %}" alt=""
-                                 class="icon-box"
-                                 style="margin-bottom:15px ;">
-                            <div class="style-conent-box" style="margin-bottom:15px ;">
+                                 class="icon-box mb-3">
+                            <div class="style-conent-box mb-3 text-center">
                                 <span>درخواست از سایر واحدها</span>
                             </div>
                             <div class="tarif-task btn-request-unit" id="one">مشاهده</div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-3">
+                    <div class="col-12 col-md-3 col-lg-2">
                         <div class="box-item-2 ddd">
                             <img src="{% static 'frontend/images/لیست خرید تایید شده مدیریت 2@2x.png' %}" alt=""
-                                 class="icon-box"
-                                 style="margin-bottom:15px ;">
-                            <div class="style-conent-box" style="margin-bottom:15px ;">
+                                 class="icon-box mb-3">
+                            <div class="style-conent-box mb-3">
                                 <span>فایل پروژه</span>
                             </div>
                             <div class="tarif-task btn-create-report btn--ta1 task-confirm" id="one">اپلود</div>
@@ -111,11 +108,13 @@
             <!-- .End Access panel -->
 
             <!-- Start project section -->
-            <div class="title px-4 mt-4">
+            <div class="title px-2 mt-4">
                 <span style="padding-left: 3px;">پروژه های درحال اجرا</span>
                 <span class="d-flex justify-content-center align-item-center">
-                    <a href="{% url 'public:project' %}?status=other">مشاهده همه</a>
-                    <img src="{% static 'frontend/images/back-icon.png' %}" alt="">
+                    <a href="{% url 'public:project' %}?status=other">
+                        مشاهده همه
+                        <img src="{% static 'frontend/images/back-icon.png' %}" alt="">
+                    </a>
                 </span>
             </div>
             <!-- project section -->
@@ -134,8 +133,8 @@
 
             <!-- Other projects -->
             <div>
-                <div class="title px-4">
-                    <span style="padding-left: 3px;">دیگر پروژه‌ها</span>
+                <div class="title px-2">
+                    <span>دیگر پروژه‌ها</span>
                 </div>
                 <div class="box-section" style="margin-top: -1.25rem;">
                     <!-- Posted projects -->
@@ -167,12 +166,10 @@
             <!-- .End project section -->
 
             <!-- Start pages section -->
-            <div class="title px-4">
-                <span style="padding-left:3px;">صفحات</span>
-                <span class="d-flex justify-content-center align-item-center">
-                </span>
+            <div class="title px-2">
+                <span style="padding-left: 3px;">صفحات</span>
             </div>
-            <section>
+            <section style="margin-top: -1.25rem;">
                 <div class="box-section justify-content-start">
                     <div class="col-12 col-md-4 p-2">
                         <div class="box-item-2">
@@ -199,8 +196,6 @@
             <!-- .End pages section -->
         </main>
     </div>
-
-
 {% endblock %}
 
 {% block Script %}

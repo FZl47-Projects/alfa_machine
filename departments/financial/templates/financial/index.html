@@ -10,13 +10,18 @@
 {% endblock %}
 
 {% block Content %}
-
     {% include 'base/components/aside-menu.html' with notifications=notifications tickets=tickets %}
 
-    <!-- END SECTION NOTIFATION -->
     <div class="container-fluid col-md-10 content-page">
         <main class="main">
-            <div class="title px-4 mt-2">
+            <div class="title px-2">
+                <span class="fw-bold">پنل مدیر مالی</span>
+                <!-- btn-notif in mobile -->
+                <div class="notif-btn-mobile d-none">اعلانات</div>
+                <!-- btn-notif in mobile -->
+            </div>
+
+            <div class="title px-2 mt-3">
                 <span>پروژه ها</span>
                 <!-- btn-notif in mobile -->
                 <div class="notif-btn-mobile d-none">اعلانات</div>

@@ -77,26 +77,24 @@
             <!-- btn allocation-of-materials -->
 
             <!--Start Access panel -->
-            <section class="collection-units mb-4 mt-2" style="background-color: #fff;">
+            <section class="collection-units bg-white mb-4 mt-2">
                 <div class="box-section">
                     <!--Access panel item  -->
-                    <div class="col-12 col-md-3  col-lg-2 ">
+                    <div class="col-12 col-md-3 col-lg-2 ">
                         <div class="box-item-2 ddd">
                             <img src="{% static 'frontend/images/درخواست از سایر واحد ها 2@2x.png' %}" alt=""
-                                 class="icon-box"
-                                 style="margin-bottom:15px ;">
-                            <div class="style-conent-box" style="margin-bottom:15px ;">
+                                 class="icon-box mb-3">
+                            <div class="style-conent-box mb-3">
                                 <span>درخواست از سایر واحدها</span>
                             </div>
                             <div class="tarif-task btn-request-unit" id="one">مشاهده</div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-3  col-lg-2 ">
+                    <div class="col-12 col-md-3 col-lg-2 ">
                         <div class="box-item-2 ddd">
                             <img src="{% static 'frontend/images/2 (لیست استعلامات(حتی رد شده ها با دلیل@2x.png' %}"
-                                 alt="" class="icon-box"
-                                 style="margin-bottom:15px ;">
-                            <div class="style-conent-box" style="margin-bottom:15px ;">
+                                 alt="" class="icon-box mb-3">
+                            <div class="style-conent-box mb-3">
                                 <span>لیست گزارشات</span>
                             </div>
                             <a href="{% url 'support:report_list' %}" class="tarif-task" id="one">
@@ -106,22 +104,32 @@
                             </a>
                         </div>
                     </div>
-                    <div class="col-12 col-md-3  col-lg-2">
+                    <div class="col-12 col-md-3 col-lg-2">
                         <div class="box-item-2 ddd">
-                            <img src="{% static 'frontend/images/Path 3652.png' %}" alt="" class="icon-box"
-                                 style="margin-bottom:15px ;">
-                            <div class="style-conent-box" style="margin-bottom:15px ;">
+                            <img src="{% static 'frontend/images/Path 3652.png' %}" alt="" class="icon-box mb-3">
+                            <div class="style-conent-box mb-3">
                                 <span>ایجاد گزارش</span>
                             </div>
                             <div class="tarif-task btn-create-report" id="one">ایجاد</div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-3  col-lg-2">
+                    <div class="col-12 col-md-3 col-lg-2">
+                        <div class="box-item-2 ddd">
+                            <img src="{% static 'frontend/images/تسک خای اولویت بندی شده 2@2x.png' %}" alt=""
+                                 class="icon-box mb-3">
+                            <div class="style-conent-box mb-3 text-center">
+                                <span>لیست تسک‌ها</span>
+                            </div>
+                            <a href="{% url 'public:task' %}">
+                                <div class="tarif-task" id="one">مشاهده</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3 col-lg-2">
                         <div class="box-item-2 ddd">
                             <img src="{% static 'frontend/images/لیست خرید تایید شده مدیریت 2@2x.png' %}" alt=""
-                                 class="icon-box"
-                                 style="margin-bottom:15px;">
-                            <div class="style-conent-box" style="margin-bottom:15px ;">
+                                 class="icon-box mb-3">
+                            <div class="style-conent-box mb-3">
                                 <span>فایل پروژه</span>
                             </div>
                             <div class="tarif-task btn-create-report btn--ta1 task-confirm" id="one">آپلود</div>
@@ -134,11 +142,13 @@
 
             <!-- Start project section -->
             <!-- In progress projects -->
-            <div class="title px-4">
+            <div class="title px-2">
                 <span style="padding-left: 3px;">پروژه های درحال اجرا</span>
                 <span class="d-flex justify-content-center align-item-center">
-                    <a href="{% url 'public:project' %}?status=other">مشاهده همه</a>
-                    <img src="{% static 'frontend/images/back-icon.png' %}" alt="">
+                    <a href="{% url 'public:project' %}?status=other">
+                        مشاهده همه
+                        <img src="{% static 'frontend/images/back-icon.png' %}" alt="">
+                    </a>
                 </span>
             </div>
             <!-- project section -->
@@ -157,7 +167,7 @@
 
             <!-- Other projects -->
             <div>
-                <div class="title px-4">
+                <div class="title px-2">
                     <span style="padding-left: 3px;">دیگر پروژه‌ها</span>
                 </div>
                 <div class="box-section" style="margin-top: -1.25rem;">
@@ -190,7 +200,7 @@
             <!-- .End project section -->
 
             <!-- section-task -->
-            <div class="title px-4">
+            <div class="title px-2">
                 <span style="padding-left:3px;">صفحات</span>
             </div>
             <section style="margin-top: -1rem;">
@@ -229,7 +239,7 @@
             </section>
 
             <!-- tasks category -->
-            <div class="title px-4 mt-4">
+            <div class="title px-2 mt-4">
                 <span style="padding-left: 3px;">تسک ها</span>
                 <span class="d-flex justify-content-center align-item-center">
                 </span>
@@ -327,7 +337,7 @@
             <!-- tasks category -->
 
             <!--Start Access panel -->
-            <section class="collection-units" style="background-color:#fff ; margin-top:30px;">
+            <section class="collection-units bg-white" style="margin-top: 30px;">
                 <div class="box-section">
                     {% for department in departments %}
                         {% include 'public/department/list-department-task.html' with department=department %}

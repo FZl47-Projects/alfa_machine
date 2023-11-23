@@ -90,6 +90,7 @@
             </form>
         </div>
     </div>
+
     <div class="content-modal-two modal-upload-book">
         <div class="inner-modal">
             <form class="p-4" action="{% url 'public:project_file' %}" method="post" enctype="multipart/form-data">
@@ -143,16 +144,15 @@
                 <div class="notif-btn-mobile d-none">اعلانات</div>
                 <!-- btn-notif in mobile -->
             </div>
-            <!--Start Access panel -->
-            <section class="collection-units" style="background-color:#fff ; margin-top:30px;">
+            <!-- Start Access panel -->
+            <section class="collection-units bg-white" style="margin-top:30px;">
                 <div class="box-section">
-                    <!--item Access pane -->
-                    <div class="col-12 col-md-3 ">
+                    <!-- item Access pane -->
+                    <div class="col-12 col-md-3 col-lg-2">
                         <div class="box-item-2 ddd">
-                            <img src="{% static 'frontend/images/تایید کیفیت مواد اولیه(توانایی آپلود مدارکی 2@2x.png' %}"
-                                 alt=""
-                                 class="icon-box" style="margin-bottom:15px ;">
-                            <div class="style-conent-box" style="margin-bottom:15px ;">
+                            <img src="{% static 'frontend/images/تایید کیفیت مواد اولیه(توانایی آپلود مدارکی 2@2x.png' %}" alt=""
+                                 class="icon-box mb-3">
+                            <div class="style-conent-box mb-3">
                                 <span>تایید کیفیت مواد</span>
                             </div>
                             <!-- btn upload -->
@@ -160,59 +160,54 @@
                             <!-- btn upload -->
                         </div>
                     </div>
-                    <div class="col-12 col-md-3 ">
+                    <div class="col-12 col-md-3 col-lg-2">
                         <div class="box-item-2 ddd">
-                            <img src="{% static 'frontend/images/تسک خای اولویت بندی شده 2@2x.png' %}"
-                                 alt=""
-                                 class="icon-box" style="margin-bottom:15px ;">
-                            <div class="style-conent-box" style="margin-bottom:15px ;">
-                                <span>تسک ها</span>
+                            <img src="{% static 'frontend/images/تسک خای اولویت بندی شده 2@2x.png' %}" alt=""
+                                 class="icon-box mb-3">
+                            <div class="style-conent-box mb-3">
+                                <span>لیست تسک ها</span>
                             </div>
                             <!-- btn upload -->
-                            <a href="{% url 'public:task' %}" class="tarif-task btn-quality-assurance"
-                               id="one">مشاهده</a>
+                            <a href="{% url 'public:task' %}" class="tarif-task btn-quality-assurance" id="one">
+                                مشاهده
+                            </a>
                             <!-- btn upload -->
                         </div>
                     </div>
                     <!--item Access pane -->
-                    <div class="col-12 col-md-3 ">
+                    <div class="col-12 col-md-3 col-lg-2">
                         <div class="box-item-2 ddd">
                             <img src="{% static 'frontend/images/آپلود کتاب توضیح برای مشتری 2@2x.png' %}" alt=""
-                                 class="icon-box"
-                                 style="margin-bottom:15px ;">
-                            <div class="style-conent-box" style="margin-bottom:15px ;">
+                                 class="icon-box mb-3">
+                            <div class="style-conent-box mb-3 text-center">
                                 <span>آپلود کتاب توضیح پروژه برای مشتری</span>
                             </div>
                             <div class="tarif-task btn-upload-book" id="one">مشاهده</div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-3 ">
+                    <div class="col-12 col-md-3 col-lg-2">
                         <div class="box-item-2 ddd">
                             <img src="{% static 'frontend/images/درخواست از سایر واحد ها 2@2x.png' %}" alt=""
-                                 class="icon-box"
-                                 style="margin-bottom:15px ;">
-                            <div class="style-conent-box" style="margin-bottom:15px ;">
+                                 class="icon-box mb-3">
+                            <div class="style-conent-box mb-3 text-center">
                                 <span>درخواست از سایر واحدها</span>
                             </div>
                             <div class="tarif-task btn-request-unit" id="one">مشاهده</div>
                         </div>
                     </div>
-                </div>
-                <div class="box-section">
-                    <div class="col-12 col-md-3">
+                    <div class="col-12 col-md-3 col-lg-2">
                         <div class="box-item-2 ddd">
                             <img src="{% static 'frontend/images/لیست خرید تایید شده مدیریت 2@2x.png' %}" alt=""
-                                 class="icon-box"
-                                 style="margin-bottom:15px ;">
-                            <div class="style-conent-box" style="margin-bottom:15px ;">
+                                 class="icon-box mb-3">
+                            <div class="style-conent-box mb-3">
                                 <span>فایل پروژه</span>
                             </div>
-                            <div class="tarif-task btn-create-report btn--ta1 task-confirm" id="one">اپلود</div>
+                            <div class="tarif-task btn-create-report btn--ta1 task-confirm" id="one">آپلود</div>
                         </div>
                     </div>
                 </div>
             </section>
-            <!--end Access panel -->
+            <!-- .End Access panel -->
 
             <!-- In progress projects -->
             <div class="title px-4 mt-4">
