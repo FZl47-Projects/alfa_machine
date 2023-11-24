@@ -102,7 +102,6 @@ class ProjectAdd(View):
 
         task_masters = models.TaskMaster.objects.all()
         context['task_masters'] = task_masters
-
         inquiry_id = request.GET.get('inquiry-id', None)
         if inquiry_id:
             context['inquiry'] = models.Inquiry.objects.get(id=inquiry_id, project=None)
@@ -191,7 +190,7 @@ class TaskOwner(LoginRequiredMixin, View):
         task_state = request.GET.get('task_state', None)
         department = request.user.department
 
-        if request.user.role == 'super_user':
+        if request.user.role in ('super_user', 'commerce_user', 'control_project_user'):
             tasks = models.Task.objects.filter(is_active=True)
         else:
             tasks = models.Task.objects.filter(from_department=department)
