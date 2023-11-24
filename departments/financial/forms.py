@@ -12,3 +12,9 @@ class PrePaymentForm(forms.ModelForm):
     class Meta:
         model = models.PrePayment
         exclude = ('file',)  # TEMP
+
+
+class SaveSuretyBondForm(forms.ModelForm):
+    class Meta:
+        model = models.SuretyBond
+        fields = '__all__'

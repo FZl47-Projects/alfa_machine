@@ -1,10 +1,10 @@
+from django.shortcuts import render, redirect, reverse
 from django.contrib import messages
-from django.shortcuts import render, redirect
 from django.views.generic import View
+from account.auth.decorators import user_role_required_cbv
 from core.utils import form_validate_err
 from public.models import Project
-from account.auth.decorators import user_role_required_cbv
-from . import models, forms
+from . import forms
 
 
 class Index(View):
@@ -43,10 +43,17 @@ class PrePayment(View):
     def post(self, request):
         referer_url = request.META.get('HTTP_REFERER', None)
         data = request.POST
+
         f = forms.PrePaymentForm(data)
         if form_validate_err(request, f) is False:
             return redirect(referer_url or '/error')
-        f.save()
+        obj = f.save()
+
+        # Save prepayment for project
+        project = obj.project
+        project.prepayment_datetime = obj.submited_at
+        project.save()
+
         messages.success(request, 'عملیات با موفقیت انجام شد')
         return redirect(referer_url or '/success')
 
@@ -61,3 +68,23 @@ class PaymentProject(View):
             'project': project_obj
         }
         return render(request, self.template_name, context)
+
+
+# SaveSuretyBond view
+class SaveSuretyBondView(View):
+    @user_role_required_cbv(['financial_user'])
+    def post(self, request):
+        data = request.POST
+        project = Project.objects.get(id=data.get('project'))
+
+        if hasattr(project, 'surety_bond'):
+            f = forms.SaveSuretyBondForm(data, instance=project.surety_bond, files=request.FILES)
+        else:
+            f = forms.SaveSuretyBondForm(data, files=request.FILES)
+
+        if form_validate_err(request, f) is False:
+            return redirect(reverse('departments.financial:payment_project', args=(project.id,)))
+        f.save()
+
+        messages.success(request, 'عملیات با موفقیت انجام شد')
+        return redirect(reverse('departments.financial:payment_project', args=(project.id,)))

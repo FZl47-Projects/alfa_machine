@@ -9,117 +9,74 @@
     <link rel="stylesheet" href="{% static 'frontend/styles/clearing.css' %}">
 {% endblock %}
 
+
 {% block Content %}
+    <!-- Prepayment modal -->
+    {% include 'financial/components/prepayment.html' %}
+    <!-- .End prepayment modal -->
 
-    <!-- popup prepayment -->
-    <div class="content-modal-two modal-prepayment">
-        <div class="inner-modal">
-            <form class="p-4" action="{% url 'dp_financial:prepayment' %}" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <input type="hidden" name="project" value="{{ project.id }}">
-                <div class="information-section">
-                    <div class="information-item">
-                        <label for="lihh">نوع</label>
-                        <select name="type_payment" id="" required>
-                            <option value="deposit">واریزی</option>
-                            <option value="payment">پرداختی</option>
-                        </select>
-                    </div>
-                    <div class="information-item">
-                        <label for="lihh">مبلغ</label>
-                        <input type="number" name="price" required>
-                    </div>
-                    <div class="information-item">
-                        <label for="lihh">تاریخ</label>
-                        <input type="date" name="submited_at" required>
-                    </div>
-                    <div class="information-item">
-                        <label for="lihh">کد رهگیری</label>
-                        <input type="text" name="tracking_code" required>
-                    </div>
-                </div>
+    <!-- New payment modal -->
+    {% include 'financial/components/new_payment.html' %}
+    <!-- .End New payment modal -->
 
-                <div class="information-section">
-                    <button class="btn btn-primary d-block p-3 col-12">ثبت</button>
-                </div>
-            </form>
+    <!-- Add surety-bond modal -->
+    {% include 'financial/components/add_surety_bond.html' %}
+    <!-- .End Add surety-bond modal -->
+
+    <main class="main content-page container pb-4">
+        <div class="d-flex justify-content-between mt-3">
+            <h5 class="mt-1">جزئیات مالی</h5>
+            <div class="">
+                <a href="{{ user.get_absolute_url_dashboard }}" class="btn btn-danger">بازگشت</a>
+            </div>
         </div>
-    </div>
-    <!-- popup prepayment -->
-    <!-- popup New payment -->
-    <div class="content-modal-two modal-new-payment">
-        <div class="inner-modal">
-            <form class="p-4" action="{% url 'dp_financial:payment' %}" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <input type="hidden" name="project" value="{{ project.id }}">
-                <div class="information-section">
-                    <div class="information-item">
-                        <label for="lihh">نوع</label>
-                        <select name="type_payment" id="" required>
-                            <option value="deposit">واریزی</option>
-                            <option value="payment">پرداختی</option>
-                        </select>
-                    </div>
-                    <div class="information-item">
-                        <label for="lihh">مبلغ</label>
-                        <input type="number" name="price" required>
-                    </div>
-                    <div class="information-item">
-                        <label for="lihh">تاریخ</label>
-                        <input type="date" name="submited_at" required>
-                    </div>
-                    <div class="information-item">
-                        <label for="lihh">کد رهگیری</label>
-                        <input type="text" name="tracking_code" required>
-                    </div>
-                </div>
-
-                <div class="information-section">
-                    <button class="btn btn-primary d-block p-3 col-12">ثبت</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <!-- popup New payment -->
-
-
-
-    <main class="main content-page container" style="padding-bottom:60px ;">
-        <h5 class="title-page">جزئیات مالی</h5>
         <!-- Project specifications -->
-        <section class="up-clearing">
+        <section class="up-clearing mt-3 px-4">
             <!-- right name & price... -->
-            <div class="right">
-                <div class="right-item" style="font-size:17px ;">
-                    <span>نام پروژه:</span>
-                    <span>{{ project.name }}</span>
+            <div class="d-flex justify-content-start align-items-start gap-5">
+                <div class="d-flex flex-column justify-content-start align-items-start gap-4">
+                    <div class="">
+                        <span>نام پروژه: </span>
+                        <span class="fw-bold">{{ project.name }}</span>
+                    </div>
+                    <div>
+                        <span>قیمت: </span>
+                        <span class="spread-price">{{ project.price|default:'-' }}</span>
+                        <span>تومان</span>
+                    </div>
+                    <div>
+                        <span>پرداخت شده: </span>
+                        <span class="spread-price">{{ project.get_payments_price }}</span>
+                        <span>تومان</span>
+                    </div>
                 </div>
-                <div class="right-item">
-                    <span>قیمت:</span>
-                    <span class="spread-price">{{ project.price }}</span>
-                    <span>تومان</span>
-                </div>
-                <div class="right-item">
-                    <span> پرداخت شده:</span>
-                    <span class="spread-price">{{ project.get_payments_price }}</span>
-                    <span>تومان</span>
+                <div class="d-flex flex-column gap-4">
+                    <div>
+                        <span>وضعیت ضمانت نامه: </span>
+                        {% if project.surety_bond.is_free %}
+                            <span class="text-success fw-bold">آزاد است</span>
+                        {% else %}
+                            <span class="text-info fw-bold">ندارد</span>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
             <!-- right name & price... -->
             <!-- left pardakht btn -->
-            <div class="left">
-                <div class="btn-clearing btn-prepayment">ثبت پیش پرداخت</div>
-                <div class="btn-clearing btn-new-payment">ثبت پرداخت جدید</div>
+            <div class="left d-flex flex-column">
+                <div class="btn btn-clearing btn-prepayment">ثبت پیش پرداخت</div>
+                <div class="btn btn-clearing btn-new-payment">ثبت پرداخت جدید</div>
+                <div class="btn btn-secondary mt-1" role="button" data-bs-toggle="modal" data-bs-target="#addSuretyBondModal">ثبت ضمانت نامه</div>
             </div>
             <!-- left pardakht btn -->
         </section>
         <!-- Project specifications -->
-        <section class="col-12 clearing-content">
+        <section class="col-12 clearing-content mt-3">
             <!-- start section table -->
             <div class="content-items p-2">
                 <section class="section-table">
                     <!-- table -->
-                    <p style="text-align: right">پرداختی ها</p>
+                    <p class="text-end">پرداختی ها</p>
                     <div class="table">
                         <!-- start title table -->
                         <div class="table-title">
@@ -150,7 +107,6 @@
                                     کدرهگیری
                                 </div>
                             </div>
-
                         </div>
                         <!-- end title table -->
                         <!-- start content table -->
@@ -184,7 +140,6 @@
                                             {{ payment.tracking_code }}
                                         </div>
                                     </div>
-
                                 </div>
                             {% empty %}
                                 <div class="container-not-found-base">
@@ -195,7 +150,7 @@
                         <!-- start content table -->
                     </div>
 
-                    <p style="text-align: right">پیش پرداختی ها</p>
+                    <p class="text-end">پیش پرداختی ها</p>
                     <div class="table">
                         <!-- start title table -->
                         <div class="table-title">
@@ -226,7 +181,6 @@
                                     کدرهگیری
                                 </div>
                             </div>
-
                         </div>
                         <!-- end title table -->
                         <!-- start content table -->
@@ -274,8 +228,6 @@
             </div>
             <!-- start section table -->
         </section>
-
-
     </main>
 
     <svg id="SvgjsSvg1001" width="2" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1"
@@ -284,7 +236,7 @@
         <defs id="SvgjsDefs1002"></defs>
         <polyline id="SvgjsPolyline1003" points="0,0"></polyline>
         <path id="SvgjsPath1004" d="M0 0 "></path>
-    </svg></body>
+    </svg>
 {% endblock %}
 
 {% block Script %}

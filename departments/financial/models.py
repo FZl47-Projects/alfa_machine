@@ -30,3 +30,16 @@ class Payment(BasePayment):
 
 class PrePayment(BasePayment):
     pass
+
+
+# SuretyBond model
+class SuretyBond(BaseModel, File):
+    project = models.OneToOneField('public.Project', on_delete=models.CASCADE, related_name='surety_bond')
+    number_id = models.CharField(max_length=32, null=True, blank=True)
+    is_free = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ('-id',)
+
+    def __str__(self):
+        return f'{self.project.name}: {self.number_id}'

@@ -23,6 +23,12 @@
 
             <div class="title px-2 mt-3">
                 <span>پروژه ها</span>
+                <span class="d-flex justify-content-center align-item-center">
+                    <a href="#">
+                        مشاهده همه
+                        <img src="{% static 'frontend/images/back-icon.png' %}" alt="">
+                    </a>
+                </span>
                 <!-- btn-notif in mobile -->
                 <div class="notif-btn-mobile d-none">اعلانات</div>
                 <!-- btn-notif in mobile -->
@@ -34,12 +40,12 @@
                         <div class="col-12 col-md-3 p-2">
                             <div class="box-item">
                                 <div class="top">
-                                    <div style="color:black; margin-bottom:10px">
-                                        {{ project.name }}
+                                    <div class="text-dark mb-3">
+                                        {{ project.name|default:'بدون عنوان' }}
                                     </div>
                                     <div class=" style-conent-box">
                                         <span>قیمت:</span>
-                                        <span class="spread-price">{{ project.price }}</span>
+                                        <span class="spread-price">{{ project.price|default:'-' }}</span>
                                     </div>
                                     <div class="style-conent-box">
                                         <span>پیش پرداخت:</span>
@@ -67,7 +73,7 @@
 
                 <!-- Other projects -->
                 <div>
-                    <div class="title px-4">
+                    <div class="title px-3">
                         <span style="padding-left: 3px;">دیگر پروژه‌ها</span>
                     </div>
                     <div class="box-section" style="margin-top: -1.25rem;">
@@ -101,7 +107,7 @@
             </section>
 
             <!-- Start page section -->
-            <div class="title px-4">
+            <div class="title px-3">
                 <span>صفحات</span>
                 <span class="d-flex justify-content-center align-item-center">
                 </span>
