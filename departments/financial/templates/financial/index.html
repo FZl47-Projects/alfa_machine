@@ -9,7 +9,12 @@
     <link rel="stylesheet" href="{% static 'frontend/styles/financial-management-panel.css' %}">
 {% endblock %}
 
+
 {% block Content %}
+    <!-- Upload project modal -->
+    {% include 'public/project/components/upload_project_file.html' %}
+
+    <!-- Side menu -->
     {% include 'base/components/aside-menu.html' with notifications=notifications tickets=tickets %}
 
     <div class="container-fluid col-md-10 content-page">
@@ -20,6 +25,21 @@
                 <div class="notif-btn-mobile d-none">اعلانات</div>
                 <!-- btn-notif in mobile -->
             </div>
+
+            <section class="collection-units mb-4" style="background-color:#fff; margin-top:30px;">
+                <div class="box-section d-flex justify-content-start">
+                    <div class="col-12 col-md-3 col-lg-2">
+                        <div class="box-item-2 ddd">
+                            <img src="{% static 'frontend/images/لیست خرید تایید شده مدیریت 2@2x.png' %}" alt=""
+                                 class="icon-box mb-3">
+                            <div class="style-conent-box mb-3">
+                                <span>فایل پروژه</span>
+                            </div>
+                            <div class="tarif-task btn-create-report btn--ta1" data-bs-toggle="modal" data-bs-target="#uploadProjectFileModal">آپلود</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
             <div class="title px-2 mt-3">
                 <span>پروژه ها</span>

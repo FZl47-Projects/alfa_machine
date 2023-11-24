@@ -1,0 +1,49 @@
+<div class="modal fade" id="uploadProjectFileModal" tabindex="-1" role="dialog" aria-labelledby="uploadProjectFile" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">آپلود فایل پروژه‌</h5>
+            </div>
+            <form id="uploadProjectFileForm" class="p-4" action="{% url 'public:project_file' %}" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    <div class="information-section">
+                        <div class="information-item">
+                            <label for="lihh">نام فایل:</label>
+                            <input type="text" name="name">
+                        </div>
+                        <div class="information-item">
+                            <label for="lihh">توضیحات:</label>
+                            <textarea name="description" id="" cols="30" rows="10" required></textarea>
+                        </div>
+                        <div class="information-item">
+                            <div class="my-2">
+                                <div class="w-100">
+                                    <label class="form-label w-100">آپلود فایل:
+                                        <input class="form-control" type="file" name="file">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="information-item mt-3">
+                            <label class="item-upload mb-2" for="uploadProjectSelect">
+                                پروژه:
+                            </label>
+                            <!-- status task -->
+                            <select id="uploadProjectSelect" name="project" class="select2-input" required>
+                                {% for project in projects %}
+                                    <option value="{{ project.id }}" label="{{ project.name }}">{{ project.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <!-- status task -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="sabt-modal btn-primary col-12 rounded-2">ثبت</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
