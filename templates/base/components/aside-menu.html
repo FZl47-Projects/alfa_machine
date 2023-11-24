@@ -1,31 +1,31 @@
 {% load static %}
 <div class="col-12 col-md-2 notifcation">
     <div class="overly">
-        <div class="inner-notfication">
+        <div class="inner-notfication pt-2">
             <div class="btns">
                 {% if request.user.has_new_ticket %}
                     <div class="btn-change col-3 text-center active text-nowrap text-danger align-items-center d-flex position-relative">
-                        تیکت ها
-                        <span class="rounded-circle font-80 text-white position-absolute" style="background-color: #cc0000; left: 0; margin-top: -2px; width: 1rem;">
+                        تیکت‌ها
+                        <span class="rounded-circle font-80 text-white position-absolute" style="background-color: #cc0000; right: 58px; width: 1.125rem;">
                             {{ request.user.get_unseen_tickets.count }}
                         </span>
                     </div>
                 {% else %}
                     <div class="btn-change col-3 text-center active text-nowrap">
-                        تیکت ها
+                        تیکت‌ها
                     </div>
                 {% endif %}
                 {% if request.user.has_new_notification %}
-                    <div class="btn-change col-3 text-center text-danger d-flex align-items-center position-relative">
+                    <div class="btn-change col-3 text-center text-danger d-flex position-relative">
                         اعلانات
-                        <span class="rounded-circle font-80 text-white position-absolute" style="background-color: #cc0000; left: 7px; margin-top: -2px; width: 1rem;">
+                        <span class="rounded-circle font-80 text-white position-absolute" style="background-color: #cc0000; right: 52px; width: 1.125rem;">
                             {{ request.user.get_unseen_notifications.count }}
                         </span>
                     </div>
                 {% else %}
-                    <div class="btn-change col-3 text-center">اعلانات</div>
+                    <div class="btn-change col-3 text-end">اعلانات</div>
                 {% endif %}
-                <div class="col-3">
+                <div class="col-3 me-1">
                     <a href="{% url 'support:report_department_list' %}">گزارشات</a>
                 </div>
                 <div class="col-2">

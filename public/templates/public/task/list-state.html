@@ -25,17 +25,13 @@
 
 
 {% block Content %}
-
     {% for task in tasks %}
         <div class="content-modal modal-edit-task">
             <div class="inner-modal">
                 {% include 'public/task/components/update-nav.html' with task=task projects=projects departments=departments %}
             </div>
-
         </div>
-    {% endfor %}
 
-    {% for task in tasks %}
         <div class="content-modal-two modal-more-description">
             <div class="inner-modal">
                 <form class="p-4">
@@ -174,7 +170,7 @@
                             <div class="table-content">
                                 <!-- row table -->
                                 {% for task in tasks %}
-                                    <!-- modal delete task -->
+                                    <!-- Modal delete task -->
                                     <div class="modal fade" id="task-modal-delete-{{ forloop.counter }}" tabindex="-1"
                                          aria-labelledby="exampleModalLabel-{{ forloop.counter }}" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -204,7 +200,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- end modal delete task -->
+                                    <!-- .End modal delete task -->
+
                                     <div class="row-table">
                                         <div class="col-1 p-2">
                                             <div class="table-content-item">
