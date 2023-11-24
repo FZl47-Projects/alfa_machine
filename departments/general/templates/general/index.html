@@ -54,18 +54,6 @@
         </div>
     </div>
 
-    <!-- Modals popup section -->
-    {% for inquiry in inquiries %}
-        <!-- Inquiry description modal -->
-        {% include 'public/inquiry/components/inquiry_description.html' %}
-        <!-- .End Inquiry description modal -->
-
-        <!-- Inquiry approval/disapproval modal -->
-        {% include 'public/inquiry/components/acceptance_inquiry.html' %}
-        <!-- .End Inquiry approval/disapproval modal -->
-    {% endfor %}
-    <!-- .End Modals popup section -->
-
     <!-- start notifcation section -->
     {% include 'base/components/aside-menu.html' with notifications=notifications tickets=tickets %}
 
@@ -86,6 +74,12 @@
                 <!-- inner Inquiry-section  -->
                 <div class="box-section">
                     {% for inquiry in inquiries %}
+                        <!-- Inquiry description modal -->
+                        {% include 'public/inquiry/components/inquiry_description.html' %}
+
+                        <!-- Inquiry approval/disapproval modal -->
+                        {% include 'public/inquiry/components/acceptance_inquiry.html' %}
+
                         <div class="col-12 col-md-3 p-2">
                             <div class="box-item">
                                 <div class="top">
