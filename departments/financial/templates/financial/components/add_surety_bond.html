@@ -5,7 +5,7 @@
                 <h5 class="modal-title">ثبت ضمانت نامه</h5>
                 <span class="mx-2 font-80">({{ project.name|default:'بدون عنوان' }})</span>
             </div>
-            <form method="post" action="{% url 'dp_financial:save_surety_bond' %}" enctype="multipart/form-data">
+            <form method="post" action="{% url 'departments.financial:save_surety_bond' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="modal-body">
                     <input type="hidden" name="project" value="{{ project.id }}">

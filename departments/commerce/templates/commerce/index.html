@@ -150,8 +150,7 @@
                         <div class="box-item-2 ddd">
                             <!-- image box  -->
                             <img src="{% static 'frontend/images/لیست خرید تایید شده مدیریت 2@2x.png' %}" alt=""
-                                 class="icon-box"
-                                 style="margin-bottom: 15px;">
+                                 class="icon-box" style="margin-bottom: 15px;">
                             <!-- image box  -->
                             <!-- description -->
                             <div class="style-conent-box" style="margin-bottom: 15px;">
@@ -229,11 +228,13 @@
 
             <!-- Start project section -->
             <!-- In progress projects -->
-            <div class="title px-4">
+            <div class="title px-3">
                 <span style="padding-left: 3px;">پروژه های درحال اجرا</span>
                 <span class="d-flex justify-content-center align-item-center">
-                    <a href="{% url 'public:project' %}?status=other">مشاهده همه</a>
-                    <img src="{% static 'frontend/images/back-icon.png' %}" alt="">
+                    <a href="{% url 'public:project' %}?status=other">
+                        مشاهده همه
+                        <img src="{% static 'frontend/images/back-icon.png' %}" alt="">
+                    </a>
                 </span>
             </div>
             <!-- project section -->
@@ -252,7 +253,7 @@
 
             <!-- Other projects -->
             <div>
-                <div class="title px-4">
+                <div class="title px-3">
                     <span style="padding-left: 3px;">دیگر پروژه‌ها</span>
                 </div>
                 <div class="box-section" style="margin-top: -1.25rem;">
@@ -285,8 +286,8 @@
             <!-- .End project section -->
 
             <!-- Start section-pages -->
-            <div class="title px-4">
-                <span style="padding-left:3px;">صفحات</span>
+            <div class="title px-3">
+                <span style="padding-left: 3px;">صفحات</span>
                 <span class="d-flex justify-content-center align-item-center">
                 </span>
             </div>
