@@ -178,7 +178,7 @@ class Project(BaseModel):
 
     def get_sample_delivery_date_input(self):
         if not self.sample_delivery_date:
-            return '-'
+            return ''
         return self.sample_delivery_date.strftime('%Y-%m-%d')
 
     def get_prepayment_datetime_input(self):
