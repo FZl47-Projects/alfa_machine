@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block Title %}
-     لیست کاربرها
+    لیست کاربرها
     {{ department }}
 {% endblock %}
 
@@ -13,44 +13,44 @@
 {% block Content %}
 
     <!--Reason Followed up popup -->
-{#    {% for user in users %}#}
-{#        <div class="content-modal-two modal-allocation-information">#}
-{#            <div class="inner-modal">#}
-{#                <form class="p-4">#}
-{#                    <div class="information-section">#}
-{#                        <div class="information-item">#}
-{#                            {{ task.allocator_user.get_full_name }}#}
-{#                        </div>#}
-{#                        <div class="information-item">#}
-{#                            {{ task.from_department.name }}#}
-{#                        </div>#}
-{#                        <div class="information-item">#}
-{#                            {{ task.description_allocate|default:'چیزی یافت نشد' }}#}
-{#                        </div>#}
-{#                    </div>#}
-{##}
-{#                </form>#}
-{#            </div>#}
-{#        </div>#}
-{#    {% endfor %}#}
+    {#    {% for user in users %}#}
+    {#        <div class="content-modal-two modal-allocation-information">#}
+    {#            <div class="inner-modal">#}
+    {#                <form class="p-4">#}
+    {#                    <div class="information-section">#}
+    {#                        <div class="information-item">#}
+    {#                            {{ task.allocator_user.get_full_name }}#}
+    {#                        </div>#}
+    {#                        <div class="information-item">#}
+    {#                            {{ task.from_department.name }}#}
+    {#                        </div>#}
+    {#                        <div class="information-item">#}
+    {#                            {{ task.description_allocate|default:'چیزی یافت نشد' }}#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {##}
+    {#                </form>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    {% endfor %}#}
     <!--Reason Followed up popup -->
     <!--morde-descriptin popup -->
-{#    {% for task in tasks %}#}
-{#        <div class="content-modal-two modal-more-description">#}
-{#            <div class="inner-modal">#}
-{#                <form class="p-4">#}
-{#                    <div class="close-modal close-modal-description">#}
-{#                        <img src="{% static 'frontend/images/close.png' %}" alt="">#}
-{#                    </div>#}
-{#                    <div class="hhh">#}
-{#                        <div class="more-des">#}
-{#                            {{ task.description }}#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </form>#}
-{#            </div>#}
-{#        </div>#}
-{#    {% endfor %}#}
+    {#    {% for task in tasks %}#}
+    {#        <div class="content-modal-two modal-more-description">#}
+    {#            <div class="inner-modal">#}
+    {#                <form class="p-4">#}
+    {#                    <div class="close-modal close-modal-description">#}
+    {#                        <img src="{% static 'frontend/images/close.png' %}" alt="">#}
+    {#                    </div>#}
+    {#                    <div class="hhh">#}
+    {#                        <div class="more-des">#}
+    {#                            {{ task.description }}#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </form>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    {% endfor %}#}
 
 
     <!--morde-descriptin popup -->
@@ -79,18 +79,18 @@
                                     </div>
                                     <div class="col-2">
                                         <div class="table-title-item">
-                                            واحد 
+                                            واحد
                                         </div>
                                     </div>
                                     <div class="col-2">
                                         <div class="table-title-item">
-                                            نقش 
+                                            نقش
                                         </div>
                                     </div>
 
                                     <div class="col-2">
                                         <div class="table-title-item">
-                                            ایمیل 
+                                            ایمیل
                                         </div>
                                     </div>
                                     <div class="col-2">
@@ -108,6 +108,40 @@
                                 <!-- content table -->
                                 <div class="table-content">
                                     {% for user in users %}
+
+                                        <!-- modal delete user -->
+                                        <div class="modal fade" id="user-modal-delete-{{ forloop.counter }}"
+                                             tabindex="-1"
+                                             aria-labelledby="exampleModalLabel-{{ forloop.counter }}"
+                                             aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title"
+                                                            id="exampleModalLabel-{{ forloop.counter }}">حذف کاربر</h5>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        ایا از حذف کاربر
+                                                        <strong class="text-secondary">{{ user.get_full_name|truncatechars:30 }}</strong>
+                                                        اطمینان دارید ؟
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">لغو
+                                                        </button>
+                                                        <form action="{{ user.get_delete_url }}"
+                                                              method="get">
+                                                            <button class="btn-item m-1 remov btn btn-danger">
+                                                                بله ، حذف کاربر
+                                                            </button>
+                                                        </form>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- end modal delete user -->
+
                                         <div class="row-table">
                                             <!-- each column -->
                                             <div class="col-1 p-2">
@@ -144,9 +178,13 @@
                                                 </div>
                                             </div>
                                             <div class="col-1 p-2">
-                                                <a href="{{ user.get_delete_url }}">حذف</a>
+                                                <button type="button" class="btn btn-item m-1 remov"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#user-modal-delete-{{ forloop.counter }}">
+                                                    حذف
+                                                </button>
                                             </div>
-            
+
                                         </div>
                                     {% empty %}
                                         <div class="container-not-found-base">
