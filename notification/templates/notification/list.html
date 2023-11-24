@@ -9,26 +9,8 @@
     <link rel="stylesheet" href="{% static 'frontend/styles/Notification-list.css' %}">
 {% endblock %}
 
+
 {% block Content %}
-
-    {% for notification in notifications %}
-        <div class="content-modal-two modal-more-description">
-            <div class="inner-modal">
-                <form class="p-4">
-                    <div class="close-modal close-modal-description">
-                        <img src="{% static 'frontend/images/close.png' %}" alt="">
-                    </div>
-                    <div class="hhh">
-                        <div class="more-des">
-                            {{ notification.description }}
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    {% endfor %}
-
-
     <main class="main content-page container">
         <div class="text-center d-flex justify-content-center mb-2 mt-2 px-2">
             <h4 class="title-page w-100 me-5">لیست اعلان‌ها</h4>
@@ -81,6 +63,11 @@
                             <div class="table-content">
                                 <!-- each row table -->
                                 {% for notification in notifications %}
+
+                                    <!-- Notification description modal -->
+                                    {% include 'notification/components/notif_description.html' %}
+                                    <!-- .End Notification description modal -->
+
                                     <div class="row-table">
                                         <div class="col-2 p-2">
                                             <div class="table-content-item">

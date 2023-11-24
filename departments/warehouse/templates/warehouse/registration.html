@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="{% static 'frontend/styles/warehouse-registration-list.css' %}">
 {% endblock %}
 
-{% block Content %}
 
+{% block Content %}
     <!-- sabt dar anbar -->
     <div class="content-modal modal-warehouse-register">
         <div class="inner-modal">
@@ -95,7 +95,6 @@
                 </div>
             </form>
         </div>
-
     </div>
 
     <div class="col-12 col-md-5 col-lg-6 mx-auto mb-4 p-4">
@@ -137,6 +136,7 @@
         </div>
     </div>
     <!-- sabt dar anbar -->
+
     <!-- edit item anbar -->
     {% for item in items %}
         <div class="content-modal modal-warehouse-item-edit">
@@ -329,9 +329,8 @@
         </main>
         <!-- START MAIN -->
     </div>
-
-
 {% endblock %}
+
 
 {% block Script %}
     <script type="module" src="{% static 'frontend/js/warehouse-registration-list.js' %}"></script>

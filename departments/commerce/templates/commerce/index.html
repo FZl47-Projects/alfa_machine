@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="{% static 'frontend/styles/business-management-panel.css' %}">
 {% endblock %}
 
-{% block Content %}
 
+{% block Content %}
     <div class="content-modal-two modal-confirm-task">
         <div class="inner-modal">
             <form class="p-4" action="{% url 'public:project_file' %}" method="post" enctype="multipart/form-data">
@@ -29,7 +29,7 @@
                         <div class="my-3">
                            <div class="w-100">
                                <label class="form-label w-100">آپلود فایل:
-                                   <input class="form-control" type="file">
+                                   <input class="form-control" type="file" name="file">
                                </label>
                            </div>
                         </div>
