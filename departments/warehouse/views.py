@@ -89,3 +89,26 @@ class RegisterDetail(View):
 
         messages.success(request, 'عملیات با موفقیت انجام شد')
         return redirect(referer_url or '/success')
+
+
+# Upload RegistrationFile view
+class RegistrationFileView(View):
+
+    @user_role_required_cbv(['warehouse_user', 'control_project_user'])
+    def post(self, request, item_id):
+        referer_url = request.META.get('HTTP_REFERER', None)
+
+        data = request.POST
+        item = models.WarehouseRegistration.objects.get(id=item_id)
+
+        if hasattr(item, 'registration_file'):
+            f = forms.RegistrationFileForm(data, instance=item.registration_file, files=request.FILES)
+        else:
+            f = forms.RegistrationFileForm(data, files=request.FILES)
+
+        if form_validate_err(request, f) is False:
+            return redirect(referer_url or '/error')
+        f.save()
+
+        messages.success(request, 'عملیات با موفقیت انجام شد')
+        return redirect(referer_url or '/success')

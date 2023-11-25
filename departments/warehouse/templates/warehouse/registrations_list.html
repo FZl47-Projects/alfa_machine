@@ -92,10 +92,16 @@
             </div>
 
             <!-- btn -->
-            <div class="px-1 py-2 d-flex justify-content-between">
-                <span class="btn-sabt-anbar btn btn-secondary">ثبت در انبار</span>
-                <a href="{{ user.get_absolute_url_dashboard }}" class="btn btn-danger">بازگشت</a>
-            </div>
+            {% if user.role == 'warehouse_user' %}
+                <div class="px-1 py-2 d-flex justify-content-between">
+                    <span class="btn-sabt-anbar btn btn-secondary">ثبت در انبار</span>
+                    <a href="{{ user.get_absolute_url_dashboard }}" class="btn btn-danger">بازگشت</a>
+                </div>
+            {% else %}
+                <div class="px-1 py-2 d-flex justify-content-end">
+                    <a href="{{ user.get_absolute_url_dashboard }}" class="btn btn-danger">بازگشت</a>
+                </div>
+            {% endif %}
             <!-- btn -->
 
             <!-- start table warehouse -->
@@ -111,7 +117,7 @@
                                 <th>قیمت</th>
                                 <th>تاریخ</th>
                                 <th>توضیحات</th>
-                                <th>فایل</th>
+                                <th>فایل اصلی</th>
                                 <th>عملیات</th>
                             </tr>
                         </thead>
@@ -122,6 +128,10 @@
                                 <!-- Item description modal -->
                                 {% include 'warehouse/components/registration_des.html' %}
                                 <!-- .End description modal -->
+
+                                <!-- Upload registration file modal -->
+                                {% include 'warehouse/components/upload_file.html' %}
+                                <!-- .End Upload registration file modal -->
 
                                 <tr class="row-table">
                                     <!-- each column content table -->
@@ -140,7 +150,11 @@
                                         {% endif %}
                                     </td>
                                     <td>
-                                        <i class="fa fa-edit item-row btn-warehouse-item-edit btn btn-sm btn-warning"></i>
+                                        {% if user.role == 'warehouse_user' %}
+                                            <i class="fa fa-edit btn-warehouse-item-edit btn btn-sm btn-warning item-row"></i>
+                                        {% endif %}
+                                        <i class="fa fa-file btn btn-sm btn-primary text-white item-row"
+                                           data-bs-toggle="modal" data-bs-target="#uploadRegisterFileModal-{{ item.id }}"></i>
                                     </td>
                                 </tr>
                             {% empty %}

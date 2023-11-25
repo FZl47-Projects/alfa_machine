@@ -8,4 +8,5 @@ urlpatterns = [
     path('', views.Index.as_view(), name='index'),
     path('registrations/', views.Registration.as_view(), name='registration'),
     path('register/<int:item_id>/', views.RegisterDetail.as_view(), name='register_detail'),
+    path('registraion/file/<int:item_id>/', views.RegistrationFileView.as_view(), name='registration_file'),
 ]
