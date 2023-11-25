@@ -318,10 +318,10 @@ class TaskOwner(LoginRequiredMixin, View):
 
             notif = NotificationDepartment.objects.create(
                 from_department=request.user.department,
+                department=task.to_department,
                 title='اعلان بروزرسانی تسک',
                 description=f'بروزرسانی برای تسک: "{task.name}"'
             )
-            notif.departments.set([task.to_department])
             notif.projects.set([task.project])
 
             messages.success(request, 'تسک با موفقیت بروزرسانی شد')
@@ -415,10 +415,10 @@ class Task(View):
 
         notif = NotificationDepartment.objects.create(
             from_department=request.user.department,
+            department=task.to_department,
             title='اطلاعیه تسک جدید',
             description=f'عنوان تسک: "{task.name}"'
         )
-        notif.departments.set([task.to_department])
         notif.projects.set([task.project])
 
         messages.success(request, 'عملیات مورد نظر با موفقیت ایجاد شد')
@@ -437,12 +437,12 @@ class TaskRemind(LoginRequiredMixin, View):
 
         notif = NotificationDepartment.objects.create(
             from_department=department,
+            department=task.to_department,
             title='یاداوری انجام تسک',
             description=f"""
                 یاداوری جهت انجام تسک ({task.name})
             """
         )
-        notif.departments.set([task.to_department])
         notif.projects.set([task.project])
 
         messages.success(request, 'عملیات مورد نظر با موفقیت ایجاد شد')
