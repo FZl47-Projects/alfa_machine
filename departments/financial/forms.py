@@ -17,4 +17,10 @@ class PrePaymentForm(forms.ModelForm):
 class SaveSuretyBondForm(forms.ModelForm):
     class Meta:
         model = models.SuretyBond
-        fields = '__all__'
+        exclude = ('reminder_time',)
+
+
+class SaveReminderTimeForm(forms.ModelForm):
+    class Meta:
+        model = models.SuretyBond
+        fields = ('project', 'reminder_time',)

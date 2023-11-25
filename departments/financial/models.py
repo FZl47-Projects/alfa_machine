@@ -37,9 +37,14 @@ class SuretyBond(BaseModel, File):
     project = models.OneToOneField('public.Project', on_delete=models.CASCADE, related_name='surety_bond')
     number_id = models.CharField(max_length=32, null=True, blank=True)
     is_free = models.BooleanField(default=False)
+    reminder_time = models.DateField(null=True, blank=True)
 
     class Meta:
         ordering = ('-id',)
 
     def __str__(self):
         return f'{self.project.name}: {self.number_id}'
+
+    def get_reminder_time(self):
+        if self.reminder_time:
+            return self.reminder_time.strftime('%Y-%m-%d')

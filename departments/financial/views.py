@@ -116,3 +116,27 @@ class SaveSuretyBondView(View):
 
         messages.success(request, 'عملیات با موفقیت انجام شد')
         return redirect(reverse('departments.financial:payment_project', args=(project.id,)))
+
+
+# Save ReminderTime view
+class ReminderTimeView(View):
+
+    def create_form(self, data, instance=None, attr: str = None):
+        if hasattr(instance, attr):
+            instance = getattr(instance, attr)
+            return forms.SaveReminderTimeForm(data, instance=instance)
+
+        return forms.SaveReminderTimeForm(data)
+
+    @user_role_required_cbv(['financial_user'])
+    def post(self, request):
+        data = request.POST
+        project = Project.objects.get(id=data.get('project'))
+
+        f = self.create_form(data, project, 'surety_bond')
+        if form_validate_err(request, f) is False:
+            return redirect(reverse('departments.financial:payment_project', args=(project.id,)))
+        f.save()
+
+        messages.success(request, 'عملیات با موفقیت انجام شد')
+        return redirect(reverse('departments.financial:payment_project', args=(project.id,)))

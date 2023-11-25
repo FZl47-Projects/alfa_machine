@@ -23,6 +23,10 @@
     {% include 'financial/components/add_surety_bond.html' %}
     <!-- .End Add surety-bond modal -->
 
+    <!-- Add reminder time modal -->
+    {% include 'financial/components/project_reminder.html' %}
+    <!-- .End Add reminder time modal -->
+
     <main class="main content-page container pb-4">
         <div class="d-flex justify-content-between mt-3">
             <h5 class="mt-1">جزئیات مالی</h5>
@@ -50,7 +54,7 @@
                         <span>تومان</span>
                     </div>
                 </div>
-                <div class="d-flex flex-column gap-4">
+                <div class="d-flex flex-column align-items-start gap-4">
                     <div>
                         <span>وضعیت ضمانت نامه: </span>
                         {% if project.surety_bond.is_free %}
@@ -59,14 +63,25 @@
                             <span class="text-info fw-bold">ندارد</span>
                         {% endif %}
                     </div>
+                    <div>
+                        <span>تاریخ حُسن انجام کار: </span>
+                        <span class="datetime-convert">
+                            {{ project.surety_bond.get_reminder_time|default:'-' }}
+                        </span>
+                    </div>
                 </div>
             </div>
             <!-- right name & price... -->
             <!-- left pardakht btn -->
-            <div class="left d-flex flex-column">
-                <div class="btn btn-clearing btn-prepayment">ثبت پیش پرداخت</div>
-                <div class="btn btn-clearing btn-new-payment">ثبت پرداخت جدید</div>
-                <div class="btn btn-secondary mt-1" role="button" data-bs-toggle="modal" data-bs-target="#addSuretyBondModal">ثبت ضمانت نامه</div>
+            <div class="left d-flex gap-2">
+                <div class="d-flex flex-column justify-content-center gap-2">
+                    <div class="btn btn-primary btn-prepayment">ثبت پیش پرداخت</div>
+                    <div class="btn btn-primary btn-new-payment">ثبت پرداخت جدید</div>
+                </div>
+                <div class="d-flex flex-column justify-content-center gap-2">
+                    <div class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addSuretyBondModal">ثبت ضمانت نامه</div>
+                    <div class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addProjectReminderModal">حُسن انجام کار</div>
+                </div>
             </div>
             <!-- left pardakht btn -->
         </section>
