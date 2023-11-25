@@ -1,0 +1,47 @@
+<div class="content-modal modal-warehouse-item-edit">
+    <div class="inner-modal">
+        <form action="{% url 'dp_warehouse:register_detail' item_id=item.id %}" method="post" enctype="multipart/form-data" class="px-4 pt-2 task">
+            {% csrf_token %}
+            <div class="py-2">
+                <div class="title">
+                    <h4>ویرایش آیتم</h4>
+                </div>
+                <div class="information-section">
+                    <div class="information-item">
+                        <label for="lihh">پروژه:</label>
+                        <select name="project" class="select2-input rounded-2" required>
+                            {% for project in projects %}
+                                <option value="{{ project.id }}" label="{{ project.name }}"
+                                    {% if project == item.project %}selected{% endif %}>{{ project.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="information-item">
+                        <label>تاریخ ثبت:</label>
+                        <input type="text" class="bg-light rounded-2 persianDatapicker datetime-convert"
+                               set-on="register_time_{{ item.id }}" value="{{ item.register_time|date:'Y-m-d' }}" required readonly>
+                        <input type="hidden" id="register_time_{{ item.id }}" value="{{ item.get_register_time }}" name="register_time">
+                    </div>
+                    <div class="information-item">
+                        <label>قیمت:</label>
+                        <input type="number" placeholder="0" name="price" value="{{ item.price }}" class="rounded-2" required>
+                    </div>
+                    <div class="information-item">
+                        <div class="my-2">
+                           <div class="w-100">
+                               <label class="w-100">آپلود فایل:
+                                   <input class="form-control border-dark mt-1" type="file" name="file">
+                               </label>
+                           </div>
+                        </div>
+                    </div>
+                    <div class="information-item">
+                        <label>توضیحات:</label>
+                        <textarea name="description" cols="30" rows="10" class="rounded-2" required>{{ item.description }}</textarea>
+                    </div>
+                    <button class="sabt-modal btn-primary col-12">ثبت</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

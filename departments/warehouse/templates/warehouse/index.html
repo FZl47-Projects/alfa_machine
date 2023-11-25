@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="{% static 'frontend/styles/warehouse-panel.css' %}"/>
 {% endblock %}
 
-{% block Content %}
 
+{% block Content %}
     <div class="content-modal-two modal-confirm-task">
         <div class="inner-modal">
             <form class="p-4" action="{% url 'public:project_file' %}" method="post" enctype="multipart/form-data">
@@ -29,22 +29,20 @@
                         <div class="my-3">
                            <div class="w-100">
                                <label class="form-label w-100">آپلود فایل:
-                                   <input class="form-control" type="file" name="file">
+                                   <input class="form-control border-dark mt-1" type="file" name="file">
                                </label>
                            </div>
                         </div>
                     </div>
                     <div class="information-item">
-                        <label class="item-upload" for="add">
-                            پروژه
+                        <label class="item-upload mb-2" for="add">
+                            پروژه:
                         </label>
-                        <!-- status task -->
                         <select name="project" class="select2-input" required>
                             {% for project in projects %}
                                 <option value="{{ project.id }}" label="{{ project.name }}">{{ project.name }}</option>
                             {% endfor %}
                         </select>
-                        <!-- status task -->
                     </div>
                 </div>
                 <div class="information-section">
@@ -54,77 +52,75 @@
         </div>
     </div>
 
-    <!--morde-descriptin popup -->
-    <!--modal-materials  -->
-    <div class="content-modal-two modal-materials">
-        <div class="inner-modal">
-            <form class="p-4">
-                <div class="information-section">
-                    <div class="information-item">
-                        <label for="lihh">لیست آیتم ها</label>
-                        <div class="material-list">
-                            {% for item in items %}
-                                <div class="material-row d-flex  justify-content-center align-items-center text-center">
-                                    <div class="col-6 p-1">
-                                        <div class="material-item">
-                                            {{ item.name }}
-                                        </div>
-                                    </div>
-                                    <div class="col-6 p-1">
-                                        <div class="material-item">
-                                            {{ item.amount }}
-                                        </div>
-                                    </div>
+{#    <!--modal-materials  -->#}
+{#    <div class="content-modal-two modal-materials">#}
+{#        <div class="inner-modal">#}
+{#            <form class="p-4">#}
+{#                <div class="information-section">#}
+{#                    <div class="information-item">#}
+{#                        <label for="lihh">لیست آیتم ها</label>#}
+{#                        <div class="material-list mt-2">#}
+{#                            {% for item in items %}#}
+{#                                <div class="material-row d-flex  justify-content-center align-items-center text-center">#}
+{#                                    <div class="col-6 p-1">#}
+{#                                        <div class="material-item">#}
+{#                                            {{ item.name }}#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                    <div class="col-6 p-1">#}
+{#                                        <div class="material-item">#}
+{#                                            {{ item.amount }}#}
+{#                                        </div>#}
+{#                                    </div>#}
+{##}
+{#                                </div>#}
+{#                            {% empty %}#}
+{#                                <div class="container-not-found-base">#}
+{#                                    <p>چیزی یافت نشد</p>#}
+{#                                </div>#}
+{#                            {% endfor %}#}
+{#                        </div>#}
+{#                        {% if items.count > 0 %}#}
+{#                            <div class="information-section">#}
+{#                                <div class="sabt-modal btn-taeid-quality">تایید کیفیت</div>#}
+{#                            </div>#}
+{#                        {% endif %}#}
+{#                    </div>#}
+{#                </div>#}
+{#            </form>#}
+{#        </div>#}
+{#    </div>#}
+{#    <!--modal-materials  -->#}
 
-                                </div>
-                            {% empty %}
-                                <div class="container-not-found-base">
-                                    <p>چیزی یافت نشد</p>
-                                </div>
-                            {% endfor %}
-                        </div>
-                        {% if items.count > 0 %}
-                            <div class="information-section">
-                                <div class="sabt-modal btn-taeid-quality">تایید کیفیت</div>
-                            </div>
-                        {% endif %}
-                    </div>
-
-                </div>
-
-            </form>
-        </div>
-    </div>
-    <!--modal-materials  -->
-    <!-- popup taid keyfiat -->
-    <div class="content-modal-two modal-quality-assurance">
-        <div class="inner-modal">
-            <form class="p-4" action="{% url 'dp_warehouse:items_quality_pass' %}" method="post"
-                  enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="title">تایید کیفیت مواد</div>
-                <div class="information-section">
-                    <div class="information-item">
-                        <label for="lihh">توضیحات</label>
-                        <textarea name="description" required id="" cols="30" rows="10"></textarea>
-                    </div>
-                    <div class="information-item">
-                        <div class="my-3">
-                           <div class="w-100">
-                               <label class="form-label w-100">آپلود فایل:
-                                   <input class="form-control" type="file" name="file">
-                               </label>
-                           </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="information-section">
-                    <button class="sabt-modal col-12 btn-primary">ثبت</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <!-- popup taid keyfiat -->
+{#    <!-- popup taid keyfiat -->#}
+{#    <div class="content-modal-two modal-quality-assurance">#}
+{#        <div class="inner-modal">#}
+{#            <form class="p-4" action="{% url 'dp_warehouse:items_quality_pass' %}" method="post"#}
+{#                  enctype="multipart/form-data">#}
+{#                {% csrf_token %}#}
+{#                <div class="title">تایید کیفیت مواد</div>#}
+{#                <div class="information-section">#}
+{#                    <div class="information-item">#}
+{#                        <label for="lihh">توضیحات</label>#}
+{#                        <textarea name="description" required id="" cols="30" rows="10"></textarea>#}
+{#                    </div>#}
+{#                    <div class="information-item">#}
+{#                        <div class="my-3">#}
+{#                           <div class="w-100">#}
+{#                               <label class="form-label w-100">آپلود فایل:#}
+{#                                   <input class="form-control" type="file" name="file">#}
+{#                               </label>#}
+{#                           </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="information-section">#}
+{#                    <button class="sabt-modal col-12 btn-primary">ثبت</button>#}
+{#                </div>#}
+{#            </form>#}
+{#        </div>#}
+{#    </div>#}
+{#    <!-- popup taid keyfiat -->#}
 
     <!-- START SECTION NOTIFATION -->
     {% include 'base/components/aside-menu.html' with notifications=notifications tickets=tickets %}
@@ -142,25 +138,33 @@
             <section class="collection-units" style="background-color:#fff ; margin-top:30px;">
                 <div class="box-section">
                     <!-- item Access panel-->
-                    <div class="col-12 col-md-3 ">
+{#                    <div class="col-12 col-md-3 col-lg-2">#}
+{#                        <div class="box-item-2 ddd">#}
+{#                            <img src="{% static 'frontend/images/لیست خرید تایید شده مدیریت 2@2x.png' %}" alt=""#}
+{#                                 class="icon-box mb-3">#}
+{#                            <div class="style-conent-box mb-3">#}
+{#                                <span>تایید لیست مواد اولیه</span>#}
+{#                            </div>#}
+{#                            <div class="tarif-task btn-quality-assurance" id="one">مشاهده</div>#}
+{#                        </div>#}
+{#                    </div>#}
+                    <div class="col-12 col-md-3 col-lg-2">
                         <div class="box-item-2 ddd">
-                            <img src="{% static 'frontend/images/لیست خرید تایید شده مدیریت 2@2x.png' %}" alt=""
-                                 class="icon-box"
-                                 style="margin-bottom:15px ;">
-                            <div class="style-conent-box" style="margin-bottom:15px ;">
-                                <span>تایید لیست مواد اولیه</span>
+                            <img src="{% static 'frontend/images/2 (لیست استعلامات(حتی رد شده ها با دلیل@2x.png' %}" alt=""
+                                 class="icon-box mb-3">
+                            <div class="style-conent-box mb-3">
+                                <span>لیست انبار</span>
                             </div>
-                            <div class="tarif-task btn-quality-assurance" id="one">مشاهده</div>
-
+                            <a href="{% url 'dp_warehouse:registration' %}">
+                                <div class="tarif-task btn-upload-book" id="one">مشاهده</div>
+                            </a>
                         </div>
                     </div>
-                    <!-- item Access panel-->
-                    <div class="col-12 col-md-3 ">
+                    <div class="col-12 col-md-3 col-lg-2">
                         <div class="box-item-2 ddd">
-                            <img src="{% static 'frontend/images/2 (لیست استعلامات(حتی رد شده ها با دلیل@2x.png' %}"
-                                 alt=""
-                                 class="icon-box" style="margin-bottom:15px ;">
-                            <div class="style-conent-box" style="margin-bottom:15px ;">
+                            <img src="{% static 'frontend/images/2 (لیست استعلامات(حتی رد شده ها با دلیل@2x.png' %}" alt=""
+                                 class="icon-box mb-3">
+                            <div class="style-conent-box mb-3">
                                 <span>لیست تسک ها</span>
                             </div>
                             <a href="{% url 'public:task' %}">
@@ -168,29 +172,14 @@
                             </a>
                         </div>
                     </div>
-                    <!-- item Access panel-->
-                    <div class="col-12 col-md-3 ">
-                        <div class="box-item-2 ddd">
-                            <img src="{% static 'frontend/images/2 (لیست استعلامات(حتی رد شده ها با دلیل@2x.png' %}"
-                                 alt=""
-                                 class="icon-box" style="margin-bottom:15px ;">
-                            <div class="style-conent-box" style="margin-bottom:15px ;">
-                                <span>ثبت ورود و خروج انبار</span>
-                            </div>
-                            <a href="{% url 'dp_warehouse:registration' %}">
-                                <div class="tarif-task btn-upload-book" id="one">مشاهده</div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-3">
+                    <div class="col-12 col-md-3 col-lg-2">
                         <div class="box-item-2 ddd">
                             <img src="{% static 'frontend/images/لیست خرید تایید شده مدیریت 2@2x.png' %}" alt=""
-                                 class="icon-box"
-                                 style="margin-bottom:15px ;">
-                            <div class="style-conent-box" style="margin-bottom:15px ;">
+                                 class="icon-box mb-3">
+                            <div class="style-conent-box mb-3">
                                 <span>فایل پروژه</span>
                             </div>
-                            <div class="tarif-task btn-create-report btn--ta1 task-confirm" id="one">اپلود</div>
+                            <div class="tarif-task btn-create-report btn--ta1 task-confirm" id="one">آپلود</div>
                         </div>
                     </div>
                 </div>
@@ -198,11 +187,13 @@
             <!--end Access panel -->
 
             <!-- Start project section -->
-            <div class="title px-4 mt-4">
+            <div class="title px-2 mt-4">
                 <span style="padding-left: 3px;">پروژه های درحال اجرا</span>
                 <span class="d-flex justify-content-center align-item-center">
-                    <a href="{% url 'public:project' %}?status=other">مشاهده همه</a>
-                    <img src="{% static 'frontend/images/back-icon.png' %}" alt="">
+                    <a href="{% url 'public:project' %}?status=other">
+                        مشاهده همه
+                        <img src="{% static 'frontend/images/back-icon.png' %}" alt="">
+                    </a>
                 </span>
             </div>
             <!-- project section -->
@@ -221,7 +212,7 @@
 
             <!-- Other projects -->
             <div>
-                <div class="title px-4">
+                <div class="title px-3">
                     <span style="padding-left: 3px;">دیگر پروژه‌ها</span>
                 </div>
                 <div class="box-section" style="margin-top: -1.25rem;">
@@ -254,7 +245,7 @@
             <!-- .End project section -->
 
             <!-- Start pages section -->
-            <div class="title px-4">
+            <div class="title px-3">
                 <span>صفحات</span>
             </div>
             <section style="margin-top: -1.25rem;">
