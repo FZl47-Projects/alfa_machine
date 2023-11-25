@@ -108,6 +108,9 @@ class Project(BaseModel):
     def get_tasks(self):
         return self.task_set.all()
 
+    def get_files(self):
+        return self.projectfile_set.order_by('-id')
+
     def get_tasks_progress(self):
         return self.get_tasks().filter(state='progress')
 
@@ -153,9 +156,6 @@ class Project(BaseModel):
             return self.materialproject.items.all()
         except:
             return []
-
-    def get_files(self):
-        return self.projectfile_set.all()
 
     def get_tickets(self):
         return self.ticketdepartment_set.all()

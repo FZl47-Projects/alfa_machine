@@ -54,44 +54,44 @@
         </div>
     </div>
 
-    <div class="content-modal-two modal-quality-assurance">
-        <div class="inner-modal">
-            <form class="p-4" action="{% url 'public:project_file' %}" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <input type="hidden" name="name" value="تایید کیفیت مواد">
-                <div class="information-section">
-                    <div class="information-item">
-                        <label for="lihh">توضیحات</label>
-                        <textarea name="description" id="" cols="30" rows="10" required></textarea>
-                    </div>
-                    <div class="information-item">
-                        <div class="my-3">
-                           <div class="w-100">
-                               <label class="form-label w-100">آپلود فایل:
-                                   <input class="form-control" type="file" name="file">
-                               </label>
-                           </div>
-                        </div>
-                    </div>
-                    <div class="information-item">
-                        <label class="item-upload" for="assuranceProjectSelect">
-                            پروژه
-                        </label>
-                        <!-- status task -->
-                        <select id="assuranceProjectSelect" name="project" class="select2-input" required>
-                            {% for project in projects %}
-                                <option value="{{ project.id }}" label="{{ project.name }}">{{ project.name }}</option>
-                            {% endfor %}
-                        </select>
-                        <!-- status task -->
-                    </div>
-                </div>
-                <div class="information-section">
-                    <button class="sabt-modal col-12 btn-primary">ثبت</button>
-                </div>
-            </form>
-        </div>
-    </div>
+{#    <div class="content-modal-two modal-quality-assurance">#}
+{#        <div class="inner-modal">#}
+{#            <form class="p-4" action="{% url 'public:project_file' %}" method="post" enctype="multipart/form-data">#}
+{#                {% csrf_token %}#}
+{#                <input type="hidden" name="name" value="تایید کیفیت مواد">#}
+{#                <div class="information-section">#}
+{#                    <div class="information-item">#}
+{#                        <label for="lihh">توضیحات</label>#}
+{#                        <textarea name="description" id="" cols="30" rows="10" required></textarea>#}
+{#                    </div>#}
+{#                    <div class="information-item">#}
+{#                        <div class="my-3">#}
+{#                           <div class="w-100">#}
+{#                               <label class="form-label w-100">آپلود فایل:#}
+{#                                   <input class="form-control" type="file" name="file">#}
+{#                               </label>#}
+{#                           </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="information-item">#}
+{#                        <label class="item-upload" for="assuranceProjectSelect">#}
+{#                            پروژه#}
+{#                        </label>#}
+{#                        <!-- status task -->#}
+{#                        <select id="assuranceProjectSelect" name="project" class="select2-input" required>#}
+{#                            {% for project in projects %}#}
+{#                                <option value="{{ project.id }}" label="{{ project.name }}">{{ project.name }}</option>#}
+{#                            {% endfor %}#}
+{#                        </select>#}
+{#                        <!-- status task -->#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="information-section">#}
+{#                    <button class="sabt-modal col-12 btn-primary">ثبت</button>#}
+{#                </div>#}
+{#            </form>#}
+{#        </div>#}
+{#    </div>#}
 
     <div class="content-modal-two modal-upload-book">
         <div class="inner-modal">
@@ -151,18 +151,18 @@
             <section class="collection-units bg-white" style="margin-top:30px;">
                 <div class="box-section">
                     <!-- item Access pane -->
-                    <div class="col-12 col-md-3 col-lg-2">
-                        <div class="box-item-2 ddd">
-                            <img src="{% static 'frontend/images/تایید کیفیت مواد اولیه(توانایی آپلود مدارکی 2@2x.png' %}" alt=""
-                                 class="icon-box mb-3">
-                            <div class="style-conent-box mb-3">
-                                <span>تایید کیفیت مواد</span>
-                            </div>
-                            <!-- btn upload -->
-                            <div class="tarif-task btn-quality-assurance" id="one">مشاهده</div>
-                            <!-- btn upload -->
-                        </div>
-                    </div>
+{#                    <div class="col-12 col-md-3 col-lg-2">#}
+{#                        <div class="box-item-2 ddd">#}
+{#                            <img src="{% static 'frontend/images/تایید کیفیت مواد اولیه(توانایی آپلود مدارکی 2@2x.png' %}" alt=""#}
+{#                                 class="icon-box mb-3">#}
+{#                            <div class="style-conent-box mb-3">#}
+{#                                <span>تایید کیفیت مواد</span>#}
+{#                            </div>#}
+{#                            <!-- btn upload -->#}
+{#                            <div class="tarif-task btn-quality-assurance" id="one">مشاهده</div>#}
+{#                            <!-- btn upload -->#}
+{#                        </div>#}
+{#                    </div>#}
                     <div class="col-12 col-md-3 col-lg-2">
                         <div class="box-item-2 ddd">
                             <img src="{% static 'frontend/images/تسک خای اولویت بندی شده 2@2x.png' %}" alt=""
@@ -195,7 +195,7 @@
                             <div class="style-conent-box mb-3 text-center">
                                 <span>درخواست از سایر واحدها</span>
                             </div>
-                            <div class="tarif-task btn-request-unit" id="one">مشاهده</div>
+                          <div class="tarif-task" data-bs-toggle="modal" data-bs-target="#addTicketModal" id="one">مشاهده</div>
                         </div>
                     </div>
                     <div class="col-12 col-md-3 col-lg-2">

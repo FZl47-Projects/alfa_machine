@@ -1,0 +1,193 @@
+{% extends 'base/base_template.html' %}
+{% load static %}
+
+{% block Title %}
+    لیست ایتم ها
+{% endblock %}
+
+{% block Link %}
+    <link rel="stylesheet" href="{% static 'frontend/styles/shoping-list.css' %}">
+{% endblock %}
+
+
+{% block Content %}
+    <div class="col-12 col-md-5 col-lg-6 mx-auto mb-4 p-4">
+        <div>
+            <div class="filters-radio">
+                <div class="title">
+                    مرتب بر اساس :
+                </div>
+                <div class="container">
+                    <div>
+                        <a class="{% if request.GET.sort_by == 'latest' or not request.GET.sort_by %}active{% endif %}"
+                           href="{% url 'public:project_detail_file_list' project_id=project.id %}?sort_by=latest&filter_by={{ request.GET.filter_by }}">
+                            جدید ترین
+                        </a>
+                    </div>
+                    <div>
+                        <a class="{% if request.GET.sort_by == 'oldest' %}active{% endif %}"
+                           href="{% url 'public:project_detail_file_list' project_id=project.id %}?sort_by=oldest&filter_by={{ request.GET.filter_by }}">
+                            قدیمی ترین
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="filters-radio">
+                <div class="title">
+                    فیلتر بر اساس واحد فرستنده :
+                </div>
+                <div class="container">
+                    <div>
+                        <a class="{% if not request.GET.filter_by %}active{% endif %}"
+                           href="{% url 'public:project_detail_file_list' project_id=project.id %}?sort_by=oldest">
+                            همه
+                        </a>
+                    </div>
+                    {% for department in departments %}
+                        <div>
+                            <a class="{% if request.GET.filter_by == department.id|stringformat:'i' %}active{% endif %}"
+                               href="{% url 'public:project_detail_file_list' project_id=project.id %}?filter_by={{ department.id }}&sort_by={{ request.GET.sort_by }}">
+                                {{ department.name }}
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div>
+                <form action="{% url 'public:project_detail_file_list' project_id=project.id %}" method="get"
+                      class="overflow-hidden">
+                    <input type="hidden" name="sort_by" value="{{ request.GET.sort_by }}">
+                    <input type="hidden" name="filter_by" value="{{ request.GET.filter_by }}">
+                    <p class="title">جست و جو :</p>
+                    <div class="cnt-search col-11 col-md-7">
+                        <input type="text" name="search" value="{{ request.GET.search }}"
+                               placeholder="نام فایل ..">
+                        <div>
+                            {% if request.GET.search %}
+                                <a href="{% url 'public:project_detail_file_list' project_id=project.id %}"
+                                   class="text-danger">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            {% endif %}
+                            <button>
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <main class="main content-page container" style="padding-bottom:60px ;">
+        <h5 class="title-page">لیست فایل های پروژه -
+            <b>{{ project.name }}</b>
+        </h5>
+        <section class="col-12 project-content">
+            <div class="inner-project">
+                <div class="content-items p-2">
+                    <section class="section-table">
+                        <!-- table -->
+                        <div class="table">
+                            <!-- title table -->
+                            <div class="table-title">
+                                <div class="col-1">
+                                    <div class="table-title-item">
+                                        ردیف
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="table-title-item">
+                                        نام
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="table-title-item">
+                                        واحد فرستنده
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="table-title-item">
+                                        توضیحات
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="table-title-item">
+                                        تاریخ
+                                    </div>
+                                </div>
+                                <div class="col-1">
+                                    <div class="table-title-item">
+                                        فایل
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- title table -->
+                            <!-- content table -->
+                            <div class="table-content">
+                                <!-- each row table -->
+                                {% for file in files %}
+                                    <div class="row-table">
+                                        <!-- each row table -->
+                                        <div class="col-1 p-1">
+                                            <div class="table-content-item">
+                                                {{ forloop.counter }}
+                                            </div>
+                                        </div>
+                                        <!-- each row table -->
+                                        <div class="col-2 p-1">
+                                            <div class="table-content-item">
+                                                {{ file.name }}
+                                            </div>
+                                        </div>
+
+                                        <div class="col-2 p-1">
+                                            <div class="table-content-item">
+                                                <p>
+                                                    {{ file.from_department.name }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 p-1">
+                                            <div class="table-content-item">
+                                                <p>
+                                                    {{ file.description }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-1">
+                                            <div class="table-content-item">
+                                                <p class="datetime-convert">
+                                                    {{ file.get_created_at }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="col-1 p-1">
+                                            <div class="table-content-item">
+                                                <p>
+                                                    <a href="{{ file.get_file_url }}">مشاهده و دانلود</a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% empty %}
+                                    <div class="container-not-found-base">
+                                        <p>چیزی یافت نشد</p>
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                            <!-- content table -->
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </main>
+    </form>
+
+{% endblock %}
+
+{% block Script %}
+    <script type="module" src="{% static 'frontend/js/shoping-list.js' %}"></script>
+{% endblock %}

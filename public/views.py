@@ -151,6 +151,33 @@ class ProjectDelete(LoginRequiredMixin, View):
 
 class ProjectFile(LoginRequiredMixin, View):
 
+    def search(self, request, items):
+        search = request.GET.get('search', None)
+        if not search:
+            return items
+        if search.isdigit():
+            lookup = Q(code=search)
+            items = items.filter(lookup)
+        else:
+            lookup = Q(name__icontains=search) | Q(size=search) | Q(receiver__icontains=search)
+            items = items.filter(lookup)
+        return items
+
+    def sort(self, request, items):
+        sort_by = request.GET.get('sort_by', 'latest')
+        if sort_by == 'latest':
+            items = items.order_by('-id')
+        elif sort_by == 'oldest':
+            items = items.order_by('id')
+        return items
+
+    @user_role_required_cbv(['super_user', 'commerce_user', 'control_project_user', 'technical_user'])
+    def get(self, request):
+        context = {
+            'projects': models.Project.objects.filter(is_active=True)
+        }
+        return render(request, 'public/project/file/list.html', context)
+
     def post(self, request):
         referer_url = request.META.get('HTTP_REFERER', None)
         data = request.POST.copy()
@@ -162,6 +189,48 @@ class ProjectFile(LoginRequiredMixin, View):
         f.save()
         messages.success(request, 'عملیات مورد نظر با موفقیت انجام شد')
         return redirect(referer_url or '/success')
+
+
+class ProjectDetailFileList(LoginRequiredMixin, View):
+
+    def search(self, request, items):
+        search = request.GET.get('search', None)
+        if not search:
+            return items
+        items = items.filter(name__icontains=search)
+        return items
+
+    def sort(self, request, items):
+        sort_by = request.GET.get('sort_by', 'latest')
+        if sort_by == 'latest':
+            items = items.order_by('-id')
+        elif sort_by == 'oldest':
+            items = items.order_by('id')
+        return items
+
+    def filter(self, request, items):
+        # search
+        items = self.search(request, items)
+        # filter
+        filter_by = request.GET.get('filter_by')
+        if filter_by and filter_by.isdigit():
+            items = items.filter(from_department__id=filter_by)
+        # sort
+        items = self.sort(request, items)
+        return items
+
+    @user_role_required_cbv(['super_user', 'commerce_user', 'control_project_user', 'technical_user'])
+    def get(self, request, project_id):
+        project = models.Project.objects.get(id=project_id, is_active=True)
+        files = project.get_files()
+        # search & filter
+        files = self.filter(request, files)
+        context = {
+            'files': files,
+            'project': project,
+            'departments': models.Department.objects.all()
+        }
+        return render(request, 'public/project/file/detail.html', context)
 
 
 class TaskOwner(LoginRequiredMixin, View):
