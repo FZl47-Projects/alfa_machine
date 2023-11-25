@@ -151,10 +151,10 @@ class Project(BaseModel):
     def get_prepayments(self):
         return self.prepayment_set.all()
 
-    def get_material_items(self):
+    def get_warehouse_registrations(self):
         try:
-            return self.materialproject.items.all()
-        except:
+            return self.warehouse_registrations.all()
+        except (AttributeError, TypeError):
             return []
 
     def get_tickets(self):

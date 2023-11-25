@@ -63,10 +63,10 @@
         <section class="col-12 project-content">
             <div class="inner-project">
                 <!-- btn tab page -->
-                <div class="btn-content d-flex justify-content-between" style="border-bottom:1px solid #a2a2a2 ;">
+                <div class="btn-content d-flex justify-content-between" style="border-bottom: 1px solid #a2a2a2;">
                     <div class="btns col-12 col-md-7">
                         <div class="btn-change col-2 text-center active">مشخصات پروژه</div>
-                        <div class="btn-change col-2 text-center">مواد اولیه</div>
+                        <div class="btn-change col-2 text-center">لیست انبار</div>
                         <div class="btn-change col-2 text-center">اسناد آپلود شده</div>
                         <div class="btn-change col-2 text-center d-none">بازرگانی</div>
                         <div class="btn-change col-2 text-center">مکاتبات پروژه</div>
@@ -345,7 +345,7 @@
                     <!--start List of raw materials -->
                     <div class="content-items p-2">
                         <section class="section-table">
-                            <h6 class="title-page">مواد اولیه</h6>
+                            <h6 class="title-page">لیست انبار</h6>
                             <div class="table">
                                 <div class="table-title">
                                     <div class="col-1">
@@ -355,27 +355,29 @@
                                     </div>
                                     <div class="col-3">
                                         <div class="table-title-item">
-                                            نام مواد
+                                            قیمت
                                         </div>
                                     </div>
                                     <div class="col-3">
-                                        <div class="table-title-item">
-                                            تحویل گیرنده
-                                        </div>
-                                    </div>
-                                    <div class="col-3">
-                                        <div class="table-title-item">
-                                            کد
-                                        </div>
-                                    </div>
-                                    <div class="col-2">
                                         <div class="table-title-item">
                                             تاریخ
                                         </div>
                                     </div>
+                                    <div class="col-3">
+                                        <div class="table-title-item">
+                                            توضیحات
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="table-title-item">
+                                            فایل اصلی
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="table-content">
-                                    {% for material_item in project.get_material_items %}
+                                    {% for item in project.get_warehouse_registrations %}
+                                        {% include 'warehouse/components/registration_des.html' %}
+
                                         <div class="row-table">
                                             <div class="col-1 p-2">
                                                 <div class="table-content-item">
@@ -383,23 +385,27 @@
                                                 </div>
                                             </div>
                                             <div class="col-3 p-2">
-                                                <div class="table-content-item">
-                                                    {{ material_item.name }}
+                                                <div class="table-content-item spread-price">
+                                                    {{ item.price|default:'ندارد' }}
                                                 </div>
                                             </div>
                                             <div class="col-3 p-2">
-                                                <div class="table-content-item">
-                                                    {{ material_item.receiver }}
+                                                <div class="table-content-item datetime-convert">
+                                                    {{ item.get_register_time }}
                                                 </div>
                                             </div>
                                             <div class="col-3 p-2">
-                                                <div class="table-content-item">
-                                                    {{ material_item.code }}
+                                                <div class="table-content-item" data-bs-target="#registrationDescription-{{ item.id }}" data-bs-toggle="modal">
+                                                    {{ item.description|truncatechars:'32'|default:'-' }}
                                                 </div>
                                             </div>
                                             <div class="col-2 p-2">
-                                                <div class="table-content-item datetime-convert">
-                                                    {{ material_item.time_enter }}
+                                                <div class="table-content-item">
+                                                    {% if item.file %}
+                                                        <a href="{{ item.get_file_url }}" class="text-info fw-bold" download>دریافت</a>
+                                                    {% else %}
+                                                        <a class="fw-bold">ندارد</a>
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                         </div>
