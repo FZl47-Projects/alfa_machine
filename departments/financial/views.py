@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from django.contrib import messages
 from django.views.generic import View
+from django_q.models import Schedule
 from account.auth.decorators import user_role_required_cbv
 from core.utils import form_validate_err
 from public.models import Project, TaskMaster
@@ -121,6 +122,21 @@ class SaveSuretyBondView(View):
 # Save ReminderTime view
 class ReminderTimeView(View):
 
+    def create_schedule_task(self, request, task_name='financial_reminder_task'):
+        try:
+            task = Schedule.objects.get(name=task_name)
+            task.delete()
+        except Schedule.DoesNotExist:
+            pass
+
+        department = request.user.department
+        Schedule.objects.create(
+            name=task_name,
+            func='core.tasks.send_reminder_notif',
+            kwargs={'from_department': department, 'department': department},
+            schedule_type=Schedule.DAILY,
+        )
+
     def create_form(self, data, instance=None, attr: str = None):
         if hasattr(instance, attr):
             instance = getattr(instance, attr)
@@ -136,7 +152,9 @@ class ReminderTimeView(View):
         f = self.create_form(data, project, 'surety_bond')
         if form_validate_err(request, f) is False:
             return redirect(reverse('departments.financial:payment_project', args=(project.id,)))
-        f.save()
+        obj = f.save()
+
+        self.create_schedule_task(request)  # Create schedule reminder
 
         messages.success(request, 'عملیات با موفقیت انجام شد')
         return redirect(reverse('departments.financial:payment_project', args=(project.id,)))
