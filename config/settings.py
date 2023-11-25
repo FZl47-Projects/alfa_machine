@@ -52,6 +52,9 @@ INSTALLED_APPS = [
     'departments.warehouse',
     'departments.production',
     'departments.technical',
+
+    # Django modules
+    'django_q'
 ]
 
 MIDDLEWARE = [
@@ -147,6 +150,11 @@ Q_CLUSTER = {
     'name': 'django-q',
     'timeout': 60,
     'orm': 'default',
+}
+
+REDIS_CONFIG = {
+    'HOST': os.getenv('REDIS_HOST', 'localhost'),
+    'PORT': os.getenv('REDIS_PORT', '6379')
 }
 
 AUTH_USER_MODEL = 'account.User'  # custom normal_user model
