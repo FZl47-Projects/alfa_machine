@@ -26,8 +26,18 @@
                 <!-- btn-notif in mobile -->
             </div>
 
-            <section class="collection-units mb-4" style="background-color:#fff; margin-top:30px;">
+            <section class="collection-units bg-white mb-4" style="margin-top: 30px;">
                 <div class="box-section d-flex justify-content-start">
+                    <div class="col-12 col-md-3 col-lg-2">
+                        <div class="box-item-2 ddd">
+                            <img src="{% static 'frontend/images/2 (لیست استعلامات(حتی رد شده ها با دلیل@2x.png' %}" alt=""
+                                 class="icon-box mb-3">
+                            <div class="style-conent-box mb-3">
+                                <span>لیست انبار</span>
+                            </div>
+                            <a href="{% url 'dp_warehouse:registration' %}" class="tarif-task">مشاهده</a>
+                        </div>
+                    </div>
                     <div class="col-12 col-md-3 col-lg-2">
                         <div class="box-item-2 ddd">
                             <img src="{% static 'frontend/images/لیست خرید تایید شده مدیریت 2@2x.png' %}" alt=""
