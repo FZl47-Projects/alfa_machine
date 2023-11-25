@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.views.generic import View
 from account.auth.decorators import user_role_required_cbv
 from core.utils import form_validate_err
-from public.models import Project
+from public.models import Project, TaskMaster
 from . import forms
 
 
@@ -21,6 +21,34 @@ class Index(View):
             'ongoing_projects': projects.filter(status__in=['checking', 'paused', 'under_construction'])[:4],
         }
         return render(request, self.template_name, context)
+
+
+# ProjectsList view
+class ProjectListView(View):
+    template = 'financial/projects_list.html'
+
+    def filter(self, request, projects):
+        search = request.GET.get('search')
+        task_master = request.GET.get('task_master', None)
+
+        if search:
+            projects = projects.filter(name__icontains=search)
+
+        if task_master and task_master.isdigit():
+            projects = projects.filter(task_master_id=task_master)
+
+        return projects
+
+    def get(self, request):
+        projects = Project.objects.all()
+        projects = self.filter(request, projects)  # Filter projects
+
+        context = {
+            'projects': projects,
+            'task_masters': TaskMaster.objects.all(),
+        }
+
+        return render(request, self.template, context)
 
 
 class Payment(View):
@@ -59,7 +87,7 @@ class PrePayment(View):
 
 
 class PaymentProject(View):
-    template_name = 'financial/list.html'
+    template_name = 'financial/project_payments.html'
 
     @user_role_required_cbv(['financial_user'])
     def get(self, request, project_id):
