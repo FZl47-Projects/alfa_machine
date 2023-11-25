@@ -37,7 +37,7 @@
                             <div class="group-form d-flex flex-column align-items-start gap-2 rounded-2 py-3">
                                 <label for="number_id">شماره درخواست:</label>
                                 <input type="text" id="number_id" class="form-control border-2 bg-white" name="number_id"
-                                       value="{{ inquiry.number_id }}">
+                                       value="{{ inquiry.number_id|default:'' }}">
                             </div>
                             <div class="group-form d-flex flex-column align-items-start gap-2 rounded-2 py-3">
                                 <label for="name">نام پروژه:</label>

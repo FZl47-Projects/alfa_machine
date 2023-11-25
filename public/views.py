@@ -65,12 +65,37 @@ class Project(View):
     template_name = 'public/project/list.html'
 
     def filter(self, request, projects):
-        search = request.GET.get('search')
+        search = request.GET.get('search', None)
         task_master = request.GET.get('task_master', None)
+        project_status = request.GET.get('project_status', None)
+        filter_by_date = request.GET.get('filter_by_date', None)
+
         if search:
             projects = projects.filter(name__icontains=search)
         if task_master and task_master.isdigit():
             projects = projects.filter(task_master_id=task_master)
+        if project_status:
+            projects = projects.filter(status=project_status)
+
+        if filter_by_date:
+            # filter by start and end date project
+            time_start_gt = request.GET.get('time_start_gt', None)
+            time_start_lt = request.GET.get('time_start_lt', None)
+            time_end_gt = request.GET.get('time_end_gt', None)
+            time_end_lt = request.GET.get('time_end_lt', None)
+
+            if time_start_gt:
+                projects = projects.filter(time_start__gt=time_start_gt)
+
+            if time_start_lt:
+                projects = projects.filter(time_start__lt=time_start_lt)
+
+            if time_end_gt:
+                projects = projects.filter(time_end__gt=time_end_gt)
+
+            if time_end_lt:
+                projects = projects.filter(time_end__lt=time_end_lt)
+
         return projects
 
     def get(self, request):
@@ -450,14 +475,19 @@ class Inquiry(View):
     def filter(self, request, inquiries):
         archived = request.GET.get('archived', False)
         task_master = request.GET.get('task_master', None)
+        filter_by_state = request.GET.get('filter_by_state', None)
 
         if archived:
             inquiries = inquiries.filter(Q(state='canceled') | Q(time_deadline_response__lt=timezone.now()))
         else:
-            inquiries = inquiries.filter(~Q(state='canceled') & Q(time_deadline_response__gt=timezone.now()))
+            # inquiries = inquiries.filter(~Q(state='canceled') & Q(time_deadline_response__gt=timezone.now()))
+            pass
 
         if task_master and task_master.isdigit():
             inquiries = inquiries.filter(sender_id=task_master)
+
+        if filter_by_state:
+            inquiries = inquiries.filter(state=filter_by_state)
 
         return inquiries
 
@@ -546,9 +576,13 @@ class InquiryOwner(View):
 
     def filter(self, request, inquiries):
         task_master = request.GET.get('task_master', None)
+        filter_by_state = request.GET.get('filter_by_state', None)
 
         if task_master and task_master.isdigit():
             inquiries = inquiries.filter(sender_id=task_master)
+
+        if filter_by_state:
+            inquiries = inquiries.filter(state=filter_by_state)
 
         return inquiries
 

@@ -1122,9 +1122,21 @@
                             <div class="group-form">
                                 <label for="">وضعیت</label>
                                 <select name="status" class="form-control form-select" required>
+                                    <option value="checking"
+                                            {% if project.status == 'checking' %}selected{% endif %}>در حال
+                                        بررسی قبل اجرا
+                                    </option>
                                     <option value="under_construction"
                                             {% if project.status == 'under_constration' %}selected{% endif %}>در حال
                                         ساخت
+                                    </option>
+                                    <option value="posted"
+                                            {% if project.status == 'posted' %}selected{% endif %}>
+                                        ارسال شده
+                                    </option>
+                                    <option value="completed"
+                                            {% if project.status == 'completed' %}selected{% endif %}>
+                                        تایید و اتمام
                                     </option>
                                     <option value="paused" {% if project.status == 'paused' %}selected{% endif %}>متوقف
                                         شده

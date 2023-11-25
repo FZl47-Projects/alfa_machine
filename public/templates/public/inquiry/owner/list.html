@@ -26,8 +26,8 @@
         }
 
         .link-search-items a.active {
-            background: #0da87c!important;
-            color: #fff!important;
+            background: #0da87c !important;
+            color: #fff !important;
         }
     </style>
 {% endblock %}
@@ -56,7 +56,8 @@
         <!-- .End Inquiry files list modal -->
 
         <!-- Inquiry rejection reason -->
-        <div class="modal" id="inquiryRejection-{{ inquiry.id }}" tabindex="-1" role="dialog" aria-labelledby="inquiryRejection" aria-hidden="true">
+        <div class="modal" id="inquiryRejection-{{ inquiry.id }}" tabindex="-1" role="dialog"
+             aria-labelledby="inquiryRejection" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -118,7 +119,8 @@
         <!-- Start filter section -->
         <div class="d-flex flex-column mb-4 p-4">
             <div>
-                <form action="{% url 'public:inquiry_owner' %}" method="get" class="overflow-hidden d-flex align-items-center">
+                <form action="{% url 'public:inquiry_owner' %}" method="get"
+                      class="overflow-hidden d-flex align-items-center">
                     <input type="hidden" name="sort_by" value="{{ request.GET.sort_by }}">
                     <div class="cnt-search col-6 col-md-4">
                         <input type="text" id="q" name="search" value="{{ request.GET.search }}"
@@ -151,10 +153,34 @@
             <div class="d-flex align-items-center justify-content-center gap-2 link-search-items text-center mt-4">
                 <span class="title">فیلتر بر اساس کارفرما:</span>
                 <div class="d-flex gap-2 me-2">
-                    <a href="{% url 'public:inquiry_owner' %}?sort_by={{ request.GET.sort_by }}" {% if not request.GET.task_master %}class="active"{% endif %}>همه</a>
+                    <a href="{% url 'public:inquiry_owner' %}?sort_by={{ request.GET.sort_by }}"
+                       {% if not request.GET.task_master %}class="active"{% endif %}>همه</a>
                     {% for task_master in taskmasters %}
-                        <a href="?task_master={{ task_master.id }}&sort_by={{ request.GET.sort_by }}" {% if request.GET.task_master == task_master.id|stringformat:'i' %}class="active"{% endif %}>{{ task_master.title }}</a>
+                        <a href="?task_master={{ task_master.id }}&sort_by={{ request.GET.sort_by }}&filter_by_state={{ request.GET.filter_by_state }}"
+                           {% if request.GET.task_master == task_master.id|stringformat:'i' %}class="active"{% endif %}>{{ task_master.title }}</a>
                     {% endfor %}
+                </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-center gap-2 link-search-items text-center mt-4">
+                <span class="title">فیلتر بر اساس وضعیت:</span>
+                <div class="d-flex gap-2 me-2">
+
+                    <a href="{% url 'public:inquiry_owner' %}?sort_by={{ request.GET.sort_by }}"
+                       {% if not request.GET.filter_by_state %}class="active"{% endif %}>همه</a>
+
+
+                    <a href="?filter_by_state=waiting_for_price&sort_by={{ request.GET.sort_by }}&task_master={{ request.GET.task_master }}"
+                       {% if request.GET.filter_by_state == 'waiting_for_price' %}class="active"{% endif %}>در انتظار
+                        قیمت</a>
+
+                    <a href="?filter_by_state=price_recorded&sort_by={{ request.GET.sort_by }}&task_master={{ request.GET.task_master }}"
+                       {% if request.GET.filter_by_state == 'price_recorded' %}class="active"{% endif %}>قیمت ارسال
+                        شده</a>
+
+
+                    <a href="?filter_by_state=canceled&sort_by={{ request.GET.sort_by }}&task_master={{ request.GET.task_master }}"
+                       {% if request.GET.filter_by_state == 'canceled' %}class="active"{% endif %}>انصراف</a>
+
                 </div>
             </div>
         </div>
@@ -169,96 +195,99 @@
                     <table class="table table-bordered rounded-3 overflow-hidden">
                         <!-- Table header -->
                         <thead class="table-dark">
-                            <tr class="text-center text-nowrap">
-                                <th>ردیف</th>
-                                <th>استعلام گیرنده</th>
-                                <th>کارفرما</th>
-                                <th>شماره استعلام</th>
-                                <th>تاریخ دریافت</th>
-                                <th>تاریخ ارسال</th>
-                                <th>مهلت پاسخ</th>
-                                <th>عنوان</th>
-                                <th>توضیحات</th>
-                                <th>وضعیت بررسی</th>
-                                <th>وضعیت</th>
-                                <th>فایل</th>
-                                <th>پروژه</th>
-                                <th>عملیات</th>
-                            </tr>
+                        <tr class="text-center text-nowrap">
+                            <th>ردیف</th>
+                            <th>استعلام گیرنده</th>
+                            <th>کارفرما</th>
+                            <th>شماره استعلام</th>
+                            <th>تاریخ دریافت</th>
+                            <th>تاریخ ارسال</th>
+                            <th>مهلت پاسخ</th>
+                            <th>عنوان</th>
+                            <th>توضیحات</th>
+                            <th>وضعیت بررسی</th>
+                            <th>وضعیت</th>
+                            <th>فایل</th>
+                            <th>پروژه</th>
+                            <th>عملیات</th>
+                        </tr>
                         </thead>
                         <!-- Table body -->
                         <tbody>
-                            {% for inquiry in inquiries %}
-                                <tr class="text-center">
-                                    <td>
-                                        {{ forloop.counter }}
-                                    </td>
-                                    <td>
-                                        {{ inquiry.from_department.name }}
-                                    </td>
-                                    <td class="text-nowrap">
-                                        {{ inquiry.sender|truncatechars:16|default:'ندارد' }}
-                                    </td>
-                                    <td>
-                                        {{ inquiry.number_id|default:'-' }}
-                                    </td>
-                                    <td class="datetime-convert">
-                                        {{ inquiry.time_receive|default:'-' }}
-                                    </td>
-                                    <td class="datetime-convert">
-                                        {{ inquiry.time_submit|default:'-' }}
-                                    </td>
-                                    <td class="datetime-convert">
-                                        {{ inquiry.time_deadline_response|default:'-' }}
-                                    </td>
-                                    <td>
-                                        {{ inquiry.title|truncatechars:16|default:'بدون عنوان' }}
-                                    </td>
-                                    <td data-bs-toggle="modal" data-bs-target="#inquiryDescription-{{ inquiry.id }}">
-                                        <i class="fa fa-eye fw-bold btn btn-info btn-sm" title="مشاهده"></i>
-                                    </td>
-                                    <td>
+                        {% for inquiry in inquiries %}
+                            <tr class="text-center">
+                                <td>
+                                    {{ forloop.counter }}
+                                </td>
+                                <td>
+                                    {{ inquiry.from_department.name }}
+                                </td>
+                                <td class="text-nowrap">
+                                    {{ inquiry.sender|truncatechars:16|default:'ندارد' }}
+                                </td>
+                                <td>
+                                    {{ inquiry.number_id|default:'-' }}
+                                </td>
+                                <td class="datetime-convert">
+                                    {{ inquiry.time_receive|default:'-' }}
+                                </td>
+                                <td class="datetime-convert">
+                                    {{ inquiry.time_submit|default:'-' }}
+                                </td>
+                                <td class="datetime-convert">
+                                    {{ inquiry.time_deadline_response|default:'-' }}
+                                </td>
+                                <td>
+                                    {{ inquiry.title|truncatechars:16|default:'بدون عنوان' }}
+                                </td>
+                                <td data-bs-toggle="modal" data-bs-target="#inquiryDescription-{{ inquiry.id }}">
+                                    <i class="fa fa-eye fw-bold btn btn-info btn-sm" title="مشاهده"></i>
+                                </td>
+                                <td>
                                         <span class="{% if inquiry.status.status == 'accepted' %}
                                             text-success{% elif inquiry.status.status == 'rejected' %}
                                             text-danger{% else %}text-primary{% endif %}">
                                             {{ inquiry.get_status }}
                                         </span>
-                                    </td>
-                                    <td class="text-nowrap">
-                                        {{ inquiry.get_state_display }}
-                                    </td>
-                                    <td>
-                                        <div class="d-flex flex-wrap justify-content-center align-items-center gap-1">
-                                            <span class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addInquiryFileModal-{{ inquiry.id }}">
+                                </td>
+                                <td class="text-nowrap">
+                                    {{ inquiry.get_state_display }}
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-wrap justify-content-center align-items-center gap-1">
+                                            <span class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                                                  data-bs-target="#addInquiryFileModal-{{ inquiry.id }}">
                                                 آپلود
                                             </span>
-                                            <span class="tarif-task btn-create-report btn btn-sm btn-outline-secondary btn-files-query">
+                                        <span class="tarif-task btn-create-report btn btn-sm btn-outline-secondary btn-files-query">
                                                 نمایش
                                             </span>
-                                        </div>
-                                    </td>
-                                    <td class="text-nowrap">
-                                        {% if not inquiry.project %}
-                                            <a href="{% url 'public:project_add' %}?inquiry-id={{ inquiry.id }}"
-                                               class="btn btn-sm btn-outline-success">تبدیل به پروژه</a>
-                                        {% else %}
-                                            <a href="{{ inquiry.project.get_absolute_url }}">{{ inquiry.project.name|truncatechars:10 }}</a>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        <div class="text-nowrap">
-                                            <i class="fa fa-edit btn btn-sm btn-warning fw-bold"
-                                               data-bs-toggle="modal" data-bs-target="#editInquiryModal-{{ inquiry.id }}" title="ویرایش"></i>
-                                            <i class="fa-solid fa-trash-can btn btn-sm btn-danger"
-                                               data-bs-toggle="modal" data-bs-target="#deleteInquiryModal-{{ inquiry.id }}" title="حذف"></i>
-                                        </div>
-                                    </td>
-                                </tr>
-                            {% empty %}
-                                <div class="container-not-found-base">
-                                    <p>چیزی یافت نشد</p>
-                                </div>
-                            {% endfor %}
+                                    </div>
+                                </td>
+                                <td class="text-nowrap">
+                                    {% if not inquiry.project %}
+                                        <a href="{% url 'public:project_add' %}?inquiry-id={{ inquiry.id }}"
+                                           class="btn btn-sm btn-outline-success">تبدیل به پروژه</a>
+                                    {% else %}
+                                        <a href="{{ inquiry.project.get_absolute_url }}">{{ inquiry.project.name|truncatechars:10 }}</a>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="text-nowrap">
+                                        <i class="fa fa-edit btn btn-sm btn-warning fw-bold"
+                                           data-bs-toggle="modal" data-bs-target="#editInquiryModal-{{ inquiry.id }}"
+                                           title="ویرایش"></i>
+                                        <i class="fa-solid fa-trash-can btn btn-sm btn-danger"
+                                           data-bs-toggle="modal" data-bs-target="#deleteInquiryModal-{{ inquiry.id }}"
+                                           title="حذف"></i>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <div class="container-not-found-base">
+                                <p>چیزی یافت نشد</p>
+                            </div>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>

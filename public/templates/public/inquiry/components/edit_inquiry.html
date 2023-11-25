@@ -31,26 +31,26 @@
                             <label for="inquiryTimeReceive">تاریخ دریافت:</label>
                             <input type="text" id="inquiryTimeReceive" set-on="inquiry-time-receive-{{ inquiry.id }}"
                                    class="persianDatapicker pwt-datepicker-input-element datetime-convert rounded-2"
-                                   value="{{ inquiry.time_receive }}">
+                                   value="{{ inquiry.time_receive|default:'' }}">
                             <input type="hidden" name="time_receive" id="inquiry-time-receive-{{ inquiry.id }}"
-                                   value="{{ inquiry.time_receive }}">
+                                   value="{{ inquiry.time_receive|default:'' }}">
                         </div>
                         <div class="information-item">
                             <label for="inquiryDeadline">مهلت پاسخ(تاریخ ددلاین):</label>
                             <input type="text" id="inquiryDeadline" set-on="inquiry-time-deadline-response-{{ inquiry.id }}"
                                    class="persianDatapicker pwt-datepicker-input-element datetime-convert rounded-2"
-                                   value="{{ inquiry.time_deadline_response }}">
+                                   value="{{ inquiry.time_deadline_response|default:'' }}">
                             <input type="hidden" name="time_deadline_response"
                                    id="inquiry-time-deadline-response-{{ inquiry.id }}"
-                                   value="{{ inquiry.time_deadline_response }}">
+                                   value="{{ inquiry.time_deadline_response|default:'' }}">
                         </div>
                         <div class="information-item">
                             <label for="inquiryTimeSubmitted">تاریخ ارسال:</label>
                             <input type="text" id="inquiryTimeSubmitted" set-on="inquiry-time-submited-{{ inquiry.id }}"
                                    class="persianDatapicker pwt-datepicker-input-element datetime-convert rounded-2"
-                                   value="{{ inquiry.time_submit }}">
+                                   value="{{ inquiry.time_submit|default:'' }}">
                             <input type="hidden" name="time_submit" id="inquiry-time-submited-{{ inquiry.id }}"
-                                   value="{{ inquiry.time_submit }}">
+                                   value="{{ inquiry.time_submit|default:'' }}">
                         </div>
                         <div class="information-item">
                             <label for="inquiryState">وضعیت:</label>

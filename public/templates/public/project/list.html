@@ -45,7 +45,7 @@
             text-align: center;
         }
 
-        .link-search-items h5{
+        .link-search-items h6 {
             text-align: right;
         }
 
@@ -61,8 +61,17 @@
         }
 
         .link-search-items a.active {
-            background: #0da87c!important;
-            color: #fff!important;
+            background: #0da87c !important;
+            color: #fff !important;
+        }
+
+        .cnt-filter-by-date {
+            text-align: center;
+        }
+
+
+        .cnt-filter-by-date span {
+            color: #555;
         }
 
 
@@ -73,34 +82,161 @@
     <div class="container-fluid col-md-12 content-page">
         <main class="main">
 
+            <div class="text-left m-3">
+                <a href="{{ user.get_absolute_url_dashboard }}" class="btn btn-danger">بازگشت</a>
+            </div>
+
             <!-- section project -->
             <section class="ongoing-projects">
                 <div class="text-center d-flex align-items-center px-4">
-                    <div class="cnt-form col-11 col-md-6 mx-auto">
-                        <form>
-                            <input type="hidden" value="{{ request.GET.status }}" name="status">
-                            <input type="text" placeholder="نام پروژه و .." name="search"
-                                   value="{{ request.GET.search }}">
-                            <div>
-                                {% if request.GET.search %}
-                                    <a href="{% url 'public:project' %}?status={{ request.GET.status }}"
-                                       class="m-2 pt-2 text-danger fw-bold">X</a>
-                                {% endif %}
-                                <button>جست و جو</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div>
-                        <a href="{{ user.get_absolute_url_dashboard }}" class="btn btn-danger">بازگشت</a>
+                    <div class="col-12">
+                        <div class="cnt-form col-12 col-md-6 mx-auto">
+                            <form>
+                                <input type="hidden" value="{{ request.GET.status }}" name="status">
+                                <input type="text" placeholder="نام پروژه و .." name="search"
+                                       value="{{ request.GET.search }}">
+                                <div>
+                                    {% if request.GET.search %}
+                                        <a href="{% url 'public:project' %}?status={{ request.GET.status }}"
+                                           class="m-2 pt-2 text-danger fw-bold">X</a>
+                                    {% endif %}
+                                    <button>جست و جو</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="text-left col-11 col-md-6 mx-auto">
+                            {% if request.GET.filter_advanced %}
+                                <a href="{% url 'public:project' %}?status={{ request.GET.status }}"
+                                   class="m-2 text-danger">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            {% endif %}
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
+                                جست
+                                و جوی پیشرفته
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div class="link-search-items">
-                    <h5>فیلتر بر اساس کارفرما :</h5>
-                     <a href="{% url 'public:project' %}?status={{ request.GET.status }}" {% if not request.GET.task_master %}class="active"{% endif %}>همه</a>
+                <div class="link-search-items col-11 col-md-6 mx-auto">
+                    <h6>فیلتر بر اساس کارفرما :</h6>
+                    <a href="{% url 'public:project' %}?status={{ request.GET.status }}&project_status={{ request.GET.project_status }}"
+                       {% if not request.GET.task_master %}class="active"{% endif %}>همه</a>
                     {% for task_master in task_masters %}
-                        <a href="?task_master={{ task_master.id }}&status={{ request.GET.status }}" {% if request.GET.task_master == task_master.id|stringformat:'i' %}class="active" {% endif %}>{{ task_master.title }}</a>
+                        <a href="?task_master={{ task_master.id }}&status={{ request.GET.status }}&project_status={{ request.GET.project_status }}"
+                           {% if request.GET.task_master == task_master.id|stringformat:'i' %}class="active" {% endif %}>{{ task_master.title }}</a>
                     {% endfor %}
                 </div>
+
+                <div class="link-search-items col-11 col-md-6 mx-auto">
+                    <h6>فیلتر بر اساس وضعیت :</h6>
+                    <a href="{% url 'public:project' %}?status={{ request.GET.status }}&task_master={{ request.GET.task_master }}"
+                       {% if not request.GET.project_status %}class="active"{% endif %}>همه</a>
+
+                    <a href="?project_status=checking&status={{ request.GET.status }}&task_master={{ request.GET.task_master }}"
+                       {% if request.GET.project_status == 'checking' %}class="active" {% endif %}>در حال بررسی قبل
+                        اجرا</a>
+
+                    <a href="?project_status=under_construction&status={{ request.GET.status }}&task_master={{ request.GET.task_master }}"
+                       {% if request.GET.project_status == 'under_construction' %}class="active" {% endif %}>در حال
+                        ساخت</a>
+
+
+                    <a href="?project_status=posted&status={{ request.GET.status }}&task_master={{ request.GET.task_master }}"
+                       {% if request.GET.project_status == 'posted' %}class="active" {% endif %}>ارسال شده</a>
+
+
+                    <a href="?project_status=completed&status={{ request.GET.status }}&task_master={{ request.GET.task_master }}"
+                       {% if request.GET.project_status == 'completed' %}class="active" {% endif %}>تایید و اتمام</a>
+
+
+                    <a href="?project_status=paused&status={{ request.GET.status }}&task_master={{ request.GET.task_master }}"
+                       {% if request.GET.project_status == 'paused' %}class="active" {% endif %}>متوقف شده</a>
+
+                </div>
+
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <form>
+
+                        <input type="hidden" name="filter_advanced" value="true">
+                        <input type="hidden" name="filter_by_date" value="true">
+                        <input type="hidden" name="search" value="{{ request.GET.search }}">
+                        <input type="hidden" name="project_status" value="{{ request.GET.project_status }}">
+                        <input type="hidden" name="status" value="{{ request.GET.status }}">
+                        <input type="hidden" name="task_master" value="{{ request.GET.task_master }}">
+
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header d-flex justify-content-between">
+                                    <h5 class="modal-title col-11" id="exampleModalLabel">جست و جوی پیشرفته</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div>
+                                        <h6 style="font-weight: bold">فیلتر بر اساس بازه تاریخ :</h6>
+                                        <div class="mt-4 cnt-filter-by-date">
+                                            <p>تاریخ شروع</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <span> بیشتر از</span>
+                                                    <input type="text" name="" id="sample_delivery_datetime_picker"
+                                                           class="form-control persianDatapicker pwt-datepicker-input-element"
+                                                           set-on="time_start_gt" readonly
+                                                           value="{{ request.GET.time_start_gt }}">
+                                                    <input type="hidden" id="time_start_gt" name="time_start_gt"
+                                                           value="{{ request.GET.time_start_gt }}">
+                                                </div>
+                                                <div>
+                                                    <span> کمتر از</span>
+                                                    <input type="text" name="" id="sample_delivery_datetime_picker"
+                                                           class="form-control persianDatapicker pwt-datepicker-input-element"
+                                                           set-on="time_start_lt" readonly
+                                                           value="{{ request.GET.time_start_lt }}">
+                                                    <input type="hidden" id="time_start_lt" name="time_start_lt"
+                                                           value="{{ request.GET.time_start_lt }}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-4 cnt-filter-by-date">
+                                            <p>تاریخ پایان</p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <span> بیشتر از</span>
+                                                    <input type="text" name="" id="sample_delivery_datetime_picker"
+                                                           class="form-control persianDatapicker pwt-datepicker-input-element"
+                                                           set-on="time_end_gt" readonly
+                                                           value="{{ request.GET.time_end_gt }}">
+                                                    <input type="hidden" id="time_end_gt" name="time_end_gt"
+                                                           value="{{ request.GET.time_end_gt }}">
+                                                </div>
+                                                <div>
+                                                    <span> کمتر از</span>
+                                                    <input type="text" name="" id="sample_delivery_datetime_picker"
+                                                           class="form-control persianDatapicker pwt-datepicker-input-element"
+                                                           set-on="time_end_lt" readonly
+                                                           value="{{ request.GET.time_end_lt }}">
+                                                    <input type="hidden" id="time_end_lt" name="time_end_lt"
+                                                           value="{{ request.GET.time_end_lt }}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">لغو</button>
+                                    <button type="submit" class="btn btn-primary">جست و جو</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
 
                 <div class="box-section">
                     {% for project in projects %}
