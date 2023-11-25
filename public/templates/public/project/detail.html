@@ -80,7 +80,8 @@
                             <button class="btn btn-outline-primary text-center mx-1 p-2 px-4" data-bs-toggle="modal"
                                     data-bs-target="#project-edit">ویرایش
                             </button>
-                            <button type="button" class="btn btn-item m-1 remov btn btn-outline-danger text-center p-2 px-4"
+                            <button type="button"
+                                    class="btn btn-item m-1 remov btn btn-outline-danger text-center p-2 px-4"
                                     data-bs-toggle="modal"
                                     data-bs-target="#project-modal-delete">
                                 حذف
@@ -415,6 +416,10 @@
 
                     <!--start Uploaded documents -->
                     <div class="content-items p-2">
+                        <div class="text-left my-3">
+                            <a class="btn btn-info text-white"
+                               href="{% url 'public:project_detail_file_list' project_id=project.id %}">مشاهده همه</a>
+                        </div>
                         <section class="section-table">
                             <div class="table">
                                 <div class="table-title">
@@ -801,91 +806,6 @@
                                             <div class="col-1 p-2">
                                                 <div class="table-content-item">
                                                     {{ notif.priority }}
-                                                </div>
-                                            </div>
-                                            <div class="col-1 p-2">
-                                                <div class="table-content-item">
-                                                    {% if notif.get_file_url %}
-                                                        <a href="{{ notif.get_file_url }}" download=""
-                                                           class="btn-table">دانلود</a>
-                                                    {% else %}
-                                                        -
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    {% empty %}
-                                        <div class="container-not-found-base">
-                                            <p>چیزی یافت نشد</p>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-
-                            <p class="pt-3" style="text-align: right">درخواست از سایر واحدها</p>
-                            <div class="table">
-                                <div class="table-title">
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            ردیف
-                                        </div>
-                                    </div>
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            واحد فرستنده
-                                        </div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div class="table-title-item">
-                                            عنوان
-                                        </div>
-                                    </div>
-                                    <div class="col-5">
-                                        <div class="table-title-item">
-                                            متن درخواست
-                                        </div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div class="table-title-item">
-                                            تاریخ
-                                        </div>
-                                    </div>
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            فایل
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="table-content">
-                                    {% for ask in '' %}
-                                        <div class="row-table">
-                                            <div class="col-1 p-2">
-                                                <div class="table-content-item">
-                                                    {{ forloop.counter }}
-                                                </div>
-                                            </div>
-                                            <div class="col-1 p-2">
-                                                <div class="table-content-item">
-                                                    {{ notif.from_department.name }}
-                                                </div>
-                                            </div>
-                                            <div class="col-2 p-2">
-                                                <div class="table-content-item">
-                                                    <span class="description">
-                                                        {{ notif.get_title|truncatechars:24 }}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="col-5 p-2">
-                                                <div class="table-content-item">
-                                                    <span class="description">
-                                                        {{ notif.description|truncatechars:86 }}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="col-2 p-2">
-                                                <div class="table-content-item datetime-convert">
-                                                    {{ notif.get_created_at }}
                                                 </div>
                                             </div>
                                             <div class="col-1 p-2">
