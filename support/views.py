@@ -67,17 +67,17 @@ class TicketDepartment(View):
         else:
             projects = list(Project.objects.filter(is_active=True).values_list('id', flat=True))
 
-        data['from_department'] = request.user.department
-        data['is_all_departments'] = is_all_departments
-        data['is_all_projects'] = is_all_projects
-        data['project_selection'] = project_selection
-        data.setlist('projects', projects)
-        data.setlist('departments', departments)
-
-        f = forms.TicketDepartmentForm(data, request.FILES)
-        if form_validate_err(request, f) is False:
-            return redirect(referer_url or '/error')
-        f.save()
+        for department in departments:
+            data['from_department'] = request.user.department
+            # data['is_all_departments'] = is_all_departments
+            data['is_all_projects'] = is_all_projects
+            data['project_selection'] = project_selection
+            data['department'] = department
+            data.setlist('projects', projects)
+            f = forms.TicketDepartmentForm(data, request.FILES)
+            if form_validate_err(request, f) is False:
+                return redirect(referer_url or '/error')
+            f.save()
 
         messages.success(request, 'عملیات مورد نظر با موفقیت انجام شد')
 

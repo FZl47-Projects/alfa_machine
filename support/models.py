@@ -7,10 +7,10 @@ from public.models import Project
 class TicketDepartment(BaseModel, File):
     description = models.TextField()
     from_department = models.ForeignKey('public.Department', on_delete=models.CASCADE, related_name='from_dp')
-    departments = models.ManyToManyField('public.Department')
+    department = models.ForeignKey('public.Department',on_delete=models.CASCADE)
     projects = models.ManyToManyField('public.Project', blank=True)
     is_open = models.BooleanField(default=True)
-    is_all_departments = models.BooleanField(default=True)
+    # is_all_departments = models.BooleanField(default=True)
     is_all_projects = models.BooleanField(default=True)
     seen = models.BooleanField(default=False)
 
