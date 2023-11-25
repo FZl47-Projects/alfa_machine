@@ -9,5 +9,5 @@ urlpatterns = [
     path('project/<int:project_id>', views.PaymentProject.as_view(), name='payment_project'),
     path('payment', views.Payment.as_view(), name='payment'),
     path('prepayment', views.PrePayment.as_view(), name='prepayment'),
-    path('/surety-bond/save/', views.SaveSuretyBondView.as_view(), name='save_surety_bond')
+    path('surety-bond/save/', views.SaveSuretyBondView.as_view(), name='save_surety_bond')
 ]
