@@ -74,7 +74,7 @@ class User(AbstractUser):
         return '-'
 
     def get_tickets(self):
-        return self.department.ticketdepartment_set.filter(is_open=True)
+        return self.department.ticket_departments.filter(is_open=True, seen=False)
 
     def get_reports(self):
         return self.department.report_set.all()
@@ -90,11 +90,11 @@ class User(AbstractUser):
         return False
 
     def get_unseen_tickets(self):
-        unseen = self.department.ticketdepartment_set.filter(is_open=True, seen=False)
+        unseen = self.department.get_tickets().filter(seen=False)
         return unseen
 
     def get_unseen_notifications(self):
-        unseen = self.department.notificationdepartment_set.filter(is_showing=True, seen=False)
+        unseen = self.department.get_notifications().filter(seen=False)
         return unseen
 
     def get_absolute_url_dashboard(self):

@@ -7,7 +7,7 @@ class NotificationDepartment(BaseModel, File):
     title = models.CharField(max_length=150)
     description = models.TextField(null=True, blank=True)
     projects = models.ManyToManyField('public.Project', blank=True)
-    department = models.ForeignKey('public.Department',on_delete=models.CASCADE)
+    department = models.ForeignKey('public.Department', on_delete=models.CASCADE, related_name='notification_departments')
     priority = models.IntegerField(default=1)
     is_showing = models.BooleanField(default=True)
     # is_all_departments = models.BooleanField(default=False)

@@ -30,7 +30,10 @@ class Department(BaseModel):
         return reverse('departments.general:delete_department', args=(self.id,))
 
     def get_notifications(self):
-        return self.notificationdepartment_set.filter(is_showing=True)
+        return self.notification_departments.filter(is_showing=True)
+
+    def get_tickets(self):
+        return self.ticket_departments.filter(is_open=True)
 
 
 # TaskMasters model
