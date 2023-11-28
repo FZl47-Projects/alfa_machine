@@ -9,9 +9,6 @@
     <!-- BOOTSTRAP -->
     <link rel="stylesheet" href="{% static 'frontend/vendors/bootstrap.min.css' %}"/>
 
-    <!-- SWIPER -->
-    <link rel="stylesheet" href="{% static 'frontend/vendors/swiper.css' %}"/>
-
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="{% static 'frontend/styles/login.css' %}"/>
 {% endblock %}
@@ -19,53 +16,50 @@
 {% block Content %}
     <main class="main container">
         <!-- form-user -->
-        <section class="new_user">
+        <section class="new_user mb-4">
             <div class="content form-new_user col-12 col-md-6 mx-auto mt-5">
                 <div class="forms">
                     <form class="form form-new_user" action="{% url 'account:new_user' %}" method="post">
                         {% csrf_token %}
                         <div class="titlee">کاربر جدید</div>
-                        <div class="col-12">
-                            <div class="group-form">
-                                <input type="email" id="email" name="email" required>
-                                <label for="email"> :ایمیل</label>
+                        <div class="col-12" style="direction: rtl;">
+                            <div class="group-form d-flex flex-column align-items-start gap-1">
+                                <label for="email">ایمیل:</label>
+                                <input type="email" id="email" name="email" class="form-control form-control-lg bg-white" required>
                             </div>
-                            <div class="group-form">
-                                <input type="text" id="first_name" name="first_name" required>
-                                <label for="first_name"> :نام</label>
+                            <div class="group-form d-flex flex-column align-items-start">
+                                <label class="form-label" for="first_name">نام:</label>
+                                <input type="text" id="first_name" name="first_name" class="form-control form-control-lg bg-white" required>
                             </div>
-                            <div class="group-form">
-                                <input type="text" id="last_name" name="last_name" required>
-                                <label for="last_name"> :نام خانوادگی</label>
+                            <div class="group-form d-flex flex-column align-items-start">
+                                <label class="form-label" for="last_name">نام خانوادگی:</label>
+                                <input type="text" id="last_name" name="last_name" class="form-control form-control-lg bg-white" required>
                             </div>
-                            <div class="group-form">
-                                <input type="password" id="password" name="password" required>
-                                <label for="password">: گذرواژه </label>
+                            <div class="group-form d-flex flex-column align-items-start">
+                                <label class="form-label" for="password">گذرواژه:</label>
+                                <input type="password" id="password" name="password" class="form-control form-control-lg bg-white" required>
                             </div>
-                            <div class="group-form">
-                                <select name="role" id="role" required class="form-select form-control">
+                            <div class="group-form d-flex flex-column align-items-start">
+                                <label class="form-label" for="role">نقش:</label>
+                                <select name="role" id="role" required class="form-select">
                                     {% for role in roles %}
                                         <option value="{{ role.0 }}">{{ role.1 }}</option>
                                     {% endfor %}
                                 </select>
-                                <label for="role"> :نقش</label>
                             </div>
-                            <div class="group-form">
-                                <select name="department" class="form-select form-control" id="department" required>
+                            <div class="group-form d-flex flex-column align-items-start">
+                                <label class="form-label" for="department">نام واحد:</label>
+                                <select name="department" class="form-select" id="department" required>
                                     {% for department in departments %}
                                         <option value="{{ department.id }}">{{ department.name }}</option>
                                     {% endfor %}
                                 </select>
-                                <label for="department">
-                                    :
-                                    نام واحد
-                                </label>
-                                <small></small>
                             </div>
-
-                            <button type="submit" id="btn-login"
-                                    class="btn-submit">ثبت
-                            </button>
+                            <div class="d-flex justify-content-between py-2">
+                                <button type="submit" id="btn-login" class="btn btn-primary">ثبت کاربر</button>
+                                <a href="{{ user.get_absolute_url_dashboard }}" type="button" class="btn btn-danger">انصراف</a>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>

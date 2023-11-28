@@ -32,15 +32,15 @@ class CustomBaseUserManager(BaseUserManager):
 
 class User(AbstractUser):
     ROLE_USER_OPTIONS = (
-        ('super_user', 'super_user'),
-        ('control_project_user', 'control_project_user'),
-        ('control_quality_user', 'quality_control_user'),
-        ('commerce_user', 'commerce_user'),
-        ('procurement_commerce_user', 'procurement_commerce_user'),
-        ('financial_user', 'financial_user'),
-        ('warehouse_user', 'warehouse_user'),
-        ('production_user', 'production_user'),
-        ('technical_user', 'technical_user'),
+        ('super_user', 'کاربر مدیر'),
+        ('control_project_user', 'کاربر کنترل پروژه'),
+        ('control_quality_user', 'کاربر کنترل کیفی'),
+        ('commerce_user', 'کاربر بازرگانی'),
+        ('procurement_commerce_user', 'کاربر بازرگانی-فروش'),
+        ('financial_user', 'کاربر مالی'),
+        ('warehouse_user', 'کاربر انبار'),
+        ('production_user', 'کابر تولید'),
+        ('technical_user', 'کاربر فنی'),
     )
 
     first_name = models.CharField("first name", max_length=150, blank=True, default="بدون نام")
