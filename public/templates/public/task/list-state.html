@@ -1,5 +1,6 @@
 {% extends 'base/base_template.html' %}
 {% load static %}
+{% load filters %}
 
 {% block Title %}
     لیست تسک ها
@@ -143,13 +144,20 @@
                                     <td>
                                         <span>{{ task.to_department }}</span>
                                     </td>
-                                    <td class="d-flex flex-nowrap justify-content-center gap-1">
-                                        <button class="fa fa-trash-can btn btn-sm btn-danger" title="حذف" data-bs-toggle="modal" data-bs-target="#task-modal-delete-{{ task.id }}"></button>
-                                        <button class="fa fa-edit btn btn-sm btn-warning edit-task" title="ویرایش"></button>
-                                        <form action="{% url 'public:task_remind' task_id=task.id %}" method="post">
-                                            {% csrf_token %}
-                                            <button type="submit" class="fa fa-bell btn btn-sm btn-primary text-white" title="یادآوری"></button>
-                                        </form>
+                                    <td>
+                                        {% if user|task_has_permission %}
+                                            <div class="d-flex flex-nowrap justify-content-center gap-1">
+                                                <button class="fa fa-trash-can btn btn-sm btn-danger" title="حذف"
+                                                        data-bs-toggle="modal" data-bs-target="#task-modal-delete-{{ task.id }}"></button>
+                                                <button class="fa fa-edit btn btn-sm btn-warning edit-task" title="ویرایش"></button>
+                                                <form action="{% url 'public:task_remind' task_id=task.id %}" method="post">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="fa fa-bell btn btn-sm btn-primary text-white" title="یادآوری"></button>
+                                                </form>
+                                            </div>
+                                        {% else %}
+                                            -
+                                        {% endif %}
                                     </td>
                                 </tr>
                             {% endfor %}

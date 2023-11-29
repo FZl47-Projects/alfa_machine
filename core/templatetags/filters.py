@@ -17,3 +17,14 @@ def inquiry_has_permission(user, url_name: str = None):
         return True
 
     return False
+
+
+# Check user has permission to modify
+@register.filter
+def task_has_permission(user):
+    allowed = ['super_user', 'control_project_user']
+
+    if user.role in allowed:
+        return True
+
+    return False
