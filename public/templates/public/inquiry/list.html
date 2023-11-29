@@ -50,6 +50,10 @@
         {% include 'public/inquiry/components/inquiry_description.html' %}
         <!-- .End Inquiry description modal -->
 
+        <!-- Inquiry description modal -->
+        {% include 'public/inquiry/components/inquiry_status_description.html' %}
+        <!-- .End Inquiry description modal -->
+
         <!-- Upload inquiry file -->
         {% include 'public/inquiry/components/add_inquiry_file.html' %}
         <!-- .End Upload inquiry file -->
@@ -159,22 +163,24 @@
                     <table class="table table-bordered rounded-3 overflow-hidden">
                         <!-- Table header -->
                         <thead class="table-dark">
-                            <tr class="text-center text-nowrap">
-                                <th>ردیف</th>
-                                <th>استعلام گیرنده</th>
-                                <th>کارفرما</th>
-                                <th>شماره استعلام</th>
-                                <th>تاریخ دریافت</th>
-                                <th>تاریخ ارسال</th>
-                                <th>مهلت پاسخ</th>
-                                <th>عنوان</th>
-                                <th>توضیحات</th>
-                                <th>فایل</th>
-                                <th>وضعیت بررسی</th>
-                                {% if user|inquiry_has_permission %}
-                                    <th>عملیات</th>
-                                {% endif %}
-                            </tr>
+                        <tr class="text-center text-nowrap">
+                            <th>ردیف</th>
+                            <th>استعلام گیرنده</th>
+                            <th>کارفرما</th>
+                            <th>شماره استعلام</th>
+                            <th>تاریخ دریافت</th>
+                            <th>تاریخ ارسال</th>
+                            <th>مهلت پاسخ</th>
+                            <th>عنوان</th>
+                            <th>توضیحات</th>
+                            <th>فایل</th>
+                            <th>وضعیت بررسی</th>
+                            <th>وضعیت</th>
+                            <th>توضیحات بررسی</th>
+                            {% if user|inquiry_has_permission %}
+                                <th>عملیات</th>
+                            {% endif %}
+                        </tr>
                         </thead>
                         <!-- Table body -->
                         <tbody>
@@ -238,6 +244,12 @@
                                             {{ inquiry.get_status }}
                                         </span>
                                     {% endif %}
+                                </td>
+                                 <td class="text-nowrap">
+                                    {{ inquiry.get_state_display }}
+                                </td>
+                                <td data-bs-toggle="modal" data-bs-target="#inquiryStatusDescription-{{ inquiry.id }}">
+                                    <span class="fw-bold btn btn-primary btn-sm" title="مشاهده">مشاهده</span>
                                 </td>
                                 {% if user|inquiry_has_permission %}
                                     <td>

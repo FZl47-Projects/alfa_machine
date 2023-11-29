@@ -1,4 +1,5 @@
-<div class="modal fade" id="inquiryApprovalModal-{{ inquiry.id }}" tabindex="-1" role="dialog" aria-labelledby="inquiryApproval"
+<div class="modal fade" id="inquiryApprovalModal-{{ inquiry.id }}" tabindex="-1" role="dialog"
+     aria-labelledby="inquiryApproval"
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
@@ -6,14 +7,20 @@
                 <h5 class="modal-title">تایید استعلام</h5>
                 <span class="mx-2 font-80">({{ inquiry.title|default:'بدون عنوان' }})</span>
             </div>
-            <form action="{% url 'public:inquiry_status' inquiry_id=inquiry.id %}" method="post" enctype="multipart/form-data">
+            <form action="{% url 'public:inquiry_status' inquiry_id=inquiry.id %}" method="post"
+                  enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="modal-body">
                     <div class="information-section">
                         <input type="hidden" name="status" value="accepted">
                         <div class="information-item">
+                            <label for="approvalFile" class="my-1">فایل:</label>
+                            <input type="file" name="file" id="approvalFile">
+                        </div>
+                        <div class="information-item">
                             <label for="approvalDescription" class="my-1">توضیحات:</label>
-                            <textarea name="description" id="approvalDescription" cols="30" rows="10" required></textarea>
+                            <textarea name="description" id="approvalDescription" cols="30" rows="10"
+                                      required></textarea>
                         </div>
                     </div>
                 </div>
@@ -41,6 +48,10 @@
                 <div class="modal-body">
                     <input type="hidden" name="status" value="rejected">
                     <div class="information-section">
+                        <div class="information-item">
+                            <label for="approvalFile" class="my-1">فایل:</label>
+                            <input type="file" name="file" id="approvalFile">
+                        </div>
                         <div class="information-item">
                             <label for="deniedDescription" class="my-1">توضیحات:</label>
                             <textarea name="description" id="deniedDescription" cols="30" rows="10" required></textarea>

@@ -127,15 +127,22 @@ class ProjectAdd(View):
 
     @user_role_required_cbv(['super_user', 'commerce_user', 'control_project_user'])
     def post(self, request):
+        referer_url = request.META.get('HTTP_REFERER', None)
         data = request.POST
 
         f = forms.ProjectAdd(data)
         if not f.is_valid():
             messages.error(request, 'لطفا فیلد هارا به درستی وارد نمایید')
+            # redirect to referer url or project add url
+            if referer_url:
+                return redirect(referer_url)
             return redirect('public:project_add')
         f.save()
 
         messages.success(request, 'پروژه با موفقیت ایجاد شد')
+        # redirect to referer url or project add url
+        if referer_url:
+            return redirect(referer_url)
         return redirect('public:project_add')
 
 
@@ -510,7 +517,7 @@ class Inquiry(View):
         if request.user.role == 'super_user':
             inquiries = models.Inquiry.objects.all()
         else:
-            inquiries = models.Inquiry.objects.filter(status__status='accepted')
+            inquiries = models.Inquiry.objects.exclude(status=None)
 
         inquiries = self.search(request, inquiries)
         inquiries = self.filter(request, inquiries)
