@@ -276,10 +276,10 @@ class TaskOwner(LoginRequiredMixin, View):
         task_state = request.GET.get('task_state', None)
         department = request.user.department
 
-        if request.user.role in ('super_user', 'commerce_user', 'control_project_user'):
+        if request.user.role in ('super_user',):
             tasks = models.Task.objects.filter(is_active=True)
         else:
-            tasks = models.Task.objects.filter(from_department=department)
+            tasks = models.Task.objects.filter(is_active=True, from_department=department)
 
         if task_state:
             tasks = tasks.filter(state=task_state)
