@@ -36,7 +36,7 @@
 {% block Content %}
 
     {% for inquiry in inquiries %}
-        {% if user|has_permission %}
+        {% if user|inquiry_has_permission %}
             <!-- Edit inquiry modal -->
             {% include 'public/inquiry/components/edit_inquiry.html' %}
             <!-- .End Edit inquiry modal -->
@@ -159,22 +159,22 @@
                     <table class="table table-bordered rounded-3 overflow-hidden">
                         <!-- Table header -->
                         <thead class="table-dark">
-                        <tr class="text-center text-nowrap">
-                            <th>ردیف</th>
-                            <th>استعلام گیرنده</th>
-                            <th>کارفرما</th>
-                            <th>شماره استعلام</th>
-                            <th>تاریخ دریافت</th>
-                            <th>تاریخ ارسال</th>
-                            <th>مهلت پاسخ</th>
-                            <th>عنوان</th>
-                            <th>توضیحات</th>
-                            <th>فایل</th>
-                            <th>وضعیت بررسی</th>
-                            {% if user|has_permission %}
-                                <th>عملیات</th>
-                            {% endif %}
-                        </tr>
+                            <tr class="text-center text-nowrap">
+                                <th>ردیف</th>
+                                <th>استعلام گیرنده</th>
+                                <th>کارفرما</th>
+                                <th>شماره استعلام</th>
+                                <th>تاریخ دریافت</th>
+                                <th>تاریخ ارسال</th>
+                                <th>مهلت پاسخ</th>
+                                <th>عنوان</th>
+                                <th>توضیحات</th>
+                                <th>فایل</th>
+                                <th>وضعیت بررسی</th>
+                                {% if user|inquiry_has_permission %}
+                                    <th>عملیات</th>
+                                {% endif %}
+                            </tr>
                         </thead>
                         <!-- Table body -->
                         <tbody>
@@ -205,21 +205,21 @@
                                     {{ inquiry.title|truncatechars:16|default:'بدون عنوان' }}
                                 </td>
                                 <td data-bs-toggle="modal" data-bs-target="#inquiryDescription-{{ inquiry.id }}">
-                                    <i class="fa fa-eye fw-bold btn btn-info btn-sm" title="مشاهده"></i>
+                                    <span class="fw-bold btn btn-primary btn-sm" title="مشاهده">مشاهده</span>
                                 </td>
                                 <td>
                                     <div class="d-flex flex-wrap justify-content-center align-items-center gap-1">
-                                            <span class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
-                                                  data-bs-target="#addInquiryFileModal-{{ inquiry.id }}">
-                                                آپلود
-                                            </span>
+                                        <span class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                                              data-bs-target="#addInquiryFileModal-{{ inquiry.id }}">
+                                            آپلود
+                                        </span>
                                         <span class="tarif-task btn-create-report btn btn-sm btn-outline-secondary btn-files-query">
-                                                نمایش
-                                            </span>
+                                            نمایش
+                                        </span>
                                     </div>
                                 </td>
                                 <td class="text-nowrap">
-                                    {% if user|has_permission:request.resolver_match.url_name %}
+                                    {% if user|inquiry_has_permission:request.resolver_match.url_name %}
                                         {% if not inquiry.status %}
                                             <div class="btn btn-sm btn-success" data-bs-toggle="modal"
                                                  data-bs-target="#inquiryApprovalModal-{{ inquiry.id }}">تایید
@@ -229,17 +229,17 @@
                                             </div>
                                         {% else %}
                                             <span class="{% if inquiry.status.status == 'accepted' %}text-success{% else %}text-danger{% endif %}">
-                                                    {{ inquiry.status.get_status_display }}
-                                                </span>
+                                                {{ inquiry.status.get_status_display }}
+                                            </span>
                                         {% endif %}
                                     {% else %}
                                         <span class="{% if inquiry.status.status == 'accepted' %}text-success{% elif inquiry.status.status == 'rejected' %}
-                                                text-danger{% else %}text-primary{% endif %}">
-                                                {{ inquiry.get_status }}
-                                            </span>
+                                            text-danger{% else %}text-primary{% endif %}">
+                                            {{ inquiry.get_status }}
+                                        </span>
                                     {% endif %}
                                 </td>
-                                {% if user|has_permission %}
+                                {% if user|inquiry_has_permission %}
                                     <td>
                                         <div class="text-nowrap">
                                             <i class="fa fa-edit btn btn-sm btn-warning fw-bold"
