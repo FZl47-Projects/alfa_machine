@@ -12,20 +12,20 @@
                 <input type="text" placeholder="تسک شماره یک" value="{{ task.name }}" name="name" required>
             </div>
             <div class="d-flex">
-                <div class="col-6" style="padding:0px 5px ;">
+                <div class="col-6" style="padding:0 5px;">
                     <div class="information-item date">
                         <label>تاریخ شروع</label>
-                        <input type="text " class="persianDatapicker datetime-convert" value="{% if task.get_time_start %}{{ task.get_time_start }}{% endif %}" name=""
-                               set-on="task_time_start_{{ task.id }}">
+                        <input type="text" class="bg-light persianDatapicker datetime-convert" value="{% if task.get_time_start %}{{ task.get_time_start }}{% endif %}"
+                               set-on="task_time_start_{{ task.id }}" readonly>
                         <input type="hidden" name="time_start" value="{% if task.get_time_start %}{{ task.get_time_start }}{% endif %}"
                                id="task_time_start_{{ task.id }}">
                     </div>
                 </div>
-                <div class="col-6" style="padding:0px 5px ;">
+                <div class="col-6" style="padding:0 5px;">
                     <div class="information-item date">
                         <label>تاریخ پایان</label>
-                        <input type="text " class="persianDatapicker datetime-convert" name="" value="{% if task.get_time_end %}{{ task.get_time_end }}{% endif %}"
-                               set-on="task_time_end_{{ task.id }}">
+                        <input type="text" class="bg-light persianDatapicker datetime-convert" value="{% if task.get_time_end %}{{ task.get_time_end }}{% endif %}"
+                               set-on="task_time_end_{{ task.id }}" readonly>
                         <input type="hidden" name="time_end" value="{% if task.get_time_end %}{{ task.get_time_end }}{% endif %}"
                                id="task_time_end_{{ task.id }}">
                     </div>
