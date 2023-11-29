@@ -188,7 +188,7 @@ class ProjectFile(LoginRequiredMixin, View):
             items = items.order_by('id')
         return items
 
-    @user_role_required_cbv(['super_user', 'commerce_user', 'control_project_user', 'technical_user'])
+    @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user', 'technical_user'])
     def get(self, request):
         context = {
             'projects': models.Project.objects.filter(is_active=True)
@@ -236,7 +236,7 @@ class ProjectDetailFileList(LoginRequiredMixin, View):
         items = self.sort(request, items)
         return items
 
-    @user_role_required_cbv(['super_user', 'commerce_user', 'control_project_user', 'technical_user'])
+    @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user', 'technical_user'])
     def get(self, request, project_id):
         project = models.Project.objects.get(id=project_id, is_active=True)
         files = project.get_files()
