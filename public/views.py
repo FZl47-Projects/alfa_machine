@@ -100,15 +100,7 @@ class Project(View):
 
     def get(self, request):
         # Get project status and filter by them (if exists)
-        project_status = request.GET.get('status')
-
-        if not project_status:
-            projects = models.Project.objects.filter(is_active=True)
-        elif project_status == 'other':
-            projects = models.Project.objects.filter(is_active=True,
-                                                     status__in=['checking', 'paused', 'under_construction'])
-        else:
-            projects = models.Project.objects.filter(is_active=True, status=project_status)
+        projects = models.Project.objects.filter(is_active=True)
 
         projects = self.filter(request, projects)
 
