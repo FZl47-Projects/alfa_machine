@@ -12,24 +12,6 @@
 
 
 {% block Content %}
-    <!-- morde-descriptin popup -->
-    {% for task in tasks %}
-        <div class="content-modal-two modal-more-description">
-            <div class="inner-modal">
-                <form class="p-4">
-                    <div class="close-modal close-modal-description">
-                        <img src="{% static 'frontend/images/close.png' %}" alt="">
-                    </div>
-                    <div class="hhh">
-                        <div class="more-des">
-                            {{ task.description }}
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    {% endfor %}
-
     <div class="text-center d-flex justify-content-center mb-2 mt-1 px-3">
         <h3 class="title-page w-100 me-5">لیست تسک های الویت بندی شده</h3>
         <div class="mt-2">
@@ -71,132 +53,92 @@
             </div>
         </div>
     </div>
+
     <!--morde-descriptin popup -->
     <form action="{% url 'public:task_list_state_update' %}" method="post">
         {% csrf_token %}
-        <main class="main content-page container">
+        <main class="main content-page">
             <section class="col-12 project-content">
                 <div class="inner-project">
-                    <!--task-prioritization table -->
-                    <div class="content-items p-2">
-                        <section class="section-table">
-                            <!-- table -->
-                            <div class="table">
-                                <!-- title table -->
-                                <div class="table-title">
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            ردیف
-                                        </div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div class="table-title-item">
-                                            نام تسک
-                                        </div>
-                                    </div>
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            تاریخ شروع
-                                        </div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div class="table-title-item">
-                                            تاریخ پایان
-                                        </div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div class="table-title-item">
-                                            توضیحات
-                                        </div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div class="table-title-item">
-                                            واحد تخصیص داده
-                                        </div>
-                                    </div>
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            <span class="download">فایل</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            وضعیت
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- title table -->
-                                <!-- content table -->
-                                <div class="table-content">
-                                    {% for task in tasks %}
-                                        <div class="row-table">
-                                            <!-- each column -->
-                                            <div class="col-1 p-2">
-                                                <div class="table-content-item">
-                                                    {{ forloop.counter }}
-                                                </div>
+
+                    <!-- Start tasks list table -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered rounded-3 overflow-hidden">
+                            <!-- Table head -->
+                            <thead class="table-dark">
+                                <tr class="text-center text-nowrap">
+                                    <th>ردیف</th>
+                                    <th>عنوان</th>
+                                    <th>توضیحات</th>
+                                    <th>تاریخ شروع</th>
+                                    <th>تاریخ پایان</th>
+                                    <th>واحد تخصیص داده</th>
+                                    <th>پروژه</th>
+                                    <th>اولویت</th>
+                                    <th>فایل</th>
+                                    <th>وضعیت</th>
+                                </tr>
+                            </thead>
+                            <!-- Table body -->
+                            <tbody>
+                                {% for task in tasks %}
+                                    <!-- Delete task modal -->
+                                    {% include 'public/task/components/delete_task.html' %}
+                                    <!-- - -->
+
+                                    <!-- Task description modal -->
+                                    {% include 'public/task/components/task_description.html' %}
+                                    <!-- - -->
+
+                                    <tr class="text-center align-items-center">
+                                        <td>
+                                            <span>{{ forloop.counter }}</span>
+                                        </td>
+                                        <td>
+                                            <span>{{ task.name|truncatechars:20|default:'بدون عنوان' }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#taskDescription-{{ task.id }}">مشاهده</span>
+                                        </td>
+                                        <td>
+                                            <span class="datetime-convert">{{ task.get_time_start|default:'-' }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="datetime-convert">{{ task.get_time_end|default:'-' }}</span>
+                                        </td>
+                                        <td>
+                                            <span>{{ task.from_department.name }}</span>
+                                        </td>
+                                        <td>
+                                            <span>{{ task.project.name|truncatechars:20 }}</span>
+                                        </td>
+                                        <td>
+                                            <span>{{ task.priority|default:'0' }}</span>
+                                        </td>
+                                        <td>
+                                            {% if task.get_file_url %}
+                                                <a href="{{ task.get_file_url }}" class="btn btn-sm btn-primary" download>دریافت</a>
+                                            {% else %}
+                                                <span>ندارد</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <div class=" d-flex justify-content-center">
+                                                <!-- status task -->
+                                                <select class="form-select form-select-sm" name="task-state-{{ task.id }}">
+                                                    {% for task_state in task_states %}
+                                                        <option value="{{ task_state.0 }}"
+                                                                {% if task.state == task_state.0 %}selected{% endif %}>{{ task_state.1 }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <!-- status task -->
                                             </div>
-                                            <!-- each column -->
-                                            <div class="col-2 p-2">
-                                                <div class="table-content-item">
-                                                    {{ task.name }}
-                                                </div>
-                                            </div>
-                                            <div class="col-1 p-2">
-                                                <div class="table-content-item datetime-convert">
-                                                    {{ task.get_time_start|default:'-' }}
-                                                </div>
-                                            </div>
-                                            <div class="col-2 p-2">
-                                                <div class="table-content-item datetime-convert">
-                                                    {{ task.get_time_end|default:'-' }}
-                                                </div>
-                                            </div>
-                                            <div class="col-2 p-2">
-                                                <div class="table-content-item">
-                                                    <p class="description">{{ task.description|truncatechars:30|default:'بدون توضیحات' }}</p>
-                                                </div>
-                                            </div>
-                                            <div class="col-2 p-2">
-                                                <div class="table-content-item btn-allocation-information"
-                                                     style="cursor:pointer;">
-                                                    {{ task.from_department }}
-                                                </div>
-                                            </div>
-                                            <div class="col-1 p-2">
-                                                <div class="table-content-item">
-                                                    {% if task.get_file_url %}
-                                                        <a href="{{ task.get_file_url }}" download>دانلود</a>
-                                                    {% else %}
-                                                        -
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                            <div class="col-1 p-2">
-                                                <div class="table-content-item">
-                                                    <!-- status task -->
-                                                    <select name="task-state-{{ task.id }}">
-                                                        {% for task_state in task_states %}
-                                                            <option value="{{ task_state.0 }}"
-                                                                    {% if task.state == task_state.0 %}selected{% endif %}>{{ task_state.1 }}</option>
-                                                        {% endfor %}
-                                                    </select>
-                                                    <!-- status task -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                    {% empty %}
-                                        <div class="container-not-found-base">
-                                            <p>چیزی یافت نشد</p>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                                <!-- content table -->
-                            </div>
-                            <!-- table -->
-                        </section>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
-                    <!--task-prioritization table -->
                 </div>
             </section>
             {% if tasks.count > 0 %}
