@@ -168,15 +168,15 @@
                             <th>استعلام گیرنده</th>
                             <th>کارفرما</th>
                             <th>شماره استعلام</th>
-                            <th>تاریخ دریافت</th>
-                            <th>تاریخ ارسال</th>
-                            <th>مهلت پاسخ</th>
                             <th>عنوان</th>
+                            <th>تاریخ دریافت</th>
+                            <th>مهلت پاسخ</th>
                             <th>توضیحات</th>
                             <th>فایل</th>
                             <th>وضعیت بررسی</th>
                             <th>وضعیت</th>
                             <th>توضیحات بررسی</th>
+                            <th>تاریخ ارسال</th>
                             {% if user|inquiry_has_permission %}
                                 <th>عملیات</th>
                             {% endif %}
@@ -198,17 +198,14 @@
                                 <td>
                                     {{ inquiry.number_id|default:'-' }}
                                 </td>
+                                <td title="{{ inquiry.title|default:'بدون عنوان' }}">
+                                    {{ inquiry.title|truncatechars:16|default:'بدون عنوان' }}
+                                </td>
                                 <td class="datetime-convert">
                                     {{ inquiry.time_receive|default:'-' }}
                                 </td>
                                 <td class="datetime-convert">
-                                    {{ inquiry.time_submit|default:'-' }}
-                                </td>
-                                <td class="datetime-convert">
                                     {{ inquiry.time_deadline_response|default:'-' }}
-                                </td>
-                                <td>
-                                    {{ inquiry.title|truncatechars:16|default:'بدون عنوان' }}
                                 </td>
                                 <td data-bs-toggle="modal" data-bs-target="#inquiryDescription-{{ inquiry.id }}">
                                     <span class="fw-bold btn btn-primary btn-sm" title="مشاهده">مشاهده</span>
@@ -250,6 +247,9 @@
                                 </td>
                                 <td data-bs-toggle="modal" data-bs-target="#inquiryStatusDescription-{{ inquiry.id }}">
                                     <span class="fw-bold btn btn-primary btn-sm" title="مشاهده">مشاهده</span>
+                                </td>
+                                <td class="datetime-convert">
+                                    {{ inquiry.time_submit|default:'-' }}
                                 </td>
                                 {% if user|inquiry_has_permission %}
                                     <td>

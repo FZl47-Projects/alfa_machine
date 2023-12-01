@@ -14,8 +14,8 @@
                             <input type="text" name="title" id="inquiryTitle" value="{{ inquiry.title }}" class="rounded-2">
                         </div>
                         <div class="information-item">
-                            <label for="inquiryNumber">شماره درخواست:</label>
-                            <input type="number" name="number_id" id="inquiryNumber" value="{{ inquiry.number_id }}" class="rounded-2">
+                            <label for="inquiryNumber">شماره استعلام:</label>
+                            <input type="text" name="number_id" id="inquiryNumber" value="{{ inquiry.number_id }}" class="rounded-2">
                         </div>
                         <div class="information-item">
                             <label for="inquiryTaskMaster">کارفرما:</label>
@@ -30,7 +30,7 @@
                         <div class="information-item">
                             <label for="inquiryTimeReceive">تاریخ دریافت:</label>
                             <input type="text" id="inquiryTimeReceive" set-on="inquiry-time-receive-{{ inquiry.id }}"
-                                   class="persianDatapicker pwt-datepicker-input-element datetime-convert rounded-2"
+                                   class="persianDatapicker pwt-datepicker-input-element datetime-convert rounded-2 bg-light" readonly
                                    value="{{ inquiry.time_receive|default:'' }}">
                             <input type="hidden" name="time_receive" id="inquiry-time-receive-{{ inquiry.id }}"
                                    value="{{ inquiry.time_receive|default:'' }}">
@@ -38,7 +38,7 @@
                         <div class="information-item">
                             <label for="inquiryDeadline">مهلت پاسخ(تاریخ ددلاین):</label>
                             <input type="text" id="inquiryDeadline" set-on="inquiry-time-deadline-response-{{ inquiry.id }}"
-                                   class="persianDatapicker pwt-datepicker-input-element datetime-convert rounded-2"
+                                   class="persianDatapicker pwt-datepicker-input-element datetime-convert rounded-2 bg-light" readonly
                                    value="{{ inquiry.time_deadline_response|default:'' }}">
                             <input type="hidden" name="time_deadline_response"
                                    id="inquiry-time-deadline-response-{{ inquiry.id }}"
@@ -47,7 +47,7 @@
                         <div class="information-item">
                             <label for="inquiryTimeSubmitted">تاریخ ارسال:</label>
                             <input type="text" id="inquiryTimeSubmitted" set-on="inquiry-time-submited-{{ inquiry.id }}"
-                                   class="persianDatapicker pwt-datepicker-input-element datetime-convert rounded-2"
+                                   class="persianDatapicker pwt-datepicker-input-element datetime-convert rounded-2 bg-light" readonly
                                    value="{{ inquiry.time_submit|default:'' }}">
                             <input type="hidden" name="time_submit" id="inquiry-time-submited-{{ inquiry.id }}"
                                    value="{{ inquiry.time_submit|default:'' }}">

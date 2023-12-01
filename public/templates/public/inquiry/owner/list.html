@@ -200,15 +200,15 @@
                             <th>استعلام گیرنده</th>
                             <th>کارفرما</th>
                             <th>شماره استعلام</th>
-                            <th>تاریخ دریافت</th>
-                            <th>تاریخ ارسال</th>
-                            <th>مهلت پاسخ</th>
                             <th>عنوان</th>
+                            <th>تاریخ دریافت</th>
+                            <th>مهلت پاسخ</th>
                             <th>توضیحات</th>
                             <th>وضعیت بررسی</th>
                             <th>وضعیت</th>
                             <th>فایل</th>
                             <th>پروژه</th>
+                            <th>تاریخ ارسال</th>
                             <th>عملیات</th>
                         </tr>
                         </thead>
@@ -228,40 +228,37 @@
                                 <td>
                                     {{ inquiry.number_id|default:'-' }}
                                 </td>
+                                <td title="{{ inquiry.title|default:'بدون عنوان' }}">
+                                    {{ inquiry.title|truncatechars:16|default:'بدون عنوان' }}
+                                </td>
                                 <td class="datetime-convert">
                                     {{ inquiry.time_receive|default:'-' }}
                                 </td>
                                 <td class="datetime-convert">
-                                    {{ inquiry.time_submit|default:'-' }}
-                                </td>
-                                <td class="datetime-convert">
                                     {{ inquiry.time_deadline_response|default:'-' }}
-                                </td>
-                                <td>
-                                    {{ inquiry.title|truncatechars:16|default:'بدون عنوان' }}
                                 </td>
                                 <td data-bs-toggle="modal" data-bs-target="#inquiryDescription-{{ inquiry.id }}">
                                     <i class="fa fa-eye fw-bold btn btn-info btn-sm" title="مشاهده"></i>
                                 </td>
                                 <td>
-                                        <span class="{% if inquiry.status.status == 'accepted' %}
-                                            text-success{% elif inquiry.status.status == 'rejected' %}
-                                            text-danger{% else %}text-primary{% endif %}">
-                                            {{ inquiry.get_status }}
-                                        </span>
+                                    <span class="{% if inquiry.status.status == 'accepted' %}
+                                        text-success{% elif inquiry.status.status == 'rejected' %}
+                                        text-danger{% else %}text-primary{% endif %}">
+                                        {{ inquiry.get_status }}
+                                    </span>
                                 </td>
                                 <td class="text-nowrap">
                                     {{ inquiry.get_state_display }}
                                 </td>
                                 <td>
                                     <div class="d-flex flex-wrap justify-content-center align-items-center gap-1">
-                                            <span class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
-                                                  data-bs-target="#addInquiryFileModal-{{ inquiry.id }}">
-                                                آپلود
-                                            </span>
+                                        <span class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                                              data-bs-target="#addInquiryFileModal-{{ inquiry.id }}">
+                                            آپلود
+                                        </span>
                                         <span class="tarif-task btn-create-report btn btn-sm btn-outline-secondary btn-files-query">
-                                                نمایش
-                                            </span>
+                                            نمایش
+                                        </span>
                                     </div>
                                 </td>
                                 <td class="text-nowrap">
@@ -271,6 +268,9 @@
                                     {% else %}
                                         <a href="{{ inquiry.project.get_absolute_url }}">{{ inquiry.project.name|truncatechars:10 }}</a>
                                     {% endif %}
+                                </td>
+                                <td class="datetime-convert">
+                                    {{ inquiry.time_submit|default:'-' }}
                                 </td>
                                 <td>
                                     <div class="text-nowrap">
