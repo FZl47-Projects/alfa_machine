@@ -104,7 +104,7 @@
                                         <span>{{ forloop.counter }}</span>
                                     </td>
                                     <td>
-                                        <span>{{ task.name|default:'بدون عنوان' }}</span>
+                                        <span title="{{ task.name|default:'بدون عنوان' }}">{{ task.name|default:'بدون عنوان' }}</span>
                                     </td>
                                     <td>
                                         <span>{{ task.get_state_label }}</span>

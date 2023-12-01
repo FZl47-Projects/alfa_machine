@@ -95,7 +95,7 @@
                                             <span>{{ forloop.counter }}</span>
                                         </td>
                                         <td>
-                                            <span>{{ task.name|truncatechars:20|default:'بدون عنوان' }}</span>
+                                            <span title="{{ task.name|default:'بدون عنوان' }}">{{ task.name|truncatechars:20|default:'بدون عنوان' }}</span>
                                         </td>
                                         <td>
                                             <span class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#taskDescription-{{ task.id }}">مشاهده</span>
