@@ -336,7 +336,7 @@
             <section class="collection-units bg-white mt-4">
                 <div class="box-section justify-content-start">
                     <!-- item Access panel -->
-                    <div class="col-12 col-md-3">
+                    <div class="col-12 col-md-3 col-lg-2">
                         <div class="box-item-2 ddd">
                             <img src="{% static 'frontend/images/تسک خای اولویت بندی شده 2@2x.png' %}" alt=""
                                  class="icon-box mb-3">
@@ -349,7 +349,7 @@
                         </div>
                     </div>
                     <!-- item Access panel -->
-                    <div class="col-12 col-md-3">
+                    <div class="col-12 col-md-3 col-lg-2">
                         <div class="box-item-2 ddd">
                             <img src="{% static 'frontend/images/درخواست از سایر واحد ها 2@2x.png' %}" alt=""
                                  class="icon-box mb-3">
@@ -359,7 +359,19 @@
                       <div class="tarif-task" data-bs-toggle="modal" data-bs-target="#addTicketModal" id="one">مشاهده</div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-3">
+                    <div class="col-12 col-md-3 col-lg-2">
+                        <div class="box-item-2 ddd">
+                            <img src="{% static 'frontend/images/لیست خرید تایید شده مدیریت 2@2x.png' %}" alt=""
+                                 class="icon-box pb-2">
+                            <div class="style-conent-box mb-3">
+                                <span>لیست فایل‌های پروژه</span>
+                            </div>
+                            <a href="{% url 'public:project_file' %}">
+                                <div class="tarif-task" id="one">مشاهده</div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-3 col-lg-2">
                         <div class="box-item-2 ddd">
                             <img src="{% static 'frontend/images/لیست خرید تایید شده مدیریت 2@2x.png' %}" alt=""
                                  class="icon-box mb-3">
