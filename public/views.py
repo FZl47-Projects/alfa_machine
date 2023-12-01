@@ -52,10 +52,22 @@ class TaskMasterView(View):
 class ProjectDetail(View):
     template_name = 'public/project/detail.html'
 
+    def filter(self, request, tasks):
+        search = request.GET.get('task_q', None)
+
+        if search:
+            tasks = tasks.filter(Q(name__icontains=search) | Q(from_department__name__icontains=search))
+
+        return tasks
+
     def get(self, request, project_id):
+        tasks = models.Task.objects.filter(project_id=project_id)
+        tasks = self.filter(request, tasks)
+
         context = {
             'has_perm_to_modify': models.Project.has_perm_to_modify(request.user),
             'project': models.Project.objects.get(id=project_id),
+            'project_tasks': tasks,
             'task_masters': models.TaskMaster.objects.all()
         }
         return render(request, self.template_name, context)
@@ -195,7 +207,8 @@ class ProjectFile(LoginRequiredMixin, View):
             items = items.order_by('id')
         return items
 
-    @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user', 'technical_user'])
+    @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user', 'control_quality_user',
+                             'technical_user', 'production_user'])
     def get(self, request):
         context = {
             'projects': models.Project.objects.filter(is_active=True)
@@ -243,7 +256,8 @@ class ProjectDetailFileList(LoginRequiredMixin, View):
         items = self.sort(request, items)
         return items
 
-    @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user', 'technical_user'])
+    @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user', 'control_quality_user',
+                             'technical_user', 'production_user'])
     def get(self, request, project_id):
         project = models.Project.objects.get(id=project_id, is_active=True)
         files = project.get_files()
