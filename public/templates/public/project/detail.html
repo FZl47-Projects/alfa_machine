@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block Title %}
-    {{ project.name }}
+    جزئیات پروژه
 {% endblock %}
 
 {% block Link %}
@@ -55,11 +55,14 @@
 
 
     <main class="main content-page container">
-        <h5 class="title-page">{{ project.name }}</h5>
+        <div class="d-flex align-items-center">
+            <h5 class="title-page mx-auto">{{ project.name }}</h5>
+            <a href="{{ user.get_absolute_url_dashboard }}" class="btn btn-danger text-center ms-1">بازگشت</a>
+        </div>
         <section class="col-12 project-content">
             <div class="inner-project">
                 <!-- btn tab page -->
-                <div class="btn-content d-flex justify-content-between" style="border-bottom: 1px solid #a2a2a2;">
+                <div class="btn-content d-flex justify-content-between border-bottom border-secondary border-1">
                     <div class="btns col-12 col-md-7">
                         <div class="btn-change col-2 text-center active">مشخصات پروژه</div>
                         <div class="btn-change col-2 text-center">لیست انبار</div>
@@ -84,6 +87,7 @@
                             </button>
                         </div>
                     {% endif %}
+
                 </div>
                 <!-- btn tab page -->
 
