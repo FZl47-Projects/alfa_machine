@@ -166,11 +166,11 @@ class Project(BaseModel):
     def get_prepayment_datetime(self):
         if self.prepayment_datetime:
             return self.prepayment_datetime.strftime('%Y-%m-%d %H:%M')
-        return '-'
+        return ''
 
     def get_sample_delivery_date(self):
         if not self.sample_delivery_date:
-            return '-'
+            return ''
         return self.sample_delivery_date.strftime('%Y-%m-%d %H:%M')
 
     def get_mass_delivery_date(self):
@@ -187,17 +187,17 @@ class Project(BaseModel):
     def get_prepayment_datetime_input(self):
         if self.prepayment_datetime:
             return self.prepayment_datetime.strftime('%Y-%m-%d')
-        return '-'
+        return ''
 
     def get_time_end_input(self):
         if self.time_end:
             return self.time_end.strftime('%Y-%m-%d')
-        return '-'
+        return ''
 
     def get_time_start_input(self):
         if self.time_start:
             return self.time_start.strftime('%Y-%m-%d')
-        return '-'
+        return ''
 
 
 class ProjectFile(BaseModel, File):
