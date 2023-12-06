@@ -7,6 +7,7 @@
 
 {% block Link %}
     <link rel="stylesheet" href="{% static 'frontend/styles/clearing.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/autonumeric/4.10.0/autoNumeric.min.js"></script>
 {% endblock %}
 
 
@@ -46,12 +47,12 @@
                     <div>
                         <span>قیمت: </span>
                         <span class="spread-price">{{ project.price|default:'-' }}</span>
-                        <span>تومان</span>
+                        <span>ریال</span>
                     </div>
                     <div>
                         <span>پرداخت شده: </span>
                         <span class="spread-price">{{ project.get_payments_price }}</span>
-                        <span>تومان</span>
+                        <span>ریال</span>
                     </div>
                 </div>
                 <div class="d-flex flex-column align-items-start gap-4">
@@ -256,4 +257,18 @@
 
 {% block Script %}
     <script type="module" src="{% static 'frontend/js/clearing.js' %}"></script>
+
+    <!-- AutoNumeric for price fields -->
+    <script>
+        const priceInputs = document.querySelectorAll('.new-payment-price-input');
+        priceInputs.forEach(function (input) {
+            new AutoNumeric(input, {
+                allowDecimalPadding: false,
+                minimumValue: '0',
+                maximumValue: '1000000000000000000',
+                modifyValueOnWheel: false,
+                unformatOnSubmit: true,
+            });
+        })
+    </script>
 {% endblock %}
