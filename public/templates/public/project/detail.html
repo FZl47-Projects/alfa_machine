@@ -69,7 +69,9 @@
                         <div class="btn-change col-2 text-center">اسناد آپلود شده</div>
                         <div class="btn-change col-2 text-center d-none">بازرگانی</div>
                         <div class="btn-change col-2 text-center">مکاتبات پروژه</div>
-                        <div class="btn-change col-2 text-center">امور مالی</div>
+                        {% if user.role == 'super_user' or user.role == 'financial_user' %}
+                            <div class="btn-change col-2 text-center">امور مالی</div>
+                        {% endif %}
                         {% if project.inquiry %}
                             <div class="btn-change col-2 text-center">استعلام مربوطه</div>
                         {% endif %}
@@ -847,160 +849,162 @@
                     <!-- ticket -->
 
                     <!-- financial department -->
-                    <div class="content-items p-2">
-                        <section class="section-table">
-                            <p style="text-align: right">پرداختی ها</p>
-                            <div class="table">
-                                <!-- start title table -->
-                                <div class="table-title">
-                                    <!-- each column title table -->
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            ردیف
+                    {% if user.role == 'super_user' or user.role == 'financial_user' %}
+                        <div class="content-items p-2">
+                            <section class="section-table">
+                                <p style="text-align: right">پرداختی ها</p>
+                                <div class="table">
+                                    <!-- start title table -->
+                                    <div class="table-title">
+                                        <!-- each column title table -->
+                                        <div class="col-1">
+                                            <div class="table-title-item">
+                                                ردیف
+                                            </div>
                                         </div>
-                                    </div>
-                                    <!-- each column title table -->
-                                    <div class="col-2">
-                                        <div class="table-title-item">
-                                            نوع
+                                        <!-- each column title table -->
+                                        <div class="col-2">
+                                            <div class="table-title-item">
+                                                نوع
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-5">
-                                        <div class="table-title-item">
-                                            مبلغ
+                                        <div class="col-5">
+                                            <div class="table-title-item">
+                                                مبلغ
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div class="table-title-item">
-                                            تاریخ
+                                        <div class="col-2">
+                                            <div class="table-title-item">
+                                                تاریخ
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div class="table-title-item">
-                                            کدرهگیری
+                                        <div class="col-2">
+                                            <div class="table-title-item">
+                                                کدرهگیری
+                                            </div>
                                         </div>
-                                    </div>
 
-                                </div>
-                                <!-- end title table -->
-                                <!-- start content table -->
-                                <div class="table-content">
-                                    {% for payment in project.get_payments %}
-                                        <div class="row-table">
-                                            <!-- each column content table -->
-                                            <div class="col-1 p-2">
-                                                <div class="table-content-item">
-                                                    {{ forloop.counter }}
+                                    </div>
+                                    <!-- end title table -->
+                                    <!-- start content table -->
+                                    <div class="table-content">
+                                        {% for payment in project.get_payments %}
+                                            <div class="row-table">
+                                                <!-- each column content table -->
+                                                <div class="col-1 p-2">
+                                                    <div class="table-content-item">
+                                                        {{ forloop.counter }}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <!-- each column content table -->
-                                            <div class="col-2 p-2">
-                                                <div class="table-content-item">
-                                                    {{ payment.get_type_payment_label }}
+                                                <!-- each column content table -->
+                                                <div class="col-2 p-2">
+                                                    <div class="table-content-item">
+                                                        {{ payment.get_type_payment_label }}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-5 p-2">
-                                                <div class="table-content-item spread-price">
-                                                    {{ payment.price }}
+                                                <div class="col-5 p-2">
+                                                    <div class="table-content-item spread-price">
+                                                        {{ payment.price }}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-2 p-2">
-                                                <div class="table-content-item datetime-convert">
-                                                    {{ payment.get_created_at }}
+                                                <div class="col-2 p-2">
+                                                    <div class="table-content-item datetime-convert">
+                                                        {{ payment.get_created_at }}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-2 p-2">
-                                                <div class="table-content-item">
-                                                    {{ payment.tracking_code }}
+                                                <div class="col-2 p-2">
+                                                    <div class="table-content-item">
+                                                        {{ payment.tracking_code }}
+                                                    </div>
                                                 </div>
-                                            </div>
 
-                                        </div>
-                                    {% empty %}
-                                        <div class="container-not-found-base">
-                                            <p>چیزی یافت نشد</p>
-                                        </div>
-                                    {% endfor %}
+                                            </div>
+                                        {% empty %}
+                                            <div class="container-not-found-base">
+                                                <p>چیزی یافت نشد</p>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <!-- start content table -->
                                 </div>
-                                <!-- start content table -->
-                            </div>
 
-                            <p style="text-align: right">پیش پرداختی ها</p>
-                            <div class="table">
-                                <!-- start title table -->
-                                <div class="table-title">
-                                    <!-- each column title table -->
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            ردیف
+                                <p style="text-align: right">پیش پرداختی ها</p>
+                                <div class="table">
+                                    <!-- start title table -->
+                                    <div class="table-title">
+                                        <!-- each column title table -->
+                                        <div class="col-1">
+                                            <div class="table-title-item">
+                                                ردیف
+                                            </div>
                                         </div>
-                                    </div>
-                                    <!-- each column title table -->
-                                    <div class="col-2">
-                                        <div class="table-title-item">
-                                            نوع
+                                        <!-- each column title table -->
+                                        <div class="col-2">
+                                            <div class="table-title-item">
+                                                نوع
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-5">
-                                        <div class="table-title-item">
-                                            مبلغ
+                                        <div class="col-5">
+                                            <div class="table-title-item">
+                                                مبلغ
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div class="table-title-item">
-                                            تاریخ
+                                        <div class="col-2">
+                                            <div class="table-title-item">
+                                                تاریخ
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div class="table-title-item">
-                                            کدرهگیری
+                                        <div class="col-2">
+                                            <div class="table-title-item">
+                                                کدرهگیری
+                                            </div>
                                         </div>
-                                    </div>
 
+                                    </div>
+                                    <!-- end title table -->
+                                    <!-- start content table -->
+                                    <div class="table-content">
+                                        {% for payment in project.get_prepayments %}
+                                            <div class="row-table">
+                                                <!-- each column content table -->
+                                                <div class="col-1 p-2">
+                                                    <div class="table-content-item">
+                                                        {{ forloop.counter }}
+                                                    </div>
+                                                </div>
+                                                <!-- each column content table -->
+                                                <div class="col-2 p-2">
+                                                    <div class="table-content-item">
+                                                        {{ payment.get_type_payment_label }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-5 p-2">
+                                                    <div class="table-content-item spread-price">
+                                                        {{ payment.price }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-2 p-2">
+                                                    <div class="table-content-item datetime-convert">
+                                                        {{ payment.get_created_at }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-2 p-2">
+                                                    <div class="table-content-item">
+                                                        {{ payment.tracking_code }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% empty %}
+                                            <div class="container-not-found-base">
+                                                <p>چیزی یافت نشد</p>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <!-- start content table -->
                                 </div>
-                                <!-- end title table -->
-                                <!-- start content table -->
-                                <div class="table-content">
-                                    {% for payment in project.get_prepayments %}
-                                        <div class="row-table">
-                                            <!-- each column content table -->
-                                            <div class="col-1 p-2">
-                                                <div class="table-content-item">
-                                                    {{ forloop.counter }}
-                                                </div>
-                                            </div>
-                                            <!-- each column content table -->
-                                            <div class="col-2 p-2">
-                                                <div class="table-content-item">
-                                                    {{ payment.get_type_payment_label }}
-                                                </div>
-                                            </div>
-                                            <div class="col-5 p-2">
-                                                <div class="table-content-item spread-price">
-                                                    {{ payment.price }}
-                                                </div>
-                                            </div>
-                                            <div class="col-2 p-2">
-                                                <div class="table-content-item datetime-convert">
-                                                    {{ payment.get_created_at }}
-                                                </div>
-                                            </div>
-                                            <div class="col-2 p-2">
-                                                <div class="table-content-item">
-                                                    {{ payment.tracking_code }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    {% empty %}
-                                        <div class="container-not-found-base">
-                                            <p>چیزی یافت نشد</p>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                                <!-- start content table -->
-                            </div>
-                        </section>
-                    </div>
+                            </section>
+                        </div>
+                    {% endif %}
                     <!-- financial department -->
 
                     <!-- inquiry content -->
@@ -1303,10 +1307,3 @@
         }
     </script>
 {% endblock %}
-
-
-
-
-
-
-
