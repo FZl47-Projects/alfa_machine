@@ -45,14 +45,19 @@
                         <div class="table">
                             <!--section title table -->
                             <div class="table-title">
-                                <div class="col-3">
+                                <div class="col-2">
                                     <div class="table-title-item">
                                         پروژه ها
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-3">
                                     <div class="table-title-item">
                                         متن تیکت
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="table-title-item">
+                                        به واحد
                                     </div>
                                 </div>
                                 <div class="col-2">
@@ -60,7 +65,7 @@
                                         تاریخ
                                     </div>
                                 </div>
-                                <div class="col-2">
+                                <div class="col-1">
                                     <div class="table-title-item">
                                         فایل
                                     </div>
@@ -77,14 +82,14 @@
                                 <!-- each row table -->
                                 {% for ticket in tickets %}
                                     <div class="row-table">
-                                        <div class="col-3 p-2">
+                                        <div class="col-2 p-2">
                                             <div class="table-content-item">
                                                 {% if ticket.is_all_projects %}
                                                     <span>همه پروژه‌ها</span>
                                                 {% elif not ticket.get_projects_name %}
                                                     <span>متفرقه</span>
                                                 {% else %}
-                                                    <select>
+                                                    <select class="form-select form-select-sm" readonly>
                                                         {% for name in ticket.get_projects_name %}
                                                             <option>{{ name }}</option>
                                                         {% endfor %}
@@ -92,11 +97,20 @@
                                                 {% endif %}
                                             </div>
                                         </div>
-                                        <div class="col-4 p-2">
+                                        <div class="col-3 p-2">
                                             <div class="table-content-item">
                                                 <p class="description">
                                                     {{ ticket.description|truncatechars:30 }}
                                                 </p>
+                                            </div>
+                                        </div>
+                                        <div class="col-2 p-2">
+                                            <div class="table-content-item">
+                                                <select class="form-select form-select-sm">
+                                                    {% for name in ticket.get_departments_list %}
+                                                        <option>{{ name }}</option>
+                                                    {% endfor %}
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-2 p-2">
@@ -106,7 +120,7 @@
                                                       dir="rtl">({{ ticket.created_at|date:'H:i' }})</span>
                                             </div>
                                         </div>
-                                        <div class="col-2 p-2">
+                                        <div class="col-1 p-2">
                                             <div class="table-content-item">
                                                 {% if ticket.get_file_url %}
                                                     <a href="{{ ticket.get_file_url }}" download="">دانلود</a>

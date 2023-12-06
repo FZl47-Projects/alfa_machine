@@ -1,7 +1,7 @@
 from django.db import models
 from core.models import BaseModel, File
 from core.utils import get_random_code
-from public.models import Project
+from public.models import Project, Department
 
 
 class TicketDepartment(BaseModel, File):
@@ -22,9 +22,13 @@ class TicketDepartment(BaseModel, File):
 
     def get_projects_name(self):
         p = self.projects.values_list('name', flat=True)
-        if not p:
-            return None
-        return p
+        if p:
+            return p
+        return None
+
+    def get_departments_list(self):
+        departments = Department.objects.filter(ticket_departments__description=self.description)
+        return departments.values_list('name', flat=True)
 
 
 class Report(BaseModel, File):

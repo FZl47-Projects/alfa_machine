@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Sum
+from django.db.models import Sum, Count
 from django.urls import reverse
 from core.models import BaseModel, File
 
@@ -161,7 +161,8 @@ class Project(BaseModel):
             return []
 
     def get_tickets(self):
-        return self.ticketdepartment_set.all()
+        unique_tickets = self.ticketdepartment_set.values('description').annotate(count=Count('description'))
+        return unique_tickets
 
     def get_prepayment_datetime(self):
         if self.prepayment_datetime:
