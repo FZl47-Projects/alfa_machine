@@ -52,76 +52,6 @@
         </div>
     </div>
 
-{#    <!--modal-materials  -->#}
-{#    <div class="content-modal-two modal-materials">#}
-{#        <div class="inner-modal">#}
-{#            <form class="p-4">#}
-{#                <div class="information-section">#}
-{#                    <div class="information-item">#}
-{#                        <label for="lihh">لیست آیتم ها</label>#}
-{#                        <div class="material-list mt-2">#}
-{#                            {% for item in items %}#}
-{#                                <div class="material-row d-flex  justify-content-center align-items-center text-center">#}
-{#                                    <div class="col-6 p-1">#}
-{#                                        <div class="material-item">#}
-{#                                            {{ item.name }}#}
-{#                                        </div>#}
-{#                                    </div>#}
-{#                                    <div class="col-6 p-1">#}
-{#                                        <div class="material-item">#}
-{#                                            {{ item.amount }}#}
-{#                                        </div>#}
-{#                                    </div>#}
-{##}
-{#                                </div>#}
-{#                            {% empty %}#}
-{#                                <div class="container-not-found-base">#}
-{#                                    <p>چیزی یافت نشد</p>#}
-{#                                </div>#}
-{#                            {% endfor %}#}
-{#                        </div>#}
-{#                        {% if items.count > 0 %}#}
-{#                            <div class="information-section">#}
-{#                                <div class="sabt-modal btn-taeid-quality">تایید کیفیت</div>#}
-{#                            </div>#}
-{#                        {% endif %}#}
-{#                    </div>#}
-{#                </div>#}
-{#            </form>#}
-{#        </div>#}
-{#    </div>#}
-{#    <!--modal-materials  -->#}
-
-{#    <!-- popup taid keyfiat -->#}
-{#    <div class="content-modal-two modal-quality-assurance">#}
-{#        <div class="inner-modal">#}
-{#            <form class="p-4" action="{% url 'dp_warehouse:items_quality_pass' %}" method="post"#}
-{#                  enctype="multipart/form-data">#}
-{#                {% csrf_token %}#}
-{#                <div class="title">تایید کیفیت مواد</div>#}
-{#                <div class="information-section">#}
-{#                    <div class="information-item">#}
-{#                        <label for="lihh">توضیحات</label>#}
-{#                        <textarea name="description" required id="" cols="30" rows="10"></textarea>#}
-{#                    </div>#}
-{#                    <div class="information-item">#}
-{#                        <div class="my-3">#}
-{#                           <div class="w-100">#}
-{#                               <label class="form-label w-100">آپلود فایل:#}
-{#                                   <input class="form-control" type="file" name="file">#}
-{#                               </label>#}
-{#                           </div>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#                <div class="information-section">#}
-{#                    <button class="sabt-modal col-12 btn-primary">ثبت</button>#}
-{#                </div>#}
-{#            </form>#}
-{#        </div>#}
-{#    </div>#}
-{#    <!-- popup taid keyfiat -->#}
-
     <!-- START SECTION NOTIFATION -->
     {% include 'base/components/aside-menu.html' with notifications=notifications tickets=tickets %}
     <!-- END SECTION NOTIFATION -->
@@ -135,19 +65,9 @@
                 <!-- btn-notif in mobile -->
             </div>
             <!--Start Access panel -->
-            <section class="collection-units" style="background-color:#fff ; margin-top:30px;">
+            <section class="collection-units bg-white my-3">
                 <div class="box-section">
                     <!-- item Access panel-->
-{#                    <div class="col-12 col-md-3 col-lg-2">#}
-{#                        <div class="box-item-2 ddd">#}
-{#                            <img src="{% static 'frontend/images/لیست خرید تایید شده مدیریت 2@2x.png' %}" alt=""#}
-{#                                 class="icon-box mb-3">#}
-{#                            <div class="style-conent-box mb-3">#}
-{#                                <span>تایید لیست مواد اولیه</span>#}
-{#                            </div>#}
-{#                            <div class="tarif-task btn-quality-assurance" id="one">مشاهده</div>#}
-{#                        </div>#}
-{#                    </div>#}
                     <div class="col-12 col-md-3 col-lg-2">
                         <div class="box-item-2 ddd">
                             <img src="{% static 'frontend/images/2 (لیست استعلامات(حتی رد شده ها با دلیل@2x.png' %}" alt=""
@@ -206,16 +126,16 @@
                             </a></div>
                         </div>
                     </div>
-                    <div class="col-12 col-md-4 p-2">
-                        <div class="box-item-2">
-                            <i class="icon-box fa fa-question-circle fa-2xl p-3"></i>
-                            <div class=" style-conent-box">
-                                <span>لیست استعلامات</span>
-                            </div>
-                            <div class="btn--ta"><a href="{% url 'public:inquiry' %}">مشاهده
-                            </a></div>
-                        </div>
-                    </div>
+{#                    <div class="col-12 col-md-4 p-2">#}
+{#                        <div class="box-item-2">#}
+{#                            <i class="icon-box fa fa-question-circle fa-2xl p-3"></i>#}
+{#                            <div class=" style-conent-box">#}
+{#                                <span>لیست استعلامات</span>#}
+{#                            </div>#}
+{#                            <div class="btn--ta"><a href="{% url 'public:inquiry' %}">مشاهده#}
+{#                            </a></div>#}
+{#                        </div>#}
+{#                    </div>#}
                 </div>
             </section>
             <!-- .End pages section -->

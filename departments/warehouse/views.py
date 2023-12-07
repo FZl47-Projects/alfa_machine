@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.db.models import Q
 from core.utils import form_validate_err
-from public.models import Project
+from public.models import Project, Department
 from account.auth.decorators import user_role_required_cbv
 from . import models, forms
 
@@ -18,6 +18,7 @@ class Index(View):
         context = {
             'tickets': request.user.get_tickets(),
             'notifications': request.user.department.get_notifications(),
+            'departments': Department.objects.all(),
             'projects': projects,
             'ongoing_projects': projects.filter(status__in=['checking', 'paused', 'under_construction'])[:4],
         }
