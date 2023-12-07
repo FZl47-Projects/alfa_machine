@@ -40,7 +40,7 @@
                             <span class="font-80">(ثبت مشکل)</span>
                         </button>
                     </div>
-                    {% for ticket in tickets|slice:':8' %}
+                    {% for ticket in tickets|slice:':5' %}
                         <div class="col-12">
                             <div class="notifcation-item">
                                 <div class="top">
@@ -71,7 +71,7 @@
                     <div class="my-3">
                         <button data-bs-toggle="modal" data-bs-target="#addNotifModal" class=" btn btn-primary col-12">ایجاد اعلان</button>
                     </div>
-                    {% for notification in notifications|slice:':8' %}
+                    {% for notification in notifications|slice:':5' %}
                         <div class="col-12">
                             <div class="notifcation-item">
                                 <div class="top">
