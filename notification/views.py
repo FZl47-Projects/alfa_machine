@@ -51,14 +51,13 @@ class NotificationDepartmentList(View):
 
         for department in departments:
             data['from_department'] = request.user.department
-            # data['is_all_departments'] = is_all_departments
             data['is_all_projects'] = is_all_projects
             data['project_selection'] = project_selection
             data['department'] = department
             data.setlist('projects', projects)
+
             f = forms.NotificationDepartmentForm(data, request.FILES)
             if form_validate_err(request, f) is False:
-
                 return redirect(referer_url or '/error')
             f.save()
 

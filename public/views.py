@@ -5,10 +5,12 @@ from django.views.generic import View
 from django.contrib import messages
 from django.utils import timezone
 from django.db.models import Q
-from core.utils import form_validate_err
-from public import models, forms
+
 from account.auth.decorators import user_role_required_cbv
 from notification.models import NotificationDepartment
+from notification.utils import create_notification
+from core.utils import form_validate_err
+from public import models, forms
 
 
 class Success(View):
@@ -165,11 +167,13 @@ class ProjectUpdate(LoginRequiredMixin, View):
             raise PermissionDenied
 
         project = models.Project.objects.get(id=project_id)
+
         f = forms.ProjectUpdate(data=request.POST, instance=project)
         if not f.is_valid():
             messages.error(request, 'لطفا فیلد هارا به درستی پر نمایید')
             return redirect(project.get_absolute_url())
         f.save()
+
         messages.success(request, 'پروژه با موفقیت بروزرسانی شد')
         return redirect(project.get_absolute_url())
 
@@ -179,8 +183,10 @@ class ProjectDelete(LoginRequiredMixin, View):
     def get(self, request, project_id):
         if not models.Project.has_perm_to_modify(request.user):
             raise PermissionDenied
+
         project = models.Project.objects.get(id=project_id)
         project.delete()
+
         messages.success(request, 'پروژه با موفقیت حذف شد')
         return redirect('public:project')
 
@@ -220,10 +226,17 @@ class ProjectFile(LoginRequiredMixin, View):
         data = request.POST.copy()
         # set additional values
         data['from_department'] = request.user.department
+
         f = forms.ProjectFile(data, request.FILES)
         if form_validate_err(request, f) is False:
             return redirect(referer_url or '/error')
-        f.save()
+        obj = f.save()
+
+        # Create notification for each department
+        notif_title = 'اعلان آپلود فایل پروژه'
+        notif_description = f'فایل جدید برای پروژه ({obj.project.name})'
+        create_notification(from_department=obj.from_department, title=notif_title, description=notif_description, projects=obj.project, all_departments=True)
+
         messages.success(request, 'عملیات مورد نظر با موفقیت انجام شد')
         return redirect(referer_url or '/success')
 
@@ -426,13 +439,14 @@ class Task(View):
             return redirect(referer_url or '/error')
         task = f.save()
 
-        notif = NotificationDepartment.objects.create(
+        # Create notification for department
+        notif_title = 'اطلاعیه تسک جدید'
+        notif_description = f'عنوان تسک: "{task.name}"'
+        create_notification(
             from_department=request.user.department,
-            department=task.to_department,
-            title='اطلاعیه تسک جدید',
-            description=f'عنوان تسک: "{task.name}"'
+            title=notif_title, description=notif_description,
+            projects=task.project, departments=[task.to_department]
         )
-        notif.projects.set([task.project])
 
         messages.success(request, 'عملیات مورد نظر با موفقیت ایجاد شد')
 
@@ -448,15 +462,14 @@ class TaskRemind(LoginRequiredMixin, View):
         department = user.department
         task = get_object_or_404(models.Task, id=task_id)
 
-        notif = NotificationDepartment.objects.create(
+        # Create notification for department
+        notif_title = 'یادآوری انجام تسک'
+        notif_description = f'یادآوری جهت انجام تسک ({task.name})'
+        create_notification(
             from_department=department,
-            department=task.to_department,
-            title='یاداوری انجام تسک',
-            description=f"""
-                یاداوری جهت انجام تسک ({task.name})
-            """
+            title=notif_title, description=notif_description,
+            projects=task.project, departments=[task.to_department]
         )
-        notif.projects.set([task.project])
 
         messages.success(request, 'عملیات مورد نظر با موفقیت ایجاد شد')
 
