@@ -127,7 +127,7 @@ class Project(View):
 
 class ProjectAdd(View):
 
-    @user_role_required_cbv(['super_user', 'commerce_user', 'control_project_user'])
+    @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user'])
     def get(self, request):
         context = {}
 
@@ -139,7 +139,7 @@ class ProjectAdd(View):
 
         return render(request, 'public/project/add.html', context)
 
-    @user_role_required_cbv(['super_user', 'commerce_user', 'control_project_user'])
+    @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user'])
     def post(self, request):
         referer_url = request.META.get('HTTP_REFERER', None)
         data = request.POST
