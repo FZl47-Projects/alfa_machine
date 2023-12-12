@@ -94,78 +94,100 @@
                     <table class="table table-bordered rounded-3 overflow-hidden">
                         <!-- Table head -->
                         <thead class="table-dark">
-                            <tr class="text-center text-nowrap">
-                                <th>ردیف</th>
-                                <th>عنوان</th>
-                                <th>واحد تخصیص داده</th>
-                                <th>توضیحات</th>
-                                <th>پروژه</th>
-                                <th>تاریخ</th>
-                                <th>زمان تغییر</th>
-                                <th>برای واحد</th>
-                                <th>عملیات</th>
-                            </tr>
+                        <tr class="text-center text-nowrap">
+                            <th>ردیف</th>
+                            <th>عنوان</th>
+                            <th>واحد تخصیص داده</th>
+                            <th>توضیحات</th>
+                            <th>پروژه</th>
+                            <th>تاریخ</th>
+                            <th>زمان تغییر</th>
+                            <th>برای واحد</th>
+                            <th>عملیات</th>
+                        </tr>
                         </thead>
                         <!-- Table body -->
                         <tbody>
-                            {% for task in tasks %}
-                                <!-- Delete task modal -->
-                                {% include 'public/task/components/delete_task.html' %}
-                                <!-- - -->
+                        {% for task in tasks %}
+                            <!-- Delete task modal -->
+                            {% include 'public/task/components/delete_task.html' %}
+                            <!-- - -->
 
-                                <!-- Task description modal -->
-                                {% include 'public/task/components/task_description.html' %}
-                                <!-- - -->
+                            <!-- Task description modal -->
+                            {% include 'public/task/components/task_description.html' %}
+                            <!-- - -->
 
-                                <tr class="text-center">
-                                    <td>
-                                        <span>{{ forloop.counter }}</span>
-                                    </td>
-                                    <td>
-                                        <span title="{{ task.name|default:'بدون عنوان' }}">{{ task.name|default:'بدون عنوان' }}</span>
-                                    </td>
-                                    <td>
-                                        <span>{{ task.from_department.name }}</span>
-                                    </td>
-                                    <td>
-                                        <span class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#taskDescription-{{ task.id }}">مشاهده</span>
-                                    </td>
-                                    <td>
-                                        <span>{{ task.project.name }}</span>
-                                    </td>
-                                    <td>
-                                        <span class="datetime-convert">{{ task.get_created_at }}</span>
-                                        <span class="font-80">({{ task.created_at|date:'H:i' }})</span>
-                                    </td>
-                                    <td>
-                                        <span class="datetime-convert">{{ task.get_state_modify_time|default:'-' }}</span>
-                                        <span class="font-80">({{ task.state_modify_time|date:'H:i' }})</span>
-                                    </td>
-                                    <td>
-                                        <span>{{ task.to_department }}</span>
-                                    </td>
-                                    <td>
-                                        {% if user|task_has_permission %}
-                                            <div class="d-flex flex-nowrap justify-content-center gap-1">
-                                                <button class="fa fa-trash-can btn btn-sm btn-danger" title="حذف"
-                                                        data-bs-toggle="modal" data-bs-target="#task-modal-delete-{{ task.id }}"></button>
-                                                <button class="fa fa-edit btn btn-sm btn-warning edit-task" title="ویرایش"></button>
-                                                <form action="{% url 'public:task_remind' task_id=task.id %}" method="post">
-                                                    {% csrf_token %}
-                                                    <button type="submit" class="fa fa-bell btn btn-sm btn-primary text-white" title="یادآوری"></button>
-                                                </form>
-                                            </div>
-                                        {% else %}
-                                            -
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                            {% endfor %}
+                            <tr class="text-center">
+                                <td>
+                                    <span>{{ forloop.counter }}</span>
+                                </td>
+                                <td>
+                                    <span title="{{ task.name|default:'بدون عنوان' }}">{{ task.name|default:'بدون عنوان' }}</span>
+                                </td>
+                                <td>
+                                    <span>{{ task.from_department.name }}</span>
+                                </td>
+                                <td>
+                                    <span class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                          data-bs-target="#taskDescription-{{ task.id }}">مشاهده</span>
+                                </td>
+                                <td>
+                                    <span>{{ task.project.name }}</span>
+                                </td>
+                                <td>
+                                    <span class="datetime-convert">{{ task.get_created_at }}</span>
+                                    <span class="font-80">({{ task.created_at|date:'H:i' }})</span>
+                                </td>
+                                <td>
+                                    <span class="datetime-convert">{{ task.get_state_modify_time|default:'-' }}</span>
+                                    <span class="font-80">({{ task.state_modify_time|date:'H:i' }})</span>
+                                </td>
+                                <td>
+                                    <span>{{ task.to_department }}</span>
+                                </td>
+                                <td>
+                                    {% if user|task_has_permission %}
+                                        <div class="d-flex flex-nowrap justify-content-center gap-1">
+                                            <button class="fa fa-trash-can btn btn-sm btn-danger" title="حذف"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#task-modal-delete-{{ task.id }}"></button>
+                                            <button class="fa fa-edit btn btn-sm btn-warning edit-task"
+                                                    title="ویرایش"></button>
+                                            <form action="{% url 'public:task_remind' task_id=task.id %}" method="post">
+                                                {% csrf_token %}
+                                                <button type="submit"
+                                                        class="fa fa-bell btn btn-sm btn-primary text-white"
+                                                        title="یادآوری"></button>
+                                            </form>
+                                        </div>
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
             </div>
         </section>
+        <div class="pagination">
+            <span class="step-links">
+                {% if paginator.has_previous %}
+                    <a href="?page=1">&laquo; اولین </a>
+                    <a href="?page={{ paginator.previous_page_number }}">قبلی</a>
+                {% endif %}
+
+                <span class="current">
+                    صفحه {{ paginator.number }} از {{ paginator.paginator.num_pages }}.
+                </span>
+
+                {% if paginator.has_next %}
+                    <a href="?page={{ paginator.next_page_number }}">بعدی</a>
+                    <a href="?page={{ paginator.paginator.num_pages }}">اخرین &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
     </main>
 {% endblock %}
 

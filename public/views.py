@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
+from django.core.paginator import Paginator
 from django.views.generic import View
 from django.contrib import messages
 from django.utils import timezone
@@ -281,6 +282,12 @@ class TaskOwner(LoginRequiredMixin, View):
         get tasks who created and crud task with post method
     """
 
+    def pagination(self, request, objects, count=20):
+        paginator = Paginator(objects, count)  # show how many objects per page.
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+        return page_obj, page_obj.object_list
+
     def search(self, request, tasks):
         search = request.GET.get('search', None)
         if not search:
@@ -312,9 +319,10 @@ class TaskOwner(LoginRequiredMixin, View):
 
         tasks = self.search(request, tasks)
         tasks = self.sort(request, tasks)
-
+        paginator, tasks = self.pagination(request, tasks)
         context = {
             'tasks': tasks,
+            'paginator': paginator,
             'departments': models.Department.objects.all(),
             'projects': models.Project.objects.filter(is_active=True)
         }
@@ -352,6 +360,12 @@ class TaskOwner(LoginRequiredMixin, View):
 class TaskOwnerDepartment(View):
     template_name = 'public/task/department-each.html'
 
+    def pagination(self, request, objects, count=20):
+        paginator = Paginator(objects, count)  # show how many objects per page.
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+        return page_obj, page_obj.object_list
+
     def search(self, request, tasks):
         search = request.GET.get('search', None)
         if not search:
@@ -374,9 +388,11 @@ class TaskOwnerDepartment(View):
 
         tasks = self.search(request, tasks)
         tasks = self.sort(request, tasks)
+        paginator, tasks = self.pagination(request, tasks)
 
         context = {
             'tasks': tasks,
+            'paginator': paginator,
             'department': department,
             'departments': models.Department.objects.all(),
             'projects': models.Project.objects.filter(is_active=True)
