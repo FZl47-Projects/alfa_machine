@@ -197,27 +197,17 @@ class ProjectFile(LoginRequiredMixin, View):
         search = request.GET.get('search', None)
         if not search:
             return items
-        if search.isdigit():
-            lookup = Q(code=search)
-            items = items.filter(lookup)
-        else:
-            lookup = Q(name__icontains=search) | Q(size=search) | Q(receiver__icontains=search)
-            items = items.filter(lookup)
+        items = items.filter(name__icontains=search)
         return items
 
-    def sort(self, request, items):
-        sort_by = request.GET.get('sort_by', 'latest')
-        if sort_by == 'latest':
-            items = items.order_by('-id')
-        elif sort_by == 'oldest':
-            items = items.order_by('id')
-        return items
-
-    @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user', 'control_quality_user',
-                             'technical_user', 'production_user'])
+    @user_role_required_cbv(
+        ['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user', 'control_quality_user',
+         'technical_user', 'production_user'])
     def get(self, request):
+        projects = models.Project.objects.filter(is_active=True)
+        projects = self.search(request, projects)
         context = {
-            'projects': models.Project.objects.filter(is_active=True)
+            'projects': projects
         }
         return render(request, 'public/project/file/list.html', context)
 
@@ -235,7 +225,8 @@ class ProjectFile(LoginRequiredMixin, View):
         # Create notification for each department
         notif_title = 'اعلان آپلود فایل پروژه'
         notif_description = f'فایل جدید برای پروژه ({obj.project.name})'
-        create_notification(from_department=obj.from_department, title=notif_title, description=notif_description, projects=obj.project, all_departments=True)
+        create_notification(from_department=obj.from_department, title=notif_title, description=notif_description,
+                            projects=obj.project, all_departments=True)
 
         messages.success(request, 'عملیات مورد نظر با موفقیت انجام شد')
         return redirect(referer_url or '/success')
@@ -269,8 +260,9 @@ class ProjectDetailFileList(LoginRequiredMixin, View):
         items = self.sort(request, items)
         return items
 
-    @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user', 'control_quality_user',
-                             'technical_user', 'production_user'])
+    @user_role_required_cbv(
+        ['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user', 'control_quality_user',
+         'technical_user', 'production_user'])
     def get(self, request, project_id):
         project = models.Project.objects.get(id=project_id, is_active=True)
         files = project.get_files()
