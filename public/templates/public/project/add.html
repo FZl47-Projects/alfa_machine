@@ -25,7 +25,7 @@
         <section class="new_user">
             <div class="content form-new_user col-12 col-md-6 mx-auto my-5">
                 <div class="forms rounded-3">
-                    <form class="form form-new_user" action="{% url 'public:project_add' %}" method="post">
+                    <form class="form form-new_user" action="{% url 'public:project_add' %}" id="addProjectForm" method="post">
                         {% csrf_token %}
                         <div class="titlee">پروژه جدید</div>
                         {% if inquiry %}
@@ -41,7 +41,8 @@
                             </div>
                             <div class="group-form d-flex flex-column align-items-start gap-2 rounded-2 py-3">
                                 <label for="name">نام پروژه:</label>
-                                <input type="text" id="name" class="form-control border-2 bg-white" name="name" value="{{ inquiry.title }}" required>
+                                <input type="text" id="name" class="form-control border-2 bg-white" name="name"
+                                       value="{{ inquiry.title }}" required>
                             </div>
                             <div class="group-form d-flex flex-column align-items-start gap-2 rounded-2 py-3">
                                 <label for="task_master">کارفرما:</label>
@@ -54,8 +55,8 @@
                             <div class="group-form d-flex flex-column align-items-start gap-2 rounded-2 py-3">
                                 <label for="time_start_picker">تاریخ ابلاغ به کار:</label>
                                 <input type="text" name="" id="time_start_picker"
-                                       class="form-control border-2 bg-white persianDatapicker" set-on="time_start"
-                                        readonly>
+                                       class="form-control border-2 bg-white persianDatapicker"
+                                       set-on="time_start" readonly>
                                 <input type="hidden" id="time_start" name="time_start">
                             </div>
                             <div class="group-form d-flex flex-column align-items-start gap-2 rounded-2 py-3">
@@ -79,8 +80,8 @@
                             <div class="group-form d-flex flex-column align-items-start gap-2 rounded-2 py-3">
                                 <label for="prepayment_datetime_picker">تاریخ پیش پرداخت:</label>
                                 <input type="text" name="" id="prepayment_datetime_picker"
-                                       class="form-control border-2 bg-white persianDatapicker" set-on="prepayment_datetime"
-                                        readonly>
+                                       class="form-control border-2 bg-white persianDatapicker"
+                                       set-on="prepayment_datetime" readonly>
                                 <input type="hidden" id="prepayment_datetime" name="prepayment_datetime">
                             </div>
                             <div class="group-form d-flex flex-column align-items-start gap-2 rounded-2 py-3">
@@ -89,11 +90,11 @@
                             </div>
                             <div class="group-form d-flex flex-column align-items-start gap-2 rounded-2 py-3">
                                 <label for="count_total">تعداد کل:</label>
-                                <input type="number" id="count_total" class="form-control border-2 bg-white" name="count_total">
+                                <input type="number" id="count_total" class="form-control border-2 bg-white" name="count_total" required>
                             </div>
                             <div class="group-form d-flex flex-column align-items-start gap-2 rounded-2 py-3">
                                 <label for="count_remaining">تعداد باقی مانده:</label>
-                                <input type="number" id="count_remaining" class="form-control border-2 bg-white" name="count_remaining">
+                                <input type="number" id="count_remaining" class="form-control border-2 bg-white" name="count_remaining" required>
                             </div>
                             <div class="group-form d-flex flex-column align-items-start gap-2 rounded-2 py-3">
                                 <label for="status">وضعیت:</label>
@@ -129,7 +130,7 @@
                                 <label for="mass_delivery_datetime_picker">تاریخ تحویل انبوه:</label>
                                 <input type="text" name="" id="mass_delivery_datetime_picker"
                                        class="form-control border-2 bg-white persianDatapicker" set-on="mass_delivery_date"
-                                        readonly>
+                                        readonly required>
                                 <input type="hidden" id="mass_delivery_date" name="mass_delivery_date">
                             </div>
                             <div class="group-form d-flex flex-column align-items-start gap-2 rounded-2 py-3">

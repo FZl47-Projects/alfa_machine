@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.views.generic import View
+from django.http import JsonResponse
 from django.contrib import messages
 from django.utils import timezone
 from django.db.models import Q
@@ -148,17 +149,16 @@ class ProjectAdd(View):
         f = forms.ProjectAdd(data)
         if not f.is_valid():
             messages.error(request, 'لطفا فیلد هارا به درستی وارد نمایید')
+
             # redirect to referer url or project add url
-            if referer_url:
-                return redirect(referer_url)
-            return redirect('public:project_add')
+            return redirect(referer_url) if referer_url else redirect('public:project_add')
+
         f.save()
 
         messages.success(request, 'پروژه با موفقیت ایجاد شد')
+
         # redirect to referer url or project add url
-        if referer_url:
-            return redirect(referer_url)
-        return redirect('public:project_add')
+        return redirect(referer_url) if referer_url else redirect('public:project_add')
 
 
 class ProjectUpdate(LoginRequiredMixin, View):
