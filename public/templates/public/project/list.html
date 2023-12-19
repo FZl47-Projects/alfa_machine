@@ -69,12 +69,9 @@
             text-align: center;
         }
 
-
         .cnt-filter-by-date span {
             color: #555;
         }
-
-
     </style>
 {% endblock %}
 
@@ -91,7 +88,7 @@
                 <div class="text-center d-flex align-items-center px-4">
                     <div class="col-12">
                         <div class="cnt-form col-12 col-md-6 mx-auto">
-                            <form>
+                            <form id="searchForm">
                                 <input type="hidden" value="{{ request.GET.project_status }}" name="project_status">
                                 <input type="hidden" value="{{ request.GET.task_master }}" name="task_master">
                                 <input type="text" placeholder="نام پروژه و .." name="search"
@@ -122,45 +119,42 @@
                 </div>
                 <div class="link-search-items col-11 col-md-6 mx-auto">
                     <h6>فیلتر بر اساس کارفرما :</h6>
-                    <a href="{% url 'public:project' %}?project_status={{ request.GET.project_status }}"
+                    <a href="{% url 'public:project' %}?project_status={{ request.GET.project_status }}&search={{ request.GET.search }}"
                        {% if not request.GET.task_master %}class="active"{% endif %}>همه</a>
                     {% for task_master in task_masters %}
-                        <a href="?task_master={{ task_master.id }}&project_status={{ request.GET.project_status }}"
+                        <a href="?task_master={{ task_master.id }}&project_status={{ request.GET.project_status }}&search={{ request.GET.search }}"
                            {% if request.GET.task_master == task_master.id|stringformat:'i' %}class="active" {% endif %}>{{ task_master.title }}</a>
                     {% endfor %}
                 </div>
 
+                <!-- Start status filter section -->
                 <div class="link-search-items col-11 col-md-6 mx-auto">
                     <h6>فیلتر بر اساس وضعیت :</h6>
-                    <a href="{% url 'public:project' %}?task_master={{ request.GET.task_master }}"
-                       {% if not request.GET.project_status %}class="active"{% endif %}>همه</a>
-
-                    <a href="?project_status=checking&task_master={{ request.GET.task_master }}"
+                    <a href="{% url 'public:project' %}?task_master={{ request.GET.task_master }}&search={{ request.GET.search }}"
+                       {% if not request.GET.project_status %}class="active"{% endif %}>همه
+                    </a>
+                    <a href="?project_status=checking&task_master={{ request.GET.task_master }}&search={{ request.GET.search }}"
                        {% if request.GET.project_status == 'checking' %}class="active" {% endif %}>در حال بررسی قبل
-                        اجرا</a>
-
-                    <a href="?project_status=under_construction&task_master={{ request.GET.task_master }}"
+                        اجرا
+                    </a>
+                    <a href="?project_status=under_construction&task_master={{ request.GET.task_master }}&search={{ request.GET.search }}"
                        {% if request.GET.project_status == 'under_construction' %}class="active" {% endif %}>در حال
-                        ساخت</a>
-
-
-                    <a href="?project_status=posted&task_master={{ request.GET.task_master }}"
-                       {% if request.GET.project_status == 'posted' %}class="active" {% endif %}>ارسال شده</a>
-
-
-                    <a href="?project_status=completed&task_master={{ request.GET.task_master }}"
-                       {% if request.GET.project_status == 'completed' %}class="active" {% endif %}>تایید و اتمام</a>
-
-
-                    <a href="?project_status=paused&task_master={{ request.GET.task_master }}"
-                       {% if request.GET.project_status == 'paused' %}class="active" {% endif %}>متوقف شده</a>
-
+                        ساخت
+                    </a>
+                    <a href="?project_status=posted&task_master={{ request.GET.task_master }}&search={{ request.GET.search }}"
+                       {% if request.GET.project_status == 'posted' %}class="active" {% endif %}>ارسال شده
+                    </a>
+                    <a href="?project_status=completed&task_master={{ request.GET.task_master }}&search={{ request.GET.search }}"
+                       {% if request.GET.project_status == 'completed' %}class="active" {% endif %}>تایید و اتمام
+                    </a>
+                    <a href="?project_status=paused&task_master={{ request.GET.task_master }}&search={{ request.GET.search }}"
+                       {% if request.GET.project_status == 'paused' %}class="active" {% endif %}>متوقف شده
+                    </a>
                 </div>
+                <!-- .End status filter section -->
 
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                     aria-hidden="true">
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <form>
-
                         <input type="hidden" name="filter_advanced" value="true">
                         <input type="hidden" name="filter_by_date" value="true">
                         <input type="hidden" name="search" value="{{ request.GET.search }}">
