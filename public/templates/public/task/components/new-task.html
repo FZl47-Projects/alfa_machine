@@ -15,14 +15,22 @@
                         <div class="col-6" style="padding:0 5px;">
                             <div class="information-item date">
                                 <label>تاریخ شروع</label>
-                                <input type="text" class="bg-light persianDatapicker" readonly set-on="task_time_start">
+                                <div class="position-relative">
+                                    <input type="text" class="bg-light border-box-sizing w-100 persianDatapicker" id="task_time_start_input" readonly set-on="task_time_start">
+                                    <button type="button" class="position-absolute text-danger bg-light" style="top: 35%; left: 5%;"
+                                            onclick="clearInput('task_time_start_input')">x</button>
+                                </div>
                                 <input type="hidden" name="time_start" id="task_time_start">
                             </div>
                         </div>
                         <div class="col-6" style="padding:0 5px;">
                             <div class="information-item date">
                                 <label>تاریخ پایان</label>
-                                <input type="text" class="bg-light persianDatapicker" readonly set-on="task_time_end">
+                                <div class="position-relative">
+                                    <input type="text" class="bg-light border-box-sizing w-100 persianDatapicker" id="task_time_end_input" readonly set-on="task_time_end">
+                                    <button type="button" class="position-absolute text-danger bg-light" style="top: 35%; left: 5%;"
+                                            onclick="clearInput('task_time_end_input')">x</button>
+                                </div>
                                 <input type="hidden" name="time_end" id="task_time_end">
                             </div>
                         </div>
@@ -72,3 +80,6 @@
         </form>
     </div>
 </div>
+
+{% block Script %}
+{% endblock %}
