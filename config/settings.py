@@ -163,8 +163,10 @@ LOGIN_URL = '/u/login'
 
 EXCEPT_USER_AUTH_URLS = [
     '/u/login',
+    '/u/reset-password',
+    '/u/reset-password/send-link',
     '/admin',
-    '/project'
+    '/project',
 ]
 
 DATE_FORMAT = "Y-m-d"

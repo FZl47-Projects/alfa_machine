@@ -62,8 +62,7 @@ class User(AbstractUser):
         return f'{self.role} - {self.email}'
 
     def get_full_name(self):
-        fl = f'{self.first_name} {self.last_name}'.strip() or 'بدون نام'
-        return fl
+        return f'{self.first_name} {self.last_name}'.strip() or 'بدون نام'
 
     def get_email(self):
         return self.email

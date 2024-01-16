@@ -4,6 +4,8 @@
     position: fixed;
     z-index: 999999;
     direction: rtl;
+    min-width: 300px;
+    max-width: 95%;
 }
 
 .ncf-container.nfc-top-left {
@@ -41,7 +43,8 @@
     overflow: hidden;
     margin: 0 0 6px;
     padding: 30px;
-    width: 300px;
+    width: 350px;
+    max-width: 90%;
     border-radius: 3px 3px 3px 3px;
     box-shadow: 0 0 12px #999;
     color: #000;

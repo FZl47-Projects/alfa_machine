@@ -3,357 +3,1776 @@
 
 {% block Title %}
     پنل مدیریت
+    {{ user.department.name }}
 {% endblock %}
 
 {% block Link %}
     <link rel="stylesheet" href="{% static 'frontend/styles/Project-control-panel.css' %}"/>
 {% endblock %}
 
+{% block BodyClass %}
+    has-rtl nk-body ui-rounder has-sidebar
+{% endblock %}
+
 {% block Content %}
-
-    <div class="content-modal-two modal-confirm-task">
-        <div class="inner-modal">
-            <form class="p-4" action="{% url 'public:project_file' %}" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-
-                <div class="information-section">
-                    <div class="information-item">
-                        <label for="lihh">نام فایل:</label>
-                        <input type="text" name="name">
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main">
+            <!-- sidebar @s -->
+            <div class="nk-sidebar nk-sidebar-fixed is-light" data-content="sidebarMenu">
+                <div class="nk-sidebar-element nk-sidebar-head">
+                    <div class="nk-sidebar-brand">
+                        <a href="html/index.html" class="logo-link nk-sidebar-logo">
+                            <img class="logo-light logo-img" src="./images/logo.png" srcset="./images/logo2x.png 2x"
+                                 alt="لوگو"/>
+                            <img class="logo-dark logo-img" src="./images/logo-dark.png"
+                                 srcset="./images/logo-dark2x.png 2x" alt="لوگوی تاریک"/>
+                            <img class="logo-small logo-img logo-img-small" src="./images/logo-small.png"
+                                 srcset="./images/logo-small2x.png 2x" alt="لوگوی کوچک"/>
+                        </a>
                     </div>
-                    <div class="information-item">
-                        <label for="lihh">توضیحات:</label>
-                        <textarea name="description" id="" cols="30" rows="10" required></textarea>
+                    <div class="nk-menu-trigger me-n2">
+                        <a href="#" class="nk-nav-toggle nk-quick-nav-icon d-xl-none" data-target="sidebarMenu"><em
+                                class="icon ni ni-arrow-left"></em></a>
                     </div>
-                    <div class="information-item">
-                        <div class="my-2">
-                           <div class="w-100">
-                               <label class="form-label w-100">آپلود فایل:
-                                   <input class="form-control" type="file" name="file">
-                               </label>
-                           </div>
+                </div>
+                <!-- .nk-sidebar-element -->
+                <div class="nk-sidebar-element">
+                    <div class="nk-sidebar-content">
+                        <div class="nk-sidebar-menu" data-simplebar>
+                            <ul class="nk-menu">
+                                <li class="nk-menu-heading">
+                                    <h6 class="overline-title text-primary-alt">پیش نمایش مورد استفاده</h6>
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-item">
+                                    <a href="html/copywriter/index.html" class="nk-menu-link">
+                                            <span class="nk-menu-icon">
+                                                <em class="icon ni ni-bag"></em>
+                                            </span>
+                                        <span class="nk-menu-text">کپی رایتر هوش مصنوعی</span><span
+                                            class="nk-menu-badge">داغ</span>
+                                    </a>
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-heading">
+                                    <h6 class="overline-title text-primary-alt">داشبوردها</h6>
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-item">
+                                    <a href="html/index.html" class="nk-menu-link">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-presentation"></em></span>
+                                        <span class="nk-menu-text">داشبورد پیش فرض</span>
+                                    </a>
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-item">
+                                    <a href="html/index-sales.html" class="nk-menu-link">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-cc-alt2"></em></span>
+                                        <span class="nk-menu-text">داشبورد فروش</span>
+                                    </a>
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-item">
+                                    <a href="html/index-invest.html" class="nk-menu-link">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-coins"></em></span>
+                                        <span class="nk-menu-text">داشبورد سرمایه گذاری</span>
+                                    </a>
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-item">
+                                    <a href="html/index-crypto.html" class="nk-menu-link">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-bitcoin-cash"></em></span>
+                                        <span class="nk-menu-text">داشبورد ارز دیجیتال</span>
+                                    </a>
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-item">
+                                    <a href="html/index-analytics.html" class="nk-menu-link">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-growth"></em></span>
+                                        <span class="nk-menu-text">داشبورد تجزیه و تحلیل</span>
+                                    </a>
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-heading">
+                                    <h6 class="overline-title text-primary-alt">اپلیکیشن ها</h6>
+                                </li>
+                                <!-- .nk-menu-heading -->
+                                <li class="nk-menu-item has-sub">
+                                    <a href="#" class="nk-menu-link nk-menu-toggle">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-tile-thumb"></em></span>
+                                        <span class="nk-menu-text">پروژه ها</span>
+                                    </a>
+                                    <ul class="nk-menu-sub">
+                                        <li class="nk-menu-item">
+                                            <a href="html/project-card.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">کارت های پروژه</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/project-list.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">لیست پروژه ها</span></a>
+                                        </li>
+                                    </ul>
+                                    <!-- .nk-menu-sub -->
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-item has-sub">
+                                    <a href="#" class="nk-menu-link nk-menu-toggle">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-users"></em></span>
+                                        <span class="nk-menu-text">مدیریت کاربران</span>
+                                    </a>
+                                    <ul class="nk-menu-sub">
+                                        <li class="nk-menu-item">
+                                            <a href="html/user-list-regular.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">لیست کاربران - عادی</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/user-list-compact.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">لیست کاربران - فشرده</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/user-details-regular.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">مشخصات کاربر - عادی</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/user-profile-regular.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">پروفایل کاربر - عادی</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/user-card.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">تماس با کاربر - کارت</span></a>
+                                        </li>
+                                    </ul>
+                                    <!-- .nk-menu-sub -->
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-item has-sub">
+                                    <a href="#" class="nk-menu-link nk-menu-toggle">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-user-list"></em></span>
+                                        <span class="nk-menu-text">مشتریان</span>
+                                    </a>
+                                    <ul class="nk-menu-sub">
+                                        <li class="nk-menu-item">
+                                            <a href="html/customer-list.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">لیست مشتریان</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/customer-details.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">مشخصات مشتری</span></a>
+                                        </li>
+                                    </ul>
+                                    <!-- .nk-menu-sub -->
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-item has-sub">
+                                    <a href="#" class="nk-menu-link nk-menu-toggle">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-file-docs"></em></span>
+                                        <span class="nk-menu-text">احراز هویت مشتریان</span>
+                                    </a>
+                                    <ul class="nk-menu-sub">
+                                        <li class="nk-menu-item">
+                                            <a href="html/kyc-list-regular.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">لیست احراز هویت مشتریان - عادی</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/kyc-details-regular.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">جزئیات احراز هویت مشتری - عادی</span></a>
+                                        </li>
+                                    </ul>
+                                    <!-- .nk-menu-sub -->
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-item has-sub">
+                                    <a href="#" class="nk-menu-link nk-menu-toggle">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-tranx"></em></span>
+                                        <span class="nk-menu-text">تراکنش ها</span>
+                                    </a>
+                                    <ul class="nk-menu-sub">
+                                        <li class="nk-menu-item">
+                                            <a href="html/transaction-basic.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">لیست تراکنش ها - پایه</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/transaction-crypto.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">لیست تراکنش ها - ارز دیجیتال</span></a>
+                                        </li>
+                                    </ul>
+                                    <!-- .nk-menu-sub -->
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-item has-sub">
+                                    <a href="#" class="nk-menu-link nk-menu-toggle">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-grid-alt"></em></span>
+                                        <span class="nk-menu-text">اپلیکیشن ها</span>
+                                    </a>
+                                    <ul class="nk-menu-sub">
+                                        <li class="nk-menu-item">
+                                            <a href="html/apps-messages.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">پیام ها</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/apps-inbox.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">صندوق ورودی / ایمیل</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/apps-file-manager.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">مدیریت فایل ها</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/apps-chats.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">گفتگوها / پیام رسان</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/apps-calendar.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">تقویم</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/apps-kanban.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">تابلوی کانبان</span></a>
+                                        </li>
+                                    </ul>
+                                    <!-- .nk-menu-sub -->
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-item has-sub">
+                                    <a href="#" class="nk-menu-link nk-menu-toggle">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-file-docs"></em></span>
+                                        <span class="nk-menu-text">فاکتورها</span>
+                                    </a>
+                                    <ul class="nk-menu-sub">
+                                        <li class="nk-menu-item">
+                                            <a href="html/invoice-list.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">لیست فاکتورها</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/invoice-details.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">جزئیات فاکتور</span></a>
+                                        </li>
+                                    </ul>
+                                    <!-- .nk-menu-sub -->
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-item has-sub">
+                                    <a href="#" class="nk-menu-link nk-menu-toggle">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-card-view"></em></span>
+                                        <span class="nk-menu-text">محصولات</span>
+                                    </a>
+                                    <ul class="nk-menu-sub">
+                                        <li class="nk-menu-item">
+                                            <a href="html/product-list.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">لیست محصولات</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/product-card.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">کارت های محصول</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/product-details.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">جزئیات محصول</span></a>
+                                        </li>
+                                    </ul>
+                                    <!-- .nk-menu-sub -->
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-item">
+                                    <a href="html/pricing-table.html" class="nk-menu-link">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-view-col"></em></span>
+                                        <span class="nk-menu-text">جداول قیمت گذاری</span>
+                                    </a>
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-item">
+                                    <a href="html/gallery.html" class="nk-menu-link">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-img"></em></span>
+                                        <span class="nk-menu-text">گالری تصاویر</span>
+                                    </a>
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-heading">
+                                    <h6 class="overline-title text-primary-alt">صفحه های متفرقه</h6>
+                                </li>
+                                <!-- .nk-menu-heading -->
+                                <li class="nk-menu-item has-sub">
+                                    <a href="#" class="nk-menu-link nk-menu-toggle">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-signin"></em></span>
+                                        <span class="nk-menu-text">صفحه های احراز هویت</span>
+                                    </a>
+                                    <ul class="nk-menu-sub">
+                                        <li class="nk-menu-item">
+                                            <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
+                                               target="_blank"><span class="nk-menu-text">ورود</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/pages/auths/auth-register.html" class="nk-menu-link"
+                                               target="_blank"><span class="nk-menu-text">ثبت نام / عضویت</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/pages/auths/auth-reset.html" class="nk-menu-link"
+                                               target="_blank"><span class="nk-menu-text">فراموشی رمز عبور</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/pages/auths/auth-success.html" class="nk-menu-link"
+                                               target="_blank"><span class="nk-menu-text">موفقیت آمیز / تایید</span></a>
+                                        </li>
+                                        <li class="nk-menu-item has-sub">
+                                            <a href="#" class="nk-menu-link nk-menu-toggle"><span class="nk-menu-text">نسخه کلاسیک - نسخه 2</span></a>
+                                            <ul class="nk-menu-sub">
+                                                <li class="nk-menu-item">
+                                                    <a href="html/pages/auths/auth-login-v2.html" class="nk-menu-link"
+                                                       target="_blank"><span class="nk-menu-text">ورود</span></a>
+                                                </li>
+                                                <li class="nk-menu-item">
+                                                    <a href="html/pages/auths/auth-register-v2.html"
+                                                       class="nk-menu-link" target="_blank"><span class="nk-menu-text">ثبت نام / عضویت</span></a>
+                                                </li>
+                                                <li class="nk-menu-item">
+                                                    <a href="html/pages/auths/auth-reset-v2.html" class="nk-menu-link"
+                                                       target="_blank"><span
+                                                            class="nk-menu-text">فراموشی رمز عبور</span></a>
+                                                </li>
+                                                <li class="nk-menu-item">
+                                                    <a href="html/pages/auths/auth-success-v2.html" class="nk-menu-link"
+                                                       target="_blank"><span
+                                                            class="nk-menu-text">موفقیت آمیز / تایید</span></a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="nk-menu-item has-sub">
+                                            <a href="#" class="nk-menu-link nk-menu-toggle"><span class="nk-menu-text">نسخه بدون اسلایدر - نسخه 3</span></a>
+                                            <ul class="nk-menu-sub">
+                                                <li class="nk-menu-item">
+                                                    <a href="html/pages/auths/auth-login-v3.html" class="nk-menu-link"
+                                                       target="_blank"><span class="nk-menu-text">ورود</span></a>
+                                                </li>
+                                                <li class="nk-menu-item">
+                                                    <a href="html/pages/auths/auth-register-v3.html"
+                                                       class="nk-menu-link" target="_blank"><span class="nk-menu-text">ثبت نام / عضویت</span></a>
+                                                </li>
+                                                <li class="nk-menu-item">
+                                                    <a href="html/pages/auths/auth-reset-v3.html" class="nk-menu-link"
+                                                       target="_blank"><span
+                                                            class="nk-menu-text">فراموشی رمز عبور</span></a>
+                                                </li>
+                                                <li class="nk-menu-item">
+                                                    <a href="html/pages/auths/auth-success-v3.html" class="nk-menu-link"
+                                                       target="_blank"><span
+                                                            class="nk-menu-text">موفقیت آمیز / تایید</span></a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                    <!-- .nk-menu-sub -->
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-item has-sub">
+                                    <a href="#" class="nk-menu-link nk-menu-toggle">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-files"></em></span>
+                                        <span class="nk-menu-text">صفحه های خطا</span>
+                                    </a>
+                                    <ul class="nk-menu-sub">
+                                        <li class="nk-menu-item">
+                                            <a href="html/pages/errors/404-classic.html" target="_blank"
+                                               class="nk-menu-link"><span class="nk-menu-text">404 کلاسیک</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/pages/errors/504-classic.html" target="_blank"
+                                               class="nk-menu-link"><span class="nk-menu-text">504 کلاسیک</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/pages/errors/404-s1.html" target="_blank"
+                                               class="nk-menu-link"><span class="nk-menu-text">404 مدرن</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/pages/errors/504-s1.html" target="_blank"
+                                               class="nk-menu-link"><span class="nk-menu-text">504 مدرن</span></a>
+                                        </li>
+                                    </ul>
+                                    <!-- .nk-menu-sub -->
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-item has-sub">
+                                    <a href="#" class="nk-menu-link nk-menu-toggle">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-files"></em></span>
+                                        <span class="nk-menu-text">سایر صفحه ها</span>
+                                    </a>
+                                    <ul class="nk-menu-sub">
+                                        <li class="nk-menu-item">
+                                            <a href="html/_blank.html" class="nk-menu-link"><span class="nk-menu-text">خالی / راه اندازی</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/pages/faqs.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">سوالات متداول / راهنمایی</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/pages/terms-policy.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">شرایط و ضوابط / سیاست</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/pages/regular-v1.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">صفحه عادی - نسخه 1</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/pages/regular-v2.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">صفحه عادی - نسخه 2</span></a>
+                                        </li>
+                                    </ul>
+                                    <!-- .nk-menu-sub -->
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-heading">
+                                    <h6 class="overline-title text-primary-alt">کامپوننت ها</h6>
+                                </li>
+                                <!-- .nk-menu-heading -->
+                                <li class="nk-menu-item has-sub">
+                                    <a href="#" class="nk-menu-link nk-menu-toggle">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-layers"></em></span>
+                                        <span class="nk-menu-text">عناصر رابط کاربری</span>
+                                    </a>
+                                    <ul class="nk-menu-sub">
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/elements/alerts.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">هشدارها</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/elements/accordions.html"
+                                               class="nk-menu-link"><span class="nk-menu-text">آکاردئون ها</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/elements/avatar.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">آواتار</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/elements/badges.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">نشان ها</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/elements/buttons.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">دکمه ها</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/elements/buttons-group.html"
+                                               class="nk-menu-link"><span class="nk-menu-text">گروه های دکمه</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/elements/breadcrumb.html"
+                                               class="nk-menu-link"><span class="nk-menu-text">بردکرامب ها</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/elements/cards.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">کارت ها</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/elements/carousel.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">کاروسل ها</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/elements/list-dropdown.html"
+                                               class="nk-menu-link"><span class="nk-menu-text">لیست های کشویی</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/elements/modals.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">مودال ها</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/elements/pagination.html"
+                                               class="nk-menu-link"><span class="nk-menu-text">صفحه بندی</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/elements/popover.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">پاپ اورها</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/elements/progress.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">پیشرفت</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/elements/preloader.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">پیش بارگذارنده</span><span
+                                                    class="nk-menu-badge">جدید</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/elements/placeholders.html"
+                                               class="nk-menu-link"><span
+                                                    class="nk-menu-text">نگهدارنده مکان</span><span
+                                                    class="nk-menu-badge">جدید</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/elements/spinner.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">اسپینرها</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/elements/tabs.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">زبانه ها</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/elements/toast.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">Toast ها</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/elements/tooltip.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">راهنمای ابزار</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/elements/typography.html"
+                                               class="nk-menu-link"><span class="nk-menu-text">تایپوگرافی</span></a>
+                                        </li>
+                                        <li class="nk-menu-item has-sub">
+                                            <a href="#" class="nk-menu-link nk-menu-toggle"><span class="nk-menu-text">ابزارها</span></a>
+                                            <ul class="nk-menu-sub">
+                                                <li class="nk-menu-item">
+                                                    <a href="html/components/elements/util-border.html"
+                                                       class="nk-menu-link"><span
+                                                            class="nk-menu-text">خط حاشیه</span></a>
+                                                </li>
+                                                <li class="nk-menu-item">
+                                                    <a href="html/components/elements/util-colors.html"
+                                                       class="nk-menu-link"><span class="nk-menu-text">رنگ ها</span></a>
+                                                </li>
+                                                <li class="nk-menu-item">
+                                                    <a href="html/components/elements/util-display.html"
+                                                       class="nk-menu-link"><span class="nk-menu-text">نمایش</span></a>
+                                                </li>
+                                                <li class="nk-menu-item">
+                                                    <a href="html/components/elements/util-embeded.html"
+                                                       class="nk-menu-link"><span class="nk-menu-text">جاسازی</span></a>
+                                                </li>
+                                                <li class="nk-menu-item">
+                                                    <a href="html/components/elements/util-flex.html"
+                                                       class="nk-menu-link"><span class="nk-menu-text">فلکس</span></a>
+                                                </li>
+                                                <li class="nk-menu-item">
+                                                    <a href="html/components/elements/util-text.html"
+                                                       class="nk-menu-link"><span class="nk-menu-text">متن</span></a>
+                                                </li>
+                                                <li class="nk-menu-item">
+                                                    <a href="html/components/elements/util-sizing.html"
+                                                       class="nk-menu-link"><span
+                                                            class="nk-menu-text">سایزبندی</span></a>
+                                                </li>
+                                                <li class="nk-menu-item">
+                                                    <a href="html/components/elements/util-spacing.html"
+                                                       class="nk-menu-link"><span
+                                                            class="nk-menu-text">فاصله گذاری</span></a>
+                                                </li>
+                                                <li class="nk-menu-item">
+                                                    <a href="html/components/elements/util-others.html"
+                                                       class="nk-menu-link"><span class="nk-menu-text">سایر</span></a>
+                                                </li>
+                                            </ul>
+                                            <!-- .nk-menu-sub -->
+                                        </li>
+                                    </ul>
+                                    <!-- .nk-menu-sub -->
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-item has-sub">
+                                    <a href="#" class="nk-menu-link nk-menu-toggle">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-dot-box"></em></span>
+                                        <span class="nk-menu-text">آیکون های ساخته شده</span>
+                                    </a>
+                                    <ul class="nk-menu-sub">
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/misc/svg-icons.html" class="nk-menu-link">
+                                                <span class="nk-menu-text">آیکون های SVG - انحصاری</span>
+                                            </a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/misc/nioicon.html" class="nk-menu-link">
+                                                <span class="nk-menu-text">Nioicon - دست ساز</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <!-- .nk-menu-sub -->
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-item">
+                                    <a href="html/components/misc/icons.html" class="nk-menu-link">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-menu-circled"></em></span>
+                                        <span class="nk-menu-text">کتابخانه های آیکون</span>
+                                    </a>
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-item has-sub">
+                                    <a href="#" class="nk-menu-link nk-menu-toggle">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-table-view"></em></span>
+                                        <span class="nk-menu-text">جداول</span>
+                                    </a>
+                                    <ul class="nk-menu-sub">
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/tables/table-basic.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">جداول پایه</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/tables/table-special.html"
+                                               class="nk-menu-link"><span class="nk-menu-text">جداول انحصاری</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/tables/table-datatable.html"
+                                               class="nk-menu-link"><span class="nk-menu-text">جدول داده ها</span></a>
+                                        </li>
+                                    </ul>
+                                    <!-- .nk-menu-sub -->
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-item has-sub">
+                                    <a href="#" class="nk-menu-link nk-menu-toggle">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-card-view"></em></span>
+                                        <span class="nk-menu-text">فرم ها</span>
+                                    </a>
+                                    <ul class="nk-menu-sub">
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/forms/form-elements.html"
+                                               class="nk-menu-link"><span class="nk-menu-text">عناصر فرم</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/forms/checkbox-radio.html"
+                                               class="nk-menu-link"><span
+                                                    class="nk-menu-text">چک باکس و رادیو</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/forms/advanced-controls.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">کنترل های پیشرفته</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/forms/input-group.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">گروه های ورودی</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/forms/form-upload.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">فرم آپلود</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/forms/datetime-picker.html"
+                                               class="nk-menu-link"><span
+                                                    class="nk-menu-text">انتخابگر تاریخ و زمان</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/forms/number-spinner.html"
+                                               class="nk-menu-link"><span class="nk-menu-text">اسپینر عدد</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/forms/nouislider.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">noUiSlider</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/forms/form-layouts.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">طرح بندی های فرم</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/forms/form-validation.html"
+                                               class="nk-menu-link"><span class="nk-menu-text">اعتبارسنجی فرم</span></a>
+                                        </li>
+                                        <li class="nk-menu-item has-sub">
+                                            <a href="#" class="nk-menu-link nk-menu-toggle"><span class="nk-menu-text">چند مرحله ای</span></a>
+                                            <ul class="nk-menu-sub">
+                                                <li class="nk-menu-item">
+                                                    <a href="html/components/forms/form-wizard.html"
+                                                       class="nk-menu-link"><span class="nk-menu-text">دموی پایه</span></a>
+                                                </li>
+                                                <li class="nk-menu-item">
+                                                    <a href="html/components/forms/wizard/create-project.html"
+                                                       class="nk-menu-link"><span
+                                                            class="nk-menu-text">ایجاد پروژه</span></a>
+                                                </li>
+                                                <li class="nk-menu-item">
+                                                    <a href="html/components/forms/wizard/create-profile.html"
+                                                       class="nk-menu-link"><span
+                                                            class="nk-menu-text">ایجاد پروفایل</span></a>
+                                                </li>
+                                                <li class="nk-menu-item">
+                                                    <a href="html/components/forms/wizard/two-factor-auth.html"
+                                                       class="nk-menu-link"><span class="nk-menu-text">احراز هویت دو مرحله ای</span></a>
+                                                </li>
+                                                <li class="nk-menu-item">
+                                                    <a target="_blank"
+                                                       href="html/components/forms/wizard/survey-v1.html"
+                                                       class="nk-menu-link"><span
+                                                            class="nk-menu-text">نظرسنجی</span></a>
+                                                </li>
+                                                <li class="nk-menu-item">
+                                                    <a target="_blank"
+                                                       href="html/components/forms/wizard/survey-v2.html"
+                                                       class="nk-menu-link"><span
+                                                            class="nk-menu-text">نظرسنجی نسخه 2</span></a>
+                                                </li>
+                                            </ul>
+                                            <!-- .nk-menu-sub -->
+                                        </li>
+                                        <li class="nk-menu-item has-sub">
+                                            <a href="#" class="nk-menu-link nk-menu-toggle"><span class="nk-menu-text">ویرایشگر توانمند</span></a>
+                                            <ul class="nk-menu-sub">
+                                                <li class="nk-menu-item">
+                                                    <a href="html/components/forms/form-summernote.html"
+                                                       class="nk-menu-link"><span class="nk-menu-text">Summernote</span></a>
+                                                </li>
+                                                <li class="nk-menu-item">
+                                                    <a href="html/components/forms/form-quill.html"
+                                                       class="nk-menu-link"><span class="nk-menu-text">Quill</span></a>
+                                                </li>
+                                                <li class="nk-menu-item">
+                                                    <a href="html/components/forms/form-tinymce.html"
+                                                       class="nk-menu-link"><span
+                                                            class="nk-menu-text">Tinymce</span></a>
+                                                </li>
+                                            </ul>
+                                            <!-- .nk-menu-sub -->
+                                        </li>
+                                    </ul>
+                                    <!-- .nk-menu-sub -->
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-item has-sub">
+                                    <a href="#" class="nk-menu-link nk-menu-toggle">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-pie"></em></span>
+                                        <span class="nk-menu-text">نمودارها</span>
+                                    </a>
+                                    <ul class="nk-menu-sub">
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/charts/chartjs.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">Chart JS</span></a>
+                                        </li>
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/charts/knob.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">Knob JS</span></a>
+                                        </li>
+                                    </ul>
+                                    <!-- .nk-menu-sub -->
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-item has-sub">
+                                    <a href="#" class="nk-menu-link nk-menu-toggle">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-puzzle"></em></span>
+                                        <span class="nk-menu-text">ابزارک ها</span>
+                                    </a>
+                                    <ul class="nk-menu-sub">
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/widgets/cards.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">ابزارک های کارت</span></a>
+                                        </li>
+                                        <!-- .nk-menu-item -->
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/widgets/charts.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">ابزارک های نمودار</span></a>
+                                        </li>
+                                        <!-- .nk-menu-item -->
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/widgets/ratings.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">ابزارک های امتیازدهی</span></a>
+                                        </li>
+                                        <!-- .nk-menu-item -->
+                                    </ul>
+                                    <!-- .nk-menu-sub -->
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-item has-sub">
+                                    <a href="#" class="nk-menu-link nk-menu-toggle">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-block-over"></em></span>
+                                        <span class="nk-menu-text">متفرقه</span>
+                                    </a>
+                                    <ul class="nk-menu-sub">
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/misc/slick-sliders.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">اسلایدر اسلیک</span></a>
+                                        </li>
+                                        <!-- .nk-menu-item -->
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/misc/toastr.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">Toastr</span></a>
+                                        </li>
+                                        <!-- .nk-menu-item -->
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/misc/sweet-alert.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">Sweet Alert</span></a>
+                                        </li>
+                                        <!-- .nk-menu-item -->
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/misc/js-tree.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">jsTree</span></a>
+                                        </li>
+                                        <!-- .nk-menu-item -->
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/misc/dual-listbox.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">لیست باکس دوتایی</span></a>
+                                        </li>
+                                        <!-- .nk-menu-item -->
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/misc/dragula.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">Dragula</span></a>
+                                        </li>
+                                        <!-- .nk-menu-item -->
+                                        <li class="nk-menu-item">
+                                            <a href="html/components/misc/map.html" class="nk-menu-link"><span
+                                                    class="nk-menu-text">نقشه گوگل</span></a>
+                                        </li>
+                                        <!-- .nk-menu-item -->
+                                    </ul>
+                                    <!-- .nk-menu-sub -->
+                                </li>
+                                <!-- .nk-menu-item -->
+                                <li class="nk-menu-item">
+                                    <a href="html/email-templates.html" class="nk-menu-link">
+                                        <span class="nk-menu-icon"><em class="icon ni ni-text-rich"></em></span>
+                                        <span class="nk-menu-text">قالب ایمیل</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <!-- .nk-menu -->
+                        </div>
+                        <!-- .nk-sidebar-menu -->
+                    </div>
+                    <!-- .nk-sidebar-content -->
+                </div>
+                <!-- .nk-sidebar-element -->
+            </div>
+            <!-- sidebar @e -->
+            <!-- wrap @s -->
+            <div class="nk-wrap">
+                <!-- main header @s -->
+                {% include 'base/components/header.html' %}
+                <!-- main header @e -->
+                <!-- content @s -->
+                <div class="nk-content nk-content-fluid">
+                    <div class="container-xl wide-xl">
+                        <div class="nk-content-body">
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block-between">
+                                    <div class="nk-block-head-content">
+                                        <h3 class="nk-block-title page-title">داشبورد</h3>
+                                        <div class="nk-block-des text-soft">
+                                            <p>به داشبورد ماشین سازی الفا خوش امدید .</p>
+                                        </div>
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                    <div class="nk-block-head-content">
+                                        <div class="toggle-wrap nk-block-tools-toggle">
+                                            <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1"
+                                               data-target="pageMenu"><em class="icon ni ni-more-v"></em></a>
+                                            <div class="toggle-expand-content" data-content="pageMenu">
+                                                <ul class="nk-block-tools g-3">
+                                                    <li class="dropdown chats-dropdown hide-mb-sm">
+                                                        <a href="#"
+                                                           class="dropdown-toggle btn btn-primary"
+                                                           data-bs-toggle="dropdown">
+                                                            <div class="icon-status icon-status-na">
+                                                                <em class="icon ni ni-reports"></em><span>گزارش ها</span>
+                                                            </div>
+                                                        </a>
+                                                        <div class="dropdown-menu dropdown-menu-md dropdown-menu-end">
+                                                            <div class="dropdown-head">
+                                                                <span class="sub-title nk-dropdown-title">خروجی اکسل</span>
+                                                            </div>
+                                                            <div class="dropdown-body">
+                                                                <ul class="chat-list">
+                                                                    <li class="chat-item">
+                                                                        <a class="chat-link"
+                                                                           href="#">
+                                                                            <div class="chat-media user-avatar bg-success">
+                                                                                <em class="icon ni ni-users"></em>
+                                                                            </div>
+                                                                            <div class="chat-info">
+                                                                                <div class="chat-context text-muted">
+                                                                                    <div>
+                                                                                        خروجی کاربران
+                                                                                    </div>
+                                                                                    <div class="status delivered">
+                                                                                        <em class="icon ni ni-download"></em>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li class="chat-item">
+                                                                        <a class="chat-link"
+                                                                           href="#">
+                                                                            <div class="chat-media user-avatar bg-info">
+                                                                                <em class="icon ni ni-dashboard"></em>
+                                                                            </div>
+                                                                            <div class="chat-info">
+                                                                                <div class="chat-context text-muted">
+                                                                                    <div>
+                                                                                        خروجی پروژه ها
+                                                                                    </div>
+                                                                                    <div class="status delivered">
+                                                                                        <em class="icon ni ni-download"></em>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                                <!-- .chat-list -->
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                </div>
+                                <!-- .nk-block-between -->
+                            </div>
+                            <!-- .nk-block-head -->
+                            <div class="nk-block">
+                                <div class="row g-gs">
+                                    <div class="col-lg-3 col-sm-6">
+                                        <div class="card h-100 bg-primary">
+                                            <div class="nk-cmwg nk-cmwg1">
+                                                <div class="card-inner pt-3">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="flex-item">
+                                                            <div class="text-white d-flex flex-wrap">
+                                                                <span class="fs-1 me-1">{{ projects.count }}</span>
+                                                            </div>
+                                                            <h6 class="text-white">تعداد پروژه ها</h6>
+                                                        </div>
+                                                        <div class="card-tools me-n1">
+                                                            <div class="dropdown">
+                                                                <a href="#"
+                                                                   class="dropdown-toggle btn btn-icon btn-sm btn-trigger on-dark"
+                                                                   data-bs-toggle="dropdown"><em
+                                                                        class="icon ni ni-more-v"></em></a>
+                                                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                                                    <ul class="link-list-opt no-bdr">
+                                                                        <li>
+                                                                            <a href="#"><span>افزودن پروژه</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="{% url 'public:project__list' %}"><span>لیست پروژه ها</span></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- .card-inner -->
+                                                <div class="nk-ck-wrap mt-auto overflow-hidden rounded-bottom">
+                                                    <div class="nk-cmwg1-ck box-icon">
+                                                        <i class="icon ni ni-dashboard"></i>
+{#                                                        <canvas class="campaign-line-chart-s1 rounded-bottom"#}
+{#                                                                id="runningCampaign"></canvas>#}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- .nk-cmwg -->
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <!-- .col -->
+                                    <div class="col-lg-3 col-sm-6">
+                                        <div class="card h-100 bg-info">
+                                            <div class="nk-cmwg nk-cmwg1">
+                                                <div class="card-inner pt-3">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="flex-item">
+                                                            <div class="text-white d-flex flex-wrap">
+                                                                <span class="fs-1 me-1">{{ departments.count }}</span>
+                                                            </div>
+                                                            <h6 class="text-white">تعداد واحد ها</h6>
+                                                        </div>
+                                                        <div class="card-tools me-n1">
+                                                            <div class="dropdown">
+                                                                <a href="#"
+                                                                   class="dropdown-toggle btn btn-icon btn-sm btn-trigger on-dark"
+                                                                   data-bs-toggle="dropdown"><em
+                                                                        class="icon ni ni-more-v"></em></a>
+                                                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                                                    <ul class="link-list-opt no-bdr">
+                                                                        <li>
+                                                                            <a href="#" ><span>افزودن واحد</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#"><span>لیست واحد ها</span></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- .card-inner -->
+                                                <div class="nk-cmwg1-ck mt-auto box-icon">
+                                                    <i class="icon ni ni-building"></i>
+{#                                                    <canvas class="campaign-line-chart-s1 rounded-bottom"#}
+{#                                                            id="totalAudience"></canvas>#}
+                                                </div>
+                                            </div>
+                                            <!-- .nk-cmwg -->
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <!-- .col -->
+                                    <div class="col-lg-3 col-sm-6">
+                                        <div class="card h-100 bg-warning">
+                                            <div class="nk-cmwg nk-cmwg1">
+                                                <div class="card-inner pt-3">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="flex-item">
+                                                            <div class="text-white d-flex flex-wrap">
+                                                                <span class="fs-1 me-1">{{ users.count }}</span>
+                                                            </div>
+                                                            <h6 class="text-white">تعداد کاربران</h6>
+                                                        </div>
+                                                        <div class="card-tools me-n1">
+                                                            <div class="dropdown">
+                                                                <a href="#"
+                                                                   class="dropdown-toggle btn btn-icon btn-sm btn-trigger on-dark"
+                                                                   data-bs-toggle="dropdown"><em
+                                                                        class="icon ni ni-more-v"></em></a>
+                                                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                                                    <ul class="link-list-opt no-bdr">
+                                                                        <li>
+                                                                            <a href="#"><span>افزودن کاربر</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#"><span>لیست کاربران</span></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- .card-inner -->
+                                                <div class="nk-ck-wrap mt-auto overflow-hidden rounded-bottom">
+                                                    <div class="nk-cmwg1-ck box-icon">
+                                                        <i class="icon ni ni-users"></i>
+{#                                                        <canvas class="campaign-bar-chart-s1 rounded-bottom"#}
+{#                                                                id="avgRating"></canvas>#}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- .nk-cmwg -->
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <!-- .col -->
+                                    <div class="col-lg-3 col-sm-6">
+                                        <div class="card h-100 bg-danger">
+                                            <div class="nk-cmwg nk-cmwg1">
+                                                <div class="card-inner pt-3">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="flex-item">
+                                                            <div class="text-white d-flex flex-wrap">
+                                                                <span class="fs-1 me-1">{{ task_masters.count }}</span>
+                                                            </div>
+                                                            <h6 class="text-white">تعداد مشتریان</h6>
+                                                        </div>
+                                                        <div class="card-tools me-n1">
+                                                            <div class="dropdown">
+                                                                <a href="#"
+                                                                   class="dropdown-toggle btn btn-icon btn-sm btn-trigger on-dark"
+                                                                   data-bs-toggle="dropdown"><em
+                                                                        class="icon ni ni-more-v"></em></a>
+                                                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                                                    <ul class="link-list-opt no-bdr">
+                                                                        <li>
+                                                                            <a href="#"><span>افزودن مشتری</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#"><span>لیست مشتری</span></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- .card-inner -->
+                                                <div class="nk-ck-wrap mt-auto overflow-hidden rounded-bottom">
+                                                    <div class="nk-cmwg1-ck box-icon">
+                                                        <i class="icon ni ni-user-group"></i>
+{#                                                        <canvas class="campaign-line-chart-s1 rounded-bottom"#}
+{#                                                                id="newSubscriber"></canvas>#}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- .nk-cmwg -->
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <!-- .col -->
+                                    <div class="col-xxl-8 col-lg-7">
+                                        <div class="card card-full">
+                                            <div class="card-inner">
+                                                <div class="card-title-group">
+                                                    <div class="card-title">
+                                                        <h6 class="title">تسک های پروژه ها</h6>
+                                                    </div>
+                                                    <div class="card-tools">
+                                                        <ul class="card-tools-nav">
+                                                            <li class="font-80">
+                                                                <a href="{% url 'public:project__list' %}">
+                                                                    <span>مشاهده پروژه ها</span>
+                                                                    <i class="icon ni ni-arrow-right"></i>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-inner pt-0">
+                                                <div class="nk-cmwg2-ck" style="height: 300px">
+                                                    <canvas class="campaign-line-chart-s2"
+                                                            id="performanceOverview" labels="" data=""></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <!-- .col -->
+                                    <div class="col-xxl-4 col-lg-5">
+                                        <div class="card card-full">
+                                            <div class="card-inner">
+                                                <div class="card-title-group">
+                                                    <div class="card-title">
+                                                        <h6 class="title">کانال های برتر</h6>
+                                                    </div>
+                                                    <div class="card-tools">
+                                                        <a href="#" class="link">مشاهده همه</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-inner pt-0">
+                                                <ul class="gy-4">
+                                                    <li class="justify-between align-center border-bottom border-0 border-dashed">
+                                                        <div class="align-center">
+                                                            <div class="user-avatar sq bg-transparent"><img
+                                                                    src="./images/icons/campaign/brand/google.png"
+                                                                    alt=""/></div>
+                                                            <div class="ms-2">
+                                                                <div class="lead-text">گوگل</div>
+                                                                <div class="sub-text">سئو و پرداخت برای هر کلیک</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="align-center">
+                                                            <div class="sub-text me-2">70%</div>
+                                                            <div class="progress rounded-pill w-80px">
+                                                                <div class="progress-bar bg-success rounded-pill"
+                                                                     data-progress="70"></div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <!-- li -->
+                                                    <li class="justify-between align-center border-bottom border-0 border-dashed">
+                                                        <div class="align-center">
+                                                            <div class="user-avatar sq bg-transparent"><img
+                                                                    src="./images/icons/campaign/brand/instagram.png"
+                                                                    alt=""/></div>
+                                                            <div class="ms-2">
+                                                                <div class="lead-text">اینستاگرام</div>
+                                                                <div class="sub-text">شبکه های اجتماعی</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="align-center">
+                                                            <div class="sub-text me-2">86%</div>
+                                                            <div class="progress rounded-pill w-80px">
+                                                                <div class="progress-bar bg-primary rounded-pill"
+                                                                     data-progress="86"></div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <!-- li -->
+                                                    <li class="justify-between align-center border-bottom border-0 border-dashed">
+                                                        <div class="align-center">
+                                                            <div class="user-avatar sq bg-transparent"><img
+                                                                    src="./images/icons/campaign/brand/linkedin.png"
+                                                                    alt=""/></div>
+                                                            <div class="ms-2">
+                                                                <div class="lead-text">لینکدین</div>
+                                                                <div class="sub-text">شبکه های اجتماعی</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="align-center">
+                                                            <div class="sub-text me-2">75%</div>
+                                                            <div class="progress rounded-pill w-80px">
+                                                                <div class="progress-bar bg-danger rounded-pill"
+                                                                     data-progress="75"></div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <!-- li -->
+                                                    <li class="justify-between align-center border-bottom border-0 border-dashed">
+                                                        <div class="align-center">
+                                                            <div class="user-avatar sq bg-transparent"><img
+                                                                    src="./images/icons/campaign/brand/slack.png"
+                                                                    alt=""/></div>
+                                                            <div class="ms-2">
+                                                                <div class="lead-text">اسلک</div>
+                                                                <div class="sub-text">پیام رسان</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="align-center">
+                                                            <div class="sub-text me-2">64%</div>
+                                                            <div class="progress rounded-pill w-80px">
+                                                                <div class="progress-bar bg-info rounded-pill"
+                                                                     data-progress="64"></div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <!-- li -->
+                                                    <li class="justify-between align-center">
+                                                        <div class="align-center">
+                                                            <div class="user-avatar sq bg-transparent"><img
+                                                                    src="./images/icons/campaign/brand/twitter.png"
+                                                                    alt=""/></div>
+                                                            <div class="ms-2">
+                                                                <div class="lead-text">توییتر</div>
+                                                                <div class="sub-text">شبکه های اجتماعی</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="align-center">
+                                                            <div class="sub-text me-2">54%</div>
+                                                            <div class="progress rounded-pill w-80px">
+                                                                <div class="progress-bar bg-warning rounded-pill"
+                                                                     data-progress="54"></div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <!-- li -->
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <!-- .col -->
+                                    <div class="col-xxl-8">
+                                        <div class="card card-full">
+                                            <div class="card-inner">
+                                                <div class="card-title-group">
+                                                    <div class="card-title">
+                                                        <h6 class="title">کمپین فعال</h6>
+                                                    </div>
+                                                    <div class="card-tools">
+                                                        <a href="#" class="link">مشاهده همه</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-inner py-0 mt-n2">
+                                                <div class="nk-tb-list nk-tb-flush nk-tb-dashed">
+                                                    <div class="nk-tb-item nk-tb-head">
+                                                        <div class="nk-tb-col"><span>موضوع</span></div>
+                                                        <div class="nk-tb-col tb-col-mb"><span>کانال ها</span></div>
+                                                        <div class="nk-tb-col tb-col-sm"><span>وضعیت</span></div>
+                                                        <div class="nk-tb-col tb-col-md"><span>نمایندگان</span></div>
+                                                        <div class="nk-tb-col text-end"><span>محدوده تاریخ</span></div>
+                                                    </div>
+                                                    <!-- .nk-tb-head -->
+                                                    <div class="nk-tb-item">
+                                                        <div class="nk-tb-col">
+                                                            <span class="tb-lead">کریسمس مبارک <span
+                                                                    class="dot dot-success d-sm-none ms-1"></span></span>
+                                                            <span class="tb-sub">ایجاد شده در 21 آبان 1402</span>
+                                                        </div>
+                                                        <div class="nk-tb-col tb-col-mb">
+                                                            <ul class="d-flex gx-1">
+                                                                <li class="text-facebook"><em
+                                                                        class="icon ni ni-facebook-f"></em></li>
+                                                                <li class="text-instagram"><em
+                                                                        class="icon ni ni-instagram"></em></li>
+                                                                <li class="text-linkedin"><em
+                                                                        class="icon ni ni-linkedin"></em></li>
+                                                                <li class="text-twitter"><em
+                                                                        class="icon ni ni-twitter"></em></li>
+                                                                <li class="text-youtube"><em
+                                                                        class="icon ni ni-youtube-fill"></em></li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="nk-tb-col tb-col-sm">
+                                                            <div class="badge badge-dim bg-success">زنده</div>
+                                                        </div>
+                                                        <div class="nk-tb-col tb-col-md">
+                                                            <div class="user-avatar-group">
+                                                                <div class="user-avatar xs">
+                                                                    <img src="./images/avatar/e-sm.jpg" alt=""/>
+                                                                </div>
+                                                                <div class="user-avatar xs">
+                                                                    <img src="./images/avatar/f-sm.jpg" alt=""/>
+                                                                </div>
+                                                                <div class="user-avatar xs">
+                                                                    <img src="./images/avatar/g-sm.jpg" alt=""/>
+                                                                </div>
+                                                                <div class="user-avatar xs">
+                                                                    <span>2+</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="nk-tb-col text-end"><span>21 آبان - 30 آبان</span>
+                                                        </div>
+                                                    </div>
+                                                    <!-- .nk-tb-item -->
+                                                    <div class="nk-tb-item">
+                                                        <div class="nk-tb-col">
+                                                            <span class="tb-lead">جمعه سیاه <span
+                                                                    class="dot dot-success d-sm-none ms-1"></span></span>
+                                                            <span class="tb-sub">ایجاد شده در 21 آبان 1402</span>
+                                                        </div>
+                                                        <div class="nk-tb-col tb-col-mb">
+                                                            <ul class="d-flex gx-1">
+                                                                <li class="text-linkedin"><em
+                                                                        class="icon ni ni-linkedin"></em></li>
+                                                                <li class="text-facebook"><em
+                                                                        class="icon ni ni-facebook-f"></em></li>
+                                                                <li class="text-instagram"><em
+                                                                        class="icon ni ni-instagram"></em></li>
+                                                                <li class="text-youtube"><em
+                                                                        class="icon ni ni-youtube-fill"></em></li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="nk-tb-col tb-col-sm">
+                                                            <div class="badge badge-dim bg-success">زنده</div>
+                                                        </div>
+                                                        <div class="nk-tb-col tb-col-md">
+                                                            <div class="user-avatar-group">
+                                                                <div class="user-avatar xs">
+                                                                    <img src="./images/avatar/h-sm.jpg" alt=""/>
+                                                                </div>
+                                                                <div class="user-avatar xs">
+                                                                    <img src="./images/avatar/i-sm.jpg" alt=""/>
+                                                                </div>
+                                                                <div class="user-avatar xs">
+                                                                    <img src="./images/avatar/j-sm.jpg" alt=""/>
+                                                                </div>
+                                                                <div class="user-avatar xs">
+                                                                    <span>7+</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="nk-tb-col text-end"><span>21 آبان - 30 آبان</span>
+                                                        </div>
+                                                    </div>
+                                                    <!-- .nk-tb-item -->
+                                                    <div class="nk-tb-item">
+                                                        <div class="nk-tb-col">
+                                                            <span class="tb-lead">درختکاری <span
+                                                                    class="dot dot-warning d-sm-none ms-1"></span></span>
+                                                            <span class="tb-sub">ایجاد شده در 23 آبان 1402</span>
+                                                        </div>
+                                                        <div class="nk-tb-col tb-col-mb">
+                                                            <ul class="d-flex gx-1">
+                                                                <li class="text-twitter"><em
+                                                                        class="icon ni ni-twitter"></em></li>
+                                                                <li class="text-instagram"><em
+                                                                        class="icon ni ni-instagram"></em></li>
+                                                                <li class="text-linkedin"><em
+                                                                        class="icon ni ni-linkedin"></em></li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="nk-tb-col tb-col-sm">
+                                                            <div class="badge badge-dim bg-warning">مکث شده</div>
+                                                        </div>
+                                                        <div class="nk-tb-col tb-col-md">
+                                                            <div class="user-avatar-group">
+                                                                <div class="user-avatar xs">
+                                                                    <img src="./images/avatar/k-sm.jpg" alt=""/>
+                                                                </div>
+                                                                <div class="user-avatar xs bg-pink">
+                                                                    <span>ر‌ر</span>
+                                                                </div>
+                                                                <div class="user-avatar xs">
+                                                                    <img src="./images/avatar/e-sm.jpg" alt=""/>
+                                                                </div>
+                                                                <div class="user-avatar xs">
+                                                                    <span>3+</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="nk-tb-col text-end"><span>21 آبان - 30 آبان</span>
+                                                        </div>
+                                                    </div>
+                                                    <!-- .nk-tb-item -->
+                                                    <div class="nk-tb-item">
+                                                        <div class="nk-tb-col">
+                                                            <span class="tb-lead">پیش نمایش فیلم فرار <span
+                                                                    class="dot dot-success d-sm-none ms-1"></span></span>
+                                                            <span class="tb-sub">ایجاد شده در 22 مهر 1402</span>
+                                                        </div>
+                                                        <div class="nk-tb-col tb-col-mb">
+                                                            <ul class="d-flex gx-1">
+                                                                <li class="text-linkedin"><em
+                                                                        class="icon ni ni-linkedin"></em></li>
+                                                                <li class="text-twitter"><em
+                                                                        class="icon ni ni-twitter"></em></li>
+                                                                <li class="text-facebook"><em
+                                                                        class="icon ni ni-facebook-f"></em></li>
+                                                                <li class="text-youtube"><em
+                                                                        class="icon ni ni-youtube-fill"></em></li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="nk-tb-col tb-col-sm">
+                                                            <div class="badge badge-dim bg-success">زنده</div>
+                                                        </div>
+                                                        <div class="nk-tb-col tb-col-md">
+                                                            <div class="user-avatar-group">
+                                                                <div class="user-avatar xs">
+                                                                    <img src="./images/avatar/i-sm.jpg" alt=""/>
+                                                                </div>
+                                                                <div class="user-avatar xs">
+                                                                    <img src="./images/avatar/k-sm.jpg" alt=""/>
+                                                                </div>
+                                                                <div class="user-avatar xs">
+                                                                    <img src="./images/avatar/e-sm.jpg" alt=""/>
+                                                                </div>
+                                                                <div class="user-avatar xs">
+                                                                    <img src="./images/avatar/g-sm.jpg" alt=""/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="nk-tb-col text-end"><span>21 آبان - 30 آبان</span>
+                                                        </div>
+                                                    </div>
+                                                    <!-- .nk-tb-item -->
+                                                </div>
+                                                <!-- .nk-tb-list -->
+                                            </div>
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <!-- .col -->
+                                    <div class="col-xxl-4 col-md-6">
+                                        <div class="card card-full">
+                                            <div class="card-inner">
+                                                <div class="card-title-group">
+                                                    <div class="card-title">
+                                                        <h6 class="title">آمار کلیدی</h6>
+                                                    </div>
+                                                    <div class="card-tools me-n1 mt-n1">
+                                                        <div class="dropdown">
+                                                            <a href="#" class="dropdown-toggle btn btn-icon btn-trigger"
+                                                               data-bs-toggle="dropdown"><em
+                                                                    class="icon ni ni-more-h"></em></a>
+                                                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                                                <ul class="link-list-opt no-bdr">
+                                                                    <li>
+                                                                        <a href="#"
+                                                                           class="active"><span>15 روز</span></a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="#"><span>30 روز</span></a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="#"><span>3 ماه</span></a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-inner pt-0">
+                                                <ul class="gy-4">
+                                                    <li class="border-bottom border-0 border-dashed">
+                                                        <div class="mb-1">
+                                                            <span class="fs-2 lh-1 mb-1 text-head">85.6هزار</span>
+                                                            <div class="sub-text">میانگین ​​لایک ها</div>
+                                                        </div>
+                                                        <div class="align-center">
+                                                            <div class="small text-primary me-2">54%</div>
+                                                            <div class="progress progress-md rounded-pill w-100 bg-primary-dim">
+                                                                <div class="progress-bar bg-primary rounded-pill"
+                                                                     data-progress="54"></div>
+                                                            </div>
+                                                            <div class="dropdown ms-3">
+                                                                <a class="dropdown-toggle dropdown-indicator sub-text"
+                                                                   href="#" type="button" data-bs-toggle="dropdown"
+                                                                   data-bs-offset="0, 10">دی 21 - فروردین 21</a>
+                                                                <div class="dropdown-menu dropdown-menu-end text-right">
+                                                                    <ul class="link-list-opt">
+                                                                        <li>
+                                                                            <a href="#"><span>فروردین 21 - تیر 21</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#"><span>تیر 21 - مهر 21</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#"><span>مهر 21 - دی 21</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#"><span>دی 21 - فروردین 21</span></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <!-- li -->
+                                                    <li class="border-bottom border-0 border-dashed">
+                                                        <div class="mb-1">
+                                                            <span class="fs-2 lh-1 mb-1 text-head">42.7هزار</span>
+                                                            <div class="sub-text">میانگین ​​نظرات</div>
+                                                        </div>
+                                                        <div class="align-center">
+                                                            <div class="small text-danger me-2">84%</div>
+                                                            <div class="progress progress-md rounded-pill w-100 bg-danger-dim">
+                                                                <div class="progress-bar bg-danger rounded-pill"
+                                                                     data-progress="84"></div>
+                                                            </div>
+                                                            <div class="dropdown ms-3">
+                                                                <a class="dropdown-toggle dropdown-indicator sub-text"
+                                                                   href="#" type="button" data-bs-toggle="dropdown"
+                                                                   data-bs-offset="0, 10">دی 21 - فروردین 21</a>
+                                                                <div class="dropdown-menu dropdown-menu-end text-right">
+                                                                    <ul class="link-list-opt">
+                                                                        <li>
+                                                                            <a href="#"><span>فروردین 21 - تیر 21</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#"><span>تیر 21 - مهر 21</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#"><span>مهر 21 - دی 21</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#"><span>دی 21 - فروردین 21</span></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <!-- li -->
+                                                    <li>
+                                                        <div class="mb-1">
+                                                            <span class="fs-2 lh-1 mb-1 text-head">25.4هزار</span>
+                                                            <div class="sub-text">میانگین ​​اشتراک گذاری ها</div>
+                                                        </div>
+                                                        <div class="align-center">
+                                                            <div class="small text-success me-2">62%</div>
+                                                            <div class="progress progress-md rounded-pill w-100 bg-success-dim">
+                                                                <div class="progress-bar bg-success rounded-pill"
+                                                                     data-progress="62"></div>
+                                                            </div>
+                                                            <div class="dropdown ms-3">
+                                                                <a class="dropdown-toggle dropdown-indicator sub-text"
+                                                                   href="#" type="button" data-bs-toggle="dropdown"
+                                                                   data-bs-offset="0, 10">دی 21 - فروردین 21</a>
+                                                                <div class="dropdown-menu dropdown-menu-end text-right">
+                                                                    <ul class="link-list-opt">
+                                                                        <li>
+                                                                            <a href="#"><span>فروردین 21 - تیر 21</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#"><span>تیر 21 - مهر 21</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#"><span>مهر 21 - دی 21</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#"><span>دی 21 - فروردین 21</span></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <!-- li -->
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <!-- .col -->
+                                    <div class="col-xxl-4 col-md-6">
+                                        <div class="card card-full">
+                                            <div class="card-inner">
+                                                <div class="card-title-group">
+                                                    <div class="card-title">
+                                                        <h6 class="title">کمپین اینستاگرام</h6>
+                                                    </div>
+                                                    <div class="card-tools">
+                                                        <ul class="d-flex gx-2">
+                                                            <li>
+                                                                <button class="btn btn-icon btn-sm btn-outline-light rounded-pill">
+                                                                    <em class="icon ni ni-chevron-left"></em></button>
+                                                            </li>
+                                                            <li>
+                                                                <button class="btn btn-icon btn-sm btn-outline-primary rounded-pill">
+                                                                    <em class="icon ni ni-chevron-right"></em></button>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-inner pt-0">
+                                                <div class="rounded px-2 py-4 bg-primary">
+                                                    <div class="d-flex">
+                                                        <div class="w-50 px-4">
+                                                            <span class="fs-2 lh-1 mb-1 text-white">24.6هزار</span>
+                                                            <div class="fs-14px text-white text-opacity-75">فالوور
+                                                                جدید
+                                                            </div>
+                                                        </div>
+                                                        <div class="border-start opacity-50"></div>
+                                                        <div class="w-50 px-4">
+                                                            <span class="fs-2 lh-1 mb-1 text-white">120هزار</span>
+                                                            <div class="fs-14px text-white text-opacity-75">هدف فالوور
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="nk-cmwg3-ck mt-3">
+                                                    <canvas class="campaign-line-chart-s3"
+                                                            id="instagramCampaign"></canvas>
+                                                </div>
+                                                <div class="chart-label-group ms-5 mt-0">
+                                                    <div class="chart-label">01 فروردین</div>
+                                                    <div class="chart-label d-none d-sm-block">10 فروردین</div>
+                                                    <div class="chart-label d-none d-sm-block">17 فروردین</div>
+                                                    <div class="chart-label d-none d-sm-block">24 فروردین</div>
+                                                    <div class="chart-label">31 فروردین</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <!-- .col -->
+                                    <div class="col-xxl-4 col-md-6">
+                                        <div class="card card-full">
+                                            <div class="card-inner">
+                                                <div class="card-title-group">
+                                                    <div class="card-title">
+                                                        <h6 class="title">کلیک بر اساس مکان</h6>
+                                                    </div>
+                                                    <div class="card-tools me-n1 mt-n1">
+                                                        <div class="dropdown">
+                                                            <a href="#" class="dropdown-toggle btn btn-icon btn-trigger"
+                                                               data-bs-toggle="dropdown"><em
+                                                                    class="icon ni ni-more-h"></em></a>
+                                                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                                                <ul class="link-list-opt no-bdr">
+                                                                    <li>
+                                                                        <a href="#"
+                                                                           class="active"><span>15 روز</span></a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="#"><span>30 روز</span></a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="#"><span>3 ماه</span></a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-inner pt-0">
+                                                <ul class="my-n2">
+                                                    <li class="align-center justify-between py-1 gx-1 border-bottom border-0 border-dashed">
+                                                        <div class="lead-text">ایالات متحده آمریکا</div>
+                                                        <div class="sub-text">14,356</div>
+                                                    </li>
+                                                    <!-- li -->
+                                                    <li class="align-center justify-between py-1 gx-1 border-bottom border-0 border-dashed">
+                                                        <div class="lead-text">ایرلند</div>
+                                                        <div class="sub-text">11,203</div>
+                                                    </li>
+                                                    <!-- li -->
+                                                    <li class="align-center justify-between py-1 gx-1 border-bottom border-0 border-dashed">
+                                                        <div class="lead-text">انگلستان</div>
+                                                        <div class="sub-text">10,653</div>
+                                                    </li>
+                                                    <!-- li -->
+                                                    <li class="align-center justify-between py-1 gx-1 border-bottom border-0 border-dashed">
+                                                        <div class="lead-text">کانادا</div>
+                                                        <div class="sub-text">7,215</div>
+                                                    </li>
+                                                    <!-- li -->
+                                                    <li class="align-center justify-between py-1 gx-1 border-bottom border-0 border-dashed">
+                                                        <div class="lead-text">استرالیا</div>
+                                                        <div class="sub-text">6,653</div>
+                                                    </li>
+                                                    <!-- li -->
+                                                    <li class="align-center justify-between py-1 gx-1 border-bottom border-0 border-dashed">
+                                                        <div class="lead-text">ژاپن</div>
+                                                        <div class="sub-text">3,945</div>
+                                                    </li>
+                                                    <!-- li -->
+                                                    <li class="align-center justify-between py-1 gx-1 border-bottom border-0 border-dashed">
+                                                        <div class="lead-text">چین</div>
+                                                        <div class="sub-text">2,945</div>
+                                                    </li>
+                                                    <!-- li -->
+                                                    <li class="align-center justify-between py-1 gx-1">
+                                                        <div class="lead-text">فرانسه</div>
+                                                        <div class="sub-text">954</div>
+                                                    </li>
+                                                    <!-- li -->
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <!-- .col -->
+                                    <div class="col-xxl-4 col-md-6">
+                                        <div class="card card-full">
+                                            <div class="card-inner">
+                                                <div class="card-title-group">
+                                                    <div class="card-title">
+                                                        <h6 class="title">نرخ تبدیل وب</h6>
+                                                    </div>
+                                                    <div class="card-tools me-n1 mt-n1">
+                                                        <div class="dropdown">
+                                                            <a href="#" class="dropdown-toggle btn btn-icon btn-trigger"
+                                                               data-bs-toggle="dropdown"><em
+                                                                    class="icon ni ni-more-h"></em></a>
+                                                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                                                <ul class="link-list-opt no-bdr">
+                                                                    <li>
+                                                                        <a href="#"
+                                                                           class="active"><span>15 روز</span></a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="#"><span>30 روز</span></a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="#"><span>3 ماه</span></a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-inner pt-0">
+                                                <div class="">
+                                                    <span class="fs-2 lh-1 mb-1 text-head">3.86%</span>
+                                                    <div class="fs-14px">این ماه</div>
+                                                </div>
+                                                <div class="nk-cmwg4-ck mt-4">
+                                                    <canvas class="campaign-line-chart-s3" id="webConvRate"></canvas>
+                                                </div>
+                                                <div class="chart-label-group ms-5 mt-0">
+                                                    <div class="chart-label">فروردین</div>
+                                                    <div class="chart-label d-none d-sm-block">اردیبهشت</div>
+                                                    <div class="chart-label d-none d-sm-block">خرداد</div>
+                                                    <div class="chart-label d-none d-sm-block">تیر</div>
+                                                    <div class="chart-label d-none d-sm-block">مرداد</div>
+                                                    <div class="chart-label">شهریور</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <!-- .col -->
+                                </div>
+                                <!-- .row -->
+                            </div>
+                            <!-- .nk-block -->
                         </div>
                     </div>
-                    <div class="information-item mt-3">
-                        <label class="item-upload mb-2" for="projectSelect">
-                            پروژه:
-                        </label>
-                        <!-- status task -->
-                        <select id="projectSelect" name="project" class="select2-input" required>
-                            {% for project in projects %}
-                                <option value="{{ project.id }}" label="{{ project.name }}">{{ project.name }}</option>
-                            {% endfor %}
-                        </select>
-                        <!-- status task -->
-                    </div>
                 </div>
-                <div class="information-section">
-                    <button class="sabt-modal col-12 btn-primary">ثبت</button>
-                </div>
-            </form>
+                <!-- content @e -->
+                <!-- footer @s -->
+                {% include 'base/components/footer.html' %}
+                <!-- footer @e -->
+            </div>
+            <!-- wrap @e -->
         </div>
+        <!-- main @e -->
     </div>
-
-    <!-- start notifcation section -->
-    {% include 'base/components/aside-menu.html' with notifications=notifications tickets=tickets %}
-
-    <!-- start notification section -->
-    <div class="container-fluid col-md-10 content-page">
-        <main class="main">
-            <div class="title px-3 mt-3">
-                <span class="fw-bold">استعلامات</span>
-                <span class="d-flex justify-content-center align-item-center">
-                    <a href="{% url 'public:inquiry' %}">
-                        مشاهده همه
-                        <img src="{% static 'frontend/images/back-icon.png' %}" alt="">
-                    </a>
-                </span>
-            </div>
-            <!-- Inquiry-section -->
-            <section class="queries" style="margin-top: -1rem;">
-                <!-- inner Inquiry-section  -->
-                <div class="box-section">
-                    {% for inquiry in inquiries %}
-                        <!-- Inquiry description modal -->
-                        {% include 'public/inquiry/components/inquiry_description.html' %}
-
-                        <!-- Inquiry approval/disapproval modal -->
-                        {% include 'public/inquiry/components/acceptance_inquiry.html' %}
-
-                        <div class="col-12 col-md-3 p-2">
-                            <div class="box-item">
-                                <div class="top">
-                                    <div class="text-dark pb-3">
-                                        {{ inquiry.title|default:'بدون عنوان' }}
-                                    </div>
-                                    <div class=" style-conent-box">
-                                        <span>{{ inquiry.from_department.name }}</span>
-                                    </div>
-                                    <div class="style-conent-box">
-                                        <span>تاریخ:</span>
-                                        <span class="datetime-convert">{{ inquiry.get_time_submited|default:'-' }}</span>
-                                    </div>
-                                    <div class="style-conent-box">
-                                        <span role="button" class="description" data-bs-toggle="modal" data-bs-target="#inquiryDescription-{{ inquiry.id }}">
-                                            {{ inquiry.description|truncatechars:30|default:'-' }}
-                                        </span>
-                                    </div>
-                                </div>
-                                <!-- btn approval and noapproval  -->
-                                <div class="btn-two d-flex">
-                                    <div class="col-6 p-1 btn-item taeid" data-bs-toggle="modal" data-bs-target="#inquiryApprovalModal-{{ inquiry.id }}">تایید</div>
-                                    <div class="col-6 p-1 btn-item n-taeid" data-bs-toggle="modal" data-bs-target="#inquiryDisapprovalModal-{{ inquiry.id }}">رد کردن</div>
-                                </div>
-                                <!-- btn approval and noapproval  -->
-                            </div>
-                        </div>
-                    {% empty %}
-                        <div class="container-not-found-base">
-                            <p>چیزی یافت نشد</p>
-                        </div>
-                    {% endfor %}
-                </div>
-                <!--inner Inquiry-section  -->
-            </section>
-            <!-- Inquiry-section -->
-
-            <section class="collection-units mb-4" style="background-color:#fff; margin-top:30px;">
-                <div class="box-section d-flex justify-content-start">
-                    <div class="col-12 col-md-3 col-lg-2">
-                        <div class="box-item-2 ddd">
-                            <img src="{% static 'frontend/images/لیست خرید تایید شده مدیریت 2@2x.png' %}" alt=""
-                                 class="icon-box pb-2">
-                            <div class="style-conent-box mb-3">
-                                <span>لیست فایل‌های پروژه</span>
-                            </div>
-                            <a href="{% url 'public:project_file' %}">
-                                <div class="tarif-task" id="one">مشاهده</div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-3 col-lg-2">
-                        <div class="box-item-2 ddd">
-                            <img src="{% static 'frontend/images/لیست خرید تایید شده مدیریت 2@2x.png' %}" alt=""
-                                 class="icon-box mb-3">
-                            <div class="style-conent-box mb-3">
-                                <span>فایل پروژه</span>
-                            </div>
-                            <div class="tarif-task btn-create-report btn--ta1 task-confirm" id="one">آپلود</div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-3 col-lg-2">
-                        <div class="box-item-2 ddd">
-                            <img src="{% static 'frontend/images/2 (لیست استعلامات(حتی رد شده ها با دلیل@2x.png' %}" alt=""
-                                 class="icon-box mb-3">
-                            <div class="style-conent-box mb-3">
-                                <span>آرشیو استعلامات</span>
-                            </div>
-                            <a href="{% url 'public:inquiry' %}?archived=true">
-                                <div class="tarif-task" id="one">مشاهده</div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Start project section -->
-            {% include 'public/project/components/panel_projects_section.html' %}
-            <!-- .End project section -->
-
-            <div class="title px-3">
-                <span style="padding-left: 3px;">صفحات</span>
-                <span class="d-flex justify-content-center align-item-center">
-                </span>
-            </div>
-            <section>
-                <div class="box-section" style="margin-top: -1.25rem;">
-                    <!-- each category task -->
-                    <div class="col-12 col-md-6 p-2 d-none">
-                        <div class="box-item-2">
-                            <img src="{% static 'frontend/images/22.png' %}" alt="" class="icon-box">
-                            <div class=" style-conent-box">
-                                <span> لیست واحد ها</span>
-                            </div>
-                            <div class="btn--ta">
-                                <a href="{% url 'departments.general:departments_list' %}">مشاهده</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 p-2">
-                        <div class="box-item-2">
-                            <i class="icon-box fa fa-user fa-2xl p-3"></i>
-                            <div class=" style-conent-box">
-                                <span>کاربر</span>
-                            </div>
-                            <div class="btn--ta">
-                                <a href="{% url 'account:new_user' %}">افزودن</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-6 p-2">
-                        <div class="box-item-2">
-                            <i class="icon-box fa fa-users fa-2xl p-3"></i>
-                            <div class=" style-conent-box">
-                                <span>لیست کاربران</span>
-                            </div>
-                            <div class="btn--ta"><a href="{% url 'departments.general:users_list' %}">مشاهده
-                            </a></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="box-section" style="margin-top: -3rem;">
-                    <div class="col-12 col-md-4 p-2">
-                        <div class="box-item-2">
-                            <i class="icon-box fa fa-gear fa-2xl p-3"></i>
-                            <div class=" style-conent-box">
-                                <span>پروژه</span>
-                            </div>
-                            <div class="btn--ta">
-                                <a href="{% url 'public:project_add' %}">افزودن</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-4 p-2">
-                        <div class="box-item-2">
-                            <i class="icon-box fa fa-gears fa-2xl p-3"></i>
-                            <div class=" style-conent-box">
-                                <span>لیست پروژه ها</span>
-                            </div>
-                            <div class="btn--ta">
-                                <a href="{% url 'public:project' %}">مشاهده</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-4 p-2">
-                        <div class="box-item-2">
-                            <i class="icon-box fa fa-person-walking-luggage fa-2xl p-3"></i>
-                            <div class=" style-conent-box">
-                                <span>کارفرمایان</span>
-                            </div>
-                            <div class="btn--ta">
-                                <a href="{% url 'public:task_master' %}">مشاهده</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Start task section -->
-            <div class="title px-4 mt-2">
-                <span style="padding-left: 3px;">تسک ها</span>
-                <span class="d-flex justify-content-center align-item-center">
-                </span>
-            </div>
-            <!-- section-task -->
-            <section class="tasks" style="margin-top: -1.25rem;">
-                <div class="box-section">
-                    <!-- each category task -->
-                    <div class="col-12 col-sm-6 col-md-2 p-1">
-                        <div class="box-item-2">
-                            <img src="{% static 'frontend/images/22.png' %}" alt="" class="icon-box" style="padding-top: 0.125rem;">
-                            <div class=" style-conent-box">
-                                <span>درحال اجرا</span>
-                            </div>
-                            <div class="style-conent-box">
-                                <span>{{ tasks.progress }}</span>
-                            </div>
-                            <div class="btn--ta text-nowrap">
-                                <a href="{% url 'public:task_owner' %}?task_state=progress">مشاهده همه</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!--each category task -->
-                    <div class="col-12 col-sm-6 col-md-2 p-1">
-                        <div class="box-item-2">
-                            <img src="{% static 'frontend/images/33.png' %}" alt="" class="icon-box" style="padding-top: 0.125rem;">
-                            <div class=" style-conent-box">
-                                <span>درصف</span>
-                            </div>
-                            <div class="style-conent-box">
-                                <span>{{ tasks.queue }}</span>
-                            </div>
-                            <div class="btn--ta text-nowrap">
-                                <a href="{% url 'public:task_owner' %}?task_state=queue">مشاهده همه</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-2 p-1">
-                        <div class="box-item-2">
-                            <img src="{% static 'frontend/images/44.png' %}" alt="" class="icon-box" style="padding-top: 0.125rem;">
-                            <div class=" style-conent-box">
-                                <span>نیاز به بررسی</span>
-                            </div>
-                            <div class="style-conent-box">
-                                <span>{{ tasks.need_to_check }}</span>
-                            </div>
-                            <div class="btn--ta text-nowrap">
-                                <a href="{% url 'public:task_owner' %}?task_state=need-to-check">مشاهده همه</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-2 p-1">
-                        <div class="box-item-2">
-                            <i class="fa fa-pause fa-3x" style="opacity: 0.9;"></i>
-                            <div class=" style-conent-box">
-                                <span>نگه داشته شده</span>
-                            </div>
-                            <div class="style-conent-box">
-                                <span>{{ tasks.hold }}</span>
-                            </div>
-                            <div class="btn--ta text-nowrap">
-                                <a href="{% url 'public:task_owner' %}?task_state=hold">مشاهده همه</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-2 p-1">
-                        <div class="box-item-2">
-                            <i class="fa fa-rotate-left fa-2x py-2" style="opacity: 0.9;"></i>
-                            <div class=" style-conent-box">
-                                <span>نیاز به برنامه ریزی مجدد</span>
-                            </div>
-                            <div class="style-conent-box">
-                                <span>{{ tasks.need_to_replan }}</span>
-                            </div>
-                            <div class="btn--ta text-nowrap">
-                                <a href="{% url 'public:task_owner' %}?task_state=need-to-replan">مشاهده همه</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-2 p-1">
-                        <div class="box-item-2">
-                            <img src="{% static 'frontend/images/55.png' %}" alt="" class="icon-box" style="padding-top: 0.125rem;">
-                            <div class=" style-conent-box">
-                                <span>تمام شده</span>
-                            </div>
-                            <div class="style-conent-box">
-                                <span>{{ tasks.finished }}</span>
-                            </div>
-                            <div class="btn--ta text-nowrap">
-                                <a href="{% url 'public:task_owner' %}?task_state=finished">مشاهده همه</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- section-task -->
-
-            <!--Start Access panel -->
-            <section class="collection-units" style="background-color:#fff ; margin-top:30px;">
-                <div class="box-section">
-                    {% for department in departments %}
-                        {% include 'public/department/list-department-task.html' with department=department %}
-                    {% endfor %}
-                </div>
-            </section>
-            <!--end Access panel -->
-        </main>
-    </div>
-
-    <!-- new task -->
-    {% include 'public/task/components/new-task.html' with projects=projects departments=departments %}
-    <!-- new task -->
+    <!-- app-root @e -->
 {% endblock %}
 
-{% block Script %}
-    <script type="module" src="{% static 'frontend/js/control-managment.js' %}"></script>
-{% endblock %}
+

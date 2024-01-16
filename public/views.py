@@ -76,7 +76,7 @@ class ProjectDetail(View):
         return render(request, self.template_name, context)
 
 
-class Project(View):
+class ProjectList(View):
     template_name = 'public/project/list.html'
 
     def filter(self, request, projects):

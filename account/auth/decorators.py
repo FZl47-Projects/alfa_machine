@@ -1,7 +1,5 @@
 from functools import wraps
-from django.conf import settings
 from django.shortcuts import redirect
-from django.core.exceptions import PermissionDenied
 
 
 def user_role_required_cbv(roles):
@@ -18,7 +16,5 @@ def user_role_required_cbv(roles):
             if department is None:
                 return redirect('account:login')
             return func(self, request, *args, **kwargs)
-
         return inner
-
     return wrapper

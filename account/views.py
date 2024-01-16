@@ -3,9 +3,9 @@ from django.contrib import messages
 from django.views.generic import View
 from django.contrib.auth import authenticate, login, logout as logout_handler
 from public.models import Department, Task
+from .auth.decorators import user_role_required_cbv
 from .models import User
 from . import forms
-from account.auth.decorators import user_role_required_cbv
 
 
 class Login(View):
@@ -76,7 +76,7 @@ class NewUser(View):
         user = f.save(commit=False)
         user.set_password(f.cleaned_data['password'])
         user.save()
-        messages.success(request,'کاربر با موفقیت ایجاد شد')
+        messages.success(request, 'کاربر با موفقیت ایجاد شد')
         return redirect('account:new_user')
 
 
@@ -85,6 +85,12 @@ class Logout(View):
     def get(self, request):
         logout_handler(request)
         return redirect('account:login')
+
+
+class ResetPassword(View):
+
+    def get(self, request):
+        pass
 
 
 class UserProfile(View):
