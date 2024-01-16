@@ -26,7 +26,7 @@ class Index(View):
                 'queue': Task.objects.filter(state='queue').count(),
                 'need_to_check': Task.objects.filter(state='need-to-check').count(),
                 'hold': Task.objects.filter(state='hold').count(),
-                'need_to_replan': Task.objects.filter(state='need-to-check').count(),
+                'need_to_replan': Task.objects.filter(state='need-to-replan').count(),
                 'finished': Task.objects.filter(state='finished').count(),
             }
         }

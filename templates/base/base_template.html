@@ -102,7 +102,12 @@
             dropdownParent: $('#uploadProjectFileForm'),
         });
     });
+
+    function clearInput(id){
+        document.getElementById(id).value = "";
+    }
 </script>
+
 {% block Script %}
 {% endblock %}
 

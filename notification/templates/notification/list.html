@@ -81,7 +81,7 @@
                                                 {% elif not notification.get_projects_name %}
                                                     <span>متفرقه</span>
                                                 {% else %}
-                                                    <select>
+                                                    <select class="form-select-sm" style="max-width: 16rem;">
                                                         {% for name in notification.get_projects_name %}
                                                             <option>{{ name }}</option>
                                                         {% endfor %}

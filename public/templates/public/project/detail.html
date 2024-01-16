@@ -721,7 +721,7 @@
                                             </div>
                                             <div class="col-6 p-2">
                                                 <div class="table-content-item">
-                                                    <span class="description">
+                                                    <span class="description text-wrap">
                                                         {{ ticket.description }}
                                                     </span>
                                                 </div>
@@ -811,8 +811,8 @@
                                             </div>
                                             <div class="col-5 p-2">
                                                 <div class="table-content-item">
-                                                    <span class="description">
-                                                        {{ notif.description|truncatechars:86 }}
+                                                    <span class="description text-wrap">
+                                                        {{ notif.description }}
                                                     </span>
                                                 </div>
                                             </div>
@@ -1114,14 +1114,16 @@
                                 <label for="task_master">کارفرما</label>
                                 <select class="form-select text-end" name="task_master" id="task_master" required>
                                     {% for task_master in task_masters %}
-                                        <option value="{{ task_master.id }}">{{ task_master.title }}</option>
+                                        <option value="{{ task_master.id }}" {% if task_master.title == project.task_master.title %}selected{% endif %}>
+                                            {{ task_master.title }}
+                                        </option>
                                     {% endfor %}
                                 </select>
                             </div>
                             <div class="group-form">
                                 <label for="time_start_picker">تاریخ شروع</label>
                                 <input type="text" name="" id="time_start_picker"
-                                       class="form-control persianDatapicker" set-on="time_start"
+                                       class="form-control persianDatapicker datetime-convert" set-on="time_start"
                                        required readonly value="{{ project.get_time_start_input }}">
                                 <input type="hidden" id="time_start" name="time_start" required
                                        value="{{ project.get_time_start_input }}">
@@ -1129,7 +1131,7 @@
                             <div class="group-form">
                                 <label for="time_end_picker">تاریخ پایان</label>
                                 <input type="text" name="" id="time_end_picker"
-                                       class="form-control persianDatapicker" set-on="time_end"
+                                       class="form-control persianDatapicker datetime-convert" set-on="time_end"
                                        required readonly value="{{ project.get_time_end_input }}">
                                 <input type="hidden" id="time_end" name="time_end" required
                                        value="{{ project.get_time_end_input }}">
@@ -1175,7 +1177,7 @@
                             <div class="group-form">
                                 <label for="prepayment_datetime_picker"> :تاریخ پیش پرداخت</label>
                                 <input type="text" name="" id="prepayment_datetime_picker"
-                                       class="form-control persianDatapicker" set-on="prepayment_datetime"
+                                       class="form-control persianDatapicker datetime-convert" set-on="prepayment_datetime"
                                        required readonly value="{{ project.get_prepayment_datetime_input }}">
                                 <input type="hidden" id="prepayment_datetime" name="prepayment_datetime" required
                                        value="{{ project.get_prepayment_datetime_input }}">
@@ -1216,7 +1218,7 @@
                                  id="sample_date_div">
                                 <label for="sample_delivery_datetime_picker"> :تاریخ تحویل نمونه</label>
                                 <input type="text" name="" id="sample_delivery_datetime_picker"
-                                       class="form-control persianDatapicker" set-on="sample_delivery_date"
+                                       class="form-control persianDatapicker datetime-convert" set-on="sample_delivery_date"
                                        required readonly value="{{ project.get_sample_delivery_date_input }}">
                                 <input type="hidden" id="sample_delivery_date" name="sample_delivery_date" required
                                        value="{{ project.get_sample_delivery_date_input }}">
@@ -1224,7 +1226,7 @@
                             <div class="group-form">
                                 <label for="mass_delivery_datetime_picker"> :تاریخ تحویل انبوه</label>
                                 <input type="text" name="" id="mass_delivery_datetime_picker"
-                                       class="form-control persianDatapicker" set-on="mass_delivery_date"
+                                       class="form-control persianDatapicker datetime-convert" set-on="mass_delivery_date"
                                        required readonly value="{{ project.get_mass_delivery_date_input }}">
                                 <input type="hidden" id="mass_delivery_date" name="mass_delivery_date" required
                                        value="{{ project.get_mass_delivery_date_input }}">

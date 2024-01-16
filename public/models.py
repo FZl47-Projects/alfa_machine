@@ -1,6 +1,6 @@
-from django.db import models
-from django.db.models import Sum, Count
+from django.db.models import Sum, Count, Max
 from django.urls import reverse
+from django.db import models
 from core.models import BaseModel, File
 
 
@@ -62,7 +62,7 @@ class Project(BaseModel):
     count_total = models.BigIntegerField()
     has_sample = models.BooleanField(default=False)
     sample_delivery_date = models.DateField(null=True, blank=True)
-    mass_delivery_date = models.DateField()
+    mass_delivery_date = models.DateField(null=True, blank=True)
     name = models.CharField(max_length=100)
     task_master = models.ForeignKey(TaskMaster, on_delete=models.CASCADE, related_name='projects')
     time_start = models.DateField(null=True, blank=True)
@@ -161,7 +161,13 @@ class Project(BaseModel):
             return []
 
     def get_tickets(self):
-        unique_tickets = self.ticketdepartment_set.values('description').annotate(count=Count('description'))
+        tickets = self.ticketdepartment_set.values('description').annotate(count=Count('description'))
+        unique_tickets = []
+
+        for ticket in tickets:
+            obj = self.ticketdepartment_set.filter(description=ticket['description']).first()
+            unique_tickets.append(obj)
+
         return unique_tickets
 
     def get_prepayment_datetime(self):
@@ -170,20 +176,24 @@ class Project(BaseModel):
         return ''
 
     def get_sample_delivery_date(self):
-        if not self.sample_delivery_date:
-            return ''
-        return self.sample_delivery_date.strftime('%Y-%m-%d %H:%M')
+        if self.sample_delivery_date:
+            return self.sample_delivery_date.strftime('%Y-%m-%d %H:%M')
+        return ''
 
     def get_mass_delivery_date(self):
-        return self.mass_delivery_date.strftime('%Y-%m-%d %H:%M')
+        if self.mass_delivery_date:
+            return self.mass_delivery_date.strftime('%Y-%m-%d %H:%M')
+        return ''
 
     def get_mass_delivery_date_input(self):
-        return self.mass_delivery_date.strftime('%Y-%m-%d')
+        if self.mass_delivery_date:
+            return self.mass_delivery_date.strftime('%Y-%m-%d')
+        return ''
 
     def get_sample_delivery_date_input(self):
-        if not self.sample_delivery_date:
-            return ''
-        return self.sample_delivery_date.strftime('%Y-%m-%d')
+        if self.sample_delivery_date:
+            return self.sample_delivery_date.strftime('%Y-%m-%d')
+        return ''
 
     def get_prepayment_datetime_input(self):
         if self.prepayment_datetime:
