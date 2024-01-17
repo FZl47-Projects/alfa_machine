@@ -19,16 +19,8 @@ class Index(View):
             'notifications': request.user.department.get_notifications(),
             'projects': projects,
             'ongoing_projects': projects.filter(status__in=['checking', 'paused', 'under_construction'])[:4],
-            'inquiries': Inquiry.objects.filter(status=None)[:4],
+            'inquiries': Inquiry.objects.all(),
             'departments': Department.objects.all(),
-            'tasks': {
-                'progress': Task.objects.filter(state='progress').count(),
-                'queue': Task.objects.filter(state='queue').count(),
-                'need_to_check': Task.objects.filter(state='need-to-check').count(),
-                'hold': Task.objects.filter(state='hold').count(),
-                'need_to_replan': Task.objects.filter(state='need-to-replan').count(),
-                'finished': Task.objects.filter(state='finished').count(),
-            }
         }
         return render(request, self.template_name, context)
 

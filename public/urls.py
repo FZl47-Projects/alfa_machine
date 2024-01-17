@@ -8,6 +8,10 @@ urlpatterns = [
 
     path('project/list', views.ProjectList.as_view(), name='project__list'),
 
+    path('inquiry/list', views.InquiryList.as_view(), name='inquiry__list'),
+    path('inquiry/detail/<int:inquiry_id>', views.InquiryDetail.as_view(), name='inquiry__detail'),
+
+    path('department/list', views.DepartmentList.as_view(), name='department__list'),
 
 
     path('error', views.Error.as_view(), name='error'),
@@ -30,8 +34,8 @@ urlpatterns = [
     path('task/owner/department/<int:department_id>', views.TaskOwnerDepartment.as_view(), name='task_owner_department'),
     path('task/list/state', views.TaskListStateUpdate.as_view(), name='task_list_state_update'),
 
-    path('inquiry', views.Inquiry.as_view(), name='inquiry'),
-    path('inquiry/<int:inquiry_id>', views.InquiryDetail.as_view(), name='inquiry_detail'),
+
+
     path('inquiry/<int:inquiry_id>/status', views.InquiryStatus.as_view(), name='inquiry_status'),
     path('inquiry/owner', views.InquiryOwner.as_view(), name='inquiry_owner'),
     path('inquiry/<int:inquiry_id>/file', views.InquiryFile.as_view(), name='inquiry_file'),

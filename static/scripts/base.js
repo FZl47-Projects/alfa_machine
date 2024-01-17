@@ -229,3 +229,8 @@ function getRandomColor() {
     }
     return color;
 }
+
+// random-bg
+document.querySelectorAll('.random-bg').forEach(function (el){
+    el.style.background = getRandomColor()
+})

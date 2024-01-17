@@ -504,7 +504,7 @@ class TaskListStateUpdate(View):
         return redirect(referer_url or '/success')
 
 
-class Inquiry(View):
+class InquiryList(View):
 
     def filter(self, request, inquiries):
         archived = request.GET.get('archived', False)
@@ -711,3 +711,11 @@ class DepartmentDetail(View):
         department.name = post.get('name', None)
         department.save()
         return redirect('departments.general:departments_list')
+
+
+class DepartmentList(View):
+    template_name = 'public/department/department_detail.html'
+
+    @user_role_required_cbv(['super_user'])
+    def get(self, request):
+        pass

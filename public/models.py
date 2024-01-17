@@ -35,16 +35,37 @@ class Department(BaseModel):
     def get_tickets(self):
         return self.ticket_departments.filter(is_open=True)
 
+    def get_tasks(self):
+        return self.task_set.all()
+
+    def get_finished_tasks(self):
+        return self.get_tasks().filter(taskstatus__status='finished')
+
+    def get_queue_tasks(self):
+        return self.get_tasks().filter(taskstatus__status='queue')
+
+    def get_progress_tasks(self):
+        return self.get_tasks().filter(taskstatus__status='progress')
+
+    def get_hold_tasks(self):
+        return self.get_tasks().filter(taskstatus__status='hold')
+
+    def get_need_to_check_tasks(self):
+        return self.get_tasks().filter(taskstatus__status='need-to-check')
+
+    def get_need_to_replan_tasks(self):
+        return self.get_tasks().filter(taskstatus__status='need-to-replan')
+
 
 # TaskMasters model
 class TaskMaster(BaseModel):
-    title = models.CharField('Task Master name', max_length=128)
+    name = models.CharField('Task Master name', max_length=128)
 
     class Meta:
         ordering = '-id',
 
     def __str__(self):
-        return self.title
+        return self.name
 
 
 class Project(BaseModel):
@@ -55,6 +76,7 @@ class Project(BaseModel):
         ('completed', 'تایید و اتمام'),
         ('paused', 'متوقف شده'),
     )
+    image_cover = models.ImageField(default='/static/frontend/images/colors/bg-creamy.png')
     number_id = models.CharField(max_length=150, null=True, blank=True)
     prepayment_datetime = models.DateTimeField(null=True, blank=True)
     item = models.TextField(null=True, blank=True)
@@ -73,6 +95,7 @@ class Project(BaseModel):
     description = models.TextField(null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_OPTIONS, default='under_construction')
     inquiry = models.OneToOneField('Inquiry', on_delete=models.SET_NULL, null=True, blank=True)
+    progress_percentage = models.PositiveSmallIntegerField(default=0)
 
     def __str__(self):
         return self.name
@@ -97,13 +120,20 @@ class Project(BaseModel):
         return 'ندارد'
 
     def get_progress_percentage(self):
+        # try:
+        #     all_count = self.get_tasks().count()
+        #     finished_count = self.get_tasks().filter(state='finished').count()
+        #     p = (100 / all_count) * finished_count
+        #     return round(p, 1)
+        # except:
+        #     return 0
+        return self.progress_percentage
+
+    def get_image_cover_url(self):
         try:
-            all_count = self.get_tasks().count()
-            finished_count = self.get_tasks().filter(state='finished').count()
-            p = (100 / all_count) * finished_count
-            return round(p, 1)
-        except:
-            return 0
+            return str(self.image_cover.url).replace('/media', '')
+        except AttributeError:
+            return '/static/frontend/images/colors/bg-creamy.png'
 
     def get_absolute_url(self):
         return reverse('public:project_detail', args=(self.id,))
@@ -225,24 +255,8 @@ class ProjectFile(BaseModel, File):
 
 
 class Task(BaseModel, File):
-    # STATUS_OPTIONS = (
-    #     ('finished', 'انجام شد'),
-    #     ('follow-up', 'پیگیری'),
-    #     ('allocation', 'تخصیص'),
-    # )
-    STATE_OPTIONS = (
-        ('finished', 'انجام شد'),
-        ('progress', 'در حال انجام'),
-        ('queue', 'در صف'),
-        ('hold', 'نگه داشته شده'),
-        ('need-to-check', 'نیاز به بررسی'),
-        ('need-to-replan', 'نیاز به برنامه ریزی مجدد'),
-    )
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
-    # status = models.CharField(max_length=20, choices=STATUS_OPTIONS,default='allocation')
-    state = models.CharField(max_length=20, choices=STATE_OPTIONS, default='queue')
-    state_modify_time = models.DateTimeField(null=True, blank=True)
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
     from_department = models.ForeignKey('Department', on_delete=models.CASCADE, related_name='from_department')
     to_department = models.ForeignKey('Department', on_delete=models.CASCADE)
@@ -265,11 +279,6 @@ class Task(BaseModel, File):
     def get_absolute_url(self):
         return reverse('public:task_detail', args=(self.id,))
 
-    def get_state_modify_time(self):
-        if not self.state_modify_time:
-            return
-        return self.state_modify_time.strftime('%Y-%m-%d %H:%M')
-
     def get_time_start(self):
         if not self.time_start:
             return
@@ -283,16 +292,20 @@ class Task(BaseModel, File):
 
 class TaskStatus(BaseModel, File):
     STATUS_OPTIONS = (
-        ('accepted', 'تایید شد'),
-        ('rejected', 'رد شد'),
+        ('finished', 'انجام شد'),
+        ('progress', 'در حال انجام'),
+        ('queue', 'در صف'),
+        ('hold', 'نگه داشته شده'),
+        ('need-to-check', 'نیاز به بررسی'),
+        ('need-to-replan', 'نیاز به برنامه ریزی مجدد'),
     )
-    allocator_user = models.ForeignKey('account.User', on_delete=models.CASCADE)  # who accept or rejected task
-    task = models.OneToOneField('Task', on_delete=models.CASCADE, related_name='status')
+    allocator_user = models.ForeignKey('account.User', on_delete=models.CASCADE)
+    task = models.OneToOneField('Task', on_delete=models.CASCADE)
     status = models.CharField(max_length=20, choices=STATUS_OPTIONS)
-    description = models.TextField()
+    description = models.TextField(null=True)
 
     def __str__(self):
-        return self.status
+        return f"{self.status} - {self.task}"
 
 
 class Inquiry(BaseModel):
@@ -305,7 +318,7 @@ class Inquiry(BaseModel):
     title = models.CharField(max_length=100, null=True, blank=True)
     number_id = models.CharField(max_length=32, null=True, blank=True)
     state = models.CharField(max_length=32, choices=STATE_OPTIONS, default='waiting_for_price', blank=True)
-    sender = models.ForeignKey(TaskMaster, on_delete=models.SET_NULL, null=True)
+    task_master = models.ForeignKey(TaskMaster, on_delete=models.SET_NULL, null=True)
     description = models.TextField(null=True, blank=True)
     time_receive = models.DateField(null=True, blank=True)
     time_deadline_response = models.DateField(null=True, blank=True)
@@ -316,6 +329,9 @@ class Inquiry(BaseModel):
 
     def __str__(self):
         return self.title
+
+    def get_state_label(self):
+        return self.get_state_display()
 
     def get_status(self):
         status = getattr(self, 'status', None)
@@ -335,7 +351,7 @@ class Inquiry(BaseModel):
         return self.inquiryfile_set.all().order_by('-id')
 
     def get_absolute_url(self):
-        return f"{reverse('public:inquiry')}?search={self.number_id}"
+        return reverse('public:inquiry__detail', args=(self.id,))
 
 
 class InquiryStatus(BaseModel, File):

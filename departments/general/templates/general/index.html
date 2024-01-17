@@ -950,8 +950,8 @@
                                                 <div class="nk-ck-wrap mt-auto overflow-hidden rounded-bottom">
                                                     <div class="nk-cmwg1-ck box-icon">
                                                         <i class="icon ni ni-dashboard"></i>
-{#                                                        <canvas class="campaign-line-chart-s1 rounded-bottom"#}
-{#                                                                id="runningCampaign"></canvas>#}
+                                                        {#                                                        <canvas class="campaign-line-chart-s1 rounded-bottom"#}
+                                                        {#                                                                id="runningCampaign"></canvas>#}
                                                     </div>
                                                 </div>
                                             </div>
@@ -980,7 +980,7 @@
                                                                 <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
                                                                     <ul class="link-list-opt no-bdr">
                                                                         <li>
-                                                                            <a href="#" ><span>افزودن واحد</span></a>
+                                                                            <a href="#"><span>افزودن واحد</span></a>
                                                                         </li>
                                                                         <li>
                                                                             <a href="#"><span>لیست واحد ها</span></a>
@@ -994,8 +994,8 @@
                                                 <!-- .card-inner -->
                                                 <div class="nk-cmwg1-ck mt-auto box-icon">
                                                     <i class="icon ni ni-building"></i>
-{#                                                    <canvas class="campaign-line-chart-s1 rounded-bottom"#}
-{#                                                            id="totalAudience"></canvas>#}
+                                                    {#                                                    <canvas class="campaign-line-chart-s1 rounded-bottom"#}
+                                                    {#                                                            id="totalAudience"></canvas>#}
                                                 </div>
                                             </div>
                                             <!-- .nk-cmwg -->
@@ -1038,8 +1038,8 @@
                                                 <div class="nk-ck-wrap mt-auto overflow-hidden rounded-bottom">
                                                     <div class="nk-cmwg1-ck box-icon">
                                                         <i class="icon ni ni-users"></i>
-{#                                                        <canvas class="campaign-bar-chart-s1 rounded-bottom"#}
-{#                                                                id="avgRating"></canvas>#}
+                                                        {#                                                        <canvas class="campaign-bar-chart-s1 rounded-bottom"#}
+                                                        {#                                                                id="avgRating"></canvas>#}
                                                     </div>
                                                 </div>
                                             </div>
@@ -1071,7 +1071,7 @@
                                                                             <a href="#"><span>افزودن مشتری</span></a>
                                                                         </li>
                                                                         <li>
-                                                                            <a href="#"><span>لیست مشتری</span></a>
+                                                                            <a href="#"><span>لیست مشتریان</span></a>
                                                                         </li>
                                                                     </ul>
                                                                 </div>
@@ -1083,12 +1083,198 @@
                                                 <div class="nk-ck-wrap mt-auto overflow-hidden rounded-bottom">
                                                     <div class="nk-cmwg1-ck box-icon">
                                                         <i class="icon ni ni-user-group"></i>
-{#                                                        <canvas class="campaign-line-chart-s1 rounded-bottom"#}
-{#                                                                id="newSubscriber"></canvas>#}
+                                                        {#                                                        <canvas class="campaign-line-chart-s1 rounded-bottom"#}
+                                                        {#                                                                id="newSubscriber"></canvas>#}
                                                     </div>
                                                 </div>
                                             </div>
                                             <!-- .nk-cmwg -->
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <!-- .col -->
+                                    <div class="col-lg-4 col-sm-6">
+                                        <div class="card h-100 bg-black">
+                                            <div class="nk-cmwg nk-cmwg1">
+                                                <div class="card-inner pt-3">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="flex-item">
+                                                            <div class="text-white d-flex flex-wrap">
+                                                                <span class="fs-1 me-1">{{ inquiries.count }}</span>
+                                                            </div>
+                                                            <h6 class="text-white">تعداد استعلامات</h6>
+                                                        </div>
+                                                        <div class="card-tools me-n1">
+                                                            <div class="dropdown">
+                                                                <a href="#"
+                                                                   class="dropdown-toggle btn btn-icon btn-sm btn-trigger on-dark"
+                                                                   data-bs-toggle="dropdown"><em
+                                                                        class="icon ni ni-more-v"></em></a>
+                                                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                                                    <ul class="link-list-opt no-bdr">
+                                                                        <li>
+                                                                            <a href="{% url 'public:inquiry__list' %}"><span>لیست استعلامات</span></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- .card-inner -->
+                                                <div class="nk-ck-wrap mt-auto overflow-hidden rounded-bottom">
+                                                    <div class="nk-cmwg1-ck box-icon">
+                                                        <i class="icon ni ni-info-i"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- .nk-cmwg -->
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <!-- .col -->
+                                    <div class="col-lg-4 col-sm-6">
+                                        <div class="card h-100 bg-secondary">
+                                            <div class="nk-cmwg nk-cmwg1">
+                                                <div class="card-inner pt-3">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="flex-item">
+                                                            <div class="text-white d-flex flex-wrap">
+                                                                <span class="fs-1 me-1">{{ tickets.count }}</span>
+                                                            </div>
+                                                            <h6 class="text-white">تعداد تیکت ها</h6>
+                                                        </div>
+                                                        <div class="card-tools me-n1">
+                                                            <div class="dropdown">
+                                                                <a href="#"
+                                                                   class="dropdown-toggle btn btn-icon btn-sm btn-trigger on-dark"
+                                                                   data-bs-toggle="dropdown"><em
+                                                                        class="icon ni ni-more-v"></em></a>
+                                                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                                                    <ul class="link-list-opt no-bdr">
+                                                                        <li>
+                                                                            <a href="#"><span>لیست تیکت ها</span></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- .card-inner -->
+                                                <div class="nk-ck-wrap mt-auto overflow-hidden rounded-bottom">
+                                                    <div class="nk-cmwg1-ck box-icon">
+                                                        <i class="icon ni ni-ticket"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- .nk-cmwg -->
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <!-- .col -->
+                                    <div class="col-lg-4 col-sm-6">
+                                        <div class="card h-100 bg-success">
+                                            <div class="nk-cmwg nk-cmwg1">
+                                                <div class="card-inner pt-3">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="flex-item">
+                                                            <div class="text-white d-flex flex-wrap">
+                                                                <span class="fs-1 me-1">{{ notifications.count }}</span>
+                                                            </div>
+                                                            <h6 class="text-white">تعداد اعلانات</h6>
+                                                        </div>
+                                                        <div class="card-tools me-n1">
+                                                            <div class="dropdown">
+                                                                <a href="#"
+                                                                   class="dropdown-toggle btn btn-icon btn-sm btn-trigger on-dark"
+                                                                   data-bs-toggle="dropdown"><em
+                                                                        class="icon ni ni-more-v"></em></a>
+                                                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                                                    <ul class="link-list-opt no-bdr">
+                                                                        <li>
+                                                                            <a href="#"><span>لیست اعلانات</span></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- .card-inner -->
+                                                <div class="nk-ck-wrap mt-auto overflow-hidden rounded-bottom">
+                                                    <div class="nk-cmwg1-ck box-icon">
+                                                        <i class="icon ni ni-notice"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- .nk-cmwg -->
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <!-- .col -->
+                                    <div class="col-12">
+                                        <div class="card card-full">
+                                            <div class="card-inner mb-2">
+                                                <div class="card-title-group">
+                                                    <div class="card-title">
+                                                        <h6 class="title">استعلامات</h6>
+                                                    </div>
+                                                    <div class="card-tools">
+                                                        <a href="{% url 'public:inquiry__list' %}" class="link">مشاهده
+                                                            همه</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-inner py-0 mt-n2 text-center">
+                                                <div class="nk-tb-list nk-tb-flush nk-tb-dashed">
+                                                    <div class="nk-tb-item nk-tb-head">
+                                                        <div class="nk-tb-col"><span> استعلام</span></div>
+                                                        <div class="nk-tb-col tb-col-mb"><span>استعلام گیرنده</span>
+                                                        </div>
+                                                        <div class="nk-tb-col tb-col-sm"><span>وضعیت</span></div>
+                                                        <div class="nk-tb-col tb-col-md"><span>کارفرما</span></div>
+                                                        <div class="nk-tb-col"><span>مهلت پاسخ</span></div>
+                                                    </div>
+                                                    <!-- .nk-tb-head -->
+                                                    {% for inquiry in inquiries %}
+                                                        <div class="nk-tb-item">
+                                                            <div class="nk-tb-col">
+                                                                <a href="{{ inquiry.get_absolute_url }}">
+                                                                     <span class="tb-lead">{{ inquiry.title }}
+    {#                                                                <span#}
+    {#                                                                    class="dot dot-success d-sm-none ms-1"></span>#}
+                                                                        </span>
+                                                                    <span class="tb-sub">{{ inquiry.number_id|default:'-' }}</span>
+                                                                </a>
+                                                            </div>
+                                                            <div class="nk-tb-col tb-col-mb">
+                                                                <a href="{{ inquiry.from_department.get_absolute_url }}">{{ inquiry.from_department }}</a>
+                                                            </div>
+                                                            <div class="nk-tb-col tb-col-sm">
+                                                                <div class="badge badge-dim
+                                                                    {% if inquiry.state == 'price_recorded' %}
+                                                                            bg-success
+                                                                        {% elif inquiry.state == 'waiting_for_price' %}
+                                                                            bg-warning
+                                                                        {% else %}
+                                                                            bg-danger
+                                                                    {% endif %}
+                                                                ">{{ inquiry.get_state_label }}</div>
+                                                            </div>
+                                                            <div class="nk-tb-col tb-col-md">
+                                                                <a href="{{ inquiry.task_master.get_absolute_url }}">{{ inquiry.task_master.name }}</a>
+                                                            </div>
+                                                            <div class="nk-tb-col datetime-convert">
+                                                                {{ inquiry.time_deadline_response|default:'-' }}
+                                                            </div>
+                                                        </div>
+                                                        <!-- .nk-tb-item -->
+                                                    {% endfor %}
+
+                                                </div>
+                                                <!-- .nk-tb-list -->
+                                            </div>
                                         </div>
                                         <!-- .card -->
                                     </div>
@@ -1127,302 +1313,91 @@
                                             <div class="card-inner">
                                                 <div class="card-title-group">
                                                     <div class="card-title">
-                                                        <h6 class="title">کانال های برتر</h6>
+                                                        <h6 class="title">برخی از پروژه ها</h6>
                                                     </div>
                                                     <div class="card-tools">
-                                                        <a href="#" class="link">مشاهده همه</a>
+                                                        <a href="{% url 'public:project__list' %}" class="link">مشاهده
+                                                            همه</a>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="card-inner pt-0">
                                                 <ul class="gy-4">
-                                                    <li class="justify-between align-center border-bottom border-0 border-dashed">
-                                                        <div class="align-center">
-                                                            <div class="user-avatar sq bg-transparent"><img
-                                                                    src="./images/icons/campaign/brand/google.png"
-                                                                    alt=""/></div>
-                                                            <div class="ms-2">
-                                                                <div class="lead-text">گوگل</div>
-                                                                <div class="sub-text">سئو و پرداخت برای هر کلیک</div>
+                                                    {% for project in projects|slice:':5' %}
+                                                        <li class="justify-between align-center {% if not forloop.last %}border-bottom border-0 border-dashed{% endif %}">
+                                                            <div class="align-center">
+                                                                <div class="user-avatar sq bg-transparent"><img
+                                                                        width="30" height="30"
+                                                                        src="{{ project.get_image_cover_url }}"
+                                                                        alt="{{ project.name }}"/></div>
+                                                                <div class="ms-2">
+                                                                    <div class="lead-text">
+                                                                        <a href="{{ project.get_absolute_url }}">{{ project.name }}</a>
+                                                                    </div>
+                                                                    <div class="sub-text">{{ project.get_last_step|default:'-' }}</div>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="align-center">
-                                                            <div class="sub-text me-2">70%</div>
-                                                            <div class="progress rounded-pill w-80px">
-                                                                <div class="progress-bar bg-success rounded-pill"
-                                                                     data-progress="70"></div>
+                                                            <div class="align-center">
+                                                                <div class="sub-text me-2">{{ project.progress_percentage }}%</div>
+                                                                <div class="progress rounded-pill w-80px">
+                                                                    <div class="progress-bar random-bg rounded-pill"
+                                                                         data-progress="{{ project.progress_percentage }}"></div>
+                                                                </div>
                                                             </div>
+                                                        </li>
+                                                    {% empty %}
+                                                        <div class="container-not-found-base">
+                                                            <p>پروژه ای یافت نشد</p>
                                                         </div>
-                                                    </li>
-                                                    <!-- li -->
-                                                    <li class="justify-between align-center border-bottom border-0 border-dashed">
-                                                        <div class="align-center">
-                                                            <div class="user-avatar sq bg-transparent"><img
-                                                                    src="./images/icons/campaign/brand/instagram.png"
-                                                                    alt=""/></div>
-                                                            <div class="ms-2">
-                                                                <div class="lead-text">اینستاگرام</div>
-                                                                <div class="sub-text">شبکه های اجتماعی</div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="align-center">
-                                                            <div class="sub-text me-2">86%</div>
-                                                            <div class="progress rounded-pill w-80px">
-                                                                <div class="progress-bar bg-primary rounded-pill"
-                                                                     data-progress="86"></div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <!-- li -->
-                                                    <li class="justify-between align-center border-bottom border-0 border-dashed">
-                                                        <div class="align-center">
-                                                            <div class="user-avatar sq bg-transparent"><img
-                                                                    src="./images/icons/campaign/brand/linkedin.png"
-                                                                    alt=""/></div>
-                                                            <div class="ms-2">
-                                                                <div class="lead-text">لینکدین</div>
-                                                                <div class="sub-text">شبکه های اجتماعی</div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="align-center">
-                                                            <div class="sub-text me-2">75%</div>
-                                                            <div class="progress rounded-pill w-80px">
-                                                                <div class="progress-bar bg-danger rounded-pill"
-                                                                     data-progress="75"></div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <!-- li -->
-                                                    <li class="justify-between align-center border-bottom border-0 border-dashed">
-                                                        <div class="align-center">
-                                                            <div class="user-avatar sq bg-transparent"><img
-                                                                    src="./images/icons/campaign/brand/slack.png"
-                                                                    alt=""/></div>
-                                                            <div class="ms-2">
-                                                                <div class="lead-text">اسلک</div>
-                                                                <div class="sub-text">پیام رسان</div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="align-center">
-                                                            <div class="sub-text me-2">64%</div>
-                                                            <div class="progress rounded-pill w-80px">
-                                                                <div class="progress-bar bg-info rounded-pill"
-                                                                     data-progress="64"></div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <!-- li -->
-                                                    <li class="justify-between align-center">
-                                                        <div class="align-center">
-                                                            <div class="user-avatar sq bg-transparent"><img
-                                                                    src="./images/icons/campaign/brand/twitter.png"
-                                                                    alt=""/></div>
-                                                            <div class="ms-2">
-                                                                <div class="lead-text">توییتر</div>
-                                                                <div class="sub-text">شبکه های اجتماعی</div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="align-center">
-                                                            <div class="sub-text me-2">54%</div>
-                                                            <div class="progress rounded-pill w-80px">
-                                                                <div class="progress-bar bg-warning rounded-pill"
-                                                                     data-progress="54"></div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <!-- li -->
+                                                    {% endfor %}
                                                 </ul>
                                             </div>
                                         </div>
                                         <!-- .card -->
                                     </div>
                                     <!-- .col -->
-                                    <div class="col-xxl-8">
+                                    <div class="col-12">
                                         <div class="card card-full">
-                                            <div class="card-inner">
+                                            <div class="card-inner mb-2">
                                                 <div class="card-title-group">
                                                     <div class="card-title">
-                                                        <h6 class="title">کمپین فعال</h6>
+                                                        <h6 class="title">واحد ها</h6>
                                                     </div>
                                                     <div class="card-tools">
-                                                        <a href="#" class="link">مشاهده همه</a>
+                                                        <a href="{% url 'public:department__list' %}" class="link">مشاهده
+                                                            همه</a>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="card-inner py-0 mt-n2">
+                                            <div class="card-inner py-0 mt-n2 px-5">
                                                 <div class="nk-tb-list nk-tb-flush nk-tb-dashed">
                                                     <div class="nk-tb-item nk-tb-head">
-                                                        <div class="nk-tb-col"><span>موضوع</span></div>
-                                                        <div class="nk-tb-col tb-col-mb"><span>کانال ها</span></div>
-                                                        <div class="nk-tb-col tb-col-sm"><span>وضعیت</span></div>
-                                                        <div class="nk-tb-col tb-col-md"><span>نمایندگان</span></div>
-                                                        <div class="nk-tb-col text-end"><span>محدوده تاریخ</span></div>
+                                                        <div class="nk-tb-col"><span>نام واحد</span></div>
+                                                        <div class="nk-tb-col tb-col-mb text-center">
+                                                            <span>وضعیت تسک ها</span>
+                                                        </div>
                                                     </div>
                                                     <!-- .nk-tb-head -->
-                                                    <div class="nk-tb-item">
-                                                        <div class="nk-tb-col">
-                                                            <span class="tb-lead">کریسمس مبارک <span
-                                                                    class="dot dot-success d-sm-none ms-1"></span></span>
-                                                            <span class="tb-sub">ایجاد شده در 21 آبان 1402</span>
-                                                        </div>
-                                                        <div class="nk-tb-col tb-col-mb">
-                                                            <ul class="d-flex gx-1">
-                                                                <li class="text-facebook"><em
-                                                                        class="icon ni ni-facebook-f"></em></li>
-                                                                <li class="text-instagram"><em
-                                                                        class="icon ni ni-instagram"></em></li>
-                                                                <li class="text-linkedin"><em
-                                                                        class="icon ni ni-linkedin"></em></li>
-                                                                <li class="text-twitter"><em
-                                                                        class="icon ni ni-twitter"></em></li>
-                                                                <li class="text-youtube"><em
-                                                                        class="icon ni ni-youtube-fill"></em></li>
-                                                            </ul>
-                                                        </div>
-                                                        <div class="nk-tb-col tb-col-sm">
-                                                            <div class="badge badge-dim bg-success">زنده</div>
-                                                        </div>
-                                                        <div class="nk-tb-col tb-col-md">
-                                                            <div class="user-avatar-group">
-                                                                <div class="user-avatar xs">
-                                                                    <img src="./images/avatar/e-sm.jpg" alt=""/>
-                                                                </div>
-                                                                <div class="user-avatar xs">
-                                                                    <img src="./images/avatar/f-sm.jpg" alt=""/>
-                                                                </div>
-                                                                <div class="user-avatar xs">
-                                                                    <img src="./images/avatar/g-sm.jpg" alt=""/>
-                                                                </div>
-                                                                <div class="user-avatar xs">
-                                                                    <span>2+</span>
-                                                                </div>
+                                                    {% for department in departments %}
+                                                        <div class="nk-tb-item">
+                                                            <div class="nk-tb-col">
+                                                                <a href="{{ departments.get_absolute_url }}">
+                                                                     <span>
+                                                                         {{ department.name }}
+                                                                     </span>
+                                                                </a>
+                                                            </div>
+                                                            <div class="nk-tb-col text-center">
+                                                                <span class="badge badge-pill badge-dim bg-success">تمام شده({{ department.get_finished_tasks.count }})</span>
+                                                                <span class="badge badge-pill badge-dim bg-warning">در صف({{ department.get_queue_tasks.count }})</span>
+                                                                <span class="badge badge-pill badge-dim bg-primary">در حال انجام({{ department.get_progress_tasks.count }})</span>
+                                                                <span class="badge badge-pill badge-dim bg-gray">نگه داشته شده({{ department.get_hold_tasks.count }})</span>
+                                                                <span class="badge badge-pill badge-dim bg-danger">نیاز به بررسی({{ department.get_need_to_check_tasks.count }})</span>
+                                                                <span class="badge badge-pill badge-dim bg-dark">نیاز به برنامه ریزی({{ department.get_need_to_replan_tasks.count }})</span>
                                                             </div>
                                                         </div>
-                                                        <div class="nk-tb-col text-end"><span>21 آبان - 30 آبان</span>
-                                                        </div>
-                                                    </div>
-                                                    <!-- .nk-tb-item -->
-                                                    <div class="nk-tb-item">
-                                                        <div class="nk-tb-col">
-                                                            <span class="tb-lead">جمعه سیاه <span
-                                                                    class="dot dot-success d-sm-none ms-1"></span></span>
-                                                            <span class="tb-sub">ایجاد شده در 21 آبان 1402</span>
-                                                        </div>
-                                                        <div class="nk-tb-col tb-col-mb">
-                                                            <ul class="d-flex gx-1">
-                                                                <li class="text-linkedin"><em
-                                                                        class="icon ni ni-linkedin"></em></li>
-                                                                <li class="text-facebook"><em
-                                                                        class="icon ni ni-facebook-f"></em></li>
-                                                                <li class="text-instagram"><em
-                                                                        class="icon ni ni-instagram"></em></li>
-                                                                <li class="text-youtube"><em
-                                                                        class="icon ni ni-youtube-fill"></em></li>
-                                                            </ul>
-                                                        </div>
-                                                        <div class="nk-tb-col tb-col-sm">
-                                                            <div class="badge badge-dim bg-success">زنده</div>
-                                                        </div>
-                                                        <div class="nk-tb-col tb-col-md">
-                                                            <div class="user-avatar-group">
-                                                                <div class="user-avatar xs">
-                                                                    <img src="./images/avatar/h-sm.jpg" alt=""/>
-                                                                </div>
-                                                                <div class="user-avatar xs">
-                                                                    <img src="./images/avatar/i-sm.jpg" alt=""/>
-                                                                </div>
-                                                                <div class="user-avatar xs">
-                                                                    <img src="./images/avatar/j-sm.jpg" alt=""/>
-                                                                </div>
-                                                                <div class="user-avatar xs">
-                                                                    <span>7+</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="nk-tb-col text-end"><span>21 آبان - 30 آبان</span>
-                                                        </div>
-                                                    </div>
-                                                    <!-- .nk-tb-item -->
-                                                    <div class="nk-tb-item">
-                                                        <div class="nk-tb-col">
-                                                            <span class="tb-lead">درختکاری <span
-                                                                    class="dot dot-warning d-sm-none ms-1"></span></span>
-                                                            <span class="tb-sub">ایجاد شده در 23 آبان 1402</span>
-                                                        </div>
-                                                        <div class="nk-tb-col tb-col-mb">
-                                                            <ul class="d-flex gx-1">
-                                                                <li class="text-twitter"><em
-                                                                        class="icon ni ni-twitter"></em></li>
-                                                                <li class="text-instagram"><em
-                                                                        class="icon ni ni-instagram"></em></li>
-                                                                <li class="text-linkedin"><em
-                                                                        class="icon ni ni-linkedin"></em></li>
-                                                            </ul>
-                                                        </div>
-                                                        <div class="nk-tb-col tb-col-sm">
-                                                            <div class="badge badge-dim bg-warning">مکث شده</div>
-                                                        </div>
-                                                        <div class="nk-tb-col tb-col-md">
-                                                            <div class="user-avatar-group">
-                                                                <div class="user-avatar xs">
-                                                                    <img src="./images/avatar/k-sm.jpg" alt=""/>
-                                                                </div>
-                                                                <div class="user-avatar xs bg-pink">
-                                                                    <span>ر‌ر</span>
-                                                                </div>
-                                                                <div class="user-avatar xs">
-                                                                    <img src="./images/avatar/e-sm.jpg" alt=""/>
-                                                                </div>
-                                                                <div class="user-avatar xs">
-                                                                    <span>3+</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="nk-tb-col text-end"><span>21 آبان - 30 آبان</span>
-                                                        </div>
-                                                    </div>
-                                                    <!-- .nk-tb-item -->
-                                                    <div class="nk-tb-item">
-                                                        <div class="nk-tb-col">
-                                                            <span class="tb-lead">پیش نمایش فیلم فرار <span
-                                                                    class="dot dot-success d-sm-none ms-1"></span></span>
-                                                            <span class="tb-sub">ایجاد شده در 22 مهر 1402</span>
-                                                        </div>
-                                                        <div class="nk-tb-col tb-col-mb">
-                                                            <ul class="d-flex gx-1">
-                                                                <li class="text-linkedin"><em
-                                                                        class="icon ni ni-linkedin"></em></li>
-                                                                <li class="text-twitter"><em
-                                                                        class="icon ni ni-twitter"></em></li>
-                                                                <li class="text-facebook"><em
-                                                                        class="icon ni ni-facebook-f"></em></li>
-                                                                <li class="text-youtube"><em
-                                                                        class="icon ni ni-youtube-fill"></em></li>
-                                                            </ul>
-                                                        </div>
-                                                        <div class="nk-tb-col tb-col-sm">
-                                                            <div class="badge badge-dim bg-success">زنده</div>
-                                                        </div>
-                                                        <div class="nk-tb-col tb-col-md">
-                                                            <div class="user-avatar-group">
-                                                                <div class="user-avatar xs">
-                                                                    <img src="./images/avatar/i-sm.jpg" alt=""/>
-                                                                </div>
-                                                                <div class="user-avatar xs">
-                                                                    <img src="./images/avatar/k-sm.jpg" alt=""/>
-                                                                </div>
-                                                                <div class="user-avatar xs">
-                                                                    <img src="./images/avatar/e-sm.jpg" alt=""/>
-                                                                </div>
-                                                                <div class="user-avatar xs">
-                                                                    <img src="./images/avatar/g-sm.jpg" alt=""/>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="nk-tb-col text-end"><span>21 آبان - 30 آبان</span>
-                                                        </div>
-                                                    </div>
-                                                    <!-- .nk-tb-item -->
+                                                        <!-- .nk-tb-item -->
+                                                    {% endfor %}
                                                 </div>
                                                 <!-- .nk-tb-list -->
                                             </div>
@@ -1465,7 +1440,7 @@
                                                     <li class="border-bottom border-0 border-dashed">
                                                         <div class="mb-1">
                                                             <span class="fs-2 lh-1 mb-1 text-head">85.6هزار</span>
-                                                            <div class="sub-text">میانگین ​​لایک ها</div>
+                                                            <div class="sub-text">میانگین لایک ها</div>
                                                         </div>
                                                         <div class="align-center">
                                                             <div class="small text-primary me-2">54%</div>

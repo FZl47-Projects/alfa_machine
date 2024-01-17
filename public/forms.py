@@ -25,7 +25,7 @@ class TaskUpdateForm(TaskCreateForm, forms.ModelForm):
 
 
 class TaskStateUpdate(forms.Form):
-    state = forms.ChoiceField(choices=models.Task.STATE_OPTIONS)
+    state = forms.ChoiceField(choices=models.TaskStatus.STATUS_OPTIONS)
 
 
 # TaskMasterAdd form
