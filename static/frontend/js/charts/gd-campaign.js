@@ -315,16 +315,22 @@
         // });
 
 
-        let cnv = document.getElementById('performanceOverview').getContext("2d")
-        new Chart(cnv, {
+        let cnv = document.getElementById('performanceOverview')
+        let labels = JSON.parse(cnv.getAttribute('labels'))
+        let data = JSON.parse(cnv.getAttribute('data'))
+        let colors = []
+        for (let i of labels){
+            colors.push(getRandomColor())
+        }
+        new Chart(cnv.getContext("2d"), {
             type: 'bar',
             data: {
-                labels: ["HTML", "CSS", "JAVASCRIPT", "CHART.JS", "JQUERY", "BOOTSTRP"],
+                labels:labels,
                 datasets: [{
-                    label: "online tutorial subjects",
-                    data: [20, 40, 30, 35, 30, 20],
-                    backgroundColor: ['yellow', 'aqua', 'pink', 'lightgreen', 'lightblue', 'gold'],
-                    borderColor: ['red', 'blue', 'fuchsia', 'green', 'navy', 'black'],
+                    label: "tasks",
+                    data: data,
+                    backgroundColor: colors,
+                    borderColor: colors,
                 }],
             },
             options: {

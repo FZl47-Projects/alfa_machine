@@ -6032,7 +6032,7 @@ fieldset:disabled .dual-listbox .dual-listbox__button,
   --bs-breadcrumb-border-radius: 4px;
   --bs-breadcrumb-divider-color: #8091a7;
   --bs-breadcrumb-item-padding-x: 0.5rem;
-  --bs-breadcrumb-item-active-color: #b7c2d0;
+  --bs-breadcrumb-item-active-color: #333;
   display: flex;
   flex-wrap: wrap;
   padding: var(--bs-breadcrumb-padding-y) var(--bs-breadcrumb-padding-x);

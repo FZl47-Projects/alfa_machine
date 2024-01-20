@@ -54,7 +54,8 @@ INSTALLED_APPS = [
     'departments.technical',
 
     # Django modules
-    'django_q'
+    'django_q',
+    'django_render_partial'
 ]
 
 MIDDLEWARE = [

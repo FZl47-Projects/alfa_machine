@@ -42,7 +42,7 @@ class Department(BaseModel):
         return self.get_tasks().filter(taskstatus__status='finished')
 
     def get_queue_tasks(self):
-        return self.get_tasks().filter(taskstatus__status='queue')
+        return self.get_tasks().filter(taskstatus__status='queue') | self.get_tasks().filter(taskstatus=None)
 
     def get_progress_tasks(self):
         return self.get_tasks().filter(taskstatus__status='progress')
