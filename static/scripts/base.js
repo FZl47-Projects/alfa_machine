@@ -171,44 +171,6 @@ $('.container-select-choices input[type="radio"]').on('change', function (e) {
 });
 
 
-let BtnRequestUnit = document.querySelectorAll(".btn-request-unit");
-let Modal_RequestUnit = document.querySelectorAll(".modal-request-unit");
-let overalyRequestUnit = document.querySelectorAll(".modal-request-unit .inner-modal");
-
-BtnRequestUnit.forEach((item, index) => {
-    item.addEventListener("click", () => {
-        Modal_RequestUnit[index].classList.add("active");
-    });
-});
-overalyRequestUnit.forEach((item, index) => {
-    item.addEventListener("click", (e) => {
-        if (e.target.className === "inner-modal") {
-            Modal_RequestUnit[index].classList.remove("active");
-        }
-    });
-});
-
-
-try{
-    let btns = document.querySelectorAll(".btns .btn-change");
-    let contents = document.querySelectorAll(".content-items");
-    // btn for switch to old ticket or new tciket
-    btns.forEach((item, index) => {
-      item.addEventListener("click", () => {
-        btns.forEach((item) => {
-          item.classList.remove("active");
-        });
-        contents.forEach((item) => {
-          item.classList.remove("active");
-        });
-        btns[index].classList.add("active");
-        contents[index].classList.add("active");
-      });
-    });
-
-}catch(e){}
-
-
 // price elements
 document.querySelectorAll('.price-el').forEach((el) => {
     let p = el.innerText
@@ -224,13 +186,62 @@ function numberWithCommas(x) {
 function getRandomColor() {
     var letters = '0123456789ABCDEF'.split('');
     var color = '#';
-    for (var i = 0; i < 6; i++ ) {
+    for (var i = 0; i < 6; i++) {
         color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
 }
 
 // random-bg
-document.querySelectorAll('.random-bg').forEach(function (el){
+document.querySelectorAll('.random-bg').forEach(function (el) {
     el.style.background = getRandomColor()
+})
+
+
+function toggleRelatedField(fieldId, show = true) {
+    const field = document.getElementById(fieldId);
+    if (show) {
+        field.classList.remove('d-none');
+    } else {
+        field.classList.add('d-none');
+    }
+}
+
+// add query params
+let query_params = (new URL(location)).searchParams;
+document.querySelectorAll('.add-params-to-href').forEach(function (el) {
+    let href = el.getAttribute('href')
+    let href_params = new URLSearchParams(href)
+    for (let p of query_params) {
+        if (!p in href) {
+            href_params.set(p[0], p[1])
+        }
+    }
+    let params = href_params.toString()
+    if (params.indexOf('?') == -1) {
+        params = '?' + params
+    }
+    el.setAttribute('href', params)
+})
+
+document.querySelectorAll('.add-params-to-form').forEach(function (form) {
+    for (let p of query_params) {
+        let name = p[0]
+        let value = p[1]
+        if (!form.elements[name]) {
+            let inp = document.createElement('input')
+            inp.type = 'hidden'
+            inp.name = name
+            inp.value = value
+            form.appendChild(inp)
+        }
+    }
+})
+
+// select option by filter query search
+document.querySelectorAll('.select-by-filter').forEach(function (select) {
+    let filter_name = select.name || select.getAttribute('filter-name')
+    let filter_value = getUrlParameter(filter_name)
+    select.querySelector(`[value="${filter_value}"]`).setAttribute('selected', 'selected')
+
 })

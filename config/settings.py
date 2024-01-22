@@ -55,7 +55,7 @@ INSTALLED_APPS = [
 
     # Django modules
     'django_q',
-    'django_render_partial'
+    'django_render_partial',
 ]
 
 MIDDLEWARE = [

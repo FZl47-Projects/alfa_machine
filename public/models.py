@@ -1,4 +1,4 @@
-from django.db.models import Sum, Count, Max
+from django.db.models import Sum, Count
 from django.urls import reverse
 from django.db import models
 from core.models import BaseModel, File
@@ -97,6 +97,9 @@ class Project(BaseModel):
     inquiry = models.OneToOneField('Inquiry', on_delete=models.SET_NULL, null=True, blank=True)
     progress_percentage = models.PositiveSmallIntegerField(default=0)
 
+    class Meta:
+        ordering = ('-id',)
+
     def __str__(self):
         return self.name
 
@@ -114,10 +117,17 @@ class Project(BaseModel):
             return 'تمام شده'
         return 'در حال انجام'
 
+    def get_status_label(self):
+        return self.get_status_display()
+
     def get_has_sample_state(self):
         if self.has_sample:
             return 'دارد'
         return 'ندارد'
+
+    def get_last_step(self):
+        # TODO: should be completed
+        pass
 
     def get_progress_percentage(self):
         # try:
@@ -145,22 +155,22 @@ class Project(BaseModel):
         return self.projectfile_set.order_by('-id')
 
     def get_tasks_progress(self):
-        return self.get_tasks().filter(state='progress')
+        return self.get_tasks().filter(taskstatus__status='progress')
 
     def get_tasks_queue(self):
-        return self.get_tasks().filter(state='queue')
+        return self.get_tasks().filter(taskstatus__status='queue')
 
     def get_tasks_need_to_check(self):
-        return self.get_tasks().filter(state='need-to-check')
+        return self.get_tasks().filter(taskstatus__status='need-to-check')
 
     def get_tasks_need_to_replan(self):
-        return self.get_tasks().filter(state='need-to-replan')
+        return self.get_tasks().filter(taskstatus__status='need-to-replan')
 
     def get_tasks_hold(self):
-        return self.get_tasks().filter(state='hold')
+        return self.get_tasks().filter(taskstatus__status='hold')
 
     def get_tasks_finished(self):
-        return self.get_tasks().filter(state='finished')
+        return self.get_tasks().filter(taskstatus__status='finished')
 
     def get_notifications(self):
         return self.notificationdepartment_set.all()
@@ -299,6 +309,7 @@ class TaskStatus(BaseModel, File):
         ('need-to-check', 'نیاز به بررسی'),
         ('need-to-replan', 'نیاز به برنامه ریزی مجدد'),
     )
+    department = models.ForeignKey('Department', on_delete=models.CASCADE)
     allocator_user = models.ForeignKey('account.User', on_delete=models.CASCADE)
     task = models.OneToOneField('Task', on_delete=models.CASCADE)
     status = models.CharField(max_length=20, choices=STATUS_OPTIONS)
@@ -306,6 +317,9 @@ class TaskStatus(BaseModel, File):
 
     def __str__(self):
         return f"{self.status} - {self.task}"
+
+    def get_status_label(self):
+        return self.get_status_display()
 
 
 class Inquiry(BaseModel):

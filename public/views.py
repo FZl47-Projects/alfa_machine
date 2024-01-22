@@ -82,42 +82,41 @@ class ProjectList(View):
 
     def filter(self, request, projects):
         search = request.GET.get('search', None)
-        task_master = request.GET.get('task_master', None)
-        project_status = request.GET.get('project_status', None)
-        filter_by_date = request.GET.get('filter_by_date', None)
+        task_master = request.GET.get('task_master', 'all')
+        project_status = request.GET.get('project_status', 'all')
 
         if search:
             projects = projects.filter(name__icontains=search)
-        if task_master and task_master.isdigit():
+
+        if (task_master != 'all') and (task_master.isdigit()):
             projects = projects.filter(task_master_id=task_master)
-        if project_status:
+
+        if project_status != 'all':
             projects = projects.filter(status=project_status)
 
-        if filter_by_date:
-            # filter by start and end date project
-            time_start_gt = request.GET.get('time_start_gt', None)
-            time_start_lt = request.GET.get('time_start_lt', None)
-            time_end_gt = request.GET.get('time_end_gt', None)
-            time_end_lt = request.GET.get('time_end_lt', None)
+        # filter by start and end date project
+        time_start_gt = request.GET.get('time_start_gt', None)
+        time_start_lt = request.GET.get('time_start_lt', None)
+        time_end_gt = request.GET.get('time_end_gt', None)
+        time_end_lt = request.GET.get('time_end_lt', None)
 
-            if time_start_gt:
-                projects = projects.filter(time_start__gt=time_start_gt)
+        if time_start_gt:
+            projects = projects.filter(time_start__gt=time_start_gt)
 
-            if time_start_lt:
-                projects = projects.filter(time_start__lt=time_start_lt)
+        if time_start_lt:
+            projects = projects.filter(time_start__lt=time_start_lt)
 
-            if time_end_gt:
-                projects = projects.filter(time_end__gt=time_end_gt)
+        if time_end_gt:
+            projects = projects.filter(time_end__gt=time_end_gt)
 
-            if time_end_lt:
-                projects = projects.filter(time_end__lt=time_end_lt)
+        if time_end_lt:
+            projects = projects.filter(time_end__lt=time_end_lt)
 
         return projects
 
     def get(self, request):
         # Get project status and filter by them (if exists)
         projects = models.Project.objects.filter(is_active=True)
-
         projects = self.filter(request, projects)
 
         context = {
@@ -131,10 +130,9 @@ class ProjectAdd(View):
 
     @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user'])
     def get(self, request):
-        context = {}
-
-        task_masters = models.TaskMaster.objects.all()
-        context['task_masters'] = task_masters
+        context = {
+            'task_masters':models.TaskMaster.objects.all()
+        }
         inquiry_id = request.GET.get('inquiry-id', None)
         if inquiry_id:
             context['inquiry'] = models.Inquiry.objects.get(id=inquiry_id, project=None)
@@ -145,20 +143,13 @@ class ProjectAdd(View):
     def post(self, request):
         referer_url = request.META.get('HTTP_REFERER', None)
         data = request.POST
-
         f = forms.ProjectAdd(data)
         if not f.is_valid():
             messages.error(request, 'لطفا فیلد هارا به درستی وارد نمایید')
-
-            # redirect to referer url or project add url
             return redirect(referer_url) if referer_url else redirect('public:project_add')
-
-        f.save()
-
+        project = f.save()
         messages.success(request, 'پروژه با موفقیت ایجاد شد')
-
-        # redirect to referer url or project add url
-        return redirect(referer_url) if referer_url else redirect('public:project_add')
+        return redirect(project.get_absolute_url())
 
 
 class ProjectUpdate(LoginRequiredMixin, View):

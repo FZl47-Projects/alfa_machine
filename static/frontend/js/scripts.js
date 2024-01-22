@@ -964,9 +964,13 @@
   // Picker Init @v1.0
   NioApp.Picker.init = function () {
     NioApp.Picker.date('.date-picker');
-    NioApp.Picker.dob('.date-picker-alt');
+    // NioApp.Picker.dob('.date-picker-alt');
     NioApp.Picker.time('.time-picker');
+    NioApp.Picker.date('.date-picker-alt', {
+       format: "yyyy-mm-d",
+    });
     NioApp.Picker.date('.date-picker-range', {
+      format: "yyyy-mm-d",
       todayHighlight: false,
       autoclose: false
     });

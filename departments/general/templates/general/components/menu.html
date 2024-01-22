@@ -34,12 +34,26 @@
                         </a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
-                                <a href="html/project-card.html" class="nk-menu-link"><span
+                                <a href="{% url 'public:project__add' %}" class="nk-menu-link"><span
                                         class="nk-menu-text">افزودن پروژه</span></a>
                             </li>
                             <li class="nk-menu-item">
-                                <a href="html/project-list.html" class="nk-menu-link"><span
+                                <a href="{% url 'public:project__list' %}" class="nk-menu-link"><span
                                         class="nk-menu-text">لیست پروژه ها</span></a>
+                            </li>
+                        </ul>
+                        <!-- .nk-menu-sub -->
+                    </li>
+                    <!-- .nk-menu-item -->
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-icon"><em class="icon ni ni-file-docs"></em></span>
+                            <span class="nk-menu-text">استعلامات</span>
+                        </a>
+                        <ul class="nk-menu-sub">
+                            <li class="nk-menu-item">
+                                <a href="html/kyc-list-regular.html" class="nk-menu-link"><span
+                                        class="nk-menu-text">لیست استعلامات</span></a>
                             </li>
                         </ul>
                         <!-- .nk-menu-sub -->
@@ -80,20 +94,6 @@
                         </ul>
                         <!-- .nk-menu-sub -->
                     </li>
-                    <!-- .nk-menu-item -->
-                    <li class="nk-menu-item has-sub">
-                        <a href="#" class="nk-menu-link nk-menu-toggle">
-                            <span class="nk-menu-icon"><em class="icon ni ni-file-docs"></em></span>
-                            <span class="nk-menu-text">استعلامات</span>
-                        </a>
-                        <ul class="nk-menu-sub">
-                            <li class="nk-menu-item">
-                                <a href="html/kyc-list-regular.html" class="nk-menu-link"><span
-                                        class="nk-menu-text">لیست استعلامات</span></a>
-                            </li>
-                        </ul>
-                        <!-- .nk-menu-sub -->
-                    </li>
                     <!-- .nk-menu-heading -->
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
@@ -108,6 +108,24 @@
                             <li class="nk-menu-item">
                                 <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
                                    target="_blank"><span class="nk-menu-text">فراموشی رمز عبور</span></a>
+                            </li>
+                        </ul>
+                        <!-- .nk-menu-sub -->
+                    </li>
+                    <!-- .nk-menu-item -->
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-icon"><em class="icon ni ni-file"></em></span>
+                            <span class="nk-menu-text">فایل</span>
+                        </a>
+                        <ul class="nk-menu-sub">
+                            <li class="nk-menu-item">
+                                <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
+                                   target="_blank"><span class="nk-menu-text">افزودن فایل</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
+                                   target="_blank"><span class="nk-menu-text">لیست فایل ها</span></a>
                             </li>
                         </ul>
                         <!-- .nk-menu-sub -->
