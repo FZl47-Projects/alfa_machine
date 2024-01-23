@@ -1,1311 +1,1272 @@
 {% extends 'base/base_template.html' %}
 {% load static %}
+{% load render_partial %}
 
 {% block Title %}
-    جزئیات پروژه
+    پروژه - {{ project.name }}
 {% endblock %}
 
-{% block Link %}
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <link rel="stylesheet" href="{% static 'frontend/styles/project.css' %}"/>
-
-    <style>
-        .group-form {
-            margin: 10px 2px;
-        }
-
-        .group-form label {
-            direction: ltr;
-            margin-bottom: 10px;
-        }
-    </style>
+{% block BodyClass %}
+    has-rtl nk-body ui-rounder has-sidebar no-touch nk-nio-theme
 {% endblock %}
+
 
 {% block Content %}
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main">
+            <!-- sidebar @s -->
+            {% render_partial 'public.components.MenuComponent' %}
+            <!-- sidebar @e -->
+            <!-- wrap @s -->
+            <div class="nk-wrap">
+                <!-- main header @s -->
+                {% include 'base/components/header.html' %}
+                <!-- main header @e -->
+                <!-- content @s -->
+                <div class="nk-content nk-content-fluid">
+                    <div class="container-xl wide-xl">
+                        <div class="nk-content-body">
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block-between g-3">
+                                    <div class="nk-block-head-content">
+                                        <h3 class="nk-block-title page-title">جزئیات پروژه</h3>
+                                        <nav>
+                                            <ul class="breadcrumb breadcrumb-arrow">
+                                                <li class="breadcrumb-item"><a href="{% url 'public:index' %}">صفحه
+                                                    اصلی</a></li>
+                                                <li class="breadcrumb-item"><a>پروژه ها</a></li>
+                                                <li class="breadcrumb-item"><a href="{% url 'public:index' %}">لیست
+                                                    پروژه ها</a></li>
+                                                <li class="breadcrumb-item active">{{ project.name }}</li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                    <div class="nk-block-head-content">
+                                        <div class="toggle-wrap nk-block-tools-toggle">
+                                            <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1"
+                                               data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
+                                            <div class="toggle-expand-content" data-content="pageMenu">
+                                                <ul class="nk-block-tools g-3">
+                                                    <li>
+                                                        <a href="#" class="btn btn-white btn-dim btn-outline-light"><em
+                                                                class="icon ni ni-download-cloud"></em><span>خروجی گرفتن</span></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                </div>
+                                <!-- .nk-block-between -->
+                            </div>
+                            <div class="nk-block">
+                                <div class="card">
+                                    <div class="card-aside-wrap">
+                                        <div class="card-content">
+                                            <ul class="nav nav-tabs nav-tabs-mb-icon nav-tabs-card">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active" data-bs-toggle="tab" href="#info"><em
+                                                            class="icon ni ni-info"></em><span>اطلاعات</span></a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-bs-toggle="tab" href="#statistics"><em
+                                                            class="icon ni ni-chart-up"></em><span>امار</span></a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="#"><em class="icon ni ni-task"></em><span>تسک ها</span></a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-bs-toggle="tab" href="#"><em
+                                                            class="icon ni ni-activity-round"></em><span>مرحله ها</span></a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="#"><em
+                                                            class="icon ni ni-view-col"></em><span>گزارشات</span></a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="#"><em
+                                                            class="icon ni ni-file-text"></em><span>فایل ها</span></a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" href="#"><em
+                                                            class="icon ni ni-notice"></em><span>اعلانات</span></a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-bs-toggle="tab" href="#note"><em
+                                                            class="icon ni ni-pen2"></em><span>یادداشت های شخصی</span></a>
+                                                </li>
+                                                <li class="nav-item nav-item-trigger d-xxl-none">
+                                                    <a href="#" class="toggle btn btn-icon btn-trigger"
+                                                       data-target="userAside"><em
+                                                            class="icon ni ni-dashboard"></em></a>
+                                                </li>
+                                            </ul>
+                                            <!-- .nav-tabs -->
+                                            <div class="tab-content">
+                                                <div class="tab-pane active" id="info">
+                                                    <div class="card-inner">
+                                                        <div class="nk-block">
+                                                            <div class="nk-block-head">
+                                                                <h5 class="title">اطلاعات پایه</h5>
+                                                            </div>
+                                                            <!-- .nk-block-head -->
+                                                            <div class="profile-ud-list">
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">نام</span>
+                                                                        <span class="profile-ud-value">{{ project.name }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">کارفرما</span>
+                                                                        <span class="profile-ud-value">
+                                                                    <a href="{{ project.task_master.get_absolute_url }}">{{ project.task_master.name }}</a>
+                                                                </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">شماره درخواست</span>
+                                                                        <span class="profile-ud-value">{{ project.number_id|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">پرداخت شده</span>
+                                                                        <span class="profile-ud-value">
+                                                                    {% if project.is_paid %}
+                                                                        <span class="text-success">پرداخت شده</span>
+                                                                    {% else %}
+                                                                        <span class="text-danger">پرداخت نشده</span>
+                                                                    {% endif %}
+                                                                </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">نمونه</span>
+                                                                        <span class="profile-ud-value">
+                                                                    {% if project.has_sample %}
+                                                                        <span class="text-info">
+                                                                            دارد
+                                                                        </span>
+                                                                    {% else %}
+                                                                        <span class="text-warning">
+                                                                            ندارد
+                                                                        </span>
+                                                                    {% endif %}
+                                                                </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">قیمت</span>
+                                                                        <span class="profile-ud-value">
+                                                                    {% if project.price %}
+                                                                        <span class="price-el">
+                                                                            {{ project.price }}
+                                                                            تومان
+                                                                        </span>
+                                                                    {% else %}
+                                                                        <span>ثبت نشده است</span>
+                                                                    {% endif %}
+                                                                </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- .profile-ud-list -->
+                                                        </div>
+                                                        <!-- .nk-block -->
+                                                        <div class="nk-block">
+                                                            <div class="nk-block-head nk-block-head-line">
+                                                                <h6 class="title overline-title text-base">اطلاعات
+                                                                    تکمیلی</h6>
+                                                            </div>
+                                                            <!-- .nk-block-head -->
+                                                            <div class="profile-ud-list">
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">تعداد کل</span>
+                                                                        <span class="profile-ud-value">{{ project.count_total }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">تعداد باقی مانده</span>
+                                                                        <span class="profile-ud-value">{{ project.count_remaining }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">مرحله</span>
+                                                                        <span class="profile-ud-value">{{ project.get_last_step|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">تاریخ پیش پرداخت</span>
+                                                                        <span class="profile-ud-value">{{ project.prepayment_datetime|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">تاریخ تحویل نمونه</span>
+                                                                        <span class="profile-ud-value">{{ project.sample_delivery_date|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">تاریخ تحویل انبوه</span>
+                                                                        <span class="profile-ud-value">{{ project.mass_delivery_date|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">تاریخ ابلاغ(شروع)</span>
+                                                                        <span class="profile-ud-value">{{ project.time_start|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">تاریخ اتمام قرارداد</span>
+                                                                        <span class="profile-ud-value">{{ project.time_end|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item w-100">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">ایتم ها</span>
+                                                                        <span class="profile-ud-value">{{ project.item|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item w-100">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">توضیحات</span>
+                                                                        <span class="profile-ud-value">{{ project.description|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- .profile-ud-list -->
+                                                        </div>
+                                                        <!-- .nk-block -->
+                                                    </div>
+                                                </div>
 
-    <!-- modal delete project -->
-    <div class="modal fade" id="project-modal-delete" tabindex="-1"
-         aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"
-                        id="exampleModalLabel">حذف پروژه</h5>
+                                                <div class="tab-pane" id="statistics">
+                                                    <div class="card-inner">
+                                                        <div class="nk-block">
+                                                            <div class="nk-block-head">
+                                                                <h5 class="title">اطلاعات پایه</h5>
+                                                            </div>
+                                                            <!-- .nk-block-head -->
+                                                            <div class="profile-ud-list">
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">نام</span>
+                                                                        <span class="profile-ud-value">{{ project.name }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">کارفرما</span>
+                                                                        <span class="profile-ud-value">
+                                                                    <a href="{{ project.task_master.get_absolute_url }}">{{ project.task_master.name }}</a>
+                                                                </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">شماره درخواست</span>
+                                                                        <span class="profile-ud-value">{{ project.number_id|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">پرداخت شده</span>
+                                                                        <span class="profile-ud-value">
+                                                                    {% if project.is_paid %}
+                                                                        <span class="text-success">پرداخت شده</span>
+                                                                    {% else %}
+                                                                        <span class="text-danger">پرداخت نشده</span>
+                                                                    {% endif %}
+                                                                </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">نمونه</span>
+                                                                        <span class="profile-ud-value">
+                                                                    {% if project.has_sample %}
+                                                                        <span class="text-info">
+                                                                            دارد
+                                                                        </span>
+                                                                    {% else %}
+                                                                        <span class="text-warning">
+                                                                            ندارد
+                                                                        </span>
+                                                                    {% endif %}
+                                                                </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">قیمت</span>
+                                                                        <span class="profile-ud-value">
+                                                                    {% if project.price %}
+                                                                        <span class="price-el">
+                                                                            {{ project.price }}
+                                                                            تومان
+                                                                        </span>
+                                                                    {% else %}
+                                                                        <span>ثبت نشده است</span>
+                                                                    {% endif %}
+                                                                </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- .profile-ud-list -->
+                                                        </div>
+                                                        <!-- .nk-block -->
+                                                        <div class="nk-block">
+                                                            <div class="nk-block-head nk-block-head-line">
+                                                                <h6 class="title overline-title text-base">اطلاعات
+                                                                    تکمیلی</h6>
+                                                            </div>
+                                                            <!-- .nk-block-head -->
+                                                            <div class="profile-ud-list">
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">تعداد کل</span>
+                                                                        <span class="profile-ud-value">{{ project.count_total }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">تعداد باقی مانده</span>
+                                                                        <span class="profile-ud-value">{{ project.count_remaining }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">مرحله</span>
+                                                                        <span class="profile-ud-value">{{ project.get_last_step|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">تاریخ پیش پرداخت</span>
+                                                                        <span class="profile-ud-value">{{ project.prepayment_datetime|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">تاریخ تحویل نمونه</span>
+                                                                        <span class="profile-ud-value">{{ project.sample_delivery_date|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">تاریخ تحویل انبوه</span>
+                                                                        <span class="profile-ud-value">{{ project.mass_delivery_date|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">تاریخ ابلاغ(شروع)</span>
+                                                                        <span class="profile-ud-value">{{ project.time_start|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">تاریخ اتمام قرارداد</span>
+                                                                        <span class="profile-ud-value">{{ project.time_end|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item w-100">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">ایتم ها</span>
+                                                                        <span class="profile-ud-value">{{ project.item|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item w-100">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">توضیحات</span>
+                                                                        <span class="profile-ud-value">{{ project.description|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- .profile-ud-list -->
+                                                        </div>
+                                                        <!-- .nk-block -->
+                                                        <div class="nk-divider divider md"></div>
+                                                        <div class="nk-block">
+                                                            <div class="nk-block-head nk-block-head-sm nk-block-between">
+                                                                <h5 class="title">یاد داشت های شخصی</h5>
+                                                                <a href="#" class="link link-sm">+ افزودن یادداشت</a>
+                                                            </div>
+                                                            <!-- .nk-block-head -->
+                                                            <div class="bq-note">
+                                                                <div class="bq-note-item">
+                                                                    <div class="bq-note-text">
+                                                                        <p>
+                                                                            لورم ایپسوم متن ساختگی با تولید سادگی
+                                                                            نامفهوم از
+                                                                            صنعت چاپ و با استفاده از طراحان گرافیک است
+                                                                            چاپگرها و
+                                                                            متون بلکه روزنامه و مجله در ستون و سطرآنچنان
+                                                                            که لازم
+                                                                            است و برای شرایط فعلی تکنولوژی مورد نیاز.
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="bq-note-meta">
+                                                                <span class="bq-note-added">اضافه شده در <span
+                                                                        class="date">18 آبان 1402</span> در <span
+                                                                        class="time">5:34 بعد از ظهر</span></span>
+                                                                        <span class="bq-note-sep sep">|</span>
+                                                                        <span class="bq-note-by">توسط <span>سافت نیو</span></span>
+                                                                        <a href="#" class="link link-sm link-danger">حذف
+                                                                            یادداشت</a>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- .bq-note-item -->
+                                                                <div class="bq-note-item">
+                                                                    <div class="bq-note-text">
+                                                                        <p>
+                                                                            لورم ایپسوم متن ساختگی با تولید سادگی
+                                                                            نامفهوم از
+                                                                            صنعت چاپ و با استفاده از طراحان گرافیک است
+                                                                            چاپگرها و
+                                                                            متون بلکه روزنامه و مجله در ستون و سطرآنچنان
+                                                                            که لازم
+                                                                            است و برای شرایط فعلی تکنولوژی مورد نیاز.
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="bq-note-meta">
+                                                                <span class="bq-note-added">اضافه شده در <span
+                                                                        class="date">18 آبان 1402</span> در <span
+                                                                        class="time">5:34 بعد از ظهر</span></span>
+                                                                        <span class="bq-note-sep sep">|</span>
+                                                                        <span class="bq-note-by">توسط <span>سافت نیو</span></span>
+                                                                        <a href="#" class="link link-sm link-danger">حذف
+                                                                            یادداشت</a>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- .bq-note-item -->
+                                                            </div>
+                                                            <!-- .bq-note -->
+                                                        </div>
+                                                        <!-- .nk-block -->
+                                                    </div>
+                                                </div>
+
+                                                <div class="tab-pane" id="steps">
+                                                    <div class="card-inner">
+                                                        <div class="nk-block">
+                                                            <div class="nk-block-head">
+                                                                <h5 class="title">اطلاعات پایه</h5>
+                                                            </div>
+                                                            <!-- .nk-block-head -->
+                                                            <div class="profile-ud-list">
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">نام</span>
+                                                                        <span class="profile-ud-value">{{ project.name }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">کارفرما</span>
+                                                                        <span class="profile-ud-value">
+                                                                    <a href="{{ project.task_master.get_absolute_url }}">{{ project.task_master.name }}</a>
+                                                                </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">شماره درخواست</span>
+                                                                        <span class="profile-ud-value">{{ project.number_id|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">پرداخت شده</span>
+                                                                        <span class="profile-ud-value">
+                                                                    {% if project.is_paid %}
+                                                                        <span class="text-success">پرداخت شده</span>
+                                                                    {% else %}
+                                                                        <span class="text-danger">پرداخت نشده</span>
+                                                                    {% endif %}
+                                                                </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">نمونه</span>
+                                                                        <span class="profile-ud-value">
+                                                                    {% if project.has_sample %}
+                                                                        <span class="text-info">
+                                                                            دارد
+                                                                        </span>
+                                                                    {% else %}
+                                                                        <span class="text-warning">
+                                                                            ندارد
+                                                                        </span>
+                                                                    {% endif %}
+                                                                </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">قیمت</span>
+                                                                        <span class="profile-ud-value">
+                                                                    {% if project.price %}
+                                                                        <span class="price-el">
+                                                                            {{ project.price }}
+                                                                            تومان
+                                                                        </span>
+                                                                    {% else %}
+                                                                        <span>ثبت نشده است</span>
+                                                                    {% endif %}
+                                                                </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- .profile-ud-list -->
+                                                        </div>
+                                                        <!-- .nk-block -->
+                                                        <div class="nk-block">
+                                                            <div class="nk-block-head nk-block-head-line">
+                                                                <h6 class="title overline-title text-base">اطلاعات
+                                                                    تکمیلی</h6>
+                                                            </div>
+                                                            <!-- .nk-block-head -->
+                                                            <div class="profile-ud-list">
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">تعداد کل</span>
+                                                                        <span class="profile-ud-value">{{ project.count_total }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">تعداد باقی مانده</span>
+                                                                        <span class="profile-ud-value">{{ project.count_remaining }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">مرحله</span>
+                                                                        <span class="profile-ud-value">{{ project.get_last_step|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">تاریخ پیش پرداخت</span>
+                                                                        <span class="profile-ud-value">{{ project.prepayment_datetime|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">تاریخ تحویل نمونه</span>
+                                                                        <span class="profile-ud-value">{{ project.sample_delivery_date|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">تاریخ تحویل انبوه</span>
+                                                                        <span class="profile-ud-value">{{ project.mass_delivery_date|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">تاریخ ابلاغ(شروع)</span>
+                                                                        <span class="profile-ud-value">{{ project.time_start|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">تاریخ اتمام قرارداد</span>
+                                                                        <span class="profile-ud-value">{{ project.time_end|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item w-100">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">ایتم ها</span>
+                                                                        <span class="profile-ud-value">{{ project.item|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item w-100">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">توضیحات</span>
+                                                                        <span class="profile-ud-value">{{ project.description|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- .profile-ud-list -->
+                                                        </div>
+                                                        <!-- .nk-block -->
+                                                        <div class="nk-divider divider md"></div>
+                                                        <div class="nk-block">
+                                                            <div class="nk-block-head nk-block-head-sm nk-block-between">
+                                                                <h5 class="title">یاد داشت های شخصی</h5>
+                                                                <a href="#" class="link link-sm">+ افزودن یادداشت</a>
+                                                            </div>
+                                                            <!-- .nk-block-head -->
+                                                            <div class="bq-note">
+                                                                <div class="bq-note-item">
+                                                                    <div class="bq-note-text">
+                                                                        <p>
+                                                                            لورم ایپسوم متن ساختگی با تولید سادگی
+                                                                            نامفهوم از
+                                                                            صنعت چاپ و با استفاده از طراحان گرافیک است
+                                                                            چاپگرها و
+                                                                            متون بلکه روزنامه و مجله در ستون و سطرآنچنان
+                                                                            که لازم
+                                                                            است و برای شرایط فعلی تکنولوژی مورد نیاز.
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="bq-note-meta">
+                                                                <span class="bq-note-added">اضافه شده در <span
+                                                                        class="date">18 آبان 1402</span> در <span
+                                                                        class="time">5:34 بعد از ظهر</span></span>
+                                                                        <span class="bq-note-sep sep">|</span>
+                                                                        <span class="bq-note-by">توسط <span>سافت نیو</span></span>
+                                                                        <a href="#" class="link link-sm link-danger">حذف
+                                                                            یادداشت</a>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- .bq-note-item -->
+                                                                <div class="bq-note-item">
+                                                                    <div class="bq-note-text">
+                                                                        <p>
+                                                                            لورم ایپسوم متن ساختگی با تولید سادگی
+                                                                            نامفهوم از
+                                                                            صنعت چاپ و با استفاده از طراحان گرافیک است
+                                                                            چاپگرها و
+                                                                            متون بلکه روزنامه و مجله در ستون و سطرآنچنان
+                                                                            که لازم
+                                                                            است و برای شرایط فعلی تکنولوژی مورد نیاز.
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="bq-note-meta">
+                                                                <span class="bq-note-added">اضافه شده در <span
+                                                                        class="date">18 آبان 1402</span> در <span
+                                                                        class="time">5:34 بعد از ظهر</span></span>
+                                                                        <span class="bq-note-sep sep">|</span>
+                                                                        <span class="bq-note-by">توسط <span>سافت نیو</span></span>
+                                                                        <a href="#" class="link link-sm link-danger">حذف
+                                                                            یادداشت</a>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- .bq-note-item -->
+                                                            </div>
+                                                            <!-- .bq-note -->
+                                                        </div>
+                                                        <!-- .nk-block -->
+                                                    </div>
+                                                </div>
+
+                                                <div class="tab-pane" id="note">
+                                                    <div class="card-inner">
+                                                        <!-- .nk-block -->
+                                                        <div class="nk-block">
+                                                            <div class="nk-block-head nk-block-head-sm nk-block-between">
+                                                                <h5 class="title">یاد داشت های شخصی</h5>
+                                                                <a href="#" class="link link-sm">+ افزودن یادداشت</a>
+                                                            </div>
+                                                            <!-- .nk-block-head -->
+                                                            <div class="bq-note">
+                                                                <div class="bq-note-item">
+                                                                    <div class="bq-note-text">
+                                                                        <p>
+                                                                            لورم ایپسوم متن ساختگی با تولید سادگی
+                                                                            نامفهوم از
+                                                                            صنعت چاپ و با استفاده از طراحان گرافیک است
+                                                                            چاپگرها و
+                                                                            متون بلکه روزنامه و مجله در ستون و سطرآنچنان
+                                                                            که لازم
+                                                                            است و برای شرایط فعلی تکنولوژی مورد نیاز.
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="bq-note-meta">
+                                                                <span class="bq-note-added">اضافه شده در <span
+                                                                        class="date">18 آبان 1402</span> در <span
+                                                                        class="time">5:34 بعد از ظهر</span></span>
+                                                                        <span class="bq-note-sep sep">|</span>
+                                                                        <span class="bq-note-by">توسط <span>سافت نیو</span></span>
+                                                                        <a href="#" class="link link-sm link-danger">حذف
+                                                                            یادداشت</a>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- .bq-note-item -->
+                                                                <div class="bq-note-item">
+                                                                    <div class="bq-note-text">
+                                                                        <p>
+                                                                            لورم ایپسوم متن ساختگی با تولید سادگی
+                                                                            نامفهوم از
+                                                                            صنعت چاپ و با استفاده از طراحان گرافیک است
+                                                                            چاپگرها و
+                                                                            متون بلکه روزنامه و مجله در ستون و سطرآنچنان
+                                                                            که لازم
+                                                                            است و برای شرایط فعلی تکنولوژی مورد نیاز.
+                                                                        </p>
+                                                                    </div>
+                                                                    <div class="bq-note-meta">
+                                                                <span class="bq-note-added">اضافه شده در <span
+                                                                        class="date">18 آبان 1402</span> در <span
+                                                                        class="time">5:34 بعد از ظهر</span></span>
+                                                                        <span class="bq-note-sep sep">|</span>
+                                                                        <span class="bq-note-by">توسط <span>سافت نیو</span></span>
+                                                                        <a href="#" class="link link-sm link-danger">حذف
+                                                                            یادداشت</a>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- .bq-note-item -->
+                                                            </div>
+                                                            <!-- .bq-note -->
+                                                        </div>
+                                                        <!-- .nk-block -->
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!-- .card-inner -->
+                                        </div>
+                                        <!-- .card-content -->
+                                        <div
+                                                class="card-aside card-aside-right user-aside toggle-slide toggle-slide-right toggle-break-xxl"
+                                                data-content="userAside"
+                                                data-toggle-screen="xxl"
+                                                data-toggle-overlay="true"
+                                                data-toggle-body="true">
+                                            <div class="card-inner-group" data-simplebar>
+                                                <div class="card-inner">
+                                                    <div class="user-card user-card-s2">
+                                                        <div class="user-avatar lg"
+                                                             style="background: none">
+                                                            <img src="{{ project.get_image_cover_url }}"
+                                                                 alt="{{ project.name }}" width="80"
+                                                                 height="80">
+                                                        </div>
+                                                        <div class="user-info">
+                                                            <div class="fs-10px p-1 px-2 badge badge-dim rounded-pill bg-dim-{{ project.status }}">
+                                                                {{ project.get_status_label }}
+                                                            </div>
+                                                            <h5>
+                                                                {{ project.name }}
+                                                                {% if project.is_active %}
+                                                                    <span class="text-success fs-14px">
+                                                                        (فعال)
+                                                                    </span>
+                                                                {% else %}
+                                                                    <span class="text-danger fs-14px">
+                                                                        (غیر فعال)
+                                                                    </span>
+                                                                {% endif %}
+                                                            </h5>
+                                                            <span class="sub-text">
+                                                                <a href="{{ project.task_master.get_absolute_url }}">{{ project.task_master.name }}</a>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- .card-inner -->
+                                                {% if has_perm_to_modify %}
+                                                    <div class="card-inner card-inner-sm">
+                                                        <ul class="btn-toolbar justify-center gx-1">
+                                                            <li data-bs-toggle="modal"
+                                                                data-bs-target="#modal-update-object">
+                                                                <a
+                                                                        class="btn btn-trigger btn-icon"
+                                                                        data-bs-toggle="tooltip"
+                                                                        data-bs-placement="bottom"
+                                                                        title="اپدیت"><em
+                                                                        class="icon ni ni-update"></em></a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#"
+                                                                   class="btn btn-trigger btn-icon"
+                                                                   data-bs-toggle="tooltip"
+                                                                   data-bs-placement="bottom"
+                                                                   title="خروجی"><em
+                                                                        class="icon ni ni-download-cloud"></em></a>
+                                                            </li>
+                                                            <li data-bs-toggle="modal"
+                                                                data-bs-target="#modal-delete-object">
+                                                                <a
+                                                                        class="btn btn-trigger btn-icon text-danger"
+                                                                        data-bs-toggle="tooltip"
+                                                                        data-bs-placement="bottom"
+                                                                        title="حذف"><em
+                                                                        class="icon ni ni-trash-empty"></em></a>
+
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                {% endif %}
+                                                <!-- .card-inner -->
+                                                <div class="card-inner">
+                                                    <div class="overline-title-alt mb-2">وضعیت تسک ها</div>
+                                                    <div class="profile-balance">
+                                                        <div class="text-center">
+
+                                                            <div class="badge badge-pill badge-dim bg-success">
+                                                                تسک های تکمیل شده
+                                                                <b>({{ project.get_tasks_finished.count }})</b>
+                                                            </div>
+
+                                                            <div class="badge badge-pill badge-dim bg-warning">
+                                                                تسک های در صف
+                                                                <b>({{ project.get_tasks_queue.count }})</b>
+                                                            </div>
+
+                                                            <div class="badge badge-pill badge-dim bg-primary">
+                                                                تسک های در حال انجام
+                                                                <b>({{ project.get_tasks_progress.count }})</b>
+                                                            </div>
+
+                                                            <div class="badge badge-pill badge-dim bg-gray">
+                                                                تسک های نگه داشته شده
+                                                                <b>({{ project.get_tasks_hold.count }})</b>
+                                                            </div>
+
+                                                            <div class="badge badge-pill badge-dim bg-danger">
+                                                                نیاز به بررسی
+                                                                <b>({{ project.get_tasks_need_to_check.count }})</b>
+                                                            </div>
+
+                                                            <div class="badge badge-pill badge-dim bg-dark">
+                                                                نیاز به برنامه ریزی
+                                                                <b>({{ project.get_tasks_need_to_replan.count }})</b>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- .card-inner -->
+                                                <div class="card-inner">
+                                                    <div class="row text-center">
+                                                        <div class="col-4">
+                                                            <div class="profile-stats">
+                                                                <span class="amount"
+                                                                      title="{{ project.get_last_step.name|default:'-' }}">{{ project.get_last_step.name|default:'-'|truncatechars:20 }}</span>
+                                                                <span class="sub-text">مرحله</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-4">
+                                                            <div class="profile-stats">
+                                                                <span class="amount">{{ project.get_tasks.count }}</span>
+                                                                <span class="sub-text">کل تسک ها</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <div class="profile-stats">
+                                                                <span class="amount">{{ project.progress_percentage }}%</span>
+                                                                <span class="sub-text">درصد پیشرفت </span>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                <!-- .card-inner -->
+                                                <div class="card-inner">
+                                                    <h6 class="overline-title-alt mb-2">زمان ها</h6>
+                                                    <div class="row g-3">
+                                                        <div class="col-6">
+                                                            <span class="sub-text">زمان باقی مانده تا تحویل انبوه:</span>
+                                                            <span>-</span>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <span class="sub-text">زمان باقی مانده تا تحویل نمونه:</span>
+                                                            <span>-</span>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <span class="sub-text">زمان باقی مانده تا اتمام قرارداد:</span>
+                                                            <span>-</span>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <span class="sub-text">زمان ایجاد پروژه:</span>
+                                                            <span>{{ project.get_created_at_timepast }}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- .card-inner -->
+                                                <div class="card-inner">
+                                                    <h6 class="overline-title-alt mb-3">
+                                                        واحد های
+                                                        مشارکت کننده</h6>
+                                                    <ul class="g-1">
+                                                        {% for department in project.get_participating_departments %}
+                                                            <li class="btn-group">
+                                                                <a class="btn btn-xs btn-light btn-dim"
+                                                                   href="{{ department.get_absolute_url }}">{{ department.name }}</a>
+                                                            </li>
+                                                        {% empty %}
+                                                            <div class="container-not-found-base">
+                                                                <p>چیزی یافت نشد</p>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                                <!-- .card-inner -->
+                                            </div>
+                                            <!-- .card-inner -->
+                                        </div>
+                                        <!-- .card-aside -->
+                                    </div>
+                                    <!-- .card-aside-wrap -->
+                                </div>
+                                <!-- .card -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    ایا از حذف پروژه
-                    <strong>{{ project.name|truncatechars:30 }}</strong>
-                    اطمینان دارید ؟
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                            data-bs-dismiss="modal">لغو
-                    </button>
-                    <form action="{% url 'public:project_delete' project_id=project.id %}"
-                          method="get">
-                        <button class="btn-item m-1 remov btn btn-danger">
-                            بله ، حذف پروژه
-                        </button>
-                    </form>
-                </div>
+                <!-- content @e -->
+                <!-- footer @s -->
+                {% include 'base/components/footer.html' %}
+                <!-- footer @e -->
             </div>
+            <!-- wrap @e -->
         </div>
-    </div>
-    <!-- end modal delete project -->
-
-
-    <main class="main content-page container">
-        <div class="d-flex align-items-center">
-            <h5 class="title-page mx-auto">{{ project.name }}</h5>
-            <a href="{{ user.get_absolute_url_dashboard }}" class="btn btn-danger text-center ms-1">بازگشت</a>
-        </div>
-        <section class="col-12 project-content">
-            <div class="inner-project">
-                <!-- btn tab page -->
-                <div class="btn-content d-flex justify-content-between border-bottom border-secondary border-1">
-                    <div class="btns col-12 col-md-7">
-                        <div class="btn-change col-2 text-center active">مشخصات پروژه</div>
-                        <div class="btn-change col-2 text-center">لیست انبار</div>
-                        <div class="btn-change col-2 text-center">اسناد آپلود شده</div>
-                        <div class="btn-change col-2 text-center d-none">بازرگانی</div>
-                        <div class="btn-change col-2 text-center">مکاتبات پروژه</div>
-                        {% if user.role == 'super_user' or user.role == 'financial_user' %}
-                            <div class="btn-change col-2 text-center">امور مالی</div>
-                        {% endif %}
-                        {% if project.inquiry %}
-                            <div class="btn-change col-2 text-center">استعلام مربوطه</div>
-                        {% endif %}
-                    </div>
-                    {% if has_perm_to_modify %}
-                        <div>
-                            <button class="btn btn-outline-primary text-center mx-1 p-2 px-4" data-bs-toggle="modal"
-                                    data-bs-target="#project-edit">ویرایش
-                            </button>
-                            <button type="button"
-                                    class="btn btn-item m-1 remov btn btn-outline-danger text-center p-2 px-4"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#project-modal-delete">
-                                حذف
-                            </button>
-                        </div>
-                    {% endif %}
-
-                </div>
-                <!-- btn tab page -->
-
-                <section class="content-notifcation">
-                    <!-- Project-specifications chart and name ddline  -->
-                    <div class="Project-specifications">
-                        <div class="col-12 col-md-8 d-flex flex-column justify-content-center align-items-start">
-                            <div class="right">
-                                <div class="col-12 col-md-6 p-2">
-                                    <div class="right-item">
-                                        <span>وضعیت:</span>
-                                        <span><b>{{ project.get_status_display }}</b></span>
-                                    </div>
-                                </div>
-                                {% if project.inquiry %}
-                                    <div class="col-12 col-md-6 p-2">
-                                        <div class="right-item">
-                                            <span>استعلام:</span>
-                                            <span>
-                                                <a href="{{ project.inquiry.get_absolute_url }}">مشاهده</a>
-                                            </span>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                                <div class="col-12 col-md-6 p-2">
-                                    <div class="right-item">
-                                        <span>شماره درخواست:</span>
-                                        <span>{{ project.number_id }}</span>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 p-2">
-                                    <div class="right-item">
-                                        <span>نام پروژه:</span>
-                                        <span>{{ project.name }}</span>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 p-2">
-                                    <div class="right-item">
-                                        <span>کارفرما:</span>
-                                        <span>{{ project.task_master }}</span>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 p-2">
-                                    <div class="right-item">
-                                        <span>تاریخ شروع:</span>
-                                        <span class="datetime-convert">{{ project.time_start }}</span>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 p-2">
-                                    <div class="right-item">
-                                        <span>تاریخ پایان</span>
-                                        <span class="datetime-convert">{{ project.time_end }}</span>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 p-2">
-                                    <div class="right-item">
-                                        <span>قیمت:</span>
-                                        {% if has_perm_to_modify %}
-                                            <span class="price-el">{{ project.price|default:'بدون قیمت' }}</span>
-                                        {% else %}
-                                            غیر قابل مشاهده
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 p-2">
-                                    <div class="right-item">
-                                        <span> وضعیت پرداخت :</span>
-                                        <span>{% if project.is_paid %}پرداخت شده است{% else %}پرداخت نشده
-                                            است{% endif %}</span>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 p-2">
-                                    <div class="right-item">
-                                        <span>تاریخ پیش پرداخت</span>
-                                        <span class="datetime-convert">{{ project.get_prepayment_datetime }}</span>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 p-2">
-                                    <div class="right-item">
-                                        <span>تعداد کل :</span>
-                                        <span class="price-el">{{ project.count_total }}</span>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 p-2">
-                                    <div class="right-item">
-                                        <span>تعداد باقی مانده :</span>
-                                        <span class="price-el">{{ project.count_remaining }}</span>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 p-2">
-                                    <div class="right-item">
-                                        <span>آیتم :</span>
-                                        <span>{{ project.item|default:'چیزی ثبت نشده است' }}</span>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 p-2">
-                                    <div class="right-item">
-                                        <span>نمونه :</span>
-                                        <span class="datetime-convert">{{ project.get_has_sample_state }}</span>
-                                    </div>
-                                </div>
-                                {% if project.has_sample %}
-                                    <div class="col-12 col-md-6 p-2">
-                                        <div class="right-item">
-                                            <span>تاریخ تحویل نمونه :</span>
-                                            <span class="datetime-convert">
-                                                    {{ project.get_sample_delivery_date }}
-                                            </span>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                                <div class="col-12 col-md-6 p-2">
-                                    <div class="right-item">
-                                        <span>تاریخ تحویل انبوه :</span>
-                                        <span class="datetime-convert">{{ project.get_mass_delivery_date }}</span>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 p-2">
-                                    <div class="right-item">
-                                        <span>درصد پیشرفت</span>
-                                        <div class="mt-3 text-primary">{{ project.get_progress_percentage }}%</div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 p-2">
-                                    <div class="right-item">
-                                        <span>توضیحات:</span>
-                                        <div class="mt-3">{{ project.description|default:'توضیحی ثبت نشده است' }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- chart left -->
-                        <div id="cnt-chart" class="col-12 col-md-4 chart-section">
-                            <canvas id="chart"></canvas>
-                        </div>
-                        <!-- chart left -->
-                    </div>
-                    <!-- Project-specifications chart and name ddline  -->
-
-                    <!--start content list task -->
-                    <div class="content-items p-2 active">
-                        <div class="mt-2">
-                            <form action="" method="get" class="d-flex justify-content-center align-items-center">
-                                <div class="cnt-search col-11 col-md-7">
-                                    <input type="text" name="task_q" value="{{ request.GET.task_q }}" placeholder="نام تسک ، واحد تسک و ..">
-                                    <button>
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                        <section class="section-table">
-                            <h6 class="title-page">لیست تسک ها</h6>
-                            <div class="table">
-                                <div class="table-title">
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            ردیف
-                                        </div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div class="table-title-item">
-                                            نام تسک
-                                        </div>
-                                    </div>
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            وضعیت
-                                        </div>
-                                    </div>
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            آخرین تغییر
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 col-1">
-                                        <div class="table-title-item">
-                                            از واحد
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 col-1">
-                                        <div class="table-title-item">
-                                            برای واحد
-                                        </div>
-                                    </div>
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            الویت
-                                        </div>
-                                    </div>
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            تاریخ شروع
-                                        </div>
-                                    </div>
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            تاریخ پایان
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="table-content">
-                                    {% for task in project_tasks %}
-                                        <div class="row-table">
-                                            <div class="col-1 p-2">
-                                                <div class="table-content-item">
-                                                    {{ forloop.counter }}
-                                                </div>
-                                            </div>
-                                            <div class="col-2 p-2">
-                                                <div class="table-content-item">
-                                                    {{ task.name }}
-                                                </div>
-                                            </div>
-                                            <div class="col-1 p-2">
-                                                <div class="status">
-                                                    {{ task.get_state_label }}
-                                                </div>
-                                            </div>
-                                            <div class="col-1 p-2 d-flex align-items-center">
-                                                <div class="table-content-item datetime-convert">
-                                                    {{ task.get_state_modify_time|default:'-' }}
-                                                </div>
-                                                <span class="font-80">
-                                                    ({{ task.state_modify_time|date:'H:i' }})
-                                                </span>
-                                            </div>
-                                            <div class="col-md-2 col-1 p-2">
-                                                <div class="table-content-item">
-                                                    {{ task.from_department }}
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2 col-1 p-2">
-                                                <div class="table-content-item">
-                                                    {{ task.to_department }}
-                                                </div>
-                                            </div>
-                                            <div class="col-1 p-2">
-                                                <div class="table-content-item">
-                                                    {{ task.priority }}
-                                                </div>
-                                            </div>
-                                            <div class="col-1 p-2">
-                                                <div class="table-content-item datetime-convert">
-                                                    {{ task.get_time_start|default:'-' }}
-                                                </div>
-                                            </div>
-                                            <div class="col-1 p-2">
-                                                <div class="table-content-item datetime-convert">
-                                                    {{ task.get_time_end|default:'-' }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    {% empty %}
-                                        <div class="container-not-found-base">
-                                            <p>چیزی یافت نشد</p>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-                    <!--end content list task -->
-
-                    <!--start List of raw materials -->
-                    <div class="content-items p-2">
-                        <section class="section-table">
-                            <h6 class="title-page">لیست انبار</h6>
-                            <div class="table">
-                                <div class="table-title">
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            ردیف
-                                        </div>
-                                    </div>
-                                    <div class="col-3">
-                                        <div class="table-title-item">
-                                            قیمت
-                                        </div>
-                                    </div>
-                                    <div class="col-3">
-                                        <div class="table-title-item">
-                                            تاریخ
-                                        </div>
-                                    </div>
-                                    <div class="col-3">
-                                        <div class="table-title-item">
-                                            توضیحات
-                                        </div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div class="table-title-item">
-                                            فایل اصلی
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="table-content">
-                                    {% for item in project.get_warehouse_registrations %}
-                                        {% include 'warehouse/components/registration_des.html' %}
-
-                                        <div class="row-table">
-                                            <div class="col-1 p-2">
-                                                <div class="table-content-item">
-                                                    {{ forloop.counter }}
-                                                </div>
-                                            </div>
-                                            <div class="col-3 p-2">
-                                                <div class="table-content-item spread-price">
-                                                    {{ item.price|default:'ندارد' }}
-                                                </div>
-                                            </div>
-                                            <div class="col-3 p-2">
-                                                <div class="table-content-item datetime-convert">
-                                                    {{ item.get_register_time }}
-                                                </div>
-                                            </div>
-                                            <div class="col-3 p-2">
-                                                <div class="table-content-item" data-bs-target="#registrationDescription-{{ item.id }}" data-bs-toggle="modal">
-                                                    {{ item.description|truncatechars:'32'|default:'-' }}
-                                                </div>
-                                            </div>
-                                            <div class="col-2 p-2">
-                                                <div class="table-content-item">
-                                                    {% if item.file %}
-                                                        <a href="{{ item.get_file_url }}" class="text-info fw-bold" download>دریافت</a>
-                                                    {% else %}
-                                                        <a class="fw-bold">ندارد</a>
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    {% empty %}
-                                        <div class="container-not-found-base">
-                                            <p>چیزی یافت نشد</p>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-                    <!--end List of raw materials -->
-
-                    <!--start Uploaded documents -->
-                    <div class="content-items p-2">
-                        <div class="text-left my-3">
-                            <a class="btn btn-info text-white"
-                               href="{% url 'public:project_detail_file_list' project_id=project.id %}">مشاهده همه</a>
-                        </div>
-                        <section class="section-table">
-                            <div class="table">
-                                <div class="table-title">
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            ردیف
-                                        </div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div class="table-title-item">
-                                            نام
-                                        </div>
-                                    </div>
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            واحد فرستنده
-                                        </div>
-                                    </div>
-                                    <div class="col-5">
-                                        <div class="table-title-item">
-                                            توضیحات
-                                        </div>
-                                    </div>
-
-                                    <div class="col-2">
-                                        <div class="table-title-item">
-                                            تاریخ
-                                        </div>
-                                    </div>
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            فایل
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="table-content">
-                                    {% for file in project.get_files %}
-                                        <div class="row-table">
-                                            <div class="col-1 p-2">
-                                                <div class="table-content-item">
-                                                    {{ forloop.counter }}
-                                                </div>
-                                            </div>
-                                            <div class="col-2 p-2">
-                                                <div class="table-content-item">
-                                                    {{ file.name }}
-                                                </div>
-                                            </div>
-                                            <div class="col-1 p-2">
-                                                <div class="table-content-item">
-                                                    {{ file.from_department.name|default:'-' }}
-                                                </div>
-                                            </div>
-                                            <div class="col-5 p-2">
-                                                <div class="table-content-item">
-                                                    <span class="description">
-                                                        {{ file.description }}
-                                                    </span>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-2 p-2">
-                                                <div class="table-content-item datetime-convert">
-                                                    {{ file.get_created_at }}
-                                                </div>
-                                            </div>
-                                            <div class="col-1 p-2">
-                                                <div class="table-content-item">
-                                                    {% if file.get_file_url %}
-                                                        <a href="{{ file.get_file_url }}" download class="btn-table">دانلود</a>
-                                                    {% else %}
-                                                        -
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    {% empty %}
-                                        <div class="container-not-found-base">
-                                            <p>چیزی یافت نشد</p>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-                    <!--end Uploaded documents -->
-
-                    <!-- start Commerce - Unused -->
-                    <div class="content-items p-2">
-                        <section class="section-table">
-                            <div class="table">
-                                <div class="table-title">
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            ردیف
-                                        </div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div class="table-title-item">
-                                            فرستنده
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="table-title-item">
-                                            توضیحات
-                                        </div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div class="table-title-item">
-                                            تاریخ
-                                        </div>
-                                    </div>
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="table-content">
-                                    <div class="row-table">
-                                        <div class="col-1 p-2">
-                                            <div class="table-content-item">
-                                                1
-                                            </div>
-                                        </div>
-                                        <div class="col-2 p-2">
-                                            <div class="table-content-item">
-                                                نام و نام خانوادگی
-                                            </div>
-                                        </div>
-                                        <div class="col-6 p-2">
-                                            <div class="table-content-item">
-                                                <span class="description"> لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-2 p-2">
-                                            <div class="table-content-item">
-                                                1388/8/5
-                                            </div>
-                                        </div>
-                                        <div class="col-1 p-2">
-                                            <div class="table-content-item">
-                                                <div class="btn-table">دانلود</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row-table">
-                                        <div class="col-1 p-2">
-                                            <div class="table-content-item">
-                                                1
-                                            </div>
-                                        </div>
-                                        <div class="col-2 p-2">
-                                            <div class="table-content-item">
-                                                نام و نام خانوادگی
-                                            </div>
-                                        </div>
-                                        <div class="col-6 p-2">
-                                            <div class="table-content-item">
-                                                <span class="description"> لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-2 p-2">
-                                            <div class="table-content-item">
-                                                1388/8/5
-                                            </div>
-                                        </div>
-                                        <div class="col-1 p-2">
-                                            <div class="table-content-item">
-                                                <div class="btn-table">دانلود</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row-table">
-                                        <div class="col-1 p-2">
-                                            <div class="table-content-item">
-                                                1
-                                            </div>
-                                        </div>
-                                        <div class="col-2 p-2">
-                                            <div class="table-content-item">
-                                                نام و نام خانوادگی
-                                            </div>
-                                        </div>
-                                        <div class="col-6 p-2">
-                                            <div class="table-content-item">
-                                                <span class="description"> لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-2 p-2">
-                                            <div class="table-content-item">
-                                                1388/8/5
-                                            </div>
-                                        </div>
-                                        <div class="col-1 p-2">
-                                            <div class="table-content-item">
-                                                <div class="btn-table">دانلود</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row-table">
-                                        <div class="col-1 p-2">
-                                            <div class="table-content-item">
-                                                1
-                                            </div>
-                                        </div>
-                                        <div class="col-2 p-2">
-                                            <div class="table-content-item">
-                                                نام و نام خانوادگی
-                                            </div>
-                                        </div>
-                                        <div class="col-6 p-2">
-                                            <div class="table-content-item">
-                                                <span class="description"> لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</span>
-                                            </div>
-                                        </div>
-                                        <div class="col-2 p-2">
-                                            <div class="table-content-item">
-                                                1388/8/5
-                                            </div>
-                                        </div>
-                                        <div class="col-1 p-2">
-                                            <div class="table-content-item">
-                                                <div class="btn-table">دانلود</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-                    <!--end Commerce -->
-
-                    <!-- ticket -->
-                    <div class="content-items p-2">
-                        <section class="section-table">
-                            <p class="pt-3" style="text-align: right">تیکت‌ها</p>
-                            <div class="table">
-                                <div class="table-title">
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            ردیف
-                                        </div>
-                                    </div>
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            واحد فرستنده
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="table-title-item">
-                                            متن تیکت
-                                        </div>
-                                    </div>
-
-                                    <div class="col-2">
-                                        <div class="table-title-item">
-                                            تاریخ
-                                        </div>
-                                    </div>
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            فایل
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="table-content">
-                                    {% for ticket in project.get_tickets %}
-                                        <div class="row-table">
-                                            <div class="col-1 p-2">
-                                                <div class="table-content-item">
-                                                    {{ forloop.counter }}
-                                                </div>
-                                            </div>
-                                            <div class="col-1 p-2">
-                                                <div class="table-content-item">
-                                                    {{ ticket.from_department.name }}
-                                                </div>
-                                            </div>
-                                            <div class="col-6 p-2">
-                                                <div class="table-content-item">
-                                                    <span class="description text-wrap">
-                                                        {{ ticket.description }}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="col-2 p-2">
-                                                <div class="table-content-item datetime-convert">
-                                                    {{ ticket.get_created_at }}
-                                                </div>
-                                            </div>
-                                            <div class="col-1 p-2">
-                                                <div class="table-content-item">
-                                                    {% if ticket.get_file_url %}
-                                                        <a href="{{ ticket.get_file_url }}" download=""
-                                                           class="btn-table">دانلود</a>
-                                                    {% else %}
-                                                        -
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    {% empty %}
-                                        <div class="container-not-found-base">
-                                            <p>چیزی یافت نشد</p>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-
-                            <p class="pt-3" style="text-align: right">اعلانات</p>
-                            <div class="table">
-                                <div class="table-title">
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            ردیف
-                                        </div>
-                                    </div>
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            واحد فرستنده
-                                        </div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div class="table-title-item">
-                                            عنوان
-                                        </div>
-                                    </div>
-                                    <div class="col-5">
-                                        <div class="table-title-item">
-                                            متن اعلان
-                                        </div>
-                                    </div>
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            تاریخ
-                                        </div>
-                                    </div>
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            اولویت
-                                        </div>
-                                    </div>
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            فایل
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="table-content">
-                                    {% for notif in project.get_notifications %}
-                                        <div class="row-table">
-                                            <div class="col-1 p-2">
-                                                <div class="table-content-item">
-                                                    {{ forloop.counter }}
-                                                </div>
-                                            </div>
-                                            <div class="col-1 p-2">
-                                                <div class="table-content-item">
-                                                    {{ notif.from_department.name }}
-                                                </div>
-                                            </div>
-                                            <div class="col-2 p-2">
-                                                <div class="table-content-item">
-                                                    <span class="description">
-                                                        {{ notif.get_title|truncatechars:24 }}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="col-5 p-2">
-                                                <div class="table-content-item">
-                                                    <span class="description text-wrap">
-                                                        {{ notif.description }}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="col-1 p-2">
-                                                <div class="table-content-item datetime-convert">
-                                                    {{ notif.get_created_at }}
-                                                </div>
-                                            </div>
-                                            <div class="col-1 p-2">
-                                                <div class="table-content-item">
-                                                    {{ notif.priority }}
-                                                </div>
-                                            </div>
-                                            <div class="col-1 p-2">
-                                                <div class="table-content-item">
-                                                    {% if notif.get_file_url %}
-                                                        <a href="{{ notif.get_file_url }}" download=""
-                                                           class="btn-table">دانلود</a>
-                                                    {% else %}
-                                                        -
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    {% empty %}
-                                        <div class="container-not-found-base">
-                                            <p>چیزی یافت نشد</p>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-                    <!-- ticket -->
-
-                    <!-- financial department -->
-                    {% if user.role == 'super_user' or user.role == 'financial_user' %}
-                        <div class="content-items p-2">
-                            <section class="section-table">
-                                <p style="text-align: right">پرداختی ها</p>
-                                <div class="table">
-                                    <!-- start title table -->
-                                    <div class="table-title">
-                                        <!-- each column title table -->
-                                        <div class="col-1">
-                                            <div class="table-title-item">
-                                                ردیف
-                                            </div>
-                                        </div>
-                                        <!-- each column title table -->
-                                        <div class="col-2">
-                                            <div class="table-title-item">
-                                                نوع
-                                            </div>
-                                        </div>
-                                        <div class="col-5">
-                                            <div class="table-title-item">
-                                                مبلغ
-                                            </div>
-                                        </div>
-                                        <div class="col-2">
-                                            <div class="table-title-item">
-                                                تاریخ
-                                            </div>
-                                        </div>
-                                        <div class="col-2">
-                                            <div class="table-title-item">
-                                                کدرهگیری
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <!-- end title table -->
-                                    <!-- start content table -->
-                                    <div class="table-content">
-                                        {% for payment in project.get_payments %}
-                                            <div class="row-table">
-                                                <!-- each column content table -->
-                                                <div class="col-1 p-2">
-                                                    <div class="table-content-item">
-                                                        {{ forloop.counter }}
-                                                    </div>
-                                                </div>
-                                                <!-- each column content table -->
-                                                <div class="col-2 p-2">
-                                                    <div class="table-content-item">
-                                                        {{ payment.get_type_payment_label }}
-                                                    </div>
-                                                </div>
-                                                <div class="col-5 p-2">
-                                                    <div class="table-content-item spread-price">
-                                                        {{ payment.price }}
-                                                    </div>
-                                                </div>
-                                                <div class="col-2 p-2">
-                                                    <div class="table-content-item datetime-convert">
-                                                        {{ payment.get_created_at }}
-                                                    </div>
-                                                </div>
-                                                <div class="col-2 p-2">
-                                                    <div class="table-content-item">
-                                                        {{ payment.tracking_code }}
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        {% empty %}
-                                            <div class="container-not-found-base">
-                                                <p>چیزی یافت نشد</p>
-                                            </div>
-                                        {% endfor %}
-                                    </div>
-                                    <!-- start content table -->
-                                </div>
-
-                                <p style="text-align: right">پیش پرداختی ها</p>
-                                <div class="table">
-                                    <!-- start title table -->
-                                    <div class="table-title">
-                                        <!-- each column title table -->
-                                        <div class="col-1">
-                                            <div class="table-title-item">
-                                                ردیف
-                                            </div>
-                                        </div>
-                                        <!-- each column title table -->
-                                        <div class="col-2">
-                                            <div class="table-title-item">
-                                                نوع
-                                            </div>
-                                        </div>
-                                        <div class="col-5">
-                                            <div class="table-title-item">
-                                                مبلغ
-                                            </div>
-                                        </div>
-                                        <div class="col-2">
-                                            <div class="table-title-item">
-                                                تاریخ
-                                            </div>
-                                        </div>
-                                        <div class="col-2">
-                                            <div class="table-title-item">
-                                                کدرهگیری
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <!-- end title table -->
-                                    <!-- start content table -->
-                                    <div class="table-content">
-                                        {% for payment in project.get_prepayments %}
-                                            <div class="row-table">
-                                                <!-- each column content table -->
-                                                <div class="col-1 p-2">
-                                                    <div class="table-content-item">
-                                                        {{ forloop.counter }}
-                                                    </div>
-                                                </div>
-                                                <!-- each column content table -->
-                                                <div class="col-2 p-2">
-                                                    <div class="table-content-item">
-                                                        {{ payment.get_type_payment_label }}
-                                                    </div>
-                                                </div>
-                                                <div class="col-5 p-2">
-                                                    <div class="table-content-item spread-price">
-                                                        {{ payment.price }}
-                                                    </div>
-                                                </div>
-                                                <div class="col-2 p-2">
-                                                    <div class="table-content-item datetime-convert">
-                                                        {{ payment.get_created_at }}
-                                                    </div>
-                                                </div>
-                                                <div class="col-2 p-2">
-                                                    <div class="table-content-item">
-                                                        {{ payment.tracking_code }}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        {% empty %}
-                                            <div class="container-not-found-base">
-                                                <p>چیزی یافت نشد</p>
-                                            </div>
-                                        {% endfor %}
-                                    </div>
-                                    <!-- start content table -->
-                                </div>
-                            </section>
-                        </div>
-                    {% endif %}
-                    <!-- financial department -->
-
-                    <!-- inquiry content -->
-                    <div class="content-items p-2">
-                        <section class="section-table">
-                            <p style="text-align: right">فایل های استعلام</p>
-                            <div class="table">
-                                <!-- start title table -->
-                                <div class="table-title">
-                                    <!-- each column title table -->
-                                    <div class="col-1">
-                                        <div class="table-title-item">
-                                            ردیف
-                                        </div>
-                                    </div>
-                                    <!-- each column title table -->
-                                    <div class="col-2">
-                                        <div class="table-title-item">
-                                            نام
-                                        </div>
-                                    </div>
-                                    <div class="col-5">
-                                        <div class="table-title-item">
-                                            توضیحات
-                                        </div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div class="table-title-item">
-                                            فایل
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- end title table -->
-                                <!-- start content table -->
-                                <div class="table-content">
-                                    {% for inquiry_file in project.inquiry.get_files %}
-                                        {% if user.department.id in inquiry_file.get_department_ids %}
-                                            <div class="row-table">
-                                                <!-- each column content table -->
-                                                <div class="col-1 p-2">
-                                                    <div class="table-content-item">
-                                                        {{ forloop.counter }}
-                                                    </div>
-                                                </div>
-                                                <!-- each column content table -->
-                                                <div class="col-2 p-2">
-                                                    <div class="table-content-item">
-                                                        {{ inquiry_file.name }}
-                                                    </div>
-                                                </div>
-                                                <div class="col-5 p-2">
-                                                    <div class="table-content-item spread-price">
-                                                        {{ inquiry_file.description }}
-                                                    </div>
-                                                </div>
-                                                <div class="col-2 p-2">
-                                                    <div class="table-content-item">
-                                                        {% if inquiry_file.get_file_url %}
-                                                            <a href="{{ inquiry_file.get_file_url }}"
-                                                               download>دانلود</a>
-                                                        {% else %}
-                                                            -
-                                                        {% endif %}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        {% endif %}
-                                    {% empty %}
-                                        <div class="container-not-found-base">
-                                            <p>چیزی یافت نشد</p>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                                <!-- start content table -->
-                            </div>
-                        </section>
-                    </div>
-                    <!-- inquiry content end -->
-                </section>
-            </div>
-        </section>
-    </main>
-
-
-    <!-- Modal -->
-    <div class="modal fade" id="project-edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <form action="{% url 'public:project_update' project_id=project.id %}" method="post">
-                {% csrf_token %}
+        <!-- main @e -->
+        <!-- modals -->
+        <div class="modal fade" tabindex="-1" id="modal-delete-object" aria-modal="true" role="dialog">
+            <div class="modal-dialog" role="document">
                 <div class="modal-content">
+                    <div class="modal-body modal-body-lg text-center">
+                        <div class="nk-modal">
+                            <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-trash-empty bg-danger"></em>
+                            <h4 class="nk-modal-title">حذف پروژه</h4>
+                            <div class="nk-modal-text">
+                                <p class="bg-outline-danger">
+                                    ایا از حذف پروژه
+                                    <b>{{ project.name }}</b>
+                                    اطمینان دارید ؟ با حذف پروژه تمام موارد مربوطه به ان از جمله فایل ها ، تسک ها و ..
+                                    حذف خواهند شد و امکان بازگشت وجود ندارد
+                                </p>
+                            </div>
+                            <div class="nk-modal-action mt-5">
+                                <a class="btn btn-lg btn-mw btn-light m-1" data-bs-dismiss="modal">لغو</a>
+                                <a href="{% url 'public:project__delete' project_id=project.id %}"
+                                   class="btn btn-lg btn-mw btn-danger m-1">بله ، حذف پروژه</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- .modal-body -->
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" tabindex="-1" id="modal-update-object">
+            <div class="modal-dialog modal-dialog-top" role="document">
+                <div class="modal-content">
+                    <a href="#" class="close" data-dismiss="modal" aria-label="بستن">
+                        <em class="icon ni ni-cross"></em>
+                    </a>
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">ویرایش پروژه</h5>
+                        <h5 class="modal-title">تغییر پروژه</h5>
                     </div>
                     <div class="modal-body">
-                        <div class="col-12">
-                            <div class="group-form">
-                                <label for="number_id"> :شماره درخواست</label>
-                                <input type="text" id="number_id" class="form-control" name="number_id" required
-                                       value="{{ project.number_id }}">
-                            </div>
-                            <div class="group-form">
-                                <label for="name">نام</label>
-                                <input type="text" id="name" class="form-control" name="name" required
-                                       value="{{ project.name }}">
-                            </div>
-                            <div class="group-form">
-                                <label for="task_master">کارفرما</label>
-                                <select class="form-select text-end" name="task_master" id="task_master" required>
-                                    {% for task_master in task_masters %}
-                                        <option value="{{ task_master.id }}" {% if task_master.title == project.task_master.title %}selected{% endif %}>
-                                            {{ task_master.title }}
-                                        </option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div class="group-form">
-                                <label for="time_start_picker">تاریخ شروع</label>
-                                <input type="text" name="" id="time_start_picker"
-                                       class="form-control persianDatapicker datetime-convert" set-on="time_start"
-                                       required readonly value="{{ project.get_time_start_input }}">
-                                <input type="hidden" id="time_start" name="time_start" required
-                                       value="{{ project.get_time_start_input }}">
-                            </div>
-                            <div class="group-form">
-                                <label for="time_end_picker">تاریخ پایان</label>
-                                <input type="text" name="" id="time_end_picker"
-                                       class="form-control persianDatapicker datetime-convert" set-on="time_end"
-                                       required readonly value="{{ project.get_time_end_input }}">
-                                <input type="hidden" id="time_end" name="time_end" required
-                                       value="{{ project.get_time_end_input }}">
-                            </div>
-                            <div class="group-form">
-                                <label for="price">قیمت</label>
-                                <input type="number" id="price" class="form-control" name="price"
-                                       value="{{ project.price }}">
-                            </div>
-                            <div class="group-form">
-                                <label for="">وضعیت</label>
-                                <select name="status" class="form-control form-select" required>
-                                    <option value="checking"
-                                            {% if project.status == 'checking' %}selected{% endif %}>در حال
-                                        بررسی قبل اجرا
-                                    </option>
-                                    <option value="under_construction"
-                                            {% if project.status == 'under_constration' %}selected{% endif %}>در حال
-                                        ساخت
-                                    </option>
-                                    <option value="posted"
-                                            {% if project.status == 'posted' %}selected{% endif %}>
-                                        ارسال شده
-                                    </option>
-                                    <option value="completed"
-                                            {% if project.status == 'completed' %}selected{% endif %}>
-                                        تایید و اتمام
-                                    </option>
-                                    <option value="paused" {% if project.status == 'paused' %}selected{% endif %}>متوقف
-                                        شده
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="group-form">
-                                <label for="price">وضعیت پرداخت</label>
-                                <select name="is_paid" id="" required class="form-control form-select">
-                                    <option value="false" {% if not project.is_paid %}selected{% endif %}>پرداخت نشده
-                                    </option>
-                                    <option value="true" {% if project.is_paid %}selected{% endif %}>پرداخت شده</option>
-                                </select>
-                            </div>
+                        <form action="{% url 'public:project__update' project_id=project.id %}"
+                              class="form-validate is-alter" method="post">
+                            {% csrf_token %}
+                            <div class="row g-4">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="number_id">شماره
+                                            درخواست</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" name="number_id"
+                                                   id="number_id"
+                                                   value="{{ project.number_id|default:'' }}"
+                                                   placeholder="1234">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="name_project">نام</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" name="name"
+                                                   placeholder="نام پروژه"
+                                                   id="name_project" required value="{{ project.name|default:'' }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="client_user">مشتری</label>
+                                        <div class="form-control-wrap">
+                                            <select id="client_user" name="task_master"
+                                                    class="form-select js-select2 select-by-value"
+                                                    value="{{ project.task_master.id }}" data-search="on"
+                                                    tabindex="-1" aria-hidden="true" required>
+                                                {% for task_master in task_masters %}
+                                                    <option value="{{ task_master.id }}">{{ task_master.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="time_start">تاریخ ابلاغ به
+                                            کار</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" name="time_start" id="time_start"
+                                                   class="form-control date-picker-alt"
+                                                   placeholder="روز-ماه-سال" readonly data-date-format='yyyy-mm-d'
+                                                   value="{{ project.time_start|default:'' }}">
+                                        </div>
+                                        <div class="form-note">فرمت تاریخ <code>روز-ماه-سال</code>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="time_end">تاریخ اتمام
+                                            قرارداد</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" name="time_end" id="time_end"
+                                                   class="form-control date-picker-alt"
+                                                   placeholder="روز-ماه-سال" readonly
+                                                   value="{{ project.time_end|default:'' }}">
+                                        </div>
+                                        <div class="form-note">فرمت تاریخ <code>روز-ماه-سال</code>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="is_paid">وضعیت
+                                            پرداخت</label>
+                                        <div class="form-control-wrap">
+                                            <select name="is_paid" id="is_paid"
+                                                    class="form-select js-select2 select-by-value"
+                                                    value="{{ project.is_paid }}">
+                                                <option value="false">پرداخت نشده</option>
+                                                <option value="true">پرداخت شده</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="prepayment_datetime">تاریخ
+                                            پیش پرداخت</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" name="prepayment_datetime"
+                                                   id="prepayment_datetime"
+                                                   class="form-control date-picker-alt"
+                                                   placeholder="روز-ماه-سال" readonly
+                                                   value="{{ project.prepayment_datetime|default:'' }}">
+                                        </div>
+                                        <div class="form-note">فرمت تاریخ <code>روز-ماه-سال</code>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="count_total">تعداد کل</label>
+                                        <div class="form-control-wrap">
+                                            <input type="number" class="form-control"
+                                                   name="count_total"
+                                                   placeholder="تعداد کل"
+                                                   id="count_total" required
+                                                   value="{{ project.count_total|default:'' }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="count_remaining">تعداد باقی
+                                            مانده</label>
+                                        <div class="form-control-wrap">
+                                            <input type="number" class="form-control"
+                                                   name="count_remaining"
+                                                   placeholder="تعداد باقی مانده"
+                                                   id="count_remaining" required
+                                                   value="{{ project.count_remaining|default:'' }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="status">وضعیت
+                                            پرداخت</label>
+                                        <div class="form-control-wrap">
+                                            <select name="status" id="status"
+                                                    class="form-select js-select2 select-by-value"
+                                                    value="{{ project.status|default:'' }}">
+                                                <option value="checking" selected="">در حال بررسی
+                                                    قبل اجرا
+                                                </option>
+                                                <option value="under_construction">در حال ساخت
+                                                </option>
+                                                <option value="posted">ارسال شده</option>
+                                                <option value="paused">متوقف شده</option>
+                                                <option value="completed">تایید و اتمام</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="mass_delivery_date">تاریخ
+                                            تحویل انبوه</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" name="mass_delivery_date"
+                                                   id="mass_delivery_date"
+                                                   class="form-control date-picker-alt"
+                                                   placeholder="روز-ماه-سال" readonly
+                                                   value="{{ project.mass_delivery_date|default:'' }}">
+                                        </div>
+                                        <div class="form-note">فرمت تاریخ <code>روز-ماه-سال</code>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="price">قیمت</label>
+                                        <div class="form-control-wrap">
+                                            <input type="number" name="price"
+                                                   id="price"
+                                                   class="form-control"
+                                                   placeholder="قیمت" value="{{ project.price|default:'' }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label"
+                                               for="count_remaining">نمونه</label>
+                                        <div class="form-control-wrap text-center">
+                                            <ul class="custom-control-group">
+                                                <li>
+                                                    <div class="custom-control custom-control-sm custom-radio custom-control-pro">
+                                                        <input type="radio"
+                                                               class="custom-control-input"
+                                                               value="false"
+                                                               name="has_sample" id="btnRadio1"
+                                                               oninput="toggleRelatedField('sample_date_cnt', false)"
+                                                               {% if not project.has_sample %}checked{% endif %}>
+                                                        <label class="custom-control-label"
+                                                               for="btnRadio1">ندارد</label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="custom-control custom-control-sm custom-radio custom-control-pro">
+                                                        <input type="radio"
+                                                               class="custom-control-input"
+                                                               value="true"
+                                                               name="has_sample" id="btnRadio2"
+                                                               oninput="toggleRelatedField('sample_date_cnt', true)"
+                                                               {% if project.has_sample %}checked{% endif %}>
+                                                        <label class="custom-control-label"
+                                                               for="btnRadio2">دارد</label>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
 
-                            <div class="group-form">
-                                <label for="prepayment_datetime_picker"> :تاریخ پیش پرداخت</label>
-                                <input type="text" name="" id="prepayment_datetime_picker"
-                                       class="form-control persianDatapicker datetime-convert" set-on="prepayment_datetime"
-                                       required readonly value="{{ project.get_prepayment_datetime_input }}">
-                                <input type="hidden" id="prepayment_datetime" name="prepayment_datetime" required
-                                       value="{{ project.get_prepayment_datetime_input }}">
+                                <div class="col-12 {% if not project.has_sample %}d-none{% endif %}"
+                                     id="sample_date_cnt">
+                                    <div class="form-group">
+                                        <label class="form-label" for="sample_delivery_date">تاریخ
+                                            تحویل نمونه</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" name="sample_delivery_date"
+                                                   id="sample_delivery_date"
+                                                   class="form-control date-picker-alt"
+                                                   placeholder="روز-ماه-سال" readonly
+                                                   value="{{ project.sample_delivery_date|default:'' }}">
+                                        </div>
+                                        <div class="form-note">فرمت تاریخ <code>روز-ماه-سال</code>
+                                        </div>
+                                    </div>
+                                </div>
 
-                            </div>
-                            <div class="group-form">
-                                <label for="item">آیتم</label>
-                                <textarea id="item" name="item"
-                                          class="form-control">{{ project.item|default:'' }}</textarea>
-                            </div>
-                            <div class="group-form">
-                                <label for="count_total">تعداد کل</label>
-                                <input type="number" id="count_total" class="form-control" name="count_total"
-                                       required value="{{ project.count_total }}">
-                            </div>
-                            <div class="group-form">
-                                <label for="count_remaining">تعداد باقی مانده</label>
-                                <input type="number" id="count_remaining" class="form-control" name="count_remaining"
-                                       required value="{{ project.count_remaining }}">
-                            </div>
-                            <div class="group-form justify-content-center">
-                                <label for="has_sample">:نمونه</label>
-                                <div class="d-flex gap-4">
-                                    <label class="d-flex gap-1">
-                                        ندارد
-                                        <input type="radio" value="false"
-                                               {% if not project.has_sample %}checked{% endif %} name="has_sample"
-                                               oninput="toggleRelatedField('sample_date_div', false)">
-                                    </label>
-                                    <label class="d-flex gap-1">
-                                        دارد
-                                        <input type="radio" value="true" {% if project.has_sample %}checked{% endif %}
-                                               name="has_sample" oninput="toggleRelatedField('sample_date_div', true)">
-                                    </label>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="item">ایتم پروژه</label>
+                                        <div class="form-control-wrap">
+                                                                <textarea name="item" id="item"
+                                                                          class="form-control"
+                                                                          placeholder="ایتم پروژه">{{ project.item }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="description">توضیحات</label>
+                                        <div class="form-control-wrap">
+                                                                <textarea name="description" id="description"
+                                                                          class="form-control"
+                                                                          placeholder="توضیحات">{{ project.description }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="progress_percentage">درصد پیشرفت</label>
+                                        <div class="form-control-wrap">
+                                            <input type="number" class="form-control"
+                                                   name="progress_percentage"
+                                                   placeholder="درصد پیشرفت"
+                                                   id="progress_percentage" required
+                                                   value="{{ project.progress_percentage }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-left">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-lg btn-primary">
+                                            بروزرسانی پروژه
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="group-form {% if not project.has_sample %}d-none{% endif %}"
-                                 id="sample_date_div">
-                                <label for="sample_delivery_datetime_picker"> :تاریخ تحویل نمونه</label>
-                                <input type="text" name="" id="sample_delivery_datetime_picker"
-                                       class="form-control persianDatapicker datetime-convert" set-on="sample_delivery_date"
-                                       required readonly value="{{ project.get_sample_delivery_date_input }}">
-                                <input type="hidden" id="sample_delivery_date" name="sample_delivery_date" required
-                                       value="{{ project.get_sample_delivery_date_input }}">
-                            </div>
-                            <div class="group-form">
-                                <label for="mass_delivery_datetime_picker"> :تاریخ تحویل انبوه</label>
-                                <input type="text" name="" id="mass_delivery_datetime_picker"
-                                       class="form-control persianDatapicker datetime-convert" set-on="mass_delivery_date"
-                                       required readonly value="{{ project.get_mass_delivery_date_input }}">
-                                <input type="hidden" id="mass_delivery_date" name="mass_delivery_date" required
-                                       value="{{ project.get_mass_delivery_date_input }}">
-                            </div>
-                            <div class="group-form">
-                                <label for="description">توضیحات</label>
-                                <textarea type="number" id="description" class="form-control" name="description"
-                                >{{ project.description }}</textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">لغو</button>
-                        <button type="submit" class="btn btn-primary">ثبت و بروزرسانی</button>
+                        </form>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
+
+        <!-- end modals -->
     </div>
+
 
 {% endblock %}
 
+
 {% block Script %}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        let tasks_count = '{{ project.get_tasks.count }}'
-        let tasks_progress_count = '{{ project.get_tasks_progress.count }}'
-        let tasks_queue_count = '{{ project.get_tasks_queue.count }}'
-        let tasks_finished_count = '{{ project.get_tasks_finished.count }}'
-        let tasks_need_to_check_count = '{{ project.get_tasks_need_to_check.count }}'
-        let tasks_need_to_replan_count = '{{ project.get_tasks_need_to_replan.count }}'
-        let tasks_hold_count = '{{ project.get_tasks_hold.count }}'
 
-        const chart_data = {
-            labels: [
-                'درحال انجام',
-                'در صف',
-                'انجام شده',
-                'نگه داشته شده',
-                'نیاز به بررسی',
-                'نیاز به بررسی مجدد',
-            ],
-            datasets: [{
-                label: 'تسک ها',
-                data: [
-                    tasks_progress_count,
-                    tasks_queue_count,
-                    tasks_finished_count,
-                    tasks_hold_count,
-                    tasks_need_to_check_count,
-                    tasks_need_to_replan_count
-                ],
-                backgroundColor: [
-                    'rgb(70,101,255)',
-                    'rgb(204,181,7)',
-                    'rgb(28,201,97)',
-                    'rgb(222,113,10)',
-                    'rgb(245,102,160)',
-                    'rgb(241,29,52)',
-                ],
-                hoverOffset: 4
-            }]
-        }
-        const chart_config = {
-            type: 'doughnut',
-            data: chart_data,
-        };
 
-        new Chart(document.querySelector("#chart"), chart_config)
-    </script>
-    <script type="module" src="{% static 'frontend/js/adminpanel.js' %}"></script>
-    <script>
-        function toggleRelatedField(fieldId, show = true) {
-            const field = document.getElementById(fieldId);
-            if (show) {
-                field.classList.remove('d-none');
-            } else {
-                field.classList.add('d-none');
-            }
-        }
+        document.querySelectorAll('.bg-dim-checking').forEach(function (e) {
+            e.classList.add('bg-outline-warning')
+        })
+
+        document.querySelectorAll('.bg-dim-under_construction').forEach(function (e) {
+            e.classList.add('bg-outline-primary')
+        })
+
+        document.querySelectorAll('.bg-dim-posted').forEach(function (e) {
+            e.classList.add('bg-outline-info')
+        })
+
+        document.querySelectorAll('.bg-dim-completed').forEach(function (e) {
+            e.classList.add('bg-outline-success')
+        })
+
+        document.querySelectorAll('.bg-dim-paused').forEach(function (e) {
+            e.classList.add('bg-outline-danger')
+        })
+
     </script>
 {% endblock %}

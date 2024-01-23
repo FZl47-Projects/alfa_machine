@@ -8,7 +8,6 @@ function createNotify({
     })
     let id = `notify-${random_string(10)}`
     let notify_el = document.createElement('div')
-    console.log(theme)
     notify_el.id = `${id}`
     notify_el.className = `ncf-container ${positionClass}`
 

@@ -242,6 +242,108 @@ document.querySelectorAll('.add-params-to-form').forEach(function (form) {
 document.querySelectorAll('.select-by-filter').forEach(function (select) {
     let filter_name = select.name || select.getAttribute('filter-name')
     let filter_value = getUrlParameter(filter_name)
-    select.querySelector(`[value="${filter_value}"]`).setAttribute('selected', 'selected')
-
+    try {
+        select.querySelector(`[value="${filter_value}"]`).setAttribute('selected', 'selected')
+    } catch (e) {
+    }
 })
+
+// select option by value select
+document.querySelectorAll('.select-by-value').forEach(function (select) {
+    let value = select.getAttribute('value') || 'false'
+    if (value == 'False') {
+        value = 'false'
+    } else if (value == 'True') {
+        value = 'true'
+    }
+    try {
+        select.querySelector(`option[value="${value}"]`).setAttribute('selected', 'selected')
+    } catch (e) {
+    }
+})
+
+// theme(dark mode)
+
+let _btn_switch_theme = document.querySelector('.dark-switch')
+try {
+    _btn_switch_theme.addEventListener('click', function (el) {
+        el.preventDefault()
+        if (el.currentTarget.classList.contains('active')) {
+            setThemeMode('light')
+        } else {
+            setThemeMode('dark')
+        }
+    })
+} catch (e) {
+}
+
+function setThemeMode(theme) {
+    setCookie('theme-mode', theme)
+    if (theme === 'light') {
+        _btn_switch_theme.classList.remove('active')
+        document.body.classList.remove('dark-mode')
+    } else {
+        _btn_switch_theme.classList.add('active')
+        document.body.classList.add('dark-mode')
+    }
+}
+
+// initial theme
+setThemeMode(getCookie('theme-mode') || 'light')
+
+
+// bg status
+// document.querySelectorAll('.bg-checking').forEach(function (e) {
+//     e.classList.add('bg-outline-warning')
+// })
+
+// document.querySelectorAll('.bg-queue').forEach(function (e) {
+//     e.classList.add('bg-outline-warning')
+// })
+
+// document.querySelectorAll('.bg-under_construction').forEach(function (e) {
+//     e.classList.add('bg-outline-primary')
+// })
+
+
+// document.querySelectorAll('.bg-progress').forEach(function (e) {
+//     e.classList.add('bg-outline-primary')
+// })
+
+
+// document.querySelectorAll('.bg-posted').forEach(function (e) {
+//     e.classList.add('bg-outline-info')
+// })
+
+// document.querySelectorAll('.bg-completed').forEach(function (e) {
+//     e.classList.add('bg-outline-success')
+// })
+
+// document.querySelectorAll('.bg-finished').forEach(function (e) {
+//     e.classList.add('bg-outline-success')
+// })
+
+// document.querySelectorAll('.bg-paused').forEach(function (e) {
+//     e.classList.add('bg-outline-danger')
+// })
+//
+
+// document.querySelectorAll('.dot-checking').forEach(function (e) {
+//     e.classList.add('dot-warning')
+// })
+
+// document.querySelectorAll('.dot-under_construction').forEach(function (e) {
+//     e.classList.add('dot-primary')
+// })
+
+// document.querySelectorAll('.dot-posted').forEach(function (e) {
+//     e.classList.add('dot-info')
+// })
+
+// document.querySelectorAll('.dot-completed').forEach(function (e) {
+//     e.classList.add('dot-success')
+// })
+
+// document.querySelectorAll('.dot-paused').forEach(function (e) {
+//     e.classList.add('dot-danger')
+// })

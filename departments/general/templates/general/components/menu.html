@@ -61,6 +61,24 @@
                     <!-- .nk-menu-item -->
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-icon"><em class="icon ni ni-task"></em></span>
+                            <span class="nk-menu-text">تسک ها</span>
+                        </a>
+                        <ul class="nk-menu-sub">
+                            <li class="nk-menu-item">
+                                <a href="{% url 'public:task__add' %}" class="nk-menu-link"><span
+                                        class="nk-menu-text">ایجاد تسک</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{% url 'public:task__list' %}" class="nk-menu-link"><span
+                                        class="nk-menu-text">لیست تسک ها</span></a>
+                            </li>
+                        </ul>
+                        <!-- .nk-menu-sub -->
+                    </li>
+                    <!-- .nk-menu-item -->
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-icon"><em class="icon ni ni-users"></em></span>
                             <span class="nk-menu-text">مدیریت کاربران</span>
                         </a>
@@ -115,7 +133,7 @@
                     <!-- .nk-menu-item -->
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
-                            <span class="nk-menu-icon"><em class="icon ni ni-file"></em></span>
+                            <span class="nk-menu-icon"><em class="icon ni ni-file-text"></em></span>
                             <span class="nk-menu-text">فایل</span>
                         </a>
                         <ul class="nk-menu-sub">

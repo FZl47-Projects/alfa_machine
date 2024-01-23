@@ -587,12 +587,12 @@
                                                                 </a>
                                                             </div>
                                                             <div class="nk-tb-col text-center">
-                                                                <span class="badge badge-pill badge-dim bg-success">تمام شده({{ department.get_finished_tasks.count }})</span>
-                                                                <span class="badge badge-pill badge-dim bg-warning">در صف({{ department.get_queue_tasks.count }})</span>
-                                                                <span class="badge badge-pill badge-dim bg-primary">در حال انجام({{ department.get_progress_tasks.count }})</span>
-                                                                <span class="badge badge-pill badge-dim bg-gray">نگه داشته شده({{ department.get_hold_tasks.count }})</span>
-                                                                <span class="badge badge-pill badge-dim bg-danger">نیاز به بررسی({{ department.get_need_to_check_tasks.count }})</span>
-                                                                <span class="badge badge-pill badge-dim bg-dark">نیاز به برنامه ریزی({{ department.get_need_to_replan_tasks.count }})</span>
+                                                                <span class="badge badge-pill badge-dim bg-success">تمام شده({{ department.get_tasks_finished.count }})</span>
+                                                                <span class="badge badge-pill badge-dim bg-warning">در صف({{ department.get_tasks_queue.count }})</span>
+                                                                <span class="badge badge-pill badge-dim bg-primary">در حال انجام({{ department.get_tasks_progress.count }})</span>
+                                                                <span class="badge badge-pill badge-dim bg-gray">نگه داشته شده({{ department.get_tasks_hold.count }})</span>
+                                                                <span class="badge badge-pill badge-dim bg-danger">نیاز به بررسی({{ department.get_tasks_need_to_check.count }})</span>
+                                                                <span class="badge badge-pill badge-dim bg-dark">نیاز به برنامه ریزی({{ department.get_tasks_need_to_replan.count }})</span>
                                                             </div>
                                                         </div>
                                                         <!-- .nk-tb-item -->

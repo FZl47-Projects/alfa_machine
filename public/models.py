@@ -38,22 +38,22 @@ class Department(BaseModel):
     def get_tasks(self):
         return self.task_set.all()
 
-    def get_finished_tasks(self):
+    def get_tasks_finished(self):
         return self.get_tasks().filter(taskstatus__status='finished')
 
-    def get_queue_tasks(self):
+    def get_tasks_queue(self):
         return self.get_tasks().filter(taskstatus__status='queue') | self.get_tasks().filter(taskstatus=None)
 
-    def get_progress_tasks(self):
+    def get_tasks_progress(self):
         return self.get_tasks().filter(taskstatus__status='progress')
 
-    def get_hold_tasks(self):
+    def get_tasks_hold(self):
         return self.get_tasks().filter(taskstatus__status='hold')
 
-    def get_need_to_check_tasks(self):
+    def get_tasks_need_to_check(self):
         return self.get_tasks().filter(taskstatus__status='need-to-check')
 
-    def get_need_to_replan_tasks(self):
+    def get_tasks_need_to_replan(self):
         return self.get_tasks().filter(taskstatus__status='need-to-replan')
 
 
@@ -78,7 +78,7 @@ class Project(BaseModel):
     )
     image_cover = models.ImageField(default='/static/frontend/images/colors/bg-creamy.png')
     number_id = models.CharField(max_length=150, null=True, blank=True)
-    prepayment_datetime = models.DateTimeField(null=True, blank=True)
+    prepayment_datetime = models.DateField(null=True, blank=True)
     item = models.TextField(null=True, blank=True)
     count_remaining = models.BigIntegerField()
     count_total = models.BigIntegerField()
@@ -146,7 +146,7 @@ class Project(BaseModel):
             return '/static/frontend/images/colors/bg-creamy.png'
 
     def get_absolute_url(self):
-        return reverse('public:project_detail', args=(self.id,))
+        return reverse('public:project__detail', args=(self.id,))
 
     def get_tasks(self):
         return self.task_set.all()
@@ -158,7 +158,7 @@ class Project(BaseModel):
         return self.get_tasks().filter(taskstatus__status='progress')
 
     def get_tasks_queue(self):
-        return self.get_tasks().filter(taskstatus__status='queue')
+        return self.get_tasks().filter(taskstatus__status='queue') | self.get_tasks().filter(taskstatus=None)
 
     def get_tasks_need_to_check(self):
         return self.get_tasks().filter(taskstatus__status='need-to-check')
@@ -250,6 +250,10 @@ class Project(BaseModel):
             return self.time_start.strftime('%Y-%m-%d')
         return ''
 
+    def get_participating_departments(self):
+        departments = Department.objects.filter(task__project=self).distinct()
+        return departments
+
 
 class ProjectFile(BaseModel, File):
     name = models.CharField(max_length=100)
@@ -271,7 +275,6 @@ class Task(BaseModel, File):
     from_department = models.ForeignKey('Department', on_delete=models.CASCADE, related_name='from_department')
     to_department = models.ForeignKey('Department', on_delete=models.CASCADE)
     allocator_user = models.ForeignKey('account.User', on_delete=models.CASCADE)  # who created task
-    work_time = models.CharField(max_length=64, null=True, blank=True)
     time_start = models.DateField(null=True)
     time_end = models.DateField(null=True)
     priority = models.IntegerField(default=1)
@@ -283,21 +286,26 @@ class Task(BaseModel, File):
     def __str__(self):
         return self.name
 
-    def get_state_label(self):
-        return self.get_state_display()
+    @classmethod
+    def has_perm_to_send_notify(cls, user):
+        if user.is_anonymous:
+            return False
+        if user.role in ('super_user', 'control_project_user'):
+            return True
+        return False
 
     def get_absolute_url(self):
-        return reverse('public:task_detail', args=(self.id,))
+        return reverse('public:task__detail', args=(self.id,))
 
-    def get_time_start(self):
-        if not self.time_start:
-            return
-        return self.time_start.strftime('%Y-%m-%d')
+    def get_last_status(self):
+        status = self.taskstatus_set.first()
+        return status
 
-    def get_time_end(self):
-        if not self.time_end:
-            return
-        return self.time_end.strftime('%Y-%m-%d')
+    def get_status_label(self):
+        s = self.get_last_status()
+        if s:
+            return s.status
+        return 'در صف'
 
 
 class TaskStatus(BaseModel, File):
@@ -310,10 +318,13 @@ class TaskStatus(BaseModel, File):
         ('need-to-replan', 'نیاز به برنامه ریزی مجدد'),
     )
     department = models.ForeignKey('Department', on_delete=models.CASCADE)
-    allocator_user = models.ForeignKey('account.User', on_delete=models.CASCADE)
-    task = models.OneToOneField('Task', on_delete=models.CASCADE)
+    allocator_user = models.ForeignKey('account.User', null=True, on_delete=models.SET_NULL)
+    task = models.ForeignKey('Task', on_delete=models.CASCADE)
     status = models.CharField(max_length=20, choices=STATUS_OPTIONS)
     description = models.TextField(null=True)
+
+    class Meta:
+        ordering = ('-id',)
 
     def __str__(self):
         return f"{self.status} - {self.task}"

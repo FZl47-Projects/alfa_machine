@@ -30,7 +30,7 @@
                             <div class="nk-block-head nk-block-head-sm">
                                 <div class="nk-block-between g-3">
                                     <div class="nk-block-head-content">
-                                        <h3 class="nk-block-title page-title">ایجاد پروژه</h3>
+                                        <h3 class="nk-block-title page-title">لیست پروژه ها</h3>
                                         <nav>
                                             <ul class="breadcrumb breadcrumb-arrow">
                                                 <li class="breadcrumb-item"><a href="{% url 'public:index' %}">صفحه
@@ -105,110 +105,112 @@
                                                                         </div>
                                                                         <div class="dropdown-body dropdown-body-rg">
                                                                             <form class="add-params-to-form">
-                                                                                <input type="hidden" name="filter" value="true">
+                                                                                <input type="hidden" name="filter"
+                                                                                       value="true">
                                                                                 <div class="row gx-6 gy-4">
-                                                                                <div class="col-6">
-                                                                                    <div class="form-group">
-                                                                                        <label class="overline-title overline-title-alt">کارفرما</label>
-                                                                                        <select class="form-select js-select2 select-by-filter"
-                                                                                                name="task_master"
-                                                                                                tabindex="-1"
-                                                                                                aria-hidden="true">
-                                                                                            <option value="all">همه
-                                                                                            </option>
-                                                                                            {% for task_master in task_masters %}
-                                                                                                <option value="{{ task_master.id }}">{{ task_master.name }}</option>
-                                                                                            {% endfor %}
-                                                                                        </select>
+                                                                                    <div class="col-6">
+                                                                                        <div class="form-group">
+                                                                                            <label class="overline-title overline-title-alt">کارفرما</label>
+                                                                                            <select class="form-select js-select2 select-by-filter"
+                                                                                                    name="task_master"
+                                                                                                    tabindex="-1"
+                                                                                                    aria-hidden="true">
+                                                                                                <option value="all">همه
+                                                                                                </option>
+                                                                                                {% for task_master in task_masters %}
+                                                                                                    <option value="{{ task_master.id }}">{{ task_master.name }}</option>
+                                                                                                {% endfor %}
+                                                                                            </select>
+                                                                                        </div>
                                                                                     </div>
-                                                                                </div>
-                                                                                <div class="col-6">
-                                                                                    <div class="form-group">
-                                                                                        <label class="overline-title overline-title-alt">وضعیت</label>
-                                                                                        <select class="form-select js-select2 select-by-filter"
-                                                                                                name="project_status"
-                                                                                                tabindex="-1"
-                                                                                                aria-hidden="true">
-                                                                                            <option value="all">همه
-                                                                                            </option>
+                                                                                    <div class="col-6">
+                                                                                        <div class="form-group">
+                                                                                            <label class="overline-title overline-title-alt">وضعیت</label>
+                                                                                            <select class="form-select js-select2 select-by-filter"
+                                                                                                    name="project_status"
+                                                                                                    tabindex="-1"
+                                                                                                    aria-hidden="true">
+                                                                                                <option value="all">همه
+                                                                                                </option>
 
-                                                                                            <option value="checking">در
-                                                                                                حال بررسی قبل ساخت
-                                                                                            </option>
-                                                                                            <option value="under_construction">
-                                                                                                در
-                                                                                                حال ساخت
-                                                                                            </option>
-                                                                                            <option value="posted">
-                                                                                                ارسال شده
-                                                                                            </option>
-                                                                                            <option value="paused">
-                                                                                                متوقف شده
-                                                                                            </option>
-                                                                                            <option value="completed">
-                                                                                                تکمیل
-                                                                                                شده
-                                                                                            </option>
-                                                                                        </select>
+                                                                                                <option value="checking">
+                                                                                                    در
+                                                                                                    حال بررسی قبل ساخت
+                                                                                                </option>
+                                                                                                <option value="under_construction">
+                                                                                                    در
+                                                                                                    حال ساخت
+                                                                                                </option>
+                                                                                                <option value="posted">
+                                                                                                    ارسال شده
+                                                                                                </option>
+                                                                                                <option value="paused">
+                                                                                                    متوقف شده
+                                                                                                </option>
+                                                                                                <option value="completed">
+                                                                                                    تکمیل
+                                                                                                    شده
+                                                                                                </option>
+                                                                                            </select>
+                                                                                        </div>
                                                                                     </div>
-                                                                                </div>
-                                                                                <div class="col-12">
-                                                                                    <div class="form-group">
-                                                                                        <label class="overline-title overline-title-alt">
-                                                                                            تاریخ شروع
-                                                                                        </label>
-                                                                                        <div class="form-control-wrap">
-                                                                                            <div class="input-daterange date-picker-range input-group">
-                                                                                                <input type="text"
-                                                                                                       class="form-control range-from"
-                                                                                                       name="time_start_gt"
-                                                                                                       value="{{ qs.time_start_gt }}"
-                                                                                                       placeholder="روز-ماه-سال"/>
-                                                                                                <div class="input-group-addon">
-                                                                                                    تا
+                                                                                    <div class="col-12">
+                                                                                        <div class="form-group">
+                                                                                            <label class="overline-title overline-title-alt">
+                                                                                                تاریخ شروع
+                                                                                            </label>
+                                                                                            <div class="form-control-wrap">
+                                                                                                <div class="input-daterange date-picker-range input-group">
+                                                                                                    <input type="text"
+                                                                                                           class="form-control range-from"
+                                                                                                           name="time_start_gt"
+                                                                                                           value="{{ qs.time_start_gt }}"
+                                                                                                           placeholder="روز-ماه-سال"/>
+                                                                                                    <div class="input-group-addon">
+                                                                                                        تا
+                                                                                                    </div>
+                                                                                                    <input type="text"
+                                                                                                           class="form-control range-to"
+                                                                                                           name="time_start_lt"
+                                                                                                           value="{{ qs.time_start_lt }}"
+                                                                                                           placeholder="روز-ماه-سال"/>
                                                                                                 </div>
-                                                                                                <input type="text"
-                                                                                                       class="form-control range-to"
-                                                                                                       name="time_start_lt"
-                                                                                                       value="{{ qs.time_start_lt }}"
-                                                                                                       placeholder="روز-ماه-سال"/>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                </div>
-                                                                                <div class="col-12">
-                                                                                    <div class="form-group">
-                                                                                        <label class="overline-title overline-title-alt">
-                                                                                            تاریخ اتمام
-                                                                                        </label>
-                                                                                        <div class="form-control-wrap">
-                                                                                            <div class="input-daterange date-picker-range input-group">
-                                                                                                <input type="text"
-                                                                                                       class="form-control range-from"
-                                                                                                       name="time_end_gt"
-                                                                                                       value="{{ qs.time_end_gt }}"
-                                                                                                       placeholder="روز-ماه-سال"/>
-                                                                                                <div class="input-group-addon">
-                                                                                                    تا
+                                                                                    <div class="col-12">
+                                                                                        <div class="form-group">
+                                                                                            <label class="overline-title overline-title-alt">
+                                                                                                تاریخ اتمام
+                                                                                            </label>
+                                                                                            <div class="form-control-wrap">
+                                                                                                <div class="input-daterange date-picker-range input-group">
+                                                                                                    <input type="text"
+                                                                                                           class="form-control range-from"
+                                                                                                           name="time_end_gt"
+                                                                                                           value="{{ qs.time_end_gt }}"
+                                                                                                           placeholder="روز-ماه-سال"/>
+                                                                                                    <div class="input-group-addon">
+                                                                                                        تا
+                                                                                                    </div>
+                                                                                                    <input type="text"
+                                                                                                           class="form-control range-to"
+                                                                                                           name="time_end_lt"
+                                                                                                           value="{{ qs.time_end_lt }}"
+                                                                                                           placeholder="روز-ماه-سال"/>
                                                                                                 </div>
-                                                                                                <input type="text"
-                                                                                                       class="form-control range-to"
-                                                                                                       name="time_end_lt"
-                                                                                                       value="{{ qs.time_end_lt }}"
-                                                                                                       placeholder="روز-ماه-سال"/>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                </div>
-                                                                                <div class="col-12 text-left">
-                                                                                    <div class="form-group">
-                                                                                        <button type="submit"
-                                                                                                class="btn btn-secondary">
-                                                                                            فیلتر
-                                                                                        </button>
+                                                                                    <div class="col-12 text-left">
+                                                                                        <div class="form-group">
+                                                                                            <button type="submit"
+                                                                                                    class="btn btn-secondary">
+                                                                                                فیلتر
+                                                                                            </button>
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
                                                                             </form>
                                                                         </div>
                                                                         <div class="dropdown-foot between">
@@ -365,16 +367,27 @@
                                             <!-- .card-inner -->
                                             <div class="card-inner">
                                                 <ul class="pagination justify-content-center justify-content-md-start">
-                                                    <li class="page-item"><a class="page-link" href="#">قبلی</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                                    <li class="page-item">
-                                                        <span class="page-link"><em
-                                                                class="icon ni ni-more-h"></em></span>
-                                                    </li>
-                                                    <li class="page-item"><a class="page-link" href="#">6</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#">7</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#">بعدی</a></li>
+                                                    {% if pagination.has_previous %}
+                                                        <li class="page-item"><a class="page-link"
+                                                                                 href="?page=1">اولین</a></li>
+                                                        <li class="page-item"><a class="page-link"
+                                                                                 href="?page={{ pagination.previous_page_number }}">قبلی</a>
+                                                        </li>
+                                                    {% endif %}
+
+                                                    <span class="current page-link">
+                                                         صفحه {{ pagination.number }} از {{ pagination.paginator.num_pages }}.
+                                                    </span>
+
+                                                    {% if pagination.has_next %}
+                                                        <li class="page-item"><a class="page-link"
+                                                                                 href="?page={{ pagination.next_page_number }}">بعدی</a>
+                                                        </li>
+                                                        <li class="page-item"><a class="page-link"
+                                                                                 href="?page={{ pagination.paginator.num_pages }}">اخرین</a>
+                                                        </li>
+                                                    {% endif %}
+
                                                 </ul>
                                             </div>
                                             <!-- .card-inner -->
@@ -398,48 +411,4 @@
     </div>
 {% endblock %}
 
-{% block Script %}
-    <script>
-        document.querySelectorAll('.bg-checking').forEach(function (e){
-            e.classList.add('bg-outline-warning')
-        })
 
-        document.querySelectorAll('.bg-under_construction').forEach(function (e){
-            e.classList.add('bg-outline-primary')
-        })
-
-        document.querySelectorAll('.bg-posted').forEach(function (e){
-            e.classList.add('bg-outline-info')
-        })
-
-        document.querySelectorAll('.bg-completed').forEach(function (e){
-            e.classList.add('bg-outline-success')
-        })
-
-        document.querySelectorAll('.bg-paused').forEach(function (e){
-            e.classList.add('bg-outline-danger')
-        })
-
-
-
-        document.querySelectorAll('.dot-checking').forEach(function (e){
-            e.classList.add('dot-warning')
-        })
-
-        document.querySelectorAll('.dot-under_construction').forEach(function (e){
-            e.classList.add('dot-primary')
-        })
-
-        document.querySelectorAll('.dot-posted').forEach(function (e){
-            e.classList.add('dot-info')
-        })
-
-        document.querySelectorAll('.dot-completed').forEach(function (e){
-            e.classList.add('dot-success')
-        })
-
-        document.querySelectorAll('.dot-paused').forEach(function (e){
-            e.classList.add('dot-danger')
-        })
-    </script>
-{% endblock %}

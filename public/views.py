@@ -3,7 +3,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.views.generic import View
-from django.http import JsonResponse
 from django.contrib import messages
 from django.utils import timezone
 from django.db.models import Q
@@ -53,37 +52,34 @@ class TaskMasterView(View):
         return redirect('public:task_master')
 
 
-class ProjectDetail(View):
+class ProjectDetail(LoginRequiredMixin, View):
     template_name = 'public/project/detail.html'
 
-    def filter(self, request, tasks):
-        search = request.GET.get('task_q', None)
-
-        if search:
-            tasks = tasks.filter(Q(name__icontains=search) | Q(from_department__name__icontains=search))
-
-        return tasks
-
     def get(self, request, project_id):
-        tasks = models.Task.objects.filter(project_id=project_id)
-        tasks = self.filter(request, tasks)
-
+        project = get_object_or_404(models.Project, id=project_id)
         context = {
-            'has_perm_to_modify': models.Project.has_perm_to_modify(request.user),
-            'project': models.Project.objects.get(id=project_id),
-            'project_tasks': tasks,
+            'has_perm_to_modify': project.has_perm_to_modify(request.user),
+            'project': project,
             'task_masters': models.TaskMaster.objects.all()
         }
         return render(request, self.template_name, context)
 
 
-class ProjectList(View):
+class ProjectList(LoginRequiredMixin, View):
+    pagination_count = 25
     template_name = 'public/project/list.html'
 
+    def pagination(self, objects):
+        paginator = Paginator(objects, self.pagination_count)
+        page_number = self.request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+        return page_obj, page_obj.object_list
+
     def filter(self, request, projects):
-        search = request.GET.get('search', None)
-        task_master = request.GET.get('task_master', 'all')
-        project_status = request.GET.get('project_status', 'all')
+        qs = request.GET
+        search = qs.get('search', None)
+        task_master = qs.get('task_master', 'all')
+        project_status = qs.get('project_status', 'all')
 
         if search:
             projects = projects.filter(name__icontains=search)
@@ -95,10 +91,10 @@ class ProjectList(View):
             projects = projects.filter(status=project_status)
 
         # filter by start and end date project
-        time_start_gt = request.GET.get('time_start_gt', None)
-        time_start_lt = request.GET.get('time_start_lt', None)
-        time_end_gt = request.GET.get('time_end_gt', None)
-        time_end_lt = request.GET.get('time_end_lt', None)
+        time_start_gt = qs.get('time_start_gt', None)
+        time_start_lt = qs.get('time_start_lt', None)
+        time_end_gt = qs.get('time_end_gt', None)
+        time_end_lt = qs.get('time_end_lt', None)
 
         if time_start_gt:
             projects = projects.filter(time_start__gt=time_start_gt)
@@ -115,23 +111,23 @@ class ProjectList(View):
         return projects
 
     def get(self, request):
-        # Get project status and filter by them (if exists)
         projects = models.Project.objects.filter(is_active=True)
         projects = self.filter(request, projects)
-
+        pagination, projects = self.pagination(projects)
         context = {
             'projects': projects,
+            'pagination': pagination,
             'task_masters': models.TaskMaster.objects.all()
         }
         return render(request, self.template_name, context)
 
 
-class ProjectAdd(View):
+class ProjectAdd(LoginRequiredMixin, View):
 
     @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user'])
     def get(self, request):
         context = {
-            'task_masters':models.TaskMaster.objects.all()
+            'task_masters': models.TaskMaster.objects.all()
         }
         inquiry_id = request.GET.get('inquiry-id', None)
         if inquiry_id:
@@ -143,7 +139,7 @@ class ProjectAdd(View):
     def post(self, request):
         referer_url = request.META.get('HTTP_REFERER', None)
         data = request.POST
-        f = forms.ProjectAdd(data)
+        f = forms.ProjectCreate(data)
         if not f.is_valid():
             messages.error(request, 'لطفا فیلد هارا به درستی وارد نمایید')
             return redirect(referer_url) if referer_url else redirect('public:project_add')
@@ -155,17 +151,14 @@ class ProjectAdd(View):
 class ProjectUpdate(LoginRequiredMixin, View):
 
     def post(self, request, project_id):
-        if not models.Project.has_perm_to_modify(request.user):
+        project = get_object_or_404(models.Project, id=project_id)
+        if not project.has_perm_to_modify(request.user):
             raise PermissionDenied
-
-        project = models.Project.objects.get(id=project_id)
-
         f = forms.ProjectUpdate(data=request.POST, instance=project)
         if not f.is_valid():
             messages.error(request, 'لطفا فیلد هارا به درستی پر نمایید')
             return redirect(project.get_absolute_url())
         f.save()
-
         messages.success(request, 'پروژه با موفقیت بروزرسانی شد')
         return redirect(project.get_absolute_url())
 
@@ -175,12 +168,10 @@ class ProjectDelete(LoginRequiredMixin, View):
     def get(self, request, project_id):
         if not models.Project.has_perm_to_modify(request.user):
             raise PermissionDenied
-
         project = models.Project.objects.get(id=project_id)
         project.delete()
-
         messages.success(request, 'پروژه با موفقیت حذف شد')
-        return redirect('public:project')
+        return redirect('public:project__list')
 
 
 class ProjectFile(LoginRequiredMixin, View):
@@ -389,6 +380,149 @@ class TaskOwnerDepartment(View):
             'projects': models.Project.objects.filter(is_active=True)
         }
 
+        return render(request, self.template_name, context)
+
+
+class TaskAdd(LoginRequiredMixin, View):
+    template_name = 'public/task/add.html'
+
+    @user_role_required_cbv(['super_user', 'control_project_user'])
+    def get(self, request):
+        context = {
+            'projects': models.Project.objects.filter(is_active=True),
+            'departments': models.Department.objects.all()
+        }
+        return render(request, self.template_name, context)
+
+    @user_role_required_cbv(['super_user', 'control_project_user'])
+    def post(self, request):
+        data = request.POST.copy()
+        # set default values
+        data['allocator_user'] = request.user
+        data['from_department'] = request.user.department
+
+        f = forms.TaskCreate(data, request.FILES)
+        if not form_validate_err(request, f):
+            messages.error(request, 'لطفا فیلد هارا به درستی پر نمایید')
+            return redirect('public:task__add')
+        task = f.save()
+        # TODO: should use in signals
+        # create status task(queue)
+        models.TaskStatus.objects.create(
+            department=task.to_department,
+            task=task,
+            status='queue'
+        )
+        # Create notification for department
+        # TODO: should be refactor and completed
+        notif_title = 'اطلاعیه تسک جدید'
+        notif_description = f'عنوان تسک: "{task.name}"'
+        create_notification(
+            from_department=request.user.department,
+            title=notif_title, description=notif_description,
+            projects=task.project, departments=[task.to_department]
+        )
+        messages.success(request, 'تسک با موفقیت ایجاد شد')
+        return redirect('public:task__add')
+
+
+class TaskList(LoginRequiredMixin, View):
+    USER_ACCESS_TO_ALL = ('super_user', 'control_project_user')
+    pagination_count = 25
+    template_name = 'public/task/list.html'
+
+    def pagination(self, objects):
+        paginator = Paginator(objects, self.pagination_count)
+        page_number = self.request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+        return page_obj, page_obj.object_list
+
+    def get_tasks(self):
+        """
+            get tasks by user department
+        """
+        tasks = models.Task.objects.all()
+        user = self.request.user
+        if user.role in self.USER_ACCESS_TO_ALL:
+            return tasks
+        tasks = tasks.filter(to_department=user.department)
+        return tasks
+
+    def sort(self, tasks):
+        sort_by = self.request.GET.get('sort_by', 'latest')
+        if sort_by == 'latest':
+            tasks = tasks.order_by('-id')
+        elif sort_by == 'oldest':
+            tasks = tasks.order_by('id')
+        elif sort_by == 'priority_high':
+            tasks = tasks.order_by('-priority')
+        return tasks
+
+    def filter(self, tasks):
+        qs = self.request.GET
+        search = qs.get('search', None)
+        project = qs.get('project', 'all')
+        status = qs.get('status', 'all')
+
+        if search:
+            tasks = tasks.filter(name__icontains=search)
+
+        if (project != 'all') and (project.isdigit()):
+            tasks = tasks.filter(project_id=project)
+
+        if status != 'all':
+            if status == 'queue':
+                lookup = Q(taskstatus__status=status) | Q(taskstatus=None)
+                tasks = tasks.filter(lookup).distinct()
+            else:
+                tasks = tasks.filter(taskstatus__status=status)
+
+        # filter by start and end date tasks
+        time_start_gt = qs.get('time_start_gt', None)
+        time_start_lt = qs.get('time_start_lt', None)
+        time_end_gt = qs.get('time_end_gt', None)
+        time_end_lt = qs.get('time_end_lt', None)
+
+        if time_start_gt:
+            tasks = tasks.filter(time_start__gt=time_start_gt)
+
+        if time_start_lt:
+            tasks = tasks.filter(time_start__lt=time_start_lt)
+
+        if time_end_gt:
+            tasks = tasks.filter(time_end__gt=time_end_gt)
+
+        if time_end_lt:
+            tasks = tasks.filter(time_end__lt=time_end_lt)
+
+        return tasks
+
+    def get(self, request):
+        tasks = self.get_tasks()
+        tasks = self.filter(tasks)
+        tasks = self.sort(tasks)
+        pagination, tasks = self.pagination(tasks)
+        context = {
+            'pagination': pagination,
+            'tasks': tasks,
+            'task_status': models.TaskStatus.STATUS_OPTIONS,
+            'projects': models.Project.objects.filter(is_active=True),
+            # permissions
+            'has_perm_to_send_notify': models.Task.has_perm_to_send_notify(request.user)
+        }
+        return render(request, self.template_name, context)
+
+
+class TaskDetail(LoginRequiredMixin, View):
+    template_name = 'public/task/detail.html'
+
+    def get(self, request, task_id):
+        task = get_object_or_404(models.Task, id=task_id)
+        context = {
+            'task': task,
+            # permissions
+            'has_perm_to_send_notify': task.has_perm_to_send_notify(request.user)
+        }
         return render(request, self.template_name, context)
 
 

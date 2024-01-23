@@ -2,9 +2,9 @@ from django import forms
 from . import models
 
 
-class TaskCreateForm(forms.ModelForm):
+class TaskCreate(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(TaskCreateForm, self).__init__(*args, **kwargs)
+        super(TaskCreate, self).__init__(*args, **kwargs)
         for field_name, field_inp in self.fields.items():
             if field_name not in self.Meta.required:
                 field_inp.required = False
@@ -15,7 +15,7 @@ class TaskCreateForm(forms.ModelForm):
         required = ('name', 'project', 'to_department', 'from_department')
 
 
-class TaskUpdateForm(TaskCreateForm, forms.ModelForm):
+class TaskUpdateForm(TaskCreate, forms.ModelForm):
     file = forms.FileField(required=False)
 
     class Meta:
@@ -43,10 +43,10 @@ class ProjectFile(forms.ModelForm):
         fields = '__all__'
 
 
-class ProjectAdd(forms.ModelForm):
+class ProjectCreate(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
-        super(ProjectAdd, self).__init__(*args, **kwargs)
+        super(ProjectCreate, self).__init__(*args, **kwargs)
         for field_name, field_inp in self.fields.items():
             if field_name in self.Meta.not_required:
                 field_inp.required = False

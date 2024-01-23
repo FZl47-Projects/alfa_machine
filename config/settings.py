@@ -21,7 +21,8 @@ DEBUG = os.getenv('DEBUG', True)
 # Production state
 PRODUCTION = os.getenv('PRODUCTION', False)
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1').split(',')
+# ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1').split(',')
+ALLOWED_HOSTS = ['*']
 
 # CSRF trusted origins
 CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED', 'http://127.0.0.1:8000').split(',')
