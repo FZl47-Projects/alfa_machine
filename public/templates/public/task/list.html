@@ -96,7 +96,8 @@
                                                                                 <div class="row gx-6 gy-4">
                                                                                     <div class="col-12">
                                                                                         <div class="form-group">
-                                                                                            <label class="overline-title overline-title-alt">مرتب سازی</label>
+                                                                                            <label class="overline-title overline-title-alt">مرتب
+                                                                                                سازی</label>
                                                                                             <select class="form-select js-select2 select-by-filter"
                                                                                                     name="sort_by"
                                                                                                     tabindex="-1"
@@ -259,6 +260,7 @@
                                                         <div class="nk-tb-col"><span>اولویت</span></div>
                                                         <div class="nk-tb-col tb-col-sm"><span>تاریخ شروع</span></div>
                                                         <div class="nk-tb-col tb-col-sm"><span>تاریخ پایان</span></div>
+                                                        <div class="nk-tb-col tb-col-sm"><span>دارای فایل</span></div>
                                                         <div class="nk-tb-col nk-tb-col-status"><span
                                                                 class="sub-text d-none d-md-block">وضعیت</span></div>
                                                         <div class="nk-tb-col nk-tb-col-tools"></div>
@@ -296,6 +298,17 @@
                                                             </div>
                                                             <div class="nk-tb-col tb-col-sm">
                                                                 <span>{{ task.time_end|default:'-' }}</span>
+                                                            </div>
+                                                            <div class="nk-tb-col tb-col-sm">
+                                                                {% if task.file %}
+                                                                    <span class="text-info">
+                                                                        <em class="icon ni ni-check-c"></em>
+                                                                    </span>
+                                                                {% else %}
+                                                                    <span class="text-warning">
+                                                                        <em class="icon ni ni-cross-c"></em>
+                                                                    </span>
+                                                                {% endif %}
                                                             </div>
                                                             <div class="nk-tb-col nk-tb-col-status">
                                                                 <div class="dot d-md-none dot-{{ task.get_last_status.status }}"></div>
