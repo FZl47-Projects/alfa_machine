@@ -1,0 +1,478 @@
+{% extends 'base/base_template.html' %}
+{% load static %}
+{% load render_partial %}
+
+{% block Title %}
+    جزئیات تسک - {{ task.name }}
+{% endblock %}
+
+{% block BodyClass %}
+    has-rtl nk-body ui-rounder has-sidebar no-touch nk-nio-theme
+{% endblock %}
+
+{% block Content %}
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main">
+            <!-- sidebar @s -->
+            {% render_partial 'public.components.MenuComponent' %}
+            <!-- sidebar @e -->
+            <!-- wrap @s -->
+            <div class="nk-wrap">
+                <!-- main header @s -->
+                {% include 'base/components/header.html' %}
+                <!-- main header @e -->
+                <!-- content @s -->
+                <div class="nk-content nk-content-fluid">
+                    <div class="container-xl wide-xl">
+                        <div class="nk-content-body">
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block-between g-3">
+                                    <div class="nk-block-head-content">
+                                        <h3 class="nk-block-title page-title">
+                                            جزئیات تسک
+                                            <b>{{ task.name }}</b>
+                                        </h3>
+                                        <nav>
+                                            <ul class="breadcrumb breadcrumb-arrow">
+                                                <li class="breadcrumb-item"><a href="{% url 'public:index' %}">صفحه
+                                                    اصلی</a></li>
+                                                <li class="breadcrumb-item"><a>تسک ها</a></li>
+                                                <li class="breadcrumb-item">
+                                                    <a href="{% url 'public:task__list' %}">
+                                                        لیست تسک ها
+                                                    </a></li>
+                                                <li class="breadcrumb-item"><a>{{ task.name }}</a></li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                    <div class="nk-block-head-content d-flex justify-content-between gx-1">
+                                        {% if has_perm_to_modify %}
+                                            <div class="dropdown">
+                                                <button
+                                                        class="btn btn-outline-light bg-white d-none d-sm-inline-flex dropdown-toggle"
+                                                        data-bs-toggle="dropdown">
+                                                     <span>
+                                                        عملیات
+                                                    </span>
+                                                    <em class="icon ni ni-setting"></em>
+                                                </button>
+                                                <button
+                                                        class="btn btn-icon btn-outline-light bg-white d-inline-flex d-sm-none dropdown-toggle"
+                                                        data-bs-toggle="dropdown">
+                                                    <em class="icon ni ni-setting">
+                                                    </em>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <ul class="link-list-opt">
+                                                        <li data-bs-toggle="modal"
+                                                            data-bs-target="#modal-update-object">
+                                                            <a class="d-flex justify-content-between text-info">
+                                                                <span>ویرایش</span>
+                                                                <em class="icon ni ni-pen2"></em>
+                                                            </a>
+                                                        </li>
+                                                        <li data-bs-toggle="modal"
+                                                            data-bs-target="#modal-delete-object">
+                                                            <a class="d-flex justify-content-between text-danger">
+                                                                <span>حذف</span>
+                                                                <em class="icon ni ni-trash-empty"></em>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                        {% if task.to_department == user.department %}
+                                            <div>
+                                                <button
+                                                        class="btn btn-outline-light bg-success text-white d-none d-sm-inline-flex">
+                                                 <span>
+                                                    ایجاد وضعیت
+                                                </span>
+                                                    <em class="icon ni ni-property-add"></em>
+                                                </button>
+                                                <button
+                                                        class="btn btn-icon btn-outline-light bg-success text-white d-inline-flex d-sm-none">
+                                                    <em
+                                                            class="icon ni ni-property-add"></em></button>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                </div>
+                                <!-- .nk-block-between -->
+                            </div>
+                            <div class="nk-block">
+                                <div class="row gy-5">
+                                    <div class="col-lg-5">
+                                        <div class="nk-block-head">
+                                            <div class="nk-block-head-content">
+                                                <h5 class="nk-block-title title">اطلاعات درخواست</h5>
+                                            </div>
+                                        </div>
+                                        <!-- .nk-block-head -->
+                                        <div class="card">
+                                            <ul class="data-list is-compact">
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">کاربر ایجاد کننده</div>
+                                                        <div class="data-value">
+                                                            {{ task.allocator_user.get_full_name }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">واحد ایجاد کننده</div>
+                                                        <div class="data-value">
+                                                            <a href="{{ task.from_department.get_absolute_url }}">{{ task.from_department.name }}</a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">برای واحد</div>
+                                                        <div class="data-value">
+                                                            <a href="{{ task.to_department.get_absolute_url }}">{{ task.to_department.name }}</a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">فایل پیوست</div>
+                                                        <div class="data-value">
+                                                            {% if task.file %}
+                                                                <em class="icon ni ni-check-c text-info"></em>
+                                                            {% else %}
+                                                                <em class="icon ni ni-cross-c text-warning"></em>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">اخرین وضعیت</div>
+                                                        <div class="data-value"><span
+                                                                class="badge badge-dim badge-sm bg-{{ task.get_last_status.status|default:'gray' }}">{{ task.get_last_status.get_status_label|default:'-' }}</span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                {% if task.get_last_status %}
+                                                    <li class="data-item">
+                                                        <div class="data-col">
+                                                            <div class="data-label">آخرین بررسی در</div>
+                                                            <div class="data-value">
+                                                                <span class="datetime-convert">{{ task.get_last_status.get_created_at|default:'-' }}</span>
+                                                                <span class="text-muted">
+                                                                ({{ task.get_last_status.get_created_at_timepast|default:'-' }})
+                                                            </span>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                {% endif %}
+                                            </ul>
+                                        </div>
+                                        <!-- .card -->
+                                        <div class="nk-block-head">
+                                            <div class="nk-block-head-content">
+                                                <h5 class="nk-block-title title">فایل های پیوست آپلود شده</h5>
+                                            </div>
+                                        </div>
+                                        <!-- .nk-block-head -->
+                                        <div class="card">
+                                            <ul class="data-list is-compact">
+                                                {% if task.file %}
+                                                    <li class="data-item">
+                                                        <div class="data-col">
+                                                            <div class="data-label">فایل 1</div>
+                                                            <div class="data-value">
+                                                                <a href="{{ task.file.url }}" class="view-file">دانلود و
+                                                                    مشاهده</a>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                {% else %}
+                                                    <div class="container-not-found-base">
+                                                        <p>چیزی یافت نشد</p>
+                                                    </div>
+                                                {% endif %}
+                                            </ul>
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <!-- .col -->
+                                    <div class="col-lg-7">
+                                        <div class="nk-block-head">
+                                            <div class="nk-block-head-content">
+                                                <h5 class="nk-block-title title">اطلاعات پایه</h5>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <ul class="data-list is-compact">
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">نام</div>
+                                                        <div class="data-value">{{ task.name }}</div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">پروژه</div>
+                                                        <div class="data-value">
+                                                            <a href="{{ task.project.get_absolute_url }}">
+                                                                {{ task.project.name }}
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">اولویت</div>
+                                                        <div class="data-value">
+                                                            <span class="badge bg-warning fs-15px">{{ task.priority }}</span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">زمان شروع</div>
+                                                        <div class="data-value">{{ task.time_start|default:'-' }}</div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">زمان پایان</div>
+                                                        <div class="data-value">
+                                                            {{ task.time_end|default:'-' }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">زمان ثبت</div>
+                                                        <div class="data-value datetime-convert">
+                                                            {{ task.get_created_at|default:'-' }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        {% with reamaining_time=task.get_remaining_time %}
+                                                            <div class="data-label">زمان باقی مانده</div>
+                                                            <div class="data-value badge badge-dim {% if reamaining_time > 0 %}bg-info{% else %}bg-danger{% endif %}">
+                                                                <span>
+                                                                    {{ reamaining_time }}
+                                                                    روز
+                                                                </span>
+                                                            </div>
+                                                        {% endwith %}
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">تعداد وضعیت ها</div>
+                                                        <div class="data-value">{{ task.get_statuses.count }}</div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">توضیحات</div>
+                                                        <div class="data-value">{{ task.description|default:'-' }}</div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- .col -->
+                                    <div class="col-12">
+                                        <div class="nk-block-head">
+                                            <div class="nk-block-head-content">
+                                                <h5 class="nk-block-title title">وضعیت ها</h5>
+                                            </div>
+                                        </div>
+                                        <div class="nk-block">
+                                            <div class="card card-stretch">
+                                                <div class="card-inner-group">
+                                                    <!-- .card-inner -->
+                                                    <div class="card-inner p-2">
+                                                        <div class="nk-tb-list nk-tb-tnx">
+                                                            <div class="nk-tb-item nk-tb-head text-center">
+                                                                <div class="nk-tb-col"><span>وضعیت</span></div>
+                                                                <div class="nk-tb-col"><span>کاربر ثبت کننده</span>
+                                                                </div>
+                                                                <div class="nk-tb-col"><span>توضیحات</span></div>
+                                                            </div>
+                                                            {% for status in task.get_statuses %}
+                                                                <!-- .nk-tb-item -->
+                                                                <div class="nk-tb-item text-center">
+                                                                    <div class="nk-tb-col">
+                                                                        <span class="badge badge-dim bg-{{ status.status }} py-1 fs-14px">{{ status.get_status_label }}</span>
+                                                                    </div>
+                                                                    <div class="nk-tb-col tb-col-sm">
+                                                                        <span>{{ status.allocator_user.get_full_name|default:'-' }}</span>
+                                                                    </div>
+                                                                    <div class="nk-tb-col tb-col-sm">
+                                                                        {{ status.description|default:'-' }}
+                                                                    </div>
+                                                                </div>
+                                                            {% empty %}
+                                                                <div class="container-not-found-base">
+                                                                    <p>چیزی یافت نشد</p>
+                                                                </div>
+                                                                <!-- .nk-tb-item -->
+                                                            {% endfor %}
+                                                        </div>
+                                                        <!-- .nk-tb-list -->
+                                                    </div>
+                                                    <!-- .card-inner -->
+                                                </div>
+                                                <!-- .card-inner-group -->
+                                            </div>
+                                            <!-- .card -->
+                                        </div>
+                                    </div>
+                                    <!-- .col -->
+                                </div>
+                                <!-- .row -->
+                            </div>
+                            <!-- .components-preview -->
+                        </div>
+                    </div>
+                </div>
+                <!-- content @e -->
+                <!-- footer @s -->
+                {% include 'base/components/footer.html' %}
+                <!-- footer @e -->
+            </div>
+            <!-- wrap @e -->
+        </div>
+        <!-- main @e -->
+        <!-- modals -->
+        <div class="modal fade" tabindex="-1" id="modal-delete-object" aria-modal="true" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body modal-body-lg text-center">
+                        <div class="nk-modal">
+                            <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-trash-empty bg-danger"></em>
+                            <h4 class="nk-modal-title">حذف تسک</h4>
+                            <div class="nk-modal-text">
+                                <p class="bg-outline-danger">
+                                    ایا از حذف تسک
+                                    <b>{{ task.name }}</b>
+                                    اطمینان دارید ؟ با حذف تسک تمام موارد مربوطه به ان
+                                    حذف خواهند شد و امکان بازگشت وجود ندارد
+                                </p>
+                            </div>
+                            <div class="nk-modal-action mt-5">
+                                <a class="btn btn-lg btn-mw btn-light m-1" data-bs-dismiss="modal">لغو</a>
+                                <a href="{% url 'public:task__delete' task_id=task.id %}"
+                                   class="btn btn-lg btn-mw btn-danger m-1">بله ، حذف تسک</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- .modal-body -->
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" tabindex="-1" id="modal-update-object">
+            <div class="modal-dialog modal-dialog-top" role="document">
+                <div class="modal-content">
+                    <a href="#" class="close" data-dismiss="modal" aria-label="بستن">
+                        <em class="icon ni ni-cross"></em>
+                    </a>
+                    <div class="modal-header">
+                        <h5 class="modal-title">ویرایش تسک</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'public:task__update' task_id=task.id %}"
+                              class="form-validate is-alter" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row g-4">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="name_project">نام</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" name="name"
+                                                   placeholder="نام تسک"
+                                                   id="name_project" required value="{{ task.name|default:'' }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="time_start">تاریخ شروع</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" name="time_start" id="time_start"
+                                                   class="form-control date-picker-alt"
+                                                   placeholder="روز-ماه-سال"
+                                                   value="{{ task.time_start|default:'' }}">
+                                        </div>
+                                        <div class="form-note">فرمت تاریخ <code>روز-ماه-سال</code>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="time_end">تاریخ پایان</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" name="time_end" id="time_end"
+                                                   class="form-control date-picker-alt"
+                                                   placeholder="روز-ماه-سال"
+                                                   value="{{ task.time_end|default:'' }}">
+                                        </div>
+                                        <div class="form-note">فرمت تاریخ <code>روز-ماه-سال</code>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="priority">اولویت</label>
+                                        <div class="form-control-wrap">
+                                            <input type="number" class="form-control"
+                                                   name="priority"
+                                                   placeholder="اولویت"
+                                                   id="priority" required
+                                                   value="{{ task.priority|default:1 }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="customFileLabel">آپلود فایل</label>
+                                        <div class="form-control-wrap">
+                                            <div class="form-file">
+                                                <input type="file" name="file" class="form-file-input" id="file">
+                                                <label class="form-file-label" for="file">انتخاب
+                                                    فایل</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="description">توضیحات</label>
+                                        <div class="form-control-wrap">
+                                                                <textarea name="description" id="description"
+                                                                          class="form-control"
+                                                                          placeholder="توضیحات">{{ task.description }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-left">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-lg btn-primary">
+                                            بروزرسانی تسک
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end modals -->
+    </div>
+{% endblock %}

@@ -141,6 +141,7 @@ for (let dt_el of all_datetime_convert) {
         // hour: '2-digit',
         // minute: '2-digit'
     });
+    dt_persian = dt_persian.replaceAll('/', '-')
     if (dt_persian != 'Invalid Date') {
         dt_el.innerHTML = dt_persian
         dt_el.value = dt_persian
@@ -347,3 +348,14 @@ setThemeMode(getCookie('theme-mode') || 'light')
 // document.querySelectorAll('.dot-paused').forEach(function (e) {
 //     e.classList.add('dot-danger')
 // })
+
+
+// view files
+let view_file_elements = document.getElementsByClassName("view-file");
+
+for (var i = 0; i < view_file_elements.length; i++) {
+  view_file_elements[i].addEventListener('click', function() {
+    var fileUrl = this.getAttribute('href');
+    window.open(fileUrl, '_blank');
+  });
+}

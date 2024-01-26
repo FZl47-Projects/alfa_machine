@@ -15,17 +15,13 @@ class TaskCreate(forms.ModelForm):
         required = ('name', 'project', 'to_department', 'from_department')
 
 
-class TaskUpdateForm(TaskCreate, forms.ModelForm):
+class TaskUpdate(TaskCreate, forms.ModelForm):
     file = forms.FileField(required=False)
 
     class Meta:
         model = models.Task
-        exclude = ('is_active', 'allocator_user', 'from_department', 'state')
-        required = ('name', 'project', 'to_department', 'from_department')
-
-
-class TaskStateUpdate(forms.Form):
-    state = forms.ChoiceField(choices=models.TaskStatus.STATUS_OPTIONS)
+        exclude = ('is_active', 'allocator_user', 'to_department', 'from_department', 'project')
+        required = ('name',)
 
 
 # TaskMasterAdd form

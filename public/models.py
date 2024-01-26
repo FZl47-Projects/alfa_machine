@@ -1,3 +1,4 @@
+import jdatetime
 from django.db.models import Sum, Count
 from django.urls import reverse
 from django.db import models
@@ -287,6 +288,14 @@ class Task(BaseModel, File):
         return self.name
 
     @classmethod
+    def has_perm_to_modify(cls, user):
+        if user.is_anonymous:
+            return False
+        if user.role in ('super_user', 'control_project_user'):
+            return True
+        return False
+
+    @classmethod
     def has_perm_to_send_notify(cls, user):
         if user.is_anonymous:
             return False
@@ -297,15 +306,23 @@ class Task(BaseModel, File):
     def get_absolute_url(self):
         return reverse('public:task__detail', args=(self.id,))
 
+    def get_statuses(self):
+        return self.taskstatus_set.all()
+
     def get_last_status(self):
-        status = self.taskstatus_set.first()
-        return status
+        return self.get_statuses().first()
 
     def get_status_label(self):
         s = self.get_last_status()
         if s:
             return s.status
         return 'در صف'
+
+    def get_remaining_time(self):
+        # remaining time by days
+        tend = self.time_end
+        t = jdatetime.date(tend.year, tend.month, tend.day) - jdatetime.date.today()
+        return t.days
 
 
 class TaskStatus(BaseModel, File):

@@ -411,7 +411,8 @@ class TaskAdd(LoginRequiredMixin, View):
         models.TaskStatus.objects.create(
             department=task.to_department,
             task=task,
-            status='queue'
+            status='queue',
+            description='ایجاد به صورت خودکار'
         )
         # Create notification for department
         # TODO: should be refactor and completed
@@ -514,16 +515,48 @@ class TaskList(LoginRequiredMixin, View):
 
 
 class TaskDetail(LoginRequiredMixin, View):
+    USER_FULL_ACCESS = ('super_user', 'control_project_user')
     template_name = 'public/task/detail.html'
 
     def get(self, request, task_id):
+        user = request.user
         task = get_object_or_404(models.Task, id=task_id)
+        if task.to_department != user.department and not (user.role in self.USER_FULL_ACCESS):
+            raise PermissionDenied
         context = {
             'task': task,
             # permissions
+            'has_perm_to_modify': task.has_perm_to_modify(request.user),
             'has_perm_to_send_notify': task.has_perm_to_send_notify(request.user)
         }
         return render(request, self.template_name, context)
+
+
+class TaskDelete(LoginRequiredMixin, View):
+
+    @user_role_required_cbv(['super_user', 'control_project_user'])
+    def get(self, request, task_id):
+        task = get_object_or_404(models.Task, id=task_id)
+        task.delete()
+        messages.success(request, 'تسک با موفقیت حذف شد')
+        return redirect('public:task__list')
+
+
+class TaskUpdate(LoginRequiredMixin, View):
+
+    def post(self, request, task_id):
+        if not models.Task.has_perm_to_modify(request.user):
+            raise PermissionDenied
+        task = get_object_or_404(models.Task, id=task_id)
+        print(request.POST)
+        f = forms.TaskUpdate(data=request.POST, files=request.FILES, instance=task)
+        if not f.is_valid():
+            print(f.errors)
+            messages.error(request, 'لطفا فیلد هارا به درستی وارد نمایید')
+            return redirect(task.get_absolute_url())
+        task = f.save()
+        messages.success(request, 'تسک با موفقیت بروزرسانی شد')
+        return redirect(task.get_absolute_url())
 
 
 class Task(View):

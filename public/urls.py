@@ -14,6 +14,8 @@ urlpatterns = [
     path('task/add', views.TaskAdd.as_view(), name='task__add'),
     path('task/list', views.TaskList.as_view(), name='task__list'),
     path('task/<int:task_id>/detail', views.TaskDetail.as_view(), name='task__detail'),
+    path('task/<int:task_id>/delete', views.TaskDelete.as_view(), name='task__delete'),
+    path('task/<int:task_id>/update', views.TaskUpdate.as_view(), name='task__update'),
 
 
     path('inquiry/list', views.InquiryList.as_view(), name='inquiry__list'),

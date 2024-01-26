@@ -25,19 +25,18 @@ def get_time(frmt='%Y-%m-%d_%H:%M'):
     return t
 
 
-def get_timesince_persian(time):
-    time_server = get_time(None)
-
-    diff_time = datetime.datetime(time_server.year, time_server.month, time_server.day, time_server.hour,
-                                       time_server.minute) - datetime.datetime(time.year, time.month, time.day, time.hour,
-                                                                            time.minute)
+def get_timesince_persian(time, time_base=None):
+    if not time_base:
+        time_base = get_time(None)
+    diff_time = datetime.datetime(time_base.year, time_base.month, time_base.day, time_base.hour,
+                                  time_base.minute) - datetime.datetime(time.year, time.month, time.day, time.hour,
+                                                                        time.minute)
 
     diff_time_sec = diff_time.total_seconds()
     # sec = diff_time_sec % 60
     min = int(diff_time_sec // 60 % 60)
     hour = int(diff_time_sec // 3600)
     day = diff_time.days
-    result = ''
     if min > 0:
         result = f'{min} دقیقه پیش'
     else:
@@ -52,11 +51,24 @@ def get_timesince_persian(time):
     return result
 
 
-def send_sms(phonenumber, content, **kwargs):
-    def handle(phonenumber, content, **kwargs):
-        pass
+def get_datesince_persian(date, time_base=None):
+    if not time_base:
+        time_base = get_time(None)
+    diff_time = datetime.datetime(time_base.year, time_base.month, time_base.day) - datetime.datetime(date.year, date.month, date.day)
 
-    # async_task(handle)
+    diff_time_sec = diff_time.total_seconds()
+    # sec = diff_time_sec % 60
+    min = int(diff_time_sec // 60 % 60)
+    day = diff_time.days
+    if min > 0:
+        result = f'{min} دقیقه پیش'
+    else:
+        result = f'لحظاتی پیش'
+
+    if day > 0:
+        result = f'{day}  روز پیش'
+
+    return result
 
 
 def send_email(email, content, **kwargs):
