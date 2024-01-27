@@ -214,8 +214,10 @@ document.querySelectorAll('.add-params-to-href').forEach(function (el) {
     let href = el.getAttribute('href')
     let href_params = new URLSearchParams(href)
     for (let p of query_params) {
-        if (!p in href) {
-            href_params.set(p[0], p[1])
+        let k = p[0]
+        let v = String(p[1])
+        if (href.includes(k) === false) {
+            href_params.set(k, v)
         }
     }
     let params = href_params.toString()

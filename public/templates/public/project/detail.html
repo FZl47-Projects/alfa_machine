@@ -121,7 +121,7 @@
                                                                 </div>
                                                                 <div class="profile-ud-item">
                                                                     <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">کارفرما</span>
+                                                                        <span class="profile-ud-label">مشتری</span>
                                                                         <span class="profile-ud-value">
                                                                     <a href="{{ project.task_master.get_absolute_url }}">{{ project.task_master.name }}</a>
                                                                 </span>
@@ -201,8 +201,14 @@
                                                                 </div>
                                                                 <div class="profile-ud-item">
                                                                     <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">مرحله</span>
-                                                                        <span class="profile-ud-value">{{ project.get_last_step|default:'-' }}</span>
+                                                                        <span class="profile-ud-label">استعلام مربوطه</span>
+                                                                        <span class="profile-ud-value">
+                                                                            {% if project.inquiry %}
+                                                                                <a href="{{ project.inquiry.get_absolute_url }}">{{ project.inquiry.title|truncatechars:30 }}</a>
+                                                                            {% else %}
+                                                                                <em class="icon ni ni-cross-c text-warning-dim"></em>
+                                                                            {% endif %}
+                                                                        </span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="profile-ud-item">
@@ -233,6 +239,12 @@
                                                                     <div class="profile-ud wider">
                                                                         <span class="profile-ud-label">تاریخ اتمام قرارداد</span>
                                                                         <span class="profile-ud-value">{{ project.time_end|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item w-100">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">مرحله</span>
+                                                                        <span class="profile-ud-value">{{ project.get_last_step|default:'-' }}</span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="profile-ud-item w-100">
@@ -270,7 +282,7 @@
                                                                 </div>
                                                                 <div class="profile-ud-item">
                                                                     <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">کارفرما</span>
+                                                                        <span class="profile-ud-label">مشتری</span>
                                                                         <span class="profile-ud-value">
                                                                     <a href="{{ project.task_master.get_absolute_url }}">{{ project.task_master.name }}</a>
                                                                 </span>
@@ -477,7 +489,7 @@
                                                                 </div>
                                                                 <div class="profile-ud-item">
                                                                     <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">کارفرما</span>
+                                                                        <span class="profile-ud-label">مشتری</span>
                                                                         <span class="profile-ud-value">
                                                                     <a href="{{ project.task_master.get_absolute_url }}">{{ project.task_master.name }}</a>
                                                                 </span>
@@ -557,8 +569,14 @@
                                                                 </div>
                                                                 <div class="profile-ud-item">
                                                                     <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">مرحله</span>
-                                                                        <span class="profile-ud-value">{{ project.get_last_step|default:'-' }}</span>
+                                                                        <span class="profile-ud-label">استعلام مربوطه</span>
+                                                                        <span class="profile-ud-value">
+                                                                            {% if project.inquiry %}
+                                                                                <a href="{{ project.inquiry.get_absolute_url }}">{{ project.inquiry.title|truncatechars:30 }}</a>
+                                                                            {% else %}
+                                                                                <em class="icon ni ni-cross"></em>
+                                                                            {% endif %}
+                                                                        </span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="profile-ud-item">
@@ -589,6 +607,12 @@
                                                                     <div class="profile-ud wider">
                                                                         <span class="profile-ud-label">تاریخ اتمام قرارداد</span>
                                                                         <span class="profile-ud-value">{{ project.time_end|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item w-100">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">مرحله</span>
+                                                                        <span class="profile-ud-value">{{ project.get_last_step|default:'-' }}</span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="profile-ud-item w-100">

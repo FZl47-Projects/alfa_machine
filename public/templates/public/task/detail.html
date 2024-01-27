@@ -86,15 +86,17 @@
                                         {% endif %}
                                         {% if task.to_department == user.department %}
                                             <div>
-                                                <button
-                                                        class="btn btn-outline-light bg-success text-white d-none d-sm-inline-flex">
-                                                 <span>
-                                                    ایجاد وضعیت
-                                                </span>
+                                                <button data-bs-toggle="modal"
+                                                        data-bs-target="#modal-create-status-object"
+                                                        class="btn btn-outline-success bg-success text-white d-none d-sm-inline-flex">
+                                                         <span>
+                                                            ایجاد وضعیت
+                                                        </span>
                                                     <em class="icon ni ni-property-add"></em>
                                                 </button>
-                                                <button
-                                                        class="btn btn-icon btn-outline-light bg-success text-white d-inline-flex d-sm-none">
+                                                <button data-bs-toggle="modal"
+                                                        data-bs-target="#modal-create-status-object"
+                                                        class="btn btn-icon btn-outline-success bg-success text-white d-inline-flex d-sm-none">
                                                     <em
                                                             class="icon ni ni-property-add"></em></button>
                                             </div>
@@ -261,8 +263,8 @@
                                                     <div class="data-col">
                                                         {% with reamaining_time=task.get_remaining_time %}
                                                             <div class="data-label">زمان باقی مانده</div>
-                                                            <div class="data-value badge badge-dim {% if reamaining_time > 0 %}bg-info{% else %}bg-danger{% endif %}">
-                                                                <span>
+                                                            <div class="data-value">
+                                                                <span class="badge badge-dim {% if reamaining_time > 0 %}bg-info{% else %}bg-danger{% endif %}">
                                                                     {{ reamaining_time }}
                                                                     روز
                                                                 </span>
@@ -303,18 +305,43 @@
                                                                 <div class="nk-tb-col"><span>کاربر ثبت کننده</span>
                                                                 </div>
                                                                 <div class="nk-tb-col"><span>توضیحات</span></div>
+                                                                <div class="nk-tb-col text-center">
+                                                                    <span>فایل پیوست</span>
+                                                                </div>
                                                             </div>
                                                             {% for status in task.get_statuses %}
                                                                 <!-- .nk-tb-item -->
                                                                 <div class="nk-tb-item text-center">
-                                                                    <div class="nk-tb-col">
-                                                                        <span class="badge badge-dim bg-{{ status.status }} py-1 fs-14px">{{ status.get_status_label }}</span>
+                                                                    <div class="nk-tb-col nk-tb-col-status text-center">
+                                                                        <div class="d-md-none">
+                                                                            <div class="dot bg-{{ status.status }}"
+                                                                                 data-bs-toggle="tooltip"
+                                                                                 data-bs-placement="bottom"
+                                                                                 title="{{ status.get_status_label }}"></div>
+                                                                        </div>
+                                                                        <span class="badge badge-dim bg-{{ status.status }} py-1 fs-14px d-none d-md-inline-flex">{{ status.get_status_label }}</span>
                                                                     </div>
-                                                                    <div class="nk-tb-col tb-col-sm">
+                                                                    <div class="nk-tb-col">
                                                                         <span>{{ status.allocator_user.get_full_name|default:'-' }}</span>
                                                                     </div>
-                                                                    <div class="nk-tb-col tb-col-sm">
+                                                                    <div class="nk-tb-col">
                                                                         {{ status.description|default:'-' }}
+                                                                    </div>
+                                                                    <div class="nk-tb-col nk-tb-col-status text-center">
+                                                                        {% if status.file %}
+                                                                            <div class="d-md-none">
+                                                                                <a href="{{ status.file.url }}"
+                                                                                   class="view-file">
+                                                                                    <em class="icon ni ni-download"></em>
+                                                                                </a>
+                                                                            </div>
+                                                                            <a href="{{ status.file.url }}"
+                                                                               class="view-file d-none d-md-block fs-11px text-center">دانلود
+                                                                                و مشاهده
+                                                                            </a>
+                                                                        {% else %}
+                                                                            <em class="icon ni ni-cross-c text-warning text-start"></em>
+                                                                        {% endif %}
                                                                     </div>
                                                                 </div>
                                                             {% empty %}
@@ -440,7 +467,7 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label class="form-label" for="customFileLabel">آپلود فایل</label>
+                                        <label class="form-label" for="customFileLabel">فایل پیوست</label>
                                         <div class="form-control-wrap">
                                             <div class="form-file">
                                                 <input type="file" name="file" class="form-file-input" id="file">
@@ -464,6 +491,68 @@
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-lg btn-primary">
                                             بروزرسانی تسک
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" tabindex="-1" id="modal-create-status-object">
+            <div class="modal-dialog modal-dialog-top" role="document">
+                <div class="modal-content">
+                    <a href="#" class="close" data-dismiss="modal" aria-label="بستن">
+                        <em class="icon ni ni-cross"></em>
+                    </a>
+                    <div class="modal-header">
+                        <h5 class="modal-title">ایجاد وضعیت</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'public:task_status__add' task_id=task.id %}"
+                              class="form-validate is-alter" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row g-4">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="status">وضعیت</label>
+                                        <div class="form-control-wrap">
+                                            <select id="status" name="status"
+                                                    class="form-select js-select2 " required="">
+                                                {% for status in task_status %}
+                                                    <option value="{{ status.0 }}">{{ status.1 }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="customFileLabel">فایل پیوست</label>
+                                        <div class="form-control-wrap">
+                                            <div class="form-file">
+                                                <input type="file" name="file" class="form-file-input" id="file">
+                                                <label class="form-file-label" for="file">انتخاب
+                                                    فایل</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="description">توضیحات</label>
+                                        <div class="form-control-wrap">
+                                                                <textarea name="description" id="description"
+                                                                          class="form-control"
+                                                                          placeholder="توضیحات"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-left">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-lg btn-primary">
+                                            ایجاد وضعیت
                                         </button>
                                     </div>
                                 </div>

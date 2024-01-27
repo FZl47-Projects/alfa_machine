@@ -1,285 +1,432 @@
 {% extends 'base/base_template.html' %}
 {% load static %}
-{% load filters %}
+{% load render_partial %}
 
 {% block Title %}
     لیست استعلامات
 {% endblock %}
 
-{% block Link %}
-    <link rel="stylesheet" href="{% static 'frontend/styles/all-query.css' %}">
+{% block BodyClass %}
+    has-rtl nk-body ui-rounder has-sidebar no-touch nk-nio-theme
 {% endblock %}
 
-{% block Style %}
-    <style>
-        .table tbody tr td {
-            padding: 0.75rem 0.5rem !important;
-        }
-
-        .link-search-items a {
-            display: flex;
-            justify-content: center;
-            background: rgba(246, 255, 251, 0.85);
-            color: #0da87c;
-            padding: 8px;
-            min-width: 100px;
-            border-radius: 180px;
-        }
-
-        .link-search-items a.active {
-            background: #0da87c !important;
-            color: #fff !important;
-        }
-    </style>
-{% endblock %}
 
 {% block Content %}
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main">
+            <!-- sidebar @s -->
+            {% render_partial 'public.components.MenuComponent' %}
+            <!-- sidebar @e -->
+            <!-- wrap @s -->
+            <div class="nk-wrap">
+                <!-- main header @s -->
+                {% include 'base/components/header.html' %}
+                <!-- main header @e -->
+                <!-- content @s -->
+                <div class="nk-content nk-content-fluid">
+                    <div class="container-xl wide-xl">
+                        <div class="nk-content-body">
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block-between g-3">
+                                    <div class="nk-block-head-content">
+                                        <h3 class="nk-block-title page-title">لیست استعلامات</h3>
+                                        <nav>
+                                            <ul class="breadcrumb breadcrumb-arrow">
+                                                <li class="breadcrumb-item"><a href="{% url 'public:index' %}">صفحه
+                                                    اصلی</a></li>
+                                                <li class="breadcrumb-item"><a>استعلامات</a></li>
+                                                <li class="breadcrumb-item active">لیست استعلامات</li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                    <div class="nk-block-head-content">
+                                        <div class="toggle-wrap nk-block-tools-toggle">
+                                            <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1"
+                                               data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
+                                            <div class="toggle-expand-content" data-content="pageMenu">
+                                                <ul class="nk-block-tools g-3">
+                                                    <li>
+                                                        <a href="#" class="btn btn-white btn-dim btn-outline-light"><em
+                                                                class="icon ni ni-download-cloud"></em><span>خروجی گرفتن</span></a>
+                                                    </li>
+                                                    <li class="nk-block-tools-opt">
+                                                        <div class="drodown">
+                                                            <a href="#" class="dropdown-toggle btn btn-icon btn-primary"
+                                                               data-bs-toggle="dropdown"><em
+                                                                    class="icon ni ni-plus"></em></a>
+                                                            <div class="dropdown-menu dropdown-menu-end">
+                                                                <ul class="link-list-opt no-bdr">
+                                                                    <li>
+                                                                        <a href="#"><span>ایمپورت از فایل اکسل</span></a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                </div>
+                                <!-- .nk-block-between -->
+                            </div>
+                            {% with qs=request.GET %}
+                                <div class="nk-block">
+                                    <div class="card card-stretch">
+                                        <div class="card-inner-group">
+                                            <div class="card-inner">
+                                                <div class="card-title-group">
+                                                    <div class="card-title">
+                                                        <h5 class="title">
+                                                            لیست استعلامات
+                                                            <span class="fs-15px">({{ inquiries.count }})</span>
+                                                        </h5>
+                                                    </div>
+                                                    <div class="card-tools me-n1">
+                                                        <ul class="btn-toolbar gx-1">
+                                                            <!-- li -->
+                                                            <li>
+                                                                <div class="dropdown">
+                                                                    <a href="#"
+                                                                       class="btn btn-trigger btn-icon dropdown-toggle"
+                                                                       data-bs-toggle="dropdown" aria-expanded="false">
+                                                                        {% if qs.filter %}
+                                                                            <div class="dot dot-primary"></div>
+                                                                        {% endif %}
+                                                                        <em class="icon ni ni-filter-alt"></em>
+                                                                    </a>
+                                                                    <div class="filter-wg dropdown-menu dropdown-menu-xl dropdown-menu-end"
+                                                                         style="">
+                                                                        <div class="dropdown-head">
+                                                                            <span class="sub-title dropdown-title">فیلتر پیشرفته</span>
+                                                                        </div>
+                                                                        <div class="dropdown-body dropdown-body-rg">
+                                                                            <form class="add-params-to-form">
+                                                                                <input type="hidden" name="filter"
+                                                                                       value="true">
+                                                                                <div class="row gx-6 gy-4">
+                                                                                    <div class="col-12">
+                                                                                        <div class="form-group">
+                                                                                            <label class="overline-title overline-title-alt">مرتب
+                                                                                                سازی</label>
+                                                                                            <select class="form-select js-select2 select-by-filter"
+                                                                                                    name="sort_by"
+                                                                                                    tabindex="-1"
+                                                                                                    aria-hidden="true">
+                                                                                                <option value="latest"
+                                                                                                        data-select2-id="3">
+                                                                                                    جدیدترین
+                                                                                                </option>
+                                                                                                <option value="oldest">
+                                                                                                    قدیمی ترین
+                                                                                                </option>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-6">
+                                                                                        <div class="form-group">
+                                                                                            <label class="overline-title overline-title-alt">کارفرما</label>
+                                                                                            <select class="form-select js-select2 select-by-filter"
+                                                                                                    name="task_master"
+                                                                                                    tabindex="-1"
+                                                                                                    aria-hidden="true">
+                                                                                                <option value="all">همه
+                                                                                                </option>
+                                                                                                {% for task_master in task_masters %}
+                                                                                                    <option value="{{ task_master.id }}">{{ task_master.name }}</option>
+                                                                                                {% endfor %}
+                                                                                            </select>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-6">
+                                                                                        <div class="form-group">
+                                                                                            <label class="overline-title overline-title-alt">وضعیت</label>
+                                                                                            <select class="form-select js-select2 select-by-filter"
+                                                                                                    name="state"
+                                                                                                    tabindex="-1"
+                                                                                                    aria-hidden="true">
+                                                                                                <option value="all">همه
+                                                                                                </option>
+                                                                                                {% for state in inquiry_states %}
+                                                                                                    <option value="{{ state.0 }}">
+                                                                                                        {{ state.1 }}
+                                                                                                    </option>
+                                                                                                {% endfor %}
+                                                                                            </select>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-12">
+                                                                                        <div class="form-group">
+                                                                                            <label class="overline-title overline-title-alt">
+                                                                                                مهلت پاسخ
+                                                                                            </label>
+                                                                                            <div class="form-control-wrap">
+                                                                                                <div class="input-daterange date-picker-range input-group">
+                                                                                                    <input type="text"
+                                                                                                           class="form-control range-from"
+                                                                                                           name="time_deadline_response_gt"
+                                                                                                           value="{{ qs.time_deadline_response_gt }}"
+                                                                                                           placeholder="روز-ماه-سال"/>
+                                                                                                    <div class="input-group-addon">
+                                                                                                        تا
+                                                                                                    </div>
+                                                                                                    <input type="text"
+                                                                                                           class="form-control range-to"
+                                                                                                           name="time_deadline_response_lt"
+                                                                                                           value="{{ qs.time_deadline_response_lt }}"
+                                                                                                           placeholder="روز-ماه-سال"/>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-12">
+                                                                                        <div class="form-group">
+                                                                                            <label class="overline-title overline-title-alt">
+                                                                                                تاریخ ارسال
+                                                                                            </label>
+                                                                                            <div class="form-control-wrap">
+                                                                                                <div class="input-daterange date-picker-range input-group">
+                                                                                                    <input type="text"
+                                                                                                           class="form-control range-from"
+                                                                                                           name="time_submit_gt"
+                                                                                                           value="{{ qs.time_submit_gt }}"
+                                                                                                           placeholder="روز-ماه-سال"/>
+                                                                                                    <div class="input-group-addon">
+                                                                                                        تا
+                                                                                                    </div>
+                                                                                                    <input type="text"
+                                                                                                           class="form-control range-to"
+                                                                                                           name="time_submit_lt"
+                                                                                                           value="{{ qs.time_submit_lt }}"
+                                                                                                           placeholder="روز-ماه-سال"/>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-12 text-left">
+                                                                                        <div class="form-group">
+                                                                                            <button type="submit"
+                                                                                                    class="btn btn-secondary">
+                                                                                                فیلتر
+                                                                                            </button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
+                                                                        <div class="dropdown-foot between">
+                                                                            <a class="clickable"
+                                                                               href="{% url 'public:inquiry__list' %}">بازنشانی
+                                                                                فیلتر</a>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- .filter-wg -->
+                                                                </div>
+                                                                <!-- .dropdown -->
+                                                            </li>
+                                                            <!-- li -->
+                                                            <li>
+                                                                <a href="#"
+                                                                   class="search-toggle toggle-search btn btn-icon"
+                                                                   data-target="search">
+                                                                    <em class="icon ni ni-search"></em>
+                                                                    {% if qs.search %}
+                                                                        <div class="dot dot-primary"></div>
+                                                                    {% endif %}
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                        <!-- .btn-toolbar -->
+                                                    </div>
+                                                    <!-- .card-tools -->
+                                                    <div class="card-search search-wrap" data-search="search">
+                                                        <div class="search-content">
+                                                            <form class="add-params-to-form">
+                                                                <a href="#"
+                                                                   class="search-back btn btn-icon toggle-search"
+                                                                   data-target="search"><em
+                                                                        class="icon ni ni-arrow-left"></em></a>
+                                                                <input type="text" name="search"
+                                                                       class="form-control border-transparent form-focus-none"
+                                                                       placeholder="جستجوی سریع بر اساس عنوان یا شماره استعلام"
+                                                                       value="{{ qs.search }}">
+                                                                <button class="search-submit btn btn-icon"><em
+                                                                        class="icon ni ni-search"></em></button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                    <!-- .card-search -->
+                                                </div>
+                                                <!-- .card-title-group -->
+                                            </div>
+                                            <!-- .card-inner -->
+                                            <div class="card-inner p-0">
+                                                <div class="nk-tb-list nk-tb-tnx">
+                                                    <div class="nk-tb-item nk-tb-head text-center">
+                                                        <div class="nk-tb-col text-start"><span>عنوان</span></div>
+                                                        <div class="nk-tb-col"><span>شماره استعلام</span></div>
+                                                        <div class="nk-tb-col tb-col-xxl"><span>استعلام گیرنده</span>
+                                                        </div>
+                                                        <div class="nk-tb-col tb-col-sm"><span>مشتری</span></div>
+                                                        <div class="nk-tb-col tb-col-sm">
+                                                            <span>تاریخ ارسال</span>
+                                                        </div>
+                                                        <div class="nk-tb-col tb-col-sm">
+                                                            <span>مهلت پاسخ</span>
+                                                        </div>
+                                                        <div class="nk-tb-col">
+                                                            <span>وضعیت</span>
+                                                        </div>
+                                                        <div class="nk-tb-col">
+                                                            <span>وضعیت بررسی</span>
+                                                        </div>
+                                                        <div class="nk-tb-col nk-tb-col-tools"></div>
+                                                    </div>
+                                                    {% for inquiry in inquiries %}
+                                                        <!-- .nk-tb-item -->
+                                                        <div class="nk-tb-item text-center">
+                                                            <div class="nk-tb-col text-start">
+                                                                <a href="{{ inquiry.get_absolute_url }}">
+                                                                    <div class="nk-tnx-type-text">
+                                                                        <span>{{ inquiry.title|truncatechars:30 }}</span>
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+                                                            <div class="nk-tb-col">
+                                                                <span>
+                                                                    {{ inquiry.number_id|default:'-' }}
+                                                                </span>
+                                                            </div>
+                                                            <div class="nk-tb-col tb-col-xxl">
+                                                                <span>
+                                                                    <a href="{{ inquiry.from_department.get_absolute_url }}">{{ inquiry.from_department.name }}</a>
+                                                                </span>
+                                                            </div>
+                                                            <div class="nk-tb-col tb-col-sm">
+                                                                <a href="{{ inquiry.task_master.get_absolute_url }}">
+                                                                    <span>{{ inquiry.task_master.name }}</span>
+                                                                </a>
+                                                            </div>
+                                                            <div class="nk-tb-col tb-col-sm">
+                                                                <span>{{ inquiry.time_submit|default:'-' }}</span>
+                                                            </div>
+                                                            <div class="nk-tb-col tb-col-sm">
+                                                                <span>{{ inquiry.time_deadline_response|default:'-' }}</span>
+                                                                {% with reamaining=inquiry.get_remaining_deadline %}
+                                                                    {% if reamaining %}
+                                                                        {% if reamaining > 0 %}
+                                                                            <span class="badge badge-dim bg-info">
+                                                                                {{ reamaining }}
+                                                                                روز
+                                                                            </span>
+                                                                        {% else %}
+                                                                            <span class="badge badge-dim bg-warning">
+                                                                                {{ reamaining }}
+                                                                                روز
+                                                                            </span>
+                                                                        {% endif %}
+                                                                    {% endif %}
+                                                                {% endwith %}
+                                                            </div>
+                                                            <div class="nk-tb-col nk-tb-col-status text-center">
+                                                                <div class="dot d-md-none dot-{{ inquiry.state }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ inquiry.get_state_label }}"></div>
+                                                                <span class="badge badge-sm badge-dim d-none d-md-inline-flex fs-11px bg-{{ inquiry.state }}">{{ inquiry.get_state_label }}</span>
+                                                            </div>
+                                                            <div class="nk-tb-col nk-tb-col-status text-center">
+                                                                <div class="dot d-md-none dot-{{ inquiry.status|default:'queue' }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ inquiry.get_status_label }}"></div>
+                                                                <span class="badge badge-sm badge-dim d-none d-md-inline-flex fs-11px bg-{{ inquiry.status|default:'queue' }}">{{ inquiry.get_status_label }}</span>
+                                                            </div>
+                                                            <div class="nk-tb-col nk-tb-col-tools">
+                                                                <ul class="nk-tb-actions gx-2">
+                                                                    <li class="nk-tb-action-hidden">
+                                                                        <a href="{{ inquiry.get_absolute_url }}"
+                                                                           class="bg-white btn btn-sm btn-outline-light btn-icon btn-tooltip"
+                                                                           aria-label="جزئیات"
+                                                                           data-bs-original-title="جزئیات"><em
+                                                                                class="icon ni ni-eye"></em></a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <div class="dropdown">
+                                                                            <a href="#"
+                                                                               class="dropdown-toggle bg-white btn btn-sm btn-outline-light btn-icon"
+                                                                               data-bs-toggle="dropdown"
+                                                                               aria-expanded="false"><em
+                                                                                    class="icon ni ni-more-h"></em></a>
+                                                                            <div class="dropdown-menu dropdown-menu-end"
+                                                                                 style="">
+                                                                                <ul class="link-list-opt">
+                                                                                    <li>
+                                                                                        <a href="{{ inquiry.get_absolute_url }}"><em
+                                                                                                class="icon ni ni-eye"></em><span>مشاهده جزئیات</span></a>
+                                                                                    </li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <!-- .nk-tb-item -->
+                                                    {% empty %}
+                                                        <div class="nk-tb-item">
+                                                            <div class="nk-tb-col">
+                                                                <div class="container-not-found-base">
+                                                                    <p>استعلامی یافت نشد</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                                <!-- .nk-tb-list -->
+                                            </div>
+                                            <!-- .card-inner -->
+                                            <div class="card-inner">
+                                                <ul class="pagination justify-content-center justify-content-md-start">
+                                                    {% if pagination.has_previous %}
+                                                        <li class="page-item"><a class="page-link add-params-to-href"
+                                                                                 href="?page=1">اولین</a></li>
+                                                        <li class="page-item"><a class="page-link add-params-to-href"
+                                                                                 href="?page={{ pagination.previous_page_number }}">قبلی</a>
+                                                        </li>
+                                                    {% endif %}
 
-    {% for inquiry in inquiries %}
-        {% if user|inquiry_has_permission %}
-            <!-- Edit inquiry modal -->
-            {% include 'public/inquiry/components/edit_inquiry.html' %}
-            <!-- .End Edit inquiry modal -->
+                                                    <span class="current page-link">
+                                                         صفحه {{ pagination.number }} از {{ pagination.paginator.num_pages }}.
+                                                    </span>
 
-            <!-- Delete inquiry modal -->
-            {% include 'public/inquiry/components/delete_inquiry.html' %}
-            <!-- .End Delete inquiry modal -->
-        {% endif %}
+                                                    {% if pagination.has_next %}
+                                                        <li class="page-item"><a class="page-link add-params-to-href"
+                                                                                 href="?page={{ pagination.next_page_number }}">بعدی</a>
+                                                        </li>
+                                                        <li class="page-item"><a class="page-link add-params-to-href"
+                                                                                 href="?page={{ pagination.paginator.num_pages }}">اخرین</a>
+                                                        </li>
+                                                    {% endif %}
 
-        <!-- Inquiry description modal -->
-        {% include 'public/inquiry/components/inquiry_description.html' %}
-        <!-- .End Inquiry description modal -->
-
-        <!-- Inquiry description modal -->
-        {% include 'public/inquiry/components/inquiry_status_description.html' %}
-        <!-- .End Inquiry description modal -->
-
-        <!-- Upload inquiry file -->
-        {% include 'public/inquiry/components/add_inquiry_file.html' %}
-        <!-- .End Upload inquiry file -->
-
-        <!-- Inquiry files list modal -->
-        {% include 'public/inquiry/components/inquiry_files_list.html' %}
-        <!-- .End Inquiry files list modal -->
-
-        <!-- Inquiry approval/disapproval modal -->
-        {% include 'public/inquiry/components/acceptance_inquiry.html' %}
-        <!-- .End Inquiry approval/disapproval modal -->
-    {% endfor %}
-
-    <div>
-        <div class="text-center d-flex justify-content-center mt-1 px-3">
-            <h3 class="title-page w-100" style="margin-right: 4rem;">
-                لیست استعلامات
-                {% if request.GET.archived %}<span>آرشیو شده</span>{% endif %}
-            </h3>
-            <div class="mt-2">
-                <a href="{{ user.get_absolute_url_dashboard }}" class="btn btn-danger">بازگشت</a>
-            </div>
-        </div>
-
-        <div class="d-flex flex-column mb-4 p-4">
-            <div>
-                <form action="{% url 'public:inquiry' %}" method="get"
-                      class="overflow-hidden d-flex align-items-center">
-                    <input type="hidden" name="sort_by" value="{{ request.GET.sort_by }}">
-                    <input type="hidden" name="archived" value="{{ request.GET.archived }}">
-                    <input type="hidden" name="task_master" value="{{ request.GET.task_master }}">
-                    <div class="cnt-search col-6 col-md-4">
-                        <input type="text" id="q" name="search" value="{{ request.GET.search }}"
-                               placeholder="عنوان، شماره استعلام و ...">
-                        <div>
-                            <button><i class="fa fa-search"></i></button>
+                                                </ul>
+                                            </div>
+                                            <!-- .card-inner -->
+                                        </div>
+                                        <!-- .card-inner-group -->
+                                    </div>
+                                    <!-- .card -->
+                                </div>
+                            {% endwith %}
                         </div>
                     </div>
-                </form>
-            </div>
-            <div class="filters-radio d-flex justify-content-center align-items-center mt-3">
-                <div class="title text-right">
-                    مرتب بر اساس:
                 </div>
-                <div class="d-flex justify-content-center me-3 gap-2">
-                    <div>
-                        <a class="{% if request.GET.sort_by == 'latest' or not request.GET.sort_by %}active{% endif %}"
-                           href="?sort_by=latest&task_master={{ request.GET.task_master }}&archived={{ request.GET.archived }}">
-                            جدید ترین
-                        </a>
-                    </div>
-                    <div>
-                        <a class="{% if request.GET.sort_by == 'oldest' %}active{% endif %}"
-                           href="?sort_by=oldest&task_master={{ request.GET.task_master }}&archived={{ request.GET.archived }}">
-                            قدیمی ترین
-                        </a>
-                    </div>
-                </div>
+                <!-- content @e -->
+                <!-- footer @s -->
+                {% include 'base/components/footer.html' %}
+                <!-- footer @e -->
             </div>
-            <div class="d-flex align-items-center justify-content-center gap-2 link-search-items text-center mt-4">
-                <span class="title">فیلتر بر اساس کارفرما:</span>
-                <div class="d-flex gap-2 me-2">
-                    <a href="?sort_by={{ request.GET.sort_by }}&archived={{ request.GET.archived }}"
-                       {% if not request.GET.task_master %}class="active"{% endif %}>
-                        همه
-                    </a>
-                    {% for task_master in taskmasters %}
-                        <a href="?task_master={{ task_master.id }}&sort_by={{ request.GET.sort_by }}&archived={{ request.GET.archived }}"
-                           {% if request.GET.task_master == task_master.id|stringformat:'i' %}class="active"{% endif %}>
-                            {{ task_master.title }}
-                        </a>
-                    {% endfor %}
-                </div>
-            </div>
-
-            <div class="d-flex align-items-center justify-content-center gap-2 link-search-items text-center mt-4">
-                <span class="title">فیلتر بر اساس وضعیت:</span>
-                <div class="d-flex gap-2 me-2">
-
-                    <a href="{% url 'public:inquiry_owner' %}?sort_by={{ request.GET.sort_by }}"
-                       {% if not request.GET.filter_by_state %}class="active"{% endif %}>همه</a>
-
-
-                    <a href="?filter_by_state=waiting_for_price&sort_by={{ request.GET.sort_by }}&task_master={{ request.GET.task_master }}"
-                       {% if request.GET.filter_by_state == 'waiting_for_price' %}class="active"{% endif %}>در انتظار
-                        قیمت</a>
-
-                    <a href="?filter_by_state=price_recorded&sort_by={{ request.GET.sort_by }}&task_master={{ request.GET.task_master }}"
-                       {% if request.GET.filter_by_state == 'price_recorded' %}class="active"{% endif %}>قیمت ارسال
-                        شده</a>
-
-
-                    <a href="?filter_by_state=canceled&sort_by={{ request.GET.sort_by }}&task_master={{ request.GET.task_master }}"
-                       {% if request.GET.filter_by_state == 'canceled' %}class="active"{% endif %}>انصراف</a>
-
-                </div>
-            </div>
+            <!-- wrap @e -->
         </div>
+        <!-- main @e -->
     </div>
-
-    <!-- Start main table section -->
-    <main class="main content-page container" style="max-width: none;">
-        <section class="col-12 project-content">
-            <div class="inner-project">
-                <!-- Start Inquiry list table -->
-                <div class="table-responsive">
-                    <table class="table table-bordered rounded-3 overflow-hidden">
-                        <!-- Table header -->
-                        <thead class="table-dark">
-                        <tr class="text-center text-nowrap">
-                            <th>ردیف</th>
-                            <th>استعلام گیرنده</th>
-                            <th>کارفرما</th>
-                            <th>شماره استعلام</th>
-                            <th>عنوان</th>
-                            <th>تاریخ دریافت</th>
-                            <th>مهلت پاسخ</th>
-                            <th>توضیحات</th>
-                            <th>فایل</th>
-                            <th>وضعیت بررسی</th>
-                            <th>وضعیت</th>
-                            <th>توضیحات بررسی</th>
-                            <th>تاریخ ارسال</th>
-                            {% if user|inquiry_has_permission %}
-                                <th>عملیات</th>
-                            {% endif %}
-                        </tr>
-                        </thead>
-                        <!-- Table body -->
-                        <tbody>
-                        {% for inquiry in inquiries %}
-                            <tr class="text-center">
-                                <td>
-                                    {{ forloop.counter }}
-                                </td>
-                                <td>
-                                    {{ inquiry.from_department.name }}
-                                </td>
-                                <td class="text-nowrap">
-                                    {{ inquiry.sender|truncatechars:16|default:'ندارد' }}
-                                </td>
-                                <td>
-                                    {{ inquiry.number_id|default:'-' }}
-                                </td>
-                                <td title="{{ inquiry.title|default:'بدون عنوان' }}">
-                                    {{ inquiry.title|truncatechars:16|default:'بدون عنوان' }}
-                                </td>
-                                <td class="datetime-convert">
-                                    {{ inquiry.time_receive|default:'-' }}
-                                </td>
-                                <td class="datetime-convert">
-                                    {{ inquiry.time_deadline_response|default:'-' }}
-                                </td>
-                                <td data-bs-toggle="modal" data-bs-target="#inquiryDescription-{{ inquiry.id }}">
-                                    <span class="fw-bold btn btn-primary btn-sm" title="مشاهده">مشاهده</span>
-                                </td>
-                                <td>
-                                    <div class="d-flex flex-wrap justify-content-center align-items-center gap-1">
-                                        <span class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
-                                              data-bs-target="#addInquiryFileModal-{{ inquiry.id }}">
-                                            آپلود
-                                        </span>
-                                        <span class="tarif-task btn-create-report btn btn-sm btn-outline-secondary btn-files-query">
-                                            نمایش
-                                        </span>
-                                    </div>
-                                </td>
-                                <td class="text-nowrap">
-                                    {% if user|inquiry_has_permission:request.resolver_match.url_name %}
-                                        {% if not inquiry.status %}
-                                            <div class="btn btn-sm btn-success" data-bs-toggle="modal"
-                                                 data-bs-target="#inquiryApprovalModal-{{ inquiry.id }}">تایید
-                                            </div>
-                                            <div class="btn btn-sm btn-secondary" data-bs-toggle="modal"
-                                                 data-bs-target="#inquiryDisapprovalModal-{{ inquiry.id }}">رد کردن
-                                            </div>
-                                        {% else %}
-                                            <span class="{% if inquiry.status.status == 'accepted' %}text-success{% else %}text-danger{% endif %}">
-                                                {{ inquiry.status.get_status_display }}
-                                            </span>
-                                        {% endif %}
-                                    {% else %}
-                                        <span class="{% if inquiry.status.status == 'accepted' %}text-success{% elif inquiry.status.status == 'rejected' %}
-                                            text-danger{% else %}text-primary{% endif %}">
-                                            {{ inquiry.get_status }}
-                                        </span>
-                                    {% endif %}
-                                </td>
-                                 <td class="text-nowrap">
-                                    {{ inquiry.get_state_display }}
-                                </td>
-                                <td data-bs-toggle="modal" data-bs-target="#inquiryStatusDescription-{{ inquiry.id }}">
-                                    <span class="fw-bold btn btn-primary btn-sm" title="مشاهده">مشاهده</span>
-                                </td>
-                                <td class="datetime-convert">
-                                    {{ inquiry.time_submit|default:'-' }}
-                                </td>
-                                {% if user|inquiry_has_permission %}
-                                    <td>
-                                        <div class="text-nowrap">
-                                            <i class="fa fa-edit btn btn-sm btn-warning fw-bold"
-                                               data-bs-toggle="modal"
-                                               data-bs-target="#editInquiryModal-{{ inquiry.id }}" title="ویرایش"></i>
-                                            <i class="fa-solid fa-trash-can btn btn-sm btn-danger"
-                                               data-bs-toggle="modal"
-                                               data-bs-target="#deleteInquiryModal-{{ inquiry.id }}" title="حذف"></i>
-                                        </div>
-                                    </td>
-                                {% endif %}
-                            </tr>
-                        {% empty %}
-                            <div class="container-not-found-base">
-                                <p>چیزی یافت نشد</p>
-                            </div>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                <!-- .End Inquiry list table -->
-            </div>
-        </section>
-    </main>
-    <!-- .End main table section -->
-
 {% endblock %}
 
-{% block Script %}
-    <script src="{% static 'frontend/js/all-query.js' %}"></script>
-{% endblock %}
+

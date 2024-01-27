@@ -120,7 +120,7 @@
                                                                                             <select class="form-select js-select2 select-by-filter"
                                                                                                     name="project"
                                                                                                     tabindex="-1"
-                                                                                                    aria-hidden="true">
+                                                                                                    aria-hidden="true" data-search="on">
                                                                                                 <option value="all">همه
                                                                                                 </option>
                                                                                                 {% for project in projects %}
@@ -135,7 +135,7 @@
                                                                                             <select class="form-select js-select2 select-by-filter"
                                                                                                     name="status"
                                                                                                     tabindex="-1"
-                                                                                                    aria-hidden="true">
+                                                                                                    aria-hidden="true" data-search="on">
                                                                                                 <option value="all">همه
                                                                                                 </option>
                                                                                                 {% for status in task_status %}
@@ -260,7 +260,7 @@
                                                         <div class="nk-tb-col"><span>اولویت</span></div>
                                                         <div class="nk-tb-col tb-col-sm"><span>تاریخ شروع</span></div>
                                                         <div class="nk-tb-col tb-col-sm"><span>تاریخ پایان</span></div>
-                                                        <div class="nk-tb-col tb-col-sm"><span>دارای فایل</span></div>
+                                                        <div class="nk-tb-col tb-col-sm"><span> فایل پیوست</span></div>
                                                         <div class="nk-tb-col nk-tb-col-status"><span
                                                                 class="sub-text d-none d-md-block">وضعیت</span></div>
                                                         <div class="nk-tb-col nk-tb-col-tools"></div>
@@ -367,9 +367,9 @@
                                             <div class="card-inner">
                                                 <ul class="pagination justify-content-center justify-content-md-start">
                                                     {% if pagination.has_previous %}
-                                                        <li class="page-item"><a class="page-link"
+                                                        <li class="page-item"><a class="page-link add-params-to-href"
                                                                                  href="?page=1">اولین</a></li>
-                                                        <li class="page-item"><a class="page-link"
+                                                        <li class="page-item"><a class="page-link add-params-to-href"
                                                                                  href="?page={{ pagination.previous_page_number }}">قبلی</a>
                                                         </li>
                                                     {% endif %}
@@ -379,10 +379,10 @@
                                                     </span>
 
                                                     {% if pagination.has_next %}
-                                                        <li class="page-item"><a class="page-link"
+                                                        <li class="page-item"><a class="page-link add-params-to-href"
                                                                                  href="?page={{ pagination.next_page_number }}">بعدی</a>
                                                         </li>
-                                                        <li class="page-item"><a class="page-link"
+                                                        <li class="page-item"><a class="page-link add-params-to-href"
                                                                                  href="?page={{ pagination.paginator.num_pages }}">اخرین</a>
                                                         </li>
                                                     {% endif %}

@@ -52,7 +52,11 @@
                         </a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
-                                <a href="html/kyc-list-regular.html" class="nk-menu-link"><span
+                                <a href="{% url 'public:inquiry__add' %}" class="nk-menu-link"><span
+                                        class="nk-menu-text">ایجاد استعلام</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="{% url 'public:inquiry__list' %}" class="nk-menu-link"><span
                                         class="nk-menu-text">لیست استعلامات</span></a>
                             </li>
                         </ul>

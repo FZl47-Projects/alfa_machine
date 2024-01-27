@@ -368,9 +368,9 @@
                                             <div class="card-inner">
                                                 <ul class="pagination justify-content-center justify-content-md-start">
                                                     {% if pagination.has_previous %}
-                                                        <li class="page-item"><a class="page-link"
+                                                        <li class="page-item"><a class="page-link add-params-to-href"
                                                                                  href="?page=1">اولین</a></li>
-                                                        <li class="page-item"><a class="page-link"
+                                                        <li class="page-item"><a class="page-link add-params-to-href"
                                                                                  href="?page={{ pagination.previous_page_number }}">قبلی</a>
                                                         </li>
                                                     {% endif %}
@@ -380,10 +380,10 @@
                                                     </span>
 
                                                     {% if pagination.has_next %}
-                                                        <li class="page-item"><a class="page-link"
+                                                        <li class="page-item"><a class="page-link add-params-to-href"
                                                                                  href="?page={{ pagination.next_page_number }}">بعدی</a>
                                                         </li>
-                                                        <li class="page-item"><a class="page-link"
+                                                        <li class="page-item"><a class="page-link add-params-to-href"
                                                                                  href="?page={{ pagination.paginator.num_pages }}">اخرین</a>
                                                         </li>
                                                     {% endif %}

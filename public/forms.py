@@ -24,6 +24,35 @@ class TaskUpdate(TaskCreate, forms.ModelForm):
         required = ('name',)
 
 
+class TaskStatusCreate(forms.ModelForm):
+    file = forms.FileField(required=False)
+    description = forms.CharField(required=False)
+
+    class Meta:
+        model = models.TaskStatus
+        fields = '__all__'
+
+
+class InquiryAdd(forms.ModelForm):
+    class Meta:
+        model = models.Inquiry
+        fields = '__all__'
+
+
+class InquiryUpdate(forms.ModelForm):
+    class Meta:
+        model = models.Inquiry
+        exclude = ('from_department',)
+
+
+class InquiryStatusModify(forms.ModelForm):
+    class Meta:
+        model = models.InquiryStatus
+        fields = '__all__'
+
+
+# ----
+
 # TaskMasterAdd form
 class TaskMasterAddForm(forms.ModelForm):
     class Meta:
@@ -63,24 +92,6 @@ class ProjectUpdate(forms.ModelForm):
     class Meta:
         model = models.Project
         exclude = ('is_active',)
-
-
-class InquiryForm(forms.ModelForm):
-    class Meta:
-        model = models.Inquiry
-        fields = '__all__'
-
-
-class InquiryUpdateForm(forms.ModelForm):
-    class Meta:
-        model = models.Inquiry
-        exclude = ('from_department',)
-
-
-class InquiryStatusForm(forms.ModelForm):
-    class Meta:
-        model = models.InquiryStatus
-        fields = '__all__'
 
 
 class InquiryFileForm(forms.ModelForm):

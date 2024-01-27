@@ -4,24 +4,31 @@ from . import views
 app_name = 'public'
 
 urlpatterns = [
-
+    # project
     path('project/add', views.ProjectAdd.as_view(), name='project__add'),
     path('project/list', views.ProjectList.as_view(), name='project__list'),
     path('project/<int:project_id>/detail', views.ProjectDetail.as_view(), name='project__detail'),
     path('project/<int:project_id>/delete', views.ProjectDelete.as_view(), name='project__delete'),
     path('project/<int:project_id>/update', views.ProjectUpdate.as_view(), name='project__update'),
-
+    # task
     path('task/add', views.TaskAdd.as_view(), name='task__add'),
     path('task/list', views.TaskList.as_view(), name='task__list'),
     path('task/<int:task_id>/detail', views.TaskDetail.as_view(), name='task__detail'),
     path('task/<int:task_id>/delete', views.TaskDelete.as_view(), name='task__delete'),
     path('task/<int:task_id>/update', views.TaskUpdate.as_view(), name='task__update'),
-
-
+    # task status
+    path('task/<int:task_id>/status/add', views.TaskStatusAdd.as_view(), name='task_status__add'),
+    # inquiry
+    path('inquiry/add', views.InquiryAdd.as_view(), name='inquiry__add'),
     path('inquiry/list', views.InquiryList.as_view(), name='inquiry__list'),
-    path('inquiry/detail/<int:inquiry_id>', views.InquiryDetail.as_view(), name='inquiry__detail'),
+    path('inquiry/<int:inquiry_id>/detail', views.InquiryDetail.as_view(), name='inquiry__detail'),
+    path('inquiry/<int:inquiry_id>/delete', views.InquiryDelete.as_view(), name='inquiry__delete'),
+    path('inquiry/<int:inquiry_id>/update', views.InquiryUpdate.as_view(), name='inquiry__update'),
+    # inquiry status
+    path('inquiry/<int:inquiry_id>/status/modify', views.InquiryStatusModify.as_view(), name='inquiry_status__modify'),
 
-    path('department/list', views.DepartmentList.as_view(), name='department__list'),
+
+    # path('department/list', views.DepartmentList.as_view(), name='department__list'),
 
 
     # ---
@@ -38,7 +45,7 @@ urlpatterns = [
     path('project/<int:project_id>/file', views.ProjectDetailFileList.as_view(), name='project_detail_file_list'),
     # path('project/<int:project_id>', views.ProjectDetail.as_view(), name='project_detail'),
 
-    path('task', views.Task.as_view(), name='task'),
+    # path('task', views.Task.as_view(), name='task'),
     path('task/remind/<int:task_id>', views.TaskRemind.as_view(), name='task_remind'),
     path('task/owner', views.TaskOwner.as_view(), name='task_owner'),
     path('task/owner/<int:task_id>', views.TaskOwner.as_view(), name='task_owner_detail'),

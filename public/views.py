@@ -91,10 +91,10 @@ class ProjectList(LoginRequiredMixin, View):
             projects = projects.filter(status=project_status)
 
         # filter by start and end date project
-        time_start_gt = qs.get('time_start_gt', None)
-        time_start_lt = qs.get('time_start_lt', None)
-        time_end_gt = qs.get('time_end_gt', None)
-        time_end_lt = qs.get('time_end_lt', None)
+        time_start_gt = qs.get('time_start__gt', None)
+        time_start_lt = qs.get('time_start__lt', None)
+        time_end_gt = qs.get('time_end__gt', None)
+        time_end_lt = qs.get('time_end__lt', None)
 
         if time_start_gt:
             projects = projects.filter(time_start__gt=time_start_gt)
@@ -479,10 +479,10 @@ class TaskList(LoginRequiredMixin, View):
                 tasks = tasks.filter(taskstatus__status=status)
 
         # filter by start and end date tasks
-        time_start_gt = qs.get('time_start_gt', None)
-        time_start_lt = qs.get('time_start_lt', None)
-        time_end_gt = qs.get('time_end_gt', None)
-        time_end_lt = qs.get('time_end_lt', None)
+        time_start_gt = qs.get('time_start__gt', None)
+        time_start_lt = qs.get('time_start__lt', None)
+        time_end_gt = qs.get('time_end__gt', None)
+        time_end_lt = qs.get('time_end__lt', None)
 
         if time_start_gt:
             tasks = tasks.filter(time_start__gt=time_start_gt)
@@ -525,6 +525,7 @@ class TaskDetail(LoginRequiredMixin, View):
             raise PermissionDenied
         context = {
             'task': task,
+            'task_status': models.TaskStatus.STATUS_OPTIONS,
             # permissions
             'has_perm_to_modify': task.has_perm_to_modify(request.user),
             'has_perm_to_send_notify': task.has_perm_to_send_notify(request.user)
@@ -548,10 +549,8 @@ class TaskUpdate(LoginRequiredMixin, View):
         if not models.Task.has_perm_to_modify(request.user):
             raise PermissionDenied
         task = get_object_or_404(models.Task, id=task_id)
-        print(request.POST)
         f = forms.TaskUpdate(data=request.POST, files=request.FILES, instance=task)
         if not f.is_valid():
-            print(f.errors)
             messages.error(request, 'لطفا فیلد هارا به درستی وارد نمایید')
             return redirect(task.get_absolute_url())
         task = f.save()
@@ -559,67 +558,27 @@ class TaskUpdate(LoginRequiredMixin, View):
         return redirect(task.get_absolute_url())
 
 
-class Task(View):
-    """ get and create task """
+class TaskStatusAdd(LoginRequiredMixin, View):
 
-    def search(self, request, tasks):
-        search = request.GET.get('search', None)
-        if not search:
-            return tasks
-        lookup = Q(name__icontains=search) | Q(from_department__name__icontains=search)
-        tasks = tasks.filter(lookup)
-        return tasks
-
-    def sort(self, request, tasks):
-        sort_by = request.GET.get('sort_by', 'latest')
-        if sort_by == 'latest':
-            tasks = tasks.order_by('-id')
-        elif sort_by == 'oldest':
-            tasks = tasks.order_by('id')
-        return tasks
-
-    def get(self, request):
-        user_department = request.user.department
-        tasks = models.Task.objects.filter(to_department=user_department, is_active=True)
-        tasks = self.search(request, tasks)
-        tasks = self.sort(request, tasks)
-        context = {
-            'department': user_department,
-            'task_states': models.Task.STATE_OPTIONS,
-            'tasks': tasks
-        }
-        return render(request, 'public/task/list.html', context)
-
-    @user_role_required_cbv(['super_user', 'control_project_user'])
-    def post(self, request):
-        referer_url = request.META.get('HTTP_REFERER', None)
+    def post(self, request, task_id):
+        user = request.user
+        task = get_object_or_404(models.Task, id=task_id, to_department=user.department)
         data = request.POST.copy()
-
-        # set default values
-        data['allocator_user'] = request.user
-        data['from_department'] = request.user.department
-        data['state'] = 'queue'
-
-        f = forms.TaskCreateForm(data, request.FILES)
-        if form_validate_err(request, f) is False:
-            return redirect(referer_url or '/error')
-        task = f.save()
-
-        # Create notification for department
-        notif_title = 'اطلاعیه تسک جدید'
-        notif_description = f'عنوان تسک: "{task.name}"'
-        create_notification(
-            from_department=request.user.department,
-            title=notif_title, description=notif_description,
-            projects=task.project, departments=[task.to_department]
-        )
-
-        messages.success(request, 'عملیات مورد نظر با موفقیت ایجاد شد')
-
-        return redirect(referer_url or '/success')
+        # set additional values
+        data['allocator_user'] = user
+        data['department'] = user.department
+        data['task'] = task
+        f = forms.TaskStatusCreate(data=data, files=request.FILES)
+        if not f.is_valid():
+            messages.error(request, 'لطفا فیلد هارا به درستی وارد نمایید')
+            return redirect(task.get_absolute_url())
+        task_status = f.save()
+        messages.success(request, 'وضعیت تسک با موفقیت ایجاد شد')
+        return redirect(task.get_absolute_url())
 
 
 class TaskRemind(LoginRequiredMixin, View):
+    # TODO: should be refactor and completed
 
     def post(self, request, task_id):
         referer_url = request.META.get('HTTP_REFERER', None)
@@ -662,43 +621,81 @@ class TaskListStateUpdate(View):
         return redirect(referer_url or '/success')
 
 
+class InquiryAdd(LoginRequiredMixin, View):
+    template_name = 'public/inquiry/add.html'
+
+    @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user'])
+    def get(self, request):
+        context = {
+            'inquiry_states': models.Inquiry.STATE_OPTIONS,
+            'task_masters': models.TaskMaster.objects.all()
+        }
+        return render(request, self.template_name, context)
+
+    @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user'])
+    def post(self, request):
+        data = request.POST.copy()
+        # set additional values
+        data['from_department'] = request.user.department
+
+        f = forms.InquiryAdd(data)
+        if form_validate_err(request, f) is False:
+            return redirect('public:inquiry__add')
+        inquiry = f.save()
+        messages.success(request, 'استعلام با موفقیت ایجاد شد')
+        return redirect(inquiry.get_absolute_url())
+
+
 class InquiryList(View):
+    pagination_count = 25
+    template_name = 'public/inquiry/list.html'
 
-    def filter(self, request, inquiries):
-        archived = request.GET.get('archived', False)
-        task_master = request.GET.get('task_master', None)
-        filter_by_state = request.GET.get('filter_by_state', None)
+    def pagination(self, objects):
+        paginator = Paginator(objects, self.pagination_count)
+        page_number = self.request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+        return page_obj, page_obj.object_list
 
-        if archived:
-            inquiries = inquiries.filter(Q(state='canceled') | Q(time_deadline_response__lt=timezone.now()))
-        else:
-            # inquiries = inquiries.filter(~Q(state='canceled') & Q(time_deadline_response__gt=timezone.now()))
-            pass
+    def filter(self, inquiries):
+        qs = self.request.GET
+        search = qs.get('search', None)
+        task_master = qs.get('task_master', 'all')
+        state = qs.get('state', 'all')
 
-        if task_master and task_master.isdigit():
-            inquiries = inquiries.filter(sender_id=task_master)
+        if search:
+            lookup = Q(title__icontains=search)
+            if search.isdigit():
+                lookup = lookup | Q(number_id=search)
+            inquiries = inquiries.filter(lookup)
 
-        if filter_by_state:
-            inquiries = inquiries.filter(state=filter_by_state)
+        if (task_master != 'all') and (task_master.isdigit()):
+            inquiries = inquiries.filter(task_master_id=task_master)
+
+        if state != 'all':
+            inquiries = inquiries.filter(state=state)
+
+        # filter by time
+        time_deadline_response_gt = qs.get('time_deadline_response__gt', None)
+        time_deadline_response_lt = qs.get('time_deadline_response__lt', None)
+        time_submit_gt = qs.get('time_submit__gt', None)
+        time_submit_lt = qs.get('time_submit__lt', None)
+
+        if time_deadline_response_gt:
+            inquiries = inquiries.filter(time_deadline_response_gt=time_deadline_response_gt)
+
+        if time_deadline_response_lt:
+            inquiries = inquiries.filter(time_deadline_response_lt=time_deadline_response_lt)
+
+        if time_submit_gt:
+            inquiries = inquiries.filter(time_submit_gt=time_submit_gt)
+
+        if time_submit_lt:
+            inquiries = inquiries.filter(time_submit_lt=time_submit_lt)
 
         return inquiries
 
-    def search(self, request, inquiries):
-        search = request.GET.get('search', None)
-
-        if not search:
-            return inquiries
-        if search.isdigit():
-            lookup = Q(number_id=search)
-            inquiries = inquiries.filter(lookup)
-        else:
-            lookup = Q(title__icontains=search) | Q(from_department__name__icontains=search) | Q(state=search) | Q(
-                sender__title__icontains=search)
-            inquiries = inquiries.filter(lookup)
-        return inquiries
-
-    def sort(self, request, inquiries):
-        sort_by = request.GET.get('sort_by', 'latest')
+    def sort(self, inquiries):
+        sort_by = self.request.GET.get('sort_by', 'latest')
 
         if sort_by == 'latest':
             inquiries = inquiries.order_by('-id')
@@ -707,60 +704,99 @@ class InquiryList(View):
         return inquiries
 
     def get(self, request):
-        if request.user.role == 'super_user':
-            inquiries = models.Inquiry.objects.all()
-        else:
-            inquiries = models.Inquiry.objects.exclude(status=None)
-
-        inquiries = self.search(request, inquiries)
-        inquiries = self.filter(request, inquiries)
-        inquiries = self.sort(request, inquiries)
+        inquiries = models.Inquiry.objects.all()
+        inquiries = self.filter(inquiries)
+        inquiries = self.sort(inquiries)
+        pagination, inquiries = self.pagination(inquiries)
 
         context = {
+            'pagination': pagination,
             'inquiries': inquiries,
             'departments': models.Department.objects.all(),
-            'taskmasters': models.TaskMaster.objects.all(),
+            'task_masters': models.TaskMaster.objects.all(),
+            'inquiry_states': models.Inquiry.STATE_OPTIONS,
         }
 
-        return render(request, 'public/inquiry/list.html', context)
-
-    @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user'])
-    def post(self, request):
-        referer_url = request.META.get('HTTP_REFERER', None)
-        data = request.POST.copy()
-
-        # set additional values
-        data['from_department'] = request.user.department
-
-        f = forms.InquiryForm(data)
-        if form_validate_err(request, f) is False:
-            return redirect(referer_url or '/error')
-        f.save()
-
-        messages.success(request, 'عملیات با موفقیت انجام شد')
-        return redirect(referer_url or '/success')
+        return render(request, self.template_name, context)
 
 
 class InquiryDetail(View):
+    template_name = 'public/inquiry/detail.html'
 
-    @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user'])
+    def get(self, request, inquiry_id):
+        inquiry = get_object_or_404(models.Inquiry, id=inquiry_id)
+        context = {
+            'inquiry': inquiry,
+            'task_masters': models.TaskMaster.objects.all(),
+            # permissions
+            'has_perm_to_modify': inquiry.has_perm_to_modify(request.user),
+            'has_perm_to_manage_status': inquiry.has_perm_to_manage_status(request.user),
+        }
+        return render(request, self.template_name, context)
+
+    # @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user'])
+    # def post(self, request, inquiry_id):
+    #     referer_url = request.META.get('HTTP_REFERER', None)
+    #     inquiry_obj = models.Inquiry.objects.get(id=inquiry_id)
+    #     type_request = request.POST.get('type_request', None)
+    #
+    #     if type_request == 'delete':
+    #         inquiry_obj.delete()
+    #     elif type_request == 'update':
+    #         data = request.POST
+    #
+    #         f = forms.InquiryUpdateForm(data, instance=inquiry_obj)
+    #         if form_validate_err(request, f) is False:
+    #             return redirect(referer_url or '/error')
+    #         f.save()
+    #
+    #     messages.success(request, 'عملیات با موفقیت انجام شد')
+    #     return redirect(referer_url or '/success')
+
+
+class InquiryDelete(LoginRequiredMixin, View):
+
+    def get(self, request, inquiry_id):
+        if not models.Inquiry.has_perm_to_modify(request.user):
+            raise PermissionDenied
+        inquiry = get_object_or_404(models.Inquiry, id=inquiry_id)
+        inquiry.delete()
+        messages.success(request, 'استعلام با موفقیت حذف شد')
+        return redirect('public:inquiry__list')
+
+
+class InquiryUpdate(LoginRequiredMixin, View):
+
     def post(self, request, inquiry_id):
-        referer_url = request.META.get('HTTP_REFERER', None)
-        inquiry_obj = models.Inquiry.objects.get(id=inquiry_id)
-        type_request = request.POST.get('type_request', None)
+        if not models.Inquiry.has_perm_to_modify(request.user):
+            raise PermissionDenied
+        inquiry = get_object_or_404(models.Inquiry, id=inquiry_id)
+        data = request.POST
+        f = forms.InquiryUpdate(data, instance=inquiry)
+        if form_validate_err(request, f) is False:
+            return redirect(inquiry.get_absolute_url())
+        f.save()
+        messages.success(request, 'استعلام با موفقیت بروزرسانی شد')
+        return redirect(inquiry.get_absolute_url())
 
-        if type_request == 'delete':
-            inquiry_obj.delete()
-        elif type_request == 'update':
-            data = request.POST
 
-            f = forms.InquiryUpdateForm(data, instance=inquiry_obj)
-            if form_validate_err(request, f) is False:
-                return redirect(referer_url or '/error')
-            f.save()
+class InquiryStatusModify(LoginRequiredMixin, View):
 
-        messages.success(request, 'عملیات با موفقیت انجام شد')
-        return redirect(referer_url or '/success')
+    def post(self, request, inquiry_id):
+        if not models.Inquiry.has_perm_to_manage_status(request.user):
+            raise PermissionDenied
+        inquiry = get_object_or_404(models.Inquiry, id=inquiry_id)
+        data = request.POST.copy()
+        # set additional values
+        data['inquiry'] = inquiry
+        inquiry_status = getattr(inquiry, 'status', None)
+        f = forms.InquiryStatusModify(data, files=request.FILES, instance=inquiry_status)
+        if not form_validate_err(request, f):
+            print(f.errors)
+            return redirect(inquiry.get_absolute_url())
+        f.save()
+        messages.success(request, 'وضعیت استعلام با موفقیت ثبت و بروزرسانی شد')
+        return redirect(inquiry.get_absolute_url())
 
 
 class InquiryOwner(View):

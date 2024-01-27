@@ -321,8 +321,10 @@ class Task(BaseModel, File):
     def get_remaining_time(self):
         # remaining time by days
         tend = self.time_end
-        t = jdatetime.date(tend.year, tend.month, tend.day) - jdatetime.date.today()
-        return t.days
+        if tend:
+            t = jdatetime.date(tend.year, tend.month, tend.day) - jdatetime.date.today()
+            return t.days
+        return '-'
 
 
 class TaskStatus(BaseModel, File):
@@ -372,10 +374,26 @@ class Inquiry(BaseModel):
     def __str__(self):
         return self.title
 
+    @classmethod
+    def has_perm_to_modify(cls, user):
+        if user.is_anonymous:
+            return False
+        if user.role in ('super_user', 'commerce_user', 'procurement_commerce_user'):
+            return True
+        return False
+
+    @classmethod
+    def has_perm_to_manage_status(cls, user):
+        if user.is_anonymous:
+            return False
+        if user.role in ('super_user',):
+            return True
+        return False
+
     def get_state_label(self):
         return self.get_state_display()
 
-    def get_status(self):
+    def get_status_label(self):
         status = getattr(self, 'status', None)
         if not status:
             return 'درحال بررسی'
@@ -385,9 +403,8 @@ class Inquiry(BaseModel):
         elif status.status == 'rejected':
             return 'رد شده'
 
-    def get_time_submited(self):
-        if self.time_submit:
-            return self.time_submit.strftime('%Y-%m-%d')
+    def get_project(self):
+        return getattr(self, 'project', None)
 
     def get_files(self):
         return self.inquiryfile_set.all().order_by('-id')
@@ -395,11 +412,22 @@ class Inquiry(BaseModel):
     def get_absolute_url(self):
         return reverse('public:inquiry__detail', args=(self.id,))
 
+    def get_referral_to_project_url(self):
+        return f"{reverse('public:project__add')}?inquiry-id={self.id}"
+
+    def get_remaining_deadline(self):
+        # remaining time by days(deadline)
+        td = self.time_deadline_response
+        if td:
+            t = jdatetime.date(td.year, td.month, td.day) - jdatetime.date.today()
+            return t.days
+        return None
+
 
 class InquiryStatus(BaseModel, File):
     STATUS_OPTIONS = (
-        ('accepted', 'تایید شد'),
-        ('rejected', 'رد شد'),
+        ('accepted', 'تایید شده'),
+        ('rejected', 'رد شده'),
     )
     status = models.CharField(max_length=20, choices=STATUS_OPTIONS)
     inquiry = models.OneToOneField('Inquiry', on_delete=models.CASCADE, related_name='status')
