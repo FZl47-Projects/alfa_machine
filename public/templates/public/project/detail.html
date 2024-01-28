@@ -36,7 +36,7 @@
                                                 <li class="breadcrumb-item"><a href="{% url 'public:index' %}">صفحه
                                                     اصلی</a></li>
                                                 <li class="breadcrumb-item"><a>پروژه ها</a></li>
-                                                <li class="breadcrumb-item"><a href="{% url 'public:index' %}">لیست
+                                                <li class="breadcrumb-item"><a href="{% url 'public:project__list' %}">لیست
                                                     پروژه ها</a></li>
                                                 <li class="breadcrumb-item active">{{ project.name }}</li>
                                             </ul>
@@ -806,8 +806,8 @@
                                                                         class="btn btn-trigger btn-icon"
                                                                         data-bs-toggle="tooltip"
                                                                         data-bs-placement="bottom"
-                                                                        title="اپدیت"><em
-                                                                        class="icon ni ni-update"></em></a>
+                                                                        title="ویرایش"><em
+                                                                        class="icon ni ni-pen"></em></a>
                                                             </li>
                                                             <li>
                                                                 <a href="#"

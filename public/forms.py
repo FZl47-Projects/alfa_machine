@@ -51,13 +51,25 @@ class InquiryStatusModify(forms.ModelForm):
         fields = '__all__'
 
 
-# ----
+class InquiryFile(forms.ModelForm):
+    description = forms.CharField(required=False)
 
-# TaskMasterAdd form
-class TaskMasterAddForm(forms.ModelForm):
+    class Meta:
+        model = models.InquiryFile
+        exclude = ('files',)
+
+
+class TaskMasterCreate(forms.ModelForm):
+    description = forms.CharField(required=False)
+
     class Meta:
         model = models.TaskMaster
         fields = '__all__'
+
+
+# ----
+
+# TaskMasterAdd form
 
 
 class ProjectFile(forms.ModelForm):
@@ -92,9 +104,3 @@ class ProjectUpdate(forms.ModelForm):
     class Meta:
         model = models.Project
         exclude = ('is_active',)
-
-
-class InquiryFileForm(forms.ModelForm):
-    class Meta:
-        model = models.InquiryFile
-        fields = '__all__'

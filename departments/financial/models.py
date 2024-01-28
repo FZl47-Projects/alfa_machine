@@ -1,8 +1,8 @@
 from django.db import models
-from core.models import BaseModel, File
+from core.models import BaseModel, FileAbstract
 
 
-class BasePayment(BaseModel, File):
+class BasePayment(BaseModel, FileAbstract):
     TYPE_PAYMENT_OPTIONS = (
         ('deposit', 'واریزی'),
         ('payment', 'پرداختی'),
@@ -33,7 +33,7 @@ class PrePayment(BasePayment):
 
 
 # SuretyBond model
-class SuretyBond(BaseModel, File):
+class SuretyBond(BaseModel, FileAbstract):
     project = models.OneToOneField('public.Project', on_delete=models.CASCADE, related_name='surety_bond')
     number_id = models.CharField(max_length=32, null=True, blank=True)
     is_free = models.BooleanField(default=False)

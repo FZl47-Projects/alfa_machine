@@ -25,7 +25,7 @@ class BaseModel(models.Model):
         return get_timesince_persian(self.created_at)
 
 
-class File(models.Model):
+class FileAbstract(models.Model):
     file = models.FileField(upload_to=upload_file_src, max_length=400, null=True, blank=True)
 
     class Meta:

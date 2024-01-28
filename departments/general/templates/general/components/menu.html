@@ -2,7 +2,7 @@
 <div class="nk-sidebar nk-sidebar-fixed is-light" data-content="sidebarMenu">
     <div class="nk-sidebar-element nk-sidebar-head">
         <div class="nk-sidebar-brand mx-auto">
-            <a href="{% url 'public:index' %}" class="logo-link nk-sidebar-logo">
+            <a href="{% url 'public:index' %}" class="logo-link nk-sidebar-logo" style="margin-top: 15px">
                 <img class="logo-light logo-img" src="{% static 'frontend/images/logo/logo.png' %}"
                      srcset="{% static 'frontend/images/logo/logo.png' %} 2x"
                      alt="لوگو"/>
@@ -88,11 +88,11 @@
                         </a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
-                                <a href="html/user-list-regular.html" class="nk-menu-link"><span
+                                <a href="{% url 'account:user__add' %}" class="nk-menu-link"><span
                                         class="nk-menu-text">افزودن کاربر</span></a>
                             </li>
                             <li class="nk-menu-item">
-                                <a href="html/user-list-compact.html" class="nk-menu-link"><span
+                                <a href="{% url 'account:user__list' %}" class="nk-menu-link"><span
                                         class="nk-menu-text">لیست کاربران</span></a>
                             </li>
                         </ul>
@@ -106,12 +106,65 @@
                         </a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
-                                <a href="html/customer-list.html" class="nk-menu-link"><span
+                                <a href="{% url 'public:task_master__add' %}" class="nk-menu-link"><span
                                         class="nk-menu-text">افزودن مشتری</span></a>
                             </li>
                             <li class="nk-menu-item">
-                                <a href="html/customer-details.html" class="nk-menu-link"><span
+                                <a href="{% url 'public:task_master__list' %}" class="nk-menu-link"><span
                                         class="nk-menu-text">لیست مشتریان</span></a>
+                            </li>
+                        </ul>
+                        <!-- .nk-menu-sub -->
+                    </li>
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-icon"><em class="icon ni ni-building"></em></span>
+                            <span class="nk-menu-text">واحد ها</span>
+                        </a>
+                        <ul class="nk-menu-sub">
+                            <li class="nk-menu-item">
+                                <a href="#" class="nk-menu-link"><span
+                                        class="nk-menu-text">افزودن واحد</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="#" class="nk-menu-link"><span
+                                        class="nk-menu-text">لیست واحد ها</span></a>
+                            </li>
+                        </ul>
+                        <!-- .nk-menu-sub -->
+                    </li>
+                    <!-- .nk-menu-item -->
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-icon"><em class="icon ni ni-book"></em></span>
+                            <span class="nk-menu-text">انبار</span>
+                        </a>
+                        <ul class="nk-menu-sub">
+                            <li class="nk-menu-item">
+                                <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
+                                   target="_blank"><span class="nk-menu-text">ثبت ایتم</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
+                                   target="_blank"><span class="nk-menu-text">لیست انبار</span></a>
+                            </li>
+                        </ul>
+                        <!-- .nk-menu-sub -->
+                    </li>
+                    <!-- .nk-menu-item -->
+                    <li class="nk-menu-item has-sub">
+                        <a href="#" class="nk-menu-link nk-menu-toggle">
+                            <span class="nk-menu-icon"><em class="icon ni ni-coin-alt"></em></span>
+                            <span class="nk-menu-text">مالی</span>
+                        </a>
+                        <ul class="nk-menu-sub">
+                            <li class="nk-menu-item">
+                                <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
+                                   target="_blank"><span class="nk-menu-text">ثبت پرداخت</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
+                                   target="_blank"><span class="nk-menu-text">لیست پرداختی ها</span></a>
                             </li>
                         </ul>
                         <!-- .nk-menu-sub -->

@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'KalamehBlack';
-    src: url('/static/fonts/Kalameh_Black.woff')
+    src: url('/static/frontend/fonts/Kalameh_Black.woff')
 }
 
 * {
@@ -37,13 +37,13 @@ body {
 }
 
 .container-not-found-base p {
-    font-size: 160%;
+    font-size: 30px;
     font-family: KalamehBlack;
     color: rgb(229, 122, 122);
 }
 
 .container-not-found-base td {
-    font-size: 160%;
+    font-size: 30px;
     font-family: KalamehBlack;
     color: rgb(229, 122, 122);
 }

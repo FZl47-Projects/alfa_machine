@@ -1,8 +1,8 @@
 from django.db import models
-from core.models import BaseModel, File
+from core.models import BaseModel, FileAbstract
 
 
-class NotificationDepartment(BaseModel, File):
+class NotificationDepartment(BaseModel, FileAbstract):
     from_department = models.ForeignKey('public.Department', on_delete=models.CASCADE, related_name='from_dp_notification')
     title = models.CharField(max_length=150)
     description = models.TextField(null=True, blank=True)

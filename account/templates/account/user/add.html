@@ -1,0 +1,241 @@
+{% extends 'base/base_template.html' %}
+{% load static %}
+{% load render_partial %}
+
+{% block Title %}
+    ایجاد کاربر
+{% endblock %}
+
+{% block BodyClass %}
+    has-rtl nk-body ui-rounder has-sidebar no-touch nk-nio-theme
+{% endblock %}
+
+{% block Content %}
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main">
+            <!-- sidebar @s -->
+            {% render_partial 'public.components.MenuComponent' %}
+            <!-- sidebar @e -->
+            <!-- wrap @s -->
+            <div class="nk-wrap">
+                <!-- main header @s -->
+                {% include 'base/components/header.html' %}
+                <!-- main header @e -->
+                <!-- content @s -->
+                <div class="nk-content nk-content-fluid">
+                    <div class="container-xl wide-xl">
+                        <div class="nk-content-body">
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block-between g-3">
+                                    <div class="nk-block-head-content">
+                                        <h3 class="nk-block-title page-title">ایجاد کاربر</h3>
+                                        <nav>
+                                            <ul class="breadcrumb breadcrumb-arrow">
+                                                <li class="breadcrumb-item"><a href="{% url 'public:index' %}">صفحه
+                                                    اصلی</a></li>
+                                                <li class="breadcrumb-item"><a>کاربران</a></li>
+                                                <li class="breadcrumb-item active">ایجاد کاربر</li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                    <div class="nk-block-head-content">
+                                        <div class="toggle-wrap nk-block-tools-toggle">
+                                            <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1"
+                                               data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
+                                            <div class="toggle-expand-content" data-content="pageMenu">
+                                                <ul class="nk-block-tools g-3">
+                                                    <li class="nk-block-tools-opt">
+                                                        <div class="drodown">
+                                                            <a href="#" class="dropdown-toggle btn btn-icon btn-primary"
+                                                               data-bs-toggle="dropdown"><em
+                                                                    class="icon ni ni-plus"></em></a>
+                                                            <div class="dropdown-menu dropdown-menu-end">
+                                                                <ul class="link-list-opt no-bdr">
+                                                                    <li>
+                                                                        <a href="#"><span>ایمپورت از فایل اکسل</span></a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                </div>
+                                <!-- .nk-block-between -->
+                            </div>
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block nk-block-lg">
+                                    <div class="card">
+                                        <div class="card-inner">
+                                            <div class="card-head">
+                                                <h5 class="card-title">اطلاعات پروژه</h5>
+                                            </div>
+                                            <form action="{% url 'account:user__add' %}"
+                                                  class="form-validate is-alter" method="post">
+                                                {% csrf_token %}
+                                                <div class="row g-4">
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="email">
+                                                                ایمیل
+                                                                <span class="text-soft fs-10px">(نام کاربری)</span>
+                                                            </label>
+                                                            <div class="form-control-wrap">
+                                                                <input type="email" class="form-control"
+                                                                       name="email"
+                                                                       id="email"
+                                                                       placeholder="test@gmail.com" required
+                                                                       autocomplete="off">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="first_name">نام</label>
+                                                            <div class="form-control-wrap">
+                                                                <input type="text" class="form-control"
+                                                                       name="first_name"
+                                                                       id="first_name"
+                                                                       placeholder="فاضل" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="last_name">نام
+                                                                خانوادگی</label>
+                                                            <div class="form-control-wrap">
+                                                                <input type="text" class="form-control" name="last_name"
+                                                                       placeholder="مومنی"
+                                                                       id="last_name" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="role">نوع کاربر</label>
+                                                            <div class="form-control-wrap">
+                                                                <select id="role" name="role"
+                                                                        class="form-select js-select2" data-search="on"
+                                                                        tabindex="-1" aria-hidden="true" required>
+                                                                    {% for role in user.ROLE_USER_OPTIONS %}
+                                                                        {% if role.0 != 'super_user' or user.role == 'super_user' %}
+                                                                            <option value="{{ role.0 }}">{{ role.1 }}</option>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="department">واحد
+                                                                مرتبط</label>
+                                                            <div class="form-control-wrap">
+                                                                <select id="department" name="department"
+                                                                        class="form-select js-select2" data-search="on"
+                                                                        tabindex="-1" aria-hidden="true" required>
+                                                                    {% for department in departments %}
+                                                                        <option value="{{ department.id }}">{{ department.name }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="is_active">وضعیت
+                                                                حساب</label>
+                                                            <div class="form-control-wrap">
+                                                                <select name="is_active" id="is_active"
+                                                                        class="form-select js-select2">
+                                                                    <option value="true" selected>فعال</option>
+                                                                    <option value="false">غیر فعال</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="password">گذرواژه</label>
+                                                            <div class="form-control-wrap">
+                                                                <input type="password" class="form-control"
+                                                                       minlength="7" maxlength="64" autocomplete="off"
+                                                                       name="password"
+                                                                       placeholder="****"
+                                                                       id="password" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="password2">تکرار
+                                                                گذرواژه</label>
+                                                            <div class="form-control-wrap">
+                                                                <input type="password" class="form-control"
+                                                                       minlength="7" maxlength="64" autocomplete="off"
+                                                                       name="password2"
+                                                                       placeholder="****"
+                                                                       id="password2" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-12 text-left">
+                                                        <div class="form-group">
+                                                            <button type="submit" id="btn_submit_form"
+                                                                    class="btn btn-lg btn-primary">
+                                                                ایجاد کاربر
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- .components-preview -->
+                        </div>
+                    </div>
+                </div>
+                <!-- content @e -->
+                <!-- footer @s -->
+                {% include 'base/components/footer.html' %}
+                <!-- footer @e -->
+            </div>
+            <!-- wrap @e -->
+        </div>
+        <!-- main @e -->
+    </div>
+{% endblock %}
+
+{% block Script %}
+    <script>
+        password2.addEventListener('input', function (e) {
+            let v = this.value
+            if (v != password.value) {
+                this.style.border = '1px solid red'
+            } else {
+                this.style.border = ''
+            }
+        })
+
+        btn_submit_form.addEventListener('click', function (e) {
+            if (password2.value != password.value) {
+                e.preventDefault()
+                createNotify({
+                    title: 'خطا',
+                    message: 'گذواژه ها مشابه نیستند',
+                    theme: 'error'
+                })
+            }
+
+        })
+    </script>
+{% endblock %}

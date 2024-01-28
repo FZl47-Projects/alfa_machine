@@ -1,10 +1,10 @@
 from django.db import models
-from core.models import BaseModel, File
+from core.models import BaseModel, FileAbstract
 from core.utils import get_random_code
 from public.models import Project, Department
 
 
-class TicketDepartment(BaseModel, File):
+class TicketDepartment(BaseModel, FileAbstract):
     description = models.TextField()
     from_department = models.ForeignKey('public.Department', on_delete=models.CASCADE, related_name='from_dp')
     department = models.ForeignKey('public.Department', on_delete=models.CASCADE, related_name='ticket_departments')
@@ -31,7 +31,7 @@ class TicketDepartment(BaseModel, File):
         return departments.values_list('name', flat=True)
 
 
-class Report(BaseModel, File):
+class Report(BaseModel, FileAbstract):
     code = models.CharField('Report Code', default='', max_length=12, unique=True, blank=True)
     description = models.TextField()
     from_department = models.ForeignKey('public.Department', on_delete=models.CASCADE, related_name='report_from_dp')

@@ -110,7 +110,7 @@
                                                                                 <div class="row gx-6 gy-4">
                                                                                     <div class="col-6">
                                                                                         <div class="form-group">
-                                                                                            <label class="overline-title overline-title-alt">کارفرما</label>
+                                                                                            <label class="overline-title overline-title-alt">مشتری</label>
                                                                                             <select class="form-select js-select2 select-by-filter"
                                                                                                     name="task_master"
                                                                                                     tabindex="-1"
@@ -263,14 +263,16 @@
                                                 <div class="nk-tb-list nk-tb-tnx">
                                                     <div class="nk-tb-item nk-tb-head text-center">
                                                         <div class="nk-tb-col text-start"><span>نام</span></div>
-                                                        <div class="nk-tb-col"><span>کارفرما</span></div>
+                                                        <div class="nk-tb-col"><span>مشتری</span></div>
                                                         <div class="nk-tb-col tb-col-xxl"><span>مرحله</span></div>
                                                         <div class="nk-tb-col tb-col-sm"><span>تاریخ ابلاغ به کار</span>
                                                         </div>
                                                         <div class="nk-tb-col tb-col-sm">
                                                             <span>تاریخ اتمام قرارداد</span></div>
-                                                        <div class="nk-tb-col nk-tb-col-status "><span
-                                                                class="sub-text d-none d-md-block">وضعیت</span></div>
+                                                        <div class="nk-tb-col nk-tb-col-status ">
+                                                            <span
+                                                                class="sub-text d-none d-md-block">وضعیت</span>
+                                                        </div>
                                                         <div class="nk-tb-col nk-tb-col-tools"></div>
                                                     </div>
                                                     {% for project in projects %}
@@ -279,11 +281,11 @@
                                                             <div class="nk-tb-col text-start">
                                                                 <a href="{{ project.get_absolute_url }}">
                                                                     <div class="nk-tnx-type">
-                                                                        <div class="nk-tnx-type-icon">
+                                                                        <div class="nk-tnx-type-icon" style="background:none;">
                                                                             <img src="{{ project.get_image_cover_url }}"
                                                                                  alt="{{ project.name }}"
-                                                                                 style="border-radius: 50%" width="30"
-                                                                                 height="30">
+                                                                                 style="border-radius: 50%" width="35"
+                                                                                 height="35">
                                                                         </div>
                                                                         <div class="nk-tnx-type-text">
                                                                             <span>{{ project.name|truncatechars:30 }}</span>

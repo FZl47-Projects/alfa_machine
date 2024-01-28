@@ -1,9 +1,9 @@
 from django.db import models
-from core.models import BaseModel, File
+from core.models import BaseModel, FileAbstract
 
 
 # WarehouseRegistrations model
-class WarehouseRegistration(BaseModel, File):
+class WarehouseRegistration(BaseModel, FileAbstract):
     project = models.ForeignKey('public.Project', on_delete=models.CASCADE, related_name='warehouse_registrations')
     price = models.BigIntegerField(default=0)
     register_time = models.DateTimeField()
@@ -21,7 +21,7 @@ class WarehouseRegistration(BaseModel, File):
 
 
 # RegistrationFiles model
-class RegistrationFile(BaseModel, File):
+class RegistrationFile(BaseModel, FileAbstract):
     warehouse_register = models.OneToOneField(WarehouseRegistration, on_delete=models.CASCADE, related_name='registration_file')
 
     class Meta:

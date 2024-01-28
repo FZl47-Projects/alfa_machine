@@ -320,8 +320,25 @@
                                     <!-- .col -->
                                     <div class="col-12">
                                         <div class="nk-block-head">
-                                            <div class="nk-block-head-content">
+                                            <div class="nk-block-head-content d-flex justify-content-between gx-1 align-items-center">
                                                 <h5 class="nk-block-title title">فایل های پیوست</h5>
+                                                <div>
+                                                    <div>
+                                                        <button data-bs-toggle="modal"
+                                                                data-bs-target="#modal-create-file-object"
+                                                                class="btn btn-outline-info bg-info text-white d-none d-sm-inline-flex">
+                                                                    <span>
+                                                                       اپلود فایل
+                                                                    </span>
+                                                            <em class="icon ni ni-upload"></em>
+                                                        </button>
+                                                        <button data-bs-toggle="modal"
+                                                                data-bs-target="#modal-manage-status-accept"
+                                                                class="btn btn-icon btn-outline-info bg-info text-white d-inline-flex d-sm-none">
+                                                            <em class="icon ni ni ni-upload"></em>
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="nk-block">
@@ -333,53 +350,48 @@
                                                             <div class="nk-tb-item nk-tb-head text-center">
                                                                 <div class="nk-tb-col"><span>نام</span></div>
                                                                 <div class="nk-tb-col"><span>واحد ثبت کننده</span></div>
-                                                                <div class="nk-tb-col"><span>توضیحات</span></div>
+                                                                <div class="nk-tb-col tb-col-md"><span>توضیحات</span></div>
                                                                 <div class="nk-tb-col text-center">
-                                                                    <span>فایل پیوست</span>
+                                                                    <span>فایل ها</span>
                                                                 </div>
                                                                 <div class="nk-tb-col nk-tb-col-tools"></div>
                                                             </div>
-                                                            {% for status in task.get_statuses %}
+                                                            {% for file in inquiry_files %}
                                                                 <!-- .nk-tb-item -->
                                                                 <div class="nk-tb-item text-center">
-                                                                    <div class="nk-tb-col nk-tb-col-status text-center">
-                                                                        <div class="d-md-none">
-                                                                            <div class="dot bg-{{ status.status }}"
-                                                                                 data-bs-toggle="tooltip"
-                                                                                 data-bs-placement="bottom"
-                                                                                 title="{{ status.get_status_label }}"></div>
-                                                                        </div>
-                                                                        <span class="badge badge-dim bg-{{ status.status }} py-1 fs-14px d-none d-md-inline-flex">{{ status.get_status_label }}</span>
+                                                                    <div class="nk-tb-col">
+                                                                        <span>{{ file.name }}</span>
                                                                     </div>
                                                                     <div class="nk-tb-col">
-                                                                        <span>{{ status.allocator_user.get_full_name|default:'-' }}</span>
-                                                                    </div>
-                                                                    <div class="nk-tb-col">
-                                                                        {{ status.description|default:'-' }}
-                                                                    </div>
-                                                                    <div class="nk-tb-col nk-tb-col-status text-center">
-                                                                        {% if status.file %}
-                                                                            <div class="d-md-none">
-                                                                                <a href="{{ status.file.url }}"
-                                                                                   class="view-file">
-                                                                                    <em class="icon ni ni-download"></em>
-                                                                                </a>
-                                                                            </div>
-                                                                            <a href="{{ status.file.url }}"
-                                                                               class="view-file d-none d-md-block fs-11px text-center">دانلود
-                                                                                و مشاهده
-                                                                            </a>
+                                                                        {% if file.from_department == user.department %}
+                                                                            <span>از طرف شما</span>
                                                                         {% else %}
-                                                                            <em class="icon ni ni-cross-c text-warning text-start"></em>
+                                                                            <a href="{{ file.from_department.get_absolute_url }}">{{ file.from_department.name }}</a>
                                                                         {% endif %}
+                                                                    </div>
+                                                                    <div class="nk-tb-col tb-col-md">
+                                                                        {{ file.description|truncatechars:30|default:'-' }}
+                                                                    </div>
+                                                                    <div class="nk-tb-col">
+                                                                        {% for file in file.get_files %}
+                                                                            <span class="badge badge-pill bg-primary">
+                                                                                <a href="{{ file.file.url }}"
+                                                                                   class="view-file text-white">
+                                                                                    فایل
+                                                                                    {{ forloop.counter }}
+                                                                                </a>
+                                                                            </span>
+                                                                        {% endfor %}
                                                                     </div>
                                                                     <div class="nk-tb-col nk-tb-col-tools">
                                                                         <ul class="nk-tb-actions gx-2">
-                                                                            <li class="nk-tb-action-hidden">
-                                                                                <a href="/task/10/detail"
-                                                                                   class="bg-white btn btn-sm btn-outline-light btn-icon btn-tooltip"
-                                                                                   aria-label="جزئیات"
-                                                                                   data-bs-original-title="جزئیات"><em
+                                                                            <li class="nk-tb-action-hidden"
+                                                                                data-bs-toggle="modal"
+                                                                                data-bs-target="#modal-detail-file-object-{{ file.id }}">
+                                                                                <a
+                                                                                        class="bg-white btn btn-sm btn-outline-light btn-icon btn-tooltip"
+                                                                                        aria-label="جزئیات"
+                                                                                        data-bs-original-title="جزئیات"><em
                                                                                         class="icon ni ni-eye"></em></a>
                                                                             </li>
                                                                             <li>
@@ -392,16 +404,19 @@
                                                                                     <div class="dropdown-menu dropdown-menu-end"
                                                                                          style="">
                                                                                         <ul class="link-list-opt">
-
-                                                                                            <li>
-                                                                                                <a href="#"><em
-                                                                                                        class="icon ni ni-bell"></em><span>ارسال یادآور</span></a>
-                                                                                            </li>
-
-                                                                                            <li>
-                                                                                                <a href="/task/10/detail"><em
+                                                                                            <li data-bs-toggle="modal"
+                                                                                                data-bs-target="#modal-detail-file-object-{{ file.id }}">
+                                                                                                <a><em
                                                                                                         class="icon ni ni-eye"></em><span>مشاهده جزئیات</span></a>
                                                                                             </li>
+                                                                                            {% if file.from_department == user.department %}
+                                                                                                <li class="text-danger"
+                                                                                                    data-bs-toggle="modal"
+                                                                                                    data-bs-target="#modal-delete-file-object-{{ file.id }}">
+                                                                                                    <a><em
+                                                                                                            class="icon ni ni-trash-empty"></em><span>حذف فایل</span></a>
+                                                                                                </li>
+                                                                                            {% endif %}
                                                                                         </ul>
                                                                                     </div>
                                                                                 </div>
@@ -442,6 +457,105 @@
         </div>
         <!-- main @e -->
         <!-- modals -->
+
+        <!-- files -->
+        {% for file in inquiry_files %}
+            <div class="modal fade" tabindex="-1" id="modal-delete-file-object-{{ file.id }}" aria-modal="true"
+                 role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body modal-body-lg text-center">
+                            <div class="nk-modal">
+                                <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-trash-empty bg-danger"></em>
+                                <h4 class="nk-modal-title">حذف فایل استعلام</h4>
+                                <div class="nk-modal-text">
+                                    <p class="bg-outline-danger">
+                                        ایا از حذف فایل استعلام
+                                        <b>{{ inquiry.title }}</b>
+                                        اطمینان دارید ؟ پس از
+                                        حذف امکان بازگشت وجود ندارد
+                                    </p>
+                                </div>
+                                <div class="nk-modal-action mt-5">
+                                    <a class="btn btn-lg btn-mw btn-light m-1" data-bs-dismiss="modal">لغو</a>
+                                    <a href="{% url 'public:inquiry_file__delete' inquiry_id=inquiry.id inquiry_file_id=file.id %}"
+                                       class="btn btn-lg btn-mw btn-danger m-1">بله ، حذف فایل استعلام</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- .modal-body -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" tabindex="-1" id="modal-detail-file-object-{{ file.id }}" aria-modal="true"
+                 role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body text-center">
+                            <div class="nk-modal">
+                                <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-info bg-info"></em>
+                                <h4 class="nk-modal-title">جزئیات فایل استعلام</h4>
+                                <div class="nk-modal-text">
+                                    <div class="card">
+                                        <ul class="data-list is-compact">
+                                            <li class="data-item">
+                                                <div class="data-col">
+                                                    <div class="data-label">نام</div>
+                                                    <div class="data-value">{{ file.name }}</div>
+                                                </div>
+                                            </li>
+                                            <li class="data-item">
+                                                <div class="data-col">
+                                                    <div class="data-label">زمان ثبت</div>
+                                                    <div class="data-value">
+                                                        <span class="datetime-convert">{{ file.get_created_at }}</span>
+                                                        <span class="font-60 badge badge-pill bg-secondary text-white">{{ file.get_created_at_timepast }}</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="data-item">
+                                                <div class="data-col">
+                                                    <div class="data-label">برای واحد های</div>
+                                                    <div class="data-value">
+                                                        {% for department in file.get_to_departments %}
+                                                            <span class="m-1 badge badge-dim bg-gray">
+                                                                <a href="{{ department.get_absolute_url }}">{{ department.name }}</a>
+                                                            </span>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="data-item">
+                                                <div class="data-col">
+                                                    <div class="data-label">کاربر ثبت کننده</div>
+                                                    <div class="data-value">
+                                                        {{ file.allocator_user.get_full_name|default:'-' }}
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="data-item">
+                                                <div class="data-col">
+                                                    <div class="data-label">توضیحات</div>
+                                                    <div class="data-value">
+                                                        {{ file.description|default:'-' }}
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="nk-modal-action mt-5">
+                                    <a class="btn btn-lg btn-mw btn-light" data-bs-dismiss="modal">بستن</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- .modal-body -->
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+
         <!-- manage status modals -->
         <div class="modal fade" tabindex="-1" id="modal-manage-status-reject" aria-modal="true" role="dialog">
             <div class="modal-dialog" role="document">
@@ -453,7 +567,8 @@
                                 <h4 class="nk-modal-title">رد استعلام</h4>
                             </div>
                             <div>
-                                <form action="{% url 'public:inquiry_status__modify' inquiry_id=inquiry.id %}" method="post" enctype="multipart/form-data">
+                                <form action="{% url 'public:inquiry_status__modify' inquiry_id=inquiry.id %}"
+                                      method="post" enctype="multipart/form-data">
                                     {% csrf_token %}
                                     <input type="hidden" name="status" value="rejected">
                                     <div class="row g-4">
@@ -484,7 +599,8 @@
                                     <div class="nk-modal-action mt-5 text-left">
                                         <a class="btn btn-lg btn-mw btn-light m-1" data-bs-dismiss="modal">لغو</a>
                                         <button type="submit"
-                                           class="btn btn-lg btn-mw btn-danger m-1">رد استعلام</button>
+                                                class="btn btn-lg btn-mw btn-danger m-1">رد استعلام
+                                        </button>
                                     </div>
                                 </form>
                             </div>
@@ -505,7 +621,8 @@
                                 <h4 class="nk-modal-title">تایید استعلام</h4>
                             </div>
                             <div>
-                                <form action="{% url 'public:inquiry_status__modify' inquiry_id=inquiry.id %}" method="post" enctype="multipart/form-data">
+                                <form action="{% url 'public:inquiry_status__modify' inquiry_id=inquiry.id %}"
+                                      method="post" enctype="multipart/form-data">
                                     {% csrf_token %}
                                     <input type="hidden" name="status" value="accepted">
                                     <div class="row g-4">
@@ -536,7 +653,8 @@
                                     <div class="nk-modal-action mt-5 text-left">
                                         <a class="btn btn-lg btn-mw btn-light m-1" data-bs-dismiss="modal">لغو</a>
                                         <button type="submit"
-                                           class="btn btn-lg btn-mw btn-success m-1">تایید استعلام</button>
+                                                class="btn btn-lg btn-mw btn-success m-1">تایید استعلام
+                                        </button>
                                     </div>
                                 </form>
                             </div>
@@ -696,6 +814,86 @@
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-lg btn-primary">
                                             بروزرسانی استعلام
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" tabindex="-1" id="modal-create-file-object">
+            <div class="modal-dialog modal-dialog-top modal-lg" role="document">
+                <div class="modal-content">
+                    <button class="close" data-dismiss="modal" aria-label="بستن">
+                        <em class="icon ni ni-cross"></em>
+                    </button>
+                    <div class="modal-header">
+                        <h5 class="modal-title">اپلود فایل پیوست</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'public:inquiry_file__add' inquiry_id=inquiry.id %}"
+                              class="form-validate is-alter" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row g-4">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="name">نام</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" name="name"
+                                                   placeholder="نام"
+                                                   id="name" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="description">فایل ها</label>
+                                        <div class="form-control-wrap">
+                                            <div class="form-file">
+                                                <input type="file" multiple name="files" class="form-file-input"
+                                                       id="file" required>
+                                                <label class="form-file-label overflow-hidden" for="file">انتخاب
+                                                    فایل</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="task_master">
+                                            واحد ها
+                                            <span class="text-soft fs-10px">در درسترس برای واحد ها</span>
+                                        </label>
+                                        <div class="form-control-wrap text-center">
+                                            {% for department in departments %}
+                                                <div class="custom-control custom-checkbox checked m-3">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                           value="{{ department.id }}"
+                                                           id="customCheck-{{ forloop.counter }}" name="to_departments">
+                                                    <label class="custom-control-label"
+                                                           for="customCheck-{{ forloop.counter }}">{{ department.name }}</label>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="description">توضیحات</label>
+                                        <div class="form-control-wrap">
+                                            <textarea name="description" id="description"
+                                                      class="form-control"
+                                                      placeholder="توضیحات"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-left">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-lg btn-primary">
+                                            ایجاد فایل پیوست
                                         </button>
                                     </div>
                                 </div>

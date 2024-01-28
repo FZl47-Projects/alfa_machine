@@ -2,7 +2,7 @@ import jdatetime
 from django.db.models import Sum, Count
 from django.urls import reverse
 from django.db import models
-from core.models import BaseModel, File
+from core.models import BaseModel, FileAbstract
 
 
 class Department(BaseModel):
@@ -58,15 +58,22 @@ class Department(BaseModel):
         return self.get_tasks().filter(taskstatus__status='need-to-replan')
 
 
-# TaskMasters model
 class TaskMaster(BaseModel):
     name = models.CharField('Task Master name', max_length=128)
+    description = models.TextField(null=True)
 
     class Meta:
         ordering = '-id',
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        # TODO: should be completed
+        pass
+
+    def get_projects(self):
+        return self.projects.all()
 
 
 class Project(BaseModel):
@@ -256,7 +263,7 @@ class Project(BaseModel):
         return departments
 
 
-class ProjectFile(BaseModel, File):
+class ProjectFile(BaseModel, FileAbstract):
     name = models.CharField(max_length=100)
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
     from_department = models.ForeignKey('Department', on_delete=models.SET_NULL, null=True)
@@ -269,7 +276,7 @@ class ProjectFile(BaseModel, File):
         return self.name
 
 
-class Task(BaseModel, File):
+class Task(BaseModel, FileAbstract):
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
@@ -327,7 +334,7 @@ class Task(BaseModel, File):
         return '-'
 
 
-class TaskStatus(BaseModel, File):
+class TaskStatus(BaseModel, FileAbstract):
     STATUS_OPTIONS = (
         ('finished', 'انجام شد'),
         ('progress', 'در حال انجام'),
@@ -407,7 +414,7 @@ class Inquiry(BaseModel):
         return getattr(self, 'project', None)
 
     def get_files(self):
-        return self.inquiryfile_set.all().order_by('-id')
+        return self.inquiryfile_set.all()
 
     def get_absolute_url(self):
         return reverse('public:inquiry__detail', args=(self.id,))
@@ -424,7 +431,7 @@ class Inquiry(BaseModel):
         return None
 
 
-class InquiryStatus(BaseModel, File):
+class InquiryStatus(BaseModel, FileAbstract):
     STATUS_OPTIONS = (
         ('accepted', 'تایید شده'),
         ('rejected', 'رد شده'),
@@ -437,15 +444,30 @@ class InquiryStatus(BaseModel, File):
         return self.status
 
 
-class InquiryFile(BaseModel, File):
+class InquiryFile(BaseModel):
     name = models.CharField(max_length=100)
-    inquiry = models.ForeignKey('Inquiry', on_delete=models.CASCADE)
     description = models.TextField(null=True)
-    from_department = models.ForeignKey('Department', on_delete=models.CASCADE, null=True, related_name='inquiry_file')
-    departments = models.ManyToManyField('Department')  # departments can access to this file
+    files = models.ManyToManyField('File')
+    inquiry = models.ForeignKey('Inquiry', on_delete=models.CASCADE)
+    allocator_user = models.ForeignKey('account.User', null=True, on_delete=models.SET_NULL)
+    from_department = models.ForeignKey('Department', on_delete=models.CASCADE, null=True,
+                                        related_name='inquiry_file_from_dep')
+    to_departments = models.ManyToManyField('Department',
+                                            related_name='inquiry_file_to_dep')  # departments can access to this file
 
     def __str__(self):
         return f'{self.name} - {self.inquiry} - File'
 
     def get_department_ids(self):
-        return list(self.departments.values_list('id', flat=True))
+        return list(self.to_departments.values_list('id', flat=True))
+
+    def get_files(self):
+        return self.files.all()
+
+    def get_to_departments(self):
+        return self.to_departments.all()
+
+
+class File(FileAbstract):
+    class Meta:
+        ordering = ('-id',)

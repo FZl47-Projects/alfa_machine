@@ -4,8 +4,7 @@ from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.views.generic import View
 from django.contrib import messages
-from django.utils import timezone
-from django.db.models import Q
+from django.db.models import Q, Count
 
 from account.auth.decorators import user_role_required_cbv
 from notification.models import NotificationDepartment
@@ -27,29 +26,6 @@ class Error(View):
 class Index(View):
     def get(self, request):
         return redirect(request.user.get_absolute_url_dashboard())
-
-
-# TaskMaster list/add view
-class TaskMasterView(View):
-    template = 'public/task_master/list.html'
-
-    def get(self, request):
-        task_masters = models.TaskMaster.objects.all()
-        contexts = {'task_masters': task_masters}
-
-        return render(request, self.template, contexts)
-
-    def post(self, request):
-        data = request.POST
-
-        f = forms.TaskMasterAddForm(data=data)
-        if not f.is_valid():
-            messages.error(request, 'لطفا فیلد هارا به درستی پر نمایید')
-            return redirect('public:task_master')
-        f.save()
-
-        messages.success(request, 'پروژه با موفقیت بروزرسانی شد')
-        return redirect('public:task_master')
 
 
 class ProjectDetail(LoginRequiredMixin, View):
@@ -75,8 +51,8 @@ class ProjectList(LoginRequiredMixin, View):
         page_obj = paginator.get_page(page_number)
         return page_obj, page_obj.object_list
 
-    def filter(self, request, projects):
-        qs = request.GET
+    def filter(self, projects):
+        qs = self.request.GET
         search = qs.get('search', None)
         task_master = qs.get('task_master', 'all')
         project_status = qs.get('project_status', 'all')
@@ -112,7 +88,7 @@ class ProjectList(LoginRequiredMixin, View):
 
     def get(self, request):
         projects = models.Project.objects.filter(is_active=True)
-        projects = self.filter(request, projects)
+        projects = self.filter(projects)
         pagination, projects = self.pagination(projects)
         context = {
             'projects': projects,
@@ -137,12 +113,11 @@ class ProjectAdd(LoginRequiredMixin, View):
 
     @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user'])
     def post(self, request):
-        referer_url = request.META.get('HTTP_REFERER', None)
         data = request.POST
         f = forms.ProjectCreate(data)
         if not f.is_valid():
             messages.error(request, 'لطفا فیلد هارا به درستی وارد نمایید')
-            return redirect(referer_url) if referer_url else redirect('public:project_add')
+            return redirect('public:project__add')
         project = f.save()
         messages.success(request, 'پروژه با موفقیت ایجاد شد')
         return redirect(project.get_absolute_url())
@@ -174,213 +149,213 @@ class ProjectDelete(LoginRequiredMixin, View):
         return redirect('public:project__list')
 
 
-class ProjectFile(LoginRequiredMixin, View):
-
-    def search(self, request, items):
-        search = request.GET.get('search', None)
-        if not search:
-            return items
-        items = items.filter(name__icontains=search)
-        return items
-
-    @user_role_required_cbv(
-        ['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user', 'control_quality_user',
-         'technical_user', 'production_user'])
-    def get(self, request):
-        projects = models.Project.objects.filter(is_active=True)
-        projects = self.search(request, projects)
-        context = {
-            'projects': projects
-        }
-        return render(request, 'public/project/file/list.html', context)
-
-    def post(self, request):
-        referer_url = request.META.get('HTTP_REFERER', None)
-        data = request.POST.copy()
-        # set additional values
-        data['from_department'] = request.user.department
-
-        f = forms.ProjectFile(data, request.FILES)
-        if form_validate_err(request, f) is False:
-            return redirect(referer_url or '/error')
-        obj = f.save()
-
-        # Create notification for each department
-        notif_title = 'اعلان آپلود فایل پروژه'
-        notif_description = f'فایل جدید برای پروژه ({obj.project.name})'
-        create_notification(from_department=obj.from_department, title=notif_title, description=notif_description,
-                            projects=obj.project, all_departments=True)
-
-        messages.success(request, 'عملیات مورد نظر با موفقیت انجام شد')
-        return redirect(referer_url or '/success')
-
-
-class ProjectDetailFileList(LoginRequiredMixin, View):
-
-    def search(self, request, items):
-        search = request.GET.get('search', None)
-        if not search:
-            return items
-        items = items.filter(name__icontains=search)
-        return items
-
-    def sort(self, request, items):
-        sort_by = request.GET.get('sort_by', 'latest')
-        if sort_by == 'latest':
-            items = items.order_by('-id')
-        elif sort_by == 'oldest':
-            items = items.order_by('id')
-        return items
-
-    def filter(self, request, items):
-        # search
-        items = self.search(request, items)
-        # filter
-        filter_by = request.GET.get('filter_by')
-        if filter_by and filter_by.isdigit():
-            items = items.filter(from_department__id=filter_by)
-        # sort
-        items = self.sort(request, items)
-        return items
-
-    @user_role_required_cbv(
-        ['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user', 'control_quality_user',
-         'technical_user', 'production_user'])
-    def get(self, request, project_id):
-        project = models.Project.objects.get(id=project_id, is_active=True)
-        files = project.get_files()
-        # search & filter
-        files = self.filter(request, files)
-        context = {
-            'files': files,
-            'project': project,
-            'departments': models.Department.objects.all()
-        }
-        return render(request, 'public/project/file/detail.html', context)
+# class ProjectFile(LoginRequiredMixin, View):
+#
+#     def search(self, request, items):
+#         search = request.GET.get('search', None)
+#         if not search:
+#             return items
+#         items = items.filter(name__icontains=search)
+#         return items
+#
+#     @user_role_required_cbv(
+#         ['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user', 'control_quality_user',
+#          'technical_user', 'production_user'])
+#     def get(self, request):
+#         projects = models.Project.objects.filter(is_active=True)
+#         projects = self.search(request, projects)
+#         context = {
+#             'projects': projects
+#         }
+#         return render(request, 'public/project/file/list.html', context)
+#
+#     def post(self, request):
+#         referer_url = request.META.get('HTTP_REFERER', None)
+#         data = request.POST.copy()
+#         # set additional values
+#         data['from_department'] = request.user.department
+#
+#         f = forms.ProjectFile(data, request.FILES)
+#         if form_validate_err(request, f) is False:
+#             return redirect(referer_url or '/error')
+#         obj = f.save()
+#
+#         # Create notification for each department
+#         notif_title = 'اعلان آپلود فایل پروژه'
+#         notif_description = f'فایل جدید برای پروژه ({obj.project.name})'
+#         create_notification(from_department=obj.from_department, title=notif_title, description=notif_description,
+#                             projects=obj.project, all_departments=True)
+#
+#         messages.success(request, 'عملیات مورد نظر با موفقیت انجام شد')
+#         return redirect(referer_url or '/success')
 
 
-class TaskOwner(LoginRequiredMixin, View):
-    """
-        get tasks who created and crud task with post method
-    """
-
-    def pagination(self, request, objects, count=20):
-        paginator = Paginator(objects, count)  # show how many objects per page.
-        page_number = request.GET.get("page")
-        page_obj = paginator.get_page(page_number)
-        return page_obj, page_obj.object_list
-
-    def search(self, request, tasks):
-        search = request.GET.get('search', None)
-        if not search:
-            return tasks
-        lookup = Q(name__icontains=search) | Q(from_department__name__icontains=search)
-        tasks = tasks.filter(lookup)
-        return tasks
-
-    def sort(self, request, tasks):
-        sort_by = request.GET.get('sort_by', 'latest')
-        if sort_by == 'latest':
-            tasks = tasks.order_by('-id')
-        elif sort_by == 'oldest':
-            tasks = tasks.order_by('id')
-        return tasks
-
-    def get(self, request):
-        # get task list by type state
-        task_state = request.GET.get('task_state', None)
-        department = request.user.department
-
-        if request.user.role in ('super_user',):
-            tasks = models.Task.objects.filter(is_active=True)
-        else:
-            tasks = models.Task.objects.filter(is_active=True, from_department=department)
-
-        if task_state:
-            tasks = tasks.filter(state=task_state)
-
-        tasks = self.search(request, tasks)
-        tasks = self.sort(request, tasks)
-        paginator, tasks = self.pagination(request, tasks)
-        context = {
-            'tasks': tasks,
-            'paginator': paginator,
-            'departments': models.Department.objects.all(),
-            'projects': models.Project.objects.filter(is_active=True)
-        }
-
-        return render(request, 'public/task/list-state.html', context)
-
-    def post(self, request, task_id):
-        type_request = request.POST.get('type_request', None)
-        referer_url = request.META.get('HTTP_REFERER', None)
-
-        if type_request == 'update':
-            data = request.POST
-            task_obj = models.Task.objects.get(id=task_id, from_department=request.user.department)
-
-            f = forms.TaskUpdateForm(data, request.FILES, instance=task_obj)
-            if form_validate_err(request, f) is False:
-                return redirect(referer_url or '/error')
-            task = f.save()
-
-            notif = NotificationDepartment.objects.create(
-                from_department=request.user.department,
-                department=task.to_department,
-                title='اعلان بروزرسانی تسک',
-                description=f'بروزرسانی برای تسک: "{task.name}"'
-            )
-            notif.projects.set([task.project])
-
-            messages.success(request, 'تسک با موفقیت بروزرسانی شد')
-        elif type_request == 'delete':
-            models.Task.objects.get(id=task_id).delete()
-
-        return redirect(referer_url or '/success')
+# class ProjectDetailFileList(LoginRequiredMixin, View):
+#
+#     def search(self, request, items):
+#         search = request.GET.get('search', None)
+#         if not search:
+#             return items
+#         items = items.filter(name__icontains=search)
+#         return items
+#
+#     def sort(self, request, items):
+#         sort_by = request.GET.get('sort_by', 'latest')
+#         if sort_by == 'latest':
+#             items = items.order_by('-id')
+#         elif sort_by == 'oldest':
+#             items = items.order_by('id')
+#         return items
+#
+#     def filter(self, request, items):
+#         # search
+#         items = self.search(request, items)
+#         # filter
+#         filter_by = request.GET.get('filter_by')
+#         if filter_by and filter_by.isdigit():
+#             items = items.filter(from_department__id=filter_by)
+#         # sort
+#         items = self.sort(request, items)
+#         return items
+#
+#     @user_role_required_cbv(
+#         ['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user', 'control_quality_user',
+#          'technical_user', 'production_user'])
+#     def get(self, request, project_id):
+#         project = models.Project.objects.get(id=project_id, is_active=True)
+#         files = project.get_files()
+#         # search & filter
+#         files = self.filter(request, files)
+#         context = {
+#             'files': files,
+#             'project': project,
+#             'departments': models.Department.objects.all()
+#         }
+#         return render(request, 'public/project/file/detail.html', context)
 
 
-class TaskOwnerDepartment(View):
-    template_name = 'public/task/department-each.html'
-
-    def pagination(self, request, objects, count=20):
-        paginator = Paginator(objects, count)  # show how many objects per page.
-        page_number = request.GET.get("page")
-        page_obj = paginator.get_page(page_number)
-        return page_obj, page_obj.object_list
-
-    def search(self, request, tasks):
-        search = request.GET.get('search', None)
-        if not search:
-            return tasks
-        lookup = Q(name__icontains=search) | Q(from_department__name__icontains=search)
-        tasks = tasks.filter(lookup)
-        return tasks
-
-    def sort(self, request, tasks):
-        sort_by = request.GET.get('sort_by', 'latest')
-        if sort_by == 'latest':
-            tasks = tasks.order_by('-id')
-        elif sort_by == 'oldest':
-            tasks = tasks.order_by('id')
-        return tasks
-
-    def get(self, request, department_id):
-        department = models.Department.objects.get(id=department_id)
-        tasks = models.Task.objects.filter(to_department=department)
-
-        tasks = self.search(request, tasks)
-        tasks = self.sort(request, tasks)
-        paginator, tasks = self.pagination(request, tasks)
-
-        context = {
-            'tasks': tasks,
-            'paginator': paginator,
-            'department': department,
-            'departments': models.Department.objects.all(),
-            'projects': models.Project.objects.filter(is_active=True)
-        }
-
-        return render(request, self.template_name, context)
+# class TaskOwner(LoginRequiredMixin, View):
+#     """
+#         get tasks who created and crud task with post method
+#     """
+#
+#     def pagination(self, request, objects, count=20):
+#         paginator = Paginator(objects, count)  # show how many objects per page.
+#         page_number = request.GET.get("page")
+#         page_obj = paginator.get_page(page_number)
+#         return page_obj, page_obj.object_list
+#
+#     def search(self, request, tasks):
+#         search = request.GET.get('search', None)
+#         if not search:
+#             return tasks
+#         lookup = Q(name__icontains=search) | Q(from_department__name__icontains=search)
+#         tasks = tasks.filter(lookup)
+#         return tasks
+#
+#     def sort(self, request, tasks):
+#         sort_by = request.GET.get('sort_by', 'latest')
+#         if sort_by == 'latest':
+#             tasks = tasks.order_by('-id')
+#         elif sort_by == 'oldest':
+#             tasks = tasks.order_by('id')
+#         return tasks
+#
+#     def get(self, request):
+#         # get task list by type state
+#         task_state = request.GET.get('task_state', None)
+#         department = request.user.department
+#
+#         if request.user.role in ('super_user',):
+#             tasks = models.Task.objects.filter(is_active=True)
+#         else:
+#             tasks = models.Task.objects.filter(is_active=True, from_department=department)
+#
+#         if task_state:
+#             tasks = tasks.filter(state=task_state)
+#
+#         tasks = self.search(request, tasks)
+#         tasks = self.sort(request, tasks)
+#         paginator, tasks = self.pagination(request, tasks)
+#         context = {
+#             'tasks': tasks,
+#             'paginator': paginator,
+#             'departments': models.Department.objects.all(),
+#             'projects': models.Project.objects.filter(is_active=True)
+#         }
+#
+#         return render(request, 'public/task/list-state.html', context)
+#
+#     def post(self, request, task_id):
+#         type_request = request.POST.get('type_request', None)
+#         referer_url = request.META.get('HTTP_REFERER', None)
+#
+#         if type_request == 'update':
+#             data = request.POST
+#             task_obj = models.Task.objects.get(id=task_id, from_department=request.user.department)
+#
+#             f = forms.TaskUpdateForm(data, request.FILES, instance=task_obj)
+#             if form_validate_err(request, f) is False:
+#                 return redirect(referer_url or '/error')
+#             task = f.save()
+#
+#             notif = NotificationDepartment.objects.create(
+#                 from_department=request.user.department,
+#                 department=task.to_department,
+#                 title='اعلان بروزرسانی تسک',
+#                 description=f'بروزرسانی برای تسک: "{task.name}"'
+#             )
+#             notif.projects.set([task.project])
+#
+#             messages.success(request, 'تسک با موفقیت بروزرسانی شد')
+#         elif type_request == 'delete':
+#             models.Task.objects.get(id=task_id).delete()
+#
+#         return redirect(referer_url or '/success')
+#
+#
+# class TaskOwnerDepartment(View):
+#     template_name = 'public/task/department-each.html'
+#
+#     def pagination(self, request, objects, count=20):
+#         paginator = Paginator(objects, count)  # show how many objects per page.
+#         page_number = request.GET.get("page")
+#         page_obj = paginator.get_page(page_number)
+#         return page_obj, page_obj.object_list
+#
+#     def search(self, request, tasks):
+#         search = request.GET.get('search', None)
+#         if not search:
+#             return tasks
+#         lookup = Q(name__icontains=search) | Q(from_department__name__icontains=search)
+#         tasks = tasks.filter(lookup)
+#         return tasks
+#
+#     def sort(self, request, tasks):
+#         sort_by = request.GET.get('sort_by', 'latest')
+#         if sort_by == 'latest':
+#             tasks = tasks.order_by('-id')
+#         elif sort_by == 'oldest':
+#             tasks = tasks.order_by('id')
+#         return tasks
+#
+#     def get(self, request, department_id):
+#         department = models.Department.objects.get(id=department_id)
+#         tasks = models.Task.objects.filter(to_department=department)
+#
+#         tasks = self.search(request, tasks)
+#         tasks = self.sort(request, tasks)
+#         paginator, tasks = self.pagination(request, tasks)
+#
+#         context = {
+#             'tasks': tasks,
+#             'paginator': paginator,
+#             'department': department,
+#             'departments': models.Department.objects.all(),
+#             'projects': models.Project.objects.filter(is_active=True)
+#         }
+#
+#         return render(request, self.template_name, context)
 
 
 class TaskAdd(LoginRequiredMixin, View):
@@ -601,26 +576,6 @@ class TaskRemind(LoginRequiredMixin, View):
         return redirect(referer_url or '/success')
 
 
-class TaskListStateUpdate(View):
-
-    # @user_role_required_cbv(['super_user', 'control_project_user'])
-    def post(self, request):
-        referer_url = request.META.get('HTTP_REFERER', None)
-        data = request.POST
-        request_department = request.user.department
-        tasks = models.Task.objects.filter(to_department=request_department)
-        for task in tasks:
-            task_data_state = data.get(f'task-state-{task.id}', None)
-            if task_data_state:
-                f = forms.TaskStateUpdate(data={'state': task_data_state})
-                if form_validate_err(request, f) is False:
-                    return redirect(referer_url or '/error')
-                task.state = task_data_state
-                task.save()
-        messages.success(request, 'عملیات مورد نظر با موفقیت انجام شد')
-        return redirect(referer_url or '/success')
-
-
 class InquiryAdd(LoginRequiredMixin, View):
     template_name = 'public/inquiry/add.html'
 
@@ -720,38 +675,28 @@ class InquiryList(View):
         return render(request, self.template_name, context)
 
 
-class InquiryDetail(View):
+class InquiryDetail(LoginRequiredMixin, View):
     template_name = 'public/inquiry/detail.html'
+
+    def get_inquiry_files(self, inquiry):
+        department = self.request.user.department
+        # get file for this department
+        lookup = Q(from_department=department) | Q(to_departments__in=[department])
+        files = inquiry.get_files().filter(lookup).distinct()
+        return files
 
     def get(self, request, inquiry_id):
         inquiry = get_object_or_404(models.Inquiry, id=inquiry_id)
         context = {
             'inquiry': inquiry,
+            'inquiry_files': self.get_inquiry_files(inquiry),
             'task_masters': models.TaskMaster.objects.all(),
+            'departments': models.Department.objects.all(),
             # permissions
             'has_perm_to_modify': inquiry.has_perm_to_modify(request.user),
             'has_perm_to_manage_status': inquiry.has_perm_to_manage_status(request.user),
         }
         return render(request, self.template_name, context)
-
-    # @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user'])
-    # def post(self, request, inquiry_id):
-    #     referer_url = request.META.get('HTTP_REFERER', None)
-    #     inquiry_obj = models.Inquiry.objects.get(id=inquiry_id)
-    #     type_request = request.POST.get('type_request', None)
-    #
-    #     if type_request == 'delete':
-    #         inquiry_obj.delete()
-    #     elif type_request == 'update':
-    #         data = request.POST
-    #
-    #         f = forms.InquiryUpdateForm(data, instance=inquiry_obj)
-    #         if form_validate_err(request, f) is False:
-    #             return redirect(referer_url or '/error')
-    #         f.save()
-    #
-    #     messages.success(request, 'عملیات با موفقیت انجام شد')
-    #     return redirect(referer_url or '/success')
 
 
 class InquiryDelete(LoginRequiredMixin, View):
@@ -792,99 +737,106 @@ class InquiryStatusModify(LoginRequiredMixin, View):
         inquiry_status = getattr(inquiry, 'status', None)
         f = forms.InquiryStatusModify(data, files=request.FILES, instance=inquiry_status)
         if not form_validate_err(request, f):
-            print(f.errors)
             return redirect(inquiry.get_absolute_url())
         f.save()
         messages.success(request, 'وضعیت استعلام با موفقیت ثبت و بروزرسانی شد')
         return redirect(inquiry.get_absolute_url())
 
 
-class InquiryOwner(View):
-    template_name = 'public/inquiry/owner/list.html'
+class InquiryFileAdd(LoginRequiredMixin, View):
 
-    def filter(self, request, inquiries):
-        task_master = request.GET.get('task_master', None)
-        filter_by_state = request.GET.get('filter_by_state', None)
+    def post(self, request, inquiry_id):
+        inquiry = get_object_or_404(models.Inquiry, id=inquiry_id)
+        data = request.POST.copy()
+        user = request.user
+        # set additional values
+        data['inquiry'] = inquiry
+        data['from_department'] = user.department
+        data['allocator_user'] = user
+        f = forms.InquiryFile(data, request.FILES)
+        if not form_validate_err(request, f):
+            return redirect(inquiry.get_absolute_url())
+        # create and upload files
+        files_object = []
+        files = request.FILES.getlist('files')
+        for file in files:
+            files_object.append(models.File(file=file))
+        files_object = models.File.objects.bulk_create(files_object)
+        inquiry_file = f.save()
+        inquiry_file.files.add(*files_object)
+        messages.success(request, 'فایل پیوست با ایجاد و اپلود شد')
+        return redirect(inquiry.get_absolute_url())
 
-        if task_master and task_master.isdigit():
-            inquiries = inquiries.filter(sender_id=task_master)
 
-        if filter_by_state:
-            inquiries = inquiries.filter(state=filter_by_state)
+class InquiryFileDelete(LoginRequiredMixin, View):
 
-        return inquiries
+    def get(self, request, inquiry_id, inquiry_file_id):
+        inquiry_file = get_object_or_404(models.InquiryFile, id=inquiry_file_id, inquiry_id=inquiry_id)
+        if inquiry_file.from_department != request.user.department:
+            raise PermissionDenied
+        inquiry_file.delete()
+        messages.success(request, 'فایل استعلام با موفقیت حذف شد')
+        return redirect(inquiry_file.inquiry.get_absolute_url())
 
-    def search(self, request, inquiries):
-        search = request.GET.get('search', None)
 
-        if not search:
-            return inquiries
-        if search.isdigit():
-            lookup = Q(number_id=search)
-            inquiries = inquiries.filter(lookup)
-        else:
-            lookup = Q(title__icontains=search) | Q(from_department__name__icontains=search) | Q(state=search) | Q(
-                sender__title__icontains=search)
-            inquiries = inquiries.filter(lookup)
-        return inquiries
+class TaskMasterAdd(LoginRequiredMixin, View):
+    template_name = 'public/task_master/add.html'
 
-    def sort(self, request, inquiries):
-        sort_by = request.GET.get('sort_by', 'latest')
-
-        if sort_by == 'latest':
-            inquiries = inquiries.order_by('-id')
-        elif sort_by == 'oldest':
-            inquiries = inquiries.order_by('id')
-        return inquiries
-
-    @user_role_required_cbv(['commerce_user', 'procurement_commerce_user'])
+    @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user'])
     def get(self, request):
-        inquiries = models.Inquiry.objects.all()
+        return render(request, self.template_name)
 
-        inquiries = self.search(request, inquiries)
-        inquiries = self.filter(request, inquiries)
-        inquiries = self.sort(request, inquiries)
+    @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user'])
+    def post(self, request):
+        data = request.POST
+        f = forms.TaskMasterCreate(data)
+        if not f.is_valid():
+            messages.error(request, 'لطفا فیلد هارا به درستی پر نمایید')
+            return redirect('public:task_master__add')
+        task_master = f.save()
+        messages.success(request, 'مشتری با موفقیت ایجاد شد')
+        return redirect(task_master.get_absolute_url())
 
+
+class TaskMasterList(LoginRequiredMixin, View):
+    pagination_count = 25
+    template_name = 'public/task_master/list.html'
+
+    def pagination(self, objects):
+        paginator = Paginator(objects, self.pagination_count)
+        page_number = self.request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+        return page_obj, page_obj.object_list
+
+    def filter(self, task_masters):
+        qs = self.request.GET
+        search = qs.get('search', None)
+        if search:
+            task_masters = task_masters.filter(name__icontains=search)
+        return task_masters
+
+    def sort(self, task_masters):
+        sort_by = self.request.GET.get('sort_by', 'latest')
+        if sort_by == 'latest':
+            task_masters = task_masters.order_by('-id')
+        elif sort_by == 'oldest':
+            task_masters = task_masters.order_by('id')
+        elif sort_by == 'most-project':
+            task_masters = task_masters.annotate(c=Count('projects')).order_by('-c')
+
+        return task_masters
+
+    @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user'])
+    def get(self, request):
+        task_masters = models.TaskMaster.objects.all()
+        task_masters = self.filter(task_masters)
+        task_masters = self.sort(task_masters)
+        pagination, task_masters = self.pagination(task_masters)
         context = {
-            'inquiries': inquiries,
-            'inquiries_accepted': models.Inquiry.objects.filter(status__status='accepted'),
-            'inquiries_rejected': models.Inquiry.objects.filter(status__status='rejected'),
-            'departments': models.Department.objects.all(),
-            'taskmasters': models.TaskMaster.objects.all(),
+            'pagination': pagination,
+            'task_masters': task_masters
         }
         return render(request, self.template_name, context)
-
-
-class InquiryStatus(View):
-
-    @user_role_required_cbv(['super_user'])
-    def post(self, request, inquiry_id):
-        referer_url = request.META.get('HTTP_REFERER', None)
-        data = request.POST.copy()
-        # set default values
-        data['inquiry'] = inquiry_id
-        f = forms.InquiryStatusForm(data, request.FILES)
-        if form_validate_err(request, f) is False:
-            return redirect(referer_url or '/error')
-        f.save()
-        messages.success(request, 'عملیات با موفقیت ثبت شد')
-        return redirect(referer_url or '/success')
-
-
-class InquiryFile(View):
-
-    def post(self, request, inquiry_id):
-        referer_url = request.META.get('HTTP_REFERER', None)
-        data = request.POST.copy()
-        # set additional values
-        data['inquiry'] = inquiry_id
-        data['from_department'] = request.user.department
-        f = forms.InquiryFileForm(data, request.FILES)
-        if form_validate_err(request, f) is False:
-            return redirect(referer_url or '/error')
-        f.save()
-        messages.success(request, 'عملیات با موفقیت ثبت شد')
-        return redirect(referer_url or '/success')
 
 
 class DepartmentDetail(View):

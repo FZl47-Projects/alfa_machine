@@ -2,7 +2,7 @@ from django.shortcuts import reverse
 from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
-
+from core.models import BaseModel
 from support.models import TicketDepartment
 
 
@@ -30,7 +30,7 @@ class CustomBaseUserManager(BaseUserManager):
                                 **extra_fields)
 
 
-class User(AbstractUser):
+class User(AbstractUser,BaseModel):
     ROLE_USER_OPTIONS = (
         ('super_user', 'کاربر مدیر'),
         ('control_project_user', 'کاربر کنترل پروژه'),
@@ -60,6 +60,17 @@ class User(AbstractUser):
 
     def __str__(self):
         return f'{self.role} - {self.email}'
+
+    @classmethod
+    def has_perm_to_modify(cls, user):
+        if user.is_anonymous:
+            return False
+        if user.role in ('super_user',):
+            return True
+        return False
+
+    def get_role_label(self):
+        return self.get_role_display()
 
     def get_full_name(self):
         return f'{self.first_name} {self.last_name}'.strip() or 'بدون نام'
@@ -120,7 +131,7 @@ class User(AbstractUser):
         return reverse('public:error')
 
     def get_absolute_url(self):
-        return reverse('account:user_profile', args=(self.id,))
+        return reverse('account:user__detail', args=(self.id,))
 
-    def get_delete_url(self):
-        return reverse('departments.general:delete_user', args=(self.id,))
+    def get_picture_url(self):
+        return '/static/frontend/images/public/default-user.png'
