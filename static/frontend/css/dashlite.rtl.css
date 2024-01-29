@@ -52881,6 +52881,18 @@ em.icon.ni.ni-comments {
     border-color: #6fdfaf;
 }
 
+.text-waiting_for_price {
+    color: #FD9722;
+}
+
+.text-canceled {
+    color: #F2426E;
+}
+
+.text-price_recorded {
+    color: #0FCA7A;
+}
+
 
 .bg-accepted {
     color: #0FCA7A;

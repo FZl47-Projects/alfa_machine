@@ -99,6 +99,7 @@ class ProjectList(LoginRequiredMixin, View):
 
 
 class ProjectAdd(LoginRequiredMixin, View):
+    template_name = 'public/project/add.html'
 
     @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user'])
     def get(self, request):
@@ -109,7 +110,7 @@ class ProjectAdd(LoginRequiredMixin, View):
         if inquiry_id:
             context['inquiry'] = models.Inquiry.objects.get(id=inquiry_id, project=None)
 
-        return render(request, 'public/project/add.html', context)
+        return render(request, self.template_name, context)
 
     @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user'])
     def post(self, request):
@@ -439,12 +440,16 @@ class TaskList(LoginRequiredMixin, View):
         search = qs.get('search', None)
         project = qs.get('project', 'all')
         status = qs.get('status', 'all')
+        to_department = qs.get('to_department', 'all')
 
         if search:
             tasks = tasks.filter(name__icontains=search)
 
         if (project != 'all') and (project.isdigit()):
             tasks = tasks.filter(project_id=project)
+
+        if (to_department != 'all') and (to_department.isdigit()):
+            tasks = tasks.filter(to_department_id=to_department)
 
         if status != 'all':
             if status == 'queue':
@@ -483,6 +488,7 @@ class TaskList(LoginRequiredMixin, View):
             'tasks': tasks,
             'task_status': models.TaskStatus.STATUS_OPTIONS,
             'projects': models.Project.objects.filter(is_active=True),
+            'departments': models.Department.objects.all(),
             # permissions
             'has_perm_to_send_notify': models.Task.has_perm_to_send_notify(request.user)
         }
@@ -601,7 +607,7 @@ class InquiryAdd(LoginRequiredMixin, View):
         return redirect(inquiry.get_absolute_url())
 
 
-class InquiryList(View):
+class InquiryList(LoginRequiredMixin, View):
     pagination_count = 25
     template_name = 'public/inquiry/list.html'
 
@@ -839,29 +845,226 @@ class TaskMasterList(LoginRequiredMixin, View):
         return render(request, self.template_name, context)
 
 
-class DepartmentDetail(View):
-    template_name = 'public/department/department_detail.html'
+class TaskMasterDetail(LoginRequiredMixin, View):
+    template_name = 'public/task_master/detail.html'
 
-    @user_role_required_cbv(['super_user'])
+    @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user'])
+    def get(self, request, task_master_id):
+        task_master = get_object_or_404(models.TaskMaster, id=task_master_id)
+        context = {
+            'task_master': task_master,
+            # permissions
+            'has_perm_to_modify': task_master.has_perm_to_modify(request.user),
+            'has_perm_to_delete': task_master.has_perm_to_delete(request.user),
+        }
+        return render(request, self.template_name, context)
+
+
+class TaskMasterDelete(LoginRequiredMixin, View):
+    def get(self, request, task_master_id):
+        if not models.TaskMaster.has_perm_to_delete(request.user):
+            raise PermissionDenied
+        task_master = get_object_or_404(models.TaskMaster, id=task_master_id)
+        task_master.delete()
+        messages.success(request, 'مشتری با موفقیت حذف شد')
+        return redirect('public:task_master__list')
+
+
+class TaskMasterUpdate(LoginRequiredMixin, View):
+    def post(self, request, task_master_id):
+        if not models.TaskMaster.has_perm_to_modify(request.user):
+            raise PermissionDenied
+        task_master = get_object_or_404(models.TaskMaster, id=task_master_id)
+        f = forms.TaskMasterUpdate(request.POST, instance=task_master)
+        if not f.is_valid():
+            messages.error(request, 'لطفا فیلد هارا به درستی پر نمایید')
+            return redirect(task_master.get_absolute_url())
+        f.save()
+        messages.success(request, 'مشتری با موفقیت بروزرسانی شد')
+        return redirect(task_master.get_absolute_url())
+
+
+class DepartmentAdd(LoginRequiredMixin, View):
+    template_name = 'public/department/add.html'
+
+    @user_role_required_cbv(['super_user', 'control_project_user'])
+    def get(self, request):
+        return render(request, self.template_name)
+
+    @user_role_required_cbv(['super_user', 'control_project_user'])
+    def post(self, request):
+        data = request.POST
+        f = forms.DepartmentCreate(data)
+        if not f.is_valid():
+            messages.error(request, 'لطفا فیلد هارا به درستی وارد نمایید')
+            return redirect('public:department__add')
+        f.save()
+        messages.success(request, 'واحد با موفقیت ایجاد شد')
+        return redirect('public:department__add')
+
+
+class DepartmentList(LoginRequiredMixin, View):
+    pagination_count = 25
+    template_name = 'public/department/list.html'
+
+    def pagination(self, objects):
+        paginator = Paginator(objects, self.pagination_count)
+        page_number = self.request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+        return page_obj, page_obj.object_list
+
+    def sort(self, departments):
+        sort_by = self.request.GET.get('sort_by', 'latest')
+        if sort_by == 'latest':
+            departments = departments.order_by('-id')
+        elif sort_by == 'oldest':
+            departments = departments.order_by('id')
+        elif sort_by == 'most-tasks':
+            departments = departments.annotate(c=Count('task')).order_by('-c')
+        return departments
+
+    def filter(self, departments):
+        qs = self.request.GET
+        search = qs.get('search', None)
+        if search:
+            departments = departments.filter(name__icontains=search)
+        return departments
+
+    @user_role_required_cbv(['super_user', 'control_project_user'])
+    def get(self, request):
+        departments = models.Department.objects.all()
+        departments = self.filter(departments)
+        departments = self.sort(departments)
+        pagination, departments = self.pagination(departments)
+        context = {
+            'pagination': pagination,
+            'departments': departments,
+        }
+        return render(request, self.template_name, context)
+
+
+class DepartmentDetail(LoginRequiredMixin, View):
+    template_name = 'public/department/detail.html'
+
+    @user_role_required_cbv(['super_user', 'control_project_user'])
     def get(self, request, department_id):
         department = get_object_or_404(models.Department, id=department_id)
         context = {
             'department': department,
-            'tasks': models.Task.objects.filter(to_department=department),
+            # permissions
+            'has_perm_to_modify': department.has_perm_to_modify(request.user),
+            'has_perm_to_delete': department.has_perm_to_delete(request.user),
         }
         return render(request, self.template_name, context)
 
+
+class DepartmentDelete(LoginRequiredMixin, View):
+    template_name = 'public/department/detail.html'
+
+    def get(self, request, department_id):
+        if not models.Department.has_perm_to_delete(request.user):
+            raise PermissionDenied
+        department = get_object_or_404(models.Department, id=department_id)
+        department.delete()
+        messages.success(request, 'واحد با موفقیت حذف شد')
+        return redirect('public:department__list')
+
+
+class DepartmentUpdate(LoginRequiredMixin, View):
     def post(self, request, department_id):
-        post = request.POST
-        department = models.Department.objects.get(id=department_id)
-        department.name = post.get('name', None)
-        department.save()
-        return redirect('departments.general:departments_list')
+        if not models.Department.has_perm_to_modify(request.user):
+            raise PermissionDenied
+        department = get_object_or_404(models.Department, id=department_id)
+        f = forms.DepartmentUpdate(request.POST, instance=department)
+        if not f.is_valid():
+            messages.error(request, 'لطفا فیلد هارا به درستی پر نمایید')
+            return redirect(department.get_absolute_url())
+        f.save()
+        messages.success(request, 'واحد با موفقیت بروزرسانی شد')
+        return redirect(department.get_absolute_url())
 
 
-class DepartmentList(View):
-    template_name = 'public/department/department_detail.html'
+class ProjectFileAdd(LoginRequiredMixin, View):
+    template_name = 'public/project_file/add.html'
 
-    @user_role_required_cbv(['super_user'])
     def get(self, request):
-        pass
+        context = {
+            'projects': models.Project.objects.all(),
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        data = request.POST.copy()
+        # set additional values
+        user = request.user
+        data['allocator_user'] = user
+        data['from_department'] = user.department
+        f = forms.ProjectFileCreate(data, files=request.FILES)
+        if not f.is_valid():
+            messages.error(request, 'لطفا فیلد هارا به درستی وارد نمایید')
+            return redirect('public:project_file__add')
+        f.save()
+        messages.success(request, 'فایل پروژه با موفقیت ایجاد و اپلود شد')
+        return redirect('public:project_file__add')
+
+
+class ProjectFileList(LoginRequiredMixin, View):
+    pagination_count = 25
+    template_name = 'public/project_file/list.html'
+
+    def pagination(self, objects):
+        paginator = Paginator(objects, self.pagination_count)
+        page_number = self.request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+        return page_obj, page_obj.object_list
+
+    def sort(self, project_files):
+        sort_by = self.request.GET.get('sort_by', 'latest')
+        if sort_by == 'latest':
+            project_files = project_files.order_by('-id')
+        elif sort_by == 'oldest':
+            project_files = project_files.order_by('id')
+        return project_files
+
+    def filter(self, project_files):
+        qs = self.request.GET
+        search = qs.get('search', None)
+        if search:
+            project_files = project_files.filter(name__icontains=search)
+        return project_files
+
+    def get(self, request):
+        project_files = models.ProjectFile.objects.all()
+        project_files = self.filter(project_files)
+        project_files = self.sort(project_files)
+        pagination, project_files = self.pagination(project_files)
+        context = {
+            'pagination': pagination,
+            'project_files': project_files,
+            'projects': models.Project.objects.all()
+        }
+        return render(request, self.template_name, context)
+
+
+class ProjectFileDetail(LoginRequiredMixin, View):
+    template_name = 'public/project_file/detail.html'
+
+    def get(self, request, project_file_id):
+        project_file = get_object_or_404(models.ProjectFile, id=project_file_id)
+        context = {
+            'project_file': project_file,
+            # permissions
+            'has_perm_to_modify': project_file.has_perm_to_modify(request.user)
+        }
+        return render(request, self.template_name, context)
+
+
+class ProjectFileDelete(LoginRequiredMixin, View):
+
+    def get(self, request, project_file_id):
+        project_file = get_object_or_404(models.ProjectFile, id=project_file_id)
+        if not project_file.has_perm_to_modify(request.user):
+            raise PermissionDenied
+        project_file.delete()
+        messages.success(request, 'فایل پروژه با موفقیت حذف شد')
+        return redirect('public:project_file__list')

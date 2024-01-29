@@ -33,14 +33,25 @@ urlpatterns = [
     # task masters
     path('taskmaster/add', views.TaskMasterAdd.as_view(), name='task_master__add'),
     path('taskmaster/list', views.TaskMasterList.as_view(), name='task_master__list'),
+    path('taskmaster/<int:task_master_id>/detail', views.TaskMasterDetail.as_view(), name='task_master__detail'),
+    path('taskmaster/<int:task_master_id>/delete', views.TaskMasterDelete.as_view(), name='task_master__delete'),
+    path('taskmaster/<int:task_master_id>/update', views.TaskMasterUpdate.as_view(), name='task_master__update'),
     # departments
+    path('department/add', views.DepartmentAdd.as_view(), name='department__add'),
     path('department/list', views.DepartmentList.as_view(), name='department__list'),
+    path('department/<int:department_id>/detail', views.DepartmentDetail.as_view(), name='department__detail'),
+    path('department/<int:department_id>/delete', views.DepartmentDelete.as_view(), name='department__delete'),
+    path('department/<int:department_id>/update', views.DepartmentUpdate.as_view(), name='department__update'),
+    # project files
+    path('project/file/add', views.ProjectFileAdd.as_view(), name='project_file__add'),
+    path('project/file/list', views.ProjectFileList.as_view(), name='project_file__list'),
+    path('project/file/<int:project_file_id>/detail', views.ProjectFileDetail.as_view(), name='project_file__detail'),
+    path('project/file/<int:project_file_id>/delete', views.ProjectFileDelete.as_view(), name='project_file__delete'),
 
     # ---
     path('error', views.Error.as_view(), name='error'),
     path('success', views.Success.as_view(), name='success'),
     path('', views.Index.as_view(), name='index'),
-    path('department_detail/<int:department_id>', views.DepartmentDetail.as_view(), name='department_detail'),
     # path('task_masters/', views.TaskMasterView.as_view(), name='task_master'),
 
     # path('project/<int:project_id>/update', views.ProjectUpdate.as_view(), name='project_update'),

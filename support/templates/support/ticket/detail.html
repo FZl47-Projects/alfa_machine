@@ -1,0 +1,214 @@
+{% extends 'base/base_template.html' %}
+{% load static %}
+{% load render_partial %}
+
+{% block Title %}
+    جزئیات فایل پروژه - {{ project_file.title }}
+{% endblock %}
+
+{% block BodyClass %}
+    has-rtl nk-body ui-rounder has-sidebar no-touch nk-nio-theme
+{% endblock %}
+
+{% block Style %}
+    <style>
+        .data-value {
+            width: 50%;
+            text-align: center;
+            display: block;
+        }
+
+        @media (max-width: 767.98px) {
+            .data-value {
+                width: 100%;
+            }
+        }
+
+    </style>
+{% endblock %}
+
+{% block Content %}
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main">
+            <!-- sidebar @s -->
+            {% render_partial 'public.components.MenuComponent' %}
+            <!-- sidebar @e -->
+            <!-- wrap @s -->
+            <div class="nk-wrap">
+                <!-- main header @s -->
+                {% include 'base/components/header.html' %}
+                <!-- main header @e -->
+                <!-- content @s -->
+                <div class="nk-content nk-content-fluid">
+                    <div class="container-xl wide-xl">
+                        <div class="nk-content-body">
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block-between g-3">
+                                    <div class="nk-block-head-content">
+                                        <h3 class="nk-block-title page-title">
+                                            جزئیات فایل پروژه
+                                        </h3>
+                                        <nav>
+                                            <ul class="breadcrumb breadcrumb-arrow">
+                                                <li class="breadcrumb-item"><a href="{% url 'public:index' %}">صفحه
+                                                    اصلی</a></li>
+                                                <li class="breadcrumb-item"><a>فایل پروژه</a></li>
+                                                <li class="breadcrumb-item">
+                                                    <a href="{% url 'public:project_file__list' %}">
+                                                        لیست فایل ها
+                                                    </a></li>
+                                                <li class="breadcrumb-item"><a>{{ project_file.name }}</a></li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                    <div class="nk-block-head-content d-flex justify-content-between gx-1">
+                                        {% if has_perm_to_modify %}
+                                            <div class="dropdown">
+                                                <button
+                                                        class="btn btn-outline-light bg-white d-none d-sm-inline-flex dropdown-toggle"
+                                                        data-bs-toggle="dropdown">
+                                                     <span>
+                                                        عملیات
+                                                    </span>
+                                                    <em class="icon ni ni-setting"></em>
+                                                </button>
+                                                <button
+                                                        class="btn btn-icon btn-outline-light bg-white d-inline-flex d-sm-none dropdown-toggle"
+                                                        data-bs-toggle="dropdown">
+                                                    <em class="icon ni ni-setting">
+                                                    </em>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <ul class="link-list-opt">
+                                                        <li data-bs-toggle="modal"
+                                                            data-bs-target="#modal-delete-object">
+                                                            <a class="d-flex justify-content-between text-danger">
+                                                                <span>حذف</span>
+                                                                <em class="icon ni ni-trash-empty"></em>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                </div>
+                                <!-- .nk-block-between -->
+                            </div>
+                            <div class="nk-block">
+                                <div class="row gy-5">
+                                    <div class="col-12">
+                                        <div class="nk-block-head">
+                                            <div class="nk-block-head-content">
+                                                <h5 class="nk-block-title title">اطلاعات پایه</h5>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <ul class="data-list is-compact">
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">نام</div>
+                                                        <div class="data-value">{{ project_file.name }}</div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">پروژه</div>
+                                                        <div class="data-value">
+                                                            <a href="{{ project_file.project.get_absolute_url }}">{{ project_file.project.name|default:'-' }}</a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">واحد ثبت کننده</div>
+                                                        <div class="data-value">
+                                                            <a href="{{ project_file.from_department.get_absolute_url }}">{{ project_file.from_department.name|default:'-' }}</a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">کاربر ثبت کننده</div>
+                                                        <div class="data-value">
+                                                            <a href="{{ project_file.allocator_user.get_absolute_url }}">{{ project_file.allocator_user.name|default:'-' }}</a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">زمان بارگذاری</div>
+                                                        <div class="data-value">
+                                                            <span class="datetime-convert">{{ project_file.get_created_at }}</span>
+                                                            <span class="badge badge-dim bg-info rounded-pill">{{ project_file.get_created_at_timepast }}</span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">فایل</div>
+                                                        <div class="data-value">
+                                                            <a href="{{ project_file.file.url }}" class="view-file badge bg-secondary fs-13px py-1">
+                                                                دانلود و مشاهده
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">توضیحات</div>
+                                                        <div class="data-value">{{ project_file.description|default:'-' }}</div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- .row -->
+                            </div>
+                            <!-- .components-preview -->
+                        </div>
+                    </div>
+                </div>
+                <!-- content @e -->
+                <!-- footer @s -->
+                {% include 'base/components/footer.html' %}
+                <!-- footer @e -->
+            </div>
+            <!-- wrap @e -->
+        </div>
+        <!-- main @e -->
+        <!-- modals -->
+        <div class="modal fade" tabindex="-1" id="modal-delete-object" aria-modal="true" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body modal-body-lg text-center">
+                        <div class="nk-modal">
+                            <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-trash-empty bg-danger"></em>
+                            <h4 class="nk-modal-title">حذف فایل پروژه</h4>
+                            <div class="nk-modal-text">
+                                <p class="bg-outline-danger">
+                                    ایا از حذف فایل پروژه
+                                    <b>{{ project_file.name }}</b>
+                                    اطمینان دارید ؟
+                                    پس از حذف امکان بازگشت وجود نخواهد داشت
+                                </p>
+                            </div>
+                            <div class="nk-modal-action mt-5">
+                                <a class="btn btn-lg btn-mw btn-light m-1" data-bs-dismiss="modal">لغو</a>
+                                <a href="{% url 'public:project_file__delete' project_file_id=project_file.id %}"
+                                   class="btn btn-lg btn-mw btn-danger m-1">بله ، حذف فایل پروژه</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- .modal-body -->
+                </div>
+            </div>
+        </div>
+
+        <!-- end modals -->
+    </div>
+{% endblock %}

@@ -3,7 +3,7 @@
 {% load render_partial %}
 
 {% block Title %}
-    ایجاد تسک
+    ایجاد فایل پروژه
 {% endblock %}
 
 {% block BodyClass %}
@@ -29,13 +29,13 @@
                             <div class="nk-block-head nk-block-head-sm">
                                 <div class="nk-block-between g-3">
                                     <div class="nk-block-head-content">
-                                        <h3 class="nk-block-title page-title">ایجاد تسک</h3>
+                                        <h3 class="nk-block-title page-title">ایجاد فایل پروژه</h3>
                                         <nav>
                                             <ul class="breadcrumb breadcrumb-arrow">
                                                 <li class="breadcrumb-item"><a href="{% url 'public:index' %}">صفحه
                                                     اصلی</a></li>
-                                                <li class="breadcrumb-item"><a>تسک ها</a></li>
-                                                <li class="breadcrumb-item active">ایجاد تسک</li>
+                                                <li class="breadcrumb-item"><a>فایل پروژه</a></li>
+                                                <li class="breadcrumb-item active">ایجاد فایل پروژه</li>
                                             </ul>
                                         </nav>
                                     </div>
@@ -73,68 +73,28 @@
                                     <div class="card">
                                         <div class="card-inner">
                                             <div class="card-head">
-                                                <h5 class="card-title">اطلاعات تسک</h5>
+                                                <h5 class="card-title">اطلاعات فایل پروژه</h5>
                                             </div>
-                                            <form action="{% url 'public:task__add' %}" class="form-validate is-alter"
-                                                  method="post" enctype="multipart/form-data">
+                                            <form action="{% url 'public:project_file__add' %}"
+                                                  class="form-validate is-alter" method="post" enctype="multipart/form-data">
                                                 {% csrf_token %}
                                                 <div class="row g-4">
                                                     <div class="col-lg-6">
                                                         <div class="form-group">
-                                                            <label class="form-label" for="name">نام تسک</label>
+                                                            <label class="form-label" for="name">نام</label>
                                                             <div class="form-control-wrap">
                                                                 <input type="text" class="form-control" name="name"
-                                                                       placeholder="نام تسک"
+                                                                       placeholder="نام فایل"
                                                                        id="name" required>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="form-group">
-                                                            <label class="form-label" for="time_start">تاریخ
-                                                                شروع</label>
-                                                            <div class="form-control-wrap">
-                                                                <input type="text" name="time_start" id="time_start"
-                                                                       class="form-control date-picker-alt"
-                                                                       placeholder="روز-ماه-سال" readonly>
-                                                            </div>
-                                                            <div class="form-note">فرمت تاریخ <code>روز-ماه-سال</code>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label class="form-label" for="time_end">تاریخ پایان</label>
-                                                            <div class="form-control-wrap">
-                                                                <input type="text" name="time_end" id="time_end"
-                                                                       class="form-control date-picker-alt"
-                                                                       placeholder="روز-ماه-سال" readonly>
-                                                            </div>
-                                                            <div class="form-note">فرمت تاریخ <code>روز-ماه-سال</code>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label class="form-label" for="to_department">برای واحد</label>
-                                                            <div class="form-control-wrap">
-                                                                <select id="to_department" name="to_department"
-                                                                        class="form-select js-select2 select-by-value" data-search="on"
-                                                                        tabindex="-1" aria-hidden="true" required value="{{ request.GET.department }}">
-                                                                    {% for department in departments %}
-                                                                        <option value="{{ department.id }}">{{ department.name }}</option>
-                                                                    {% endfor %}
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label class="form-label" for="client_user">پروژه</label>
+                                                            <label class="form-label" for="project">پروژه</label>
                                                             <div class="form-control-wrap">
                                                                 <select id="project" name="project"
-                                                                        class="form-select js-select2" data-search="on"
+                                                                        class="form-select js-select2 select-by-filter" data-search="on"
                                                                         tabindex="-1" aria-hidden="true" required>
                                                                     {% for project in projects %}
                                                                         <option value="{{ project.id }}">{{ project.name }}</option>
@@ -143,24 +103,12 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="form-group">
-                                                            <label class="form-label" for="priority">اولویت</label>
-                                                            <div class="form-control-wrap">
-                                                                <input type="number" class="form-control"
-                                                                       name="priority"
-                                                                       placeholder="اولویت"
-                                                                       id="priority" required value="1">
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                     <div class="col-lg-12">
                                                         <div class="form-group">
-                                                            <label class="form-label" for="customFileLabel">فایل پیوست</label>
+                                                            <label class="form-label" for="customFileLabel">فایل</label>
                                                             <div class="form-control-wrap">
                                                                 <div class="form-file">
-                                                                    <input type="file" name="file" class="form-file-input"
-                                                                           id="file">
+                                                                    <input type="file" name="file" class="form-file-input" id="file" required>
                                                                     <label class="form-file-label" for="file">انتخاب
                                                                         فایل</label>
                                                                 </div>
@@ -171,14 +119,16 @@
                                                         <div class="form-group">
                                                             <label class="form-label" for="description">توضیحات</label>
                                                             <div class="form-control-wrap">
-                                                                <textarea class="form-control" name="description" id="description" placeholder="توضیحات"></textarea>
+                                                                <textarea name="description" id="description"
+                                                                          class="form-control"
+                                                                          placeholder="توضیحات"></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="col-12 text-left">
                                                         <div class="form-group">
                                                             <button type="submit" class="btn btn-lg btn-primary">
-                                                                ایجاد تسک
+                                                                ایجاد و بارگذاری فایل
                                                             </button>
                                                         </div>
                                                     </div>

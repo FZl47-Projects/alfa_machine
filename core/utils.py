@@ -12,8 +12,7 @@ def random_str(size=15, chars=string.ascii_lowercase + string.ascii_uppercase + 
     return ''.join(random.choice(chars) for _ in range(size))
 
 
-def get_random_code(size: int = 12):
-    # Generate a random n-digit code
+def random_int(size: int = 5):
     new_code = ''.join([str(random.randint(0, 9)) for _ in range(size)])
     return new_code
 

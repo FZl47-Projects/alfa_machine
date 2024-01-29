@@ -123,11 +123,11 @@
                         </a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
-                                <a href="#" class="nk-menu-link"><span
+                                <a href="{% url 'public:department__add' %}" class="nk-menu-link"><span
                                         class="nk-menu-text">افزودن واحد</span></a>
                             </li>
                             <li class="nk-menu-item">
-                                <a href="#" class="nk-menu-link"><span
+                                <a href="{% url 'public:department__list' %}" class="nk-menu-link"><span
                                         class="nk-menu-text">لیست واحد ها</span></a>
                             </li>
                         </ul>
@@ -142,11 +142,11 @@
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
                                 <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
-                                   target="_blank"><span class="nk-menu-text">ثبت ایتم</span></a>
+                                ><span class="nk-menu-text">ثبت ایتم</span></a>
                             </li>
                             <li class="nk-menu-item">
                                 <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
-                                   target="_blank"><span class="nk-menu-text">لیست انبار</span></a>
+                                ><span class="nk-menu-text">لیست انبار</span></a>
                             </li>
                         </ul>
                         <!-- .nk-menu-sub -->
@@ -160,11 +160,19 @@
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
                                 <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
-                                   target="_blank"><span class="nk-menu-text">ثبت پرداخت</span></a>
+                                ><span class="nk-menu-text">ثبت پرداخت</span></a>
                             </li>
                             <li class="nk-menu-item">
                                 <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
-                                   target="_blank"><span class="nk-menu-text">لیست پرداختی ها</span></a>
+                                ><span class="nk-menu-text">لیست پرداختی ها</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
+                                ><span class="nk-menu-text">ثبت حسن انجام</span></a>
+                            </li>
+                            <li class="nk-menu-item">
+                                <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
+                                ><span class="nk-menu-text">ثبت ضمانت نامه</span></a>
                             </li>
                         </ul>
                         <!-- .nk-menu-sub -->
@@ -173,16 +181,16 @@
                     <li class="nk-menu-item has-sub">
                         <a href="#" class="nk-menu-link nk-menu-toggle">
                             <span class="nk-menu-icon"><em class="icon ni ni-file-text"></em></span>
-                            <span class="nk-menu-text">فایل</span>
+                            <span class="nk-menu-text">فایل پروژه</span>
                         </a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
-                                <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
-                                   target="_blank"><span class="nk-menu-text">افزودن فایل</span></a>
+                                <a href="{% url 'public:project_file__add' %}" class="nk-menu-link"><span
+                                        class="nk-menu-text">افزودن فایل</span></a>
                             </li>
                             <li class="nk-menu-item">
-                                <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
-                                   target="_blank"><span class="nk-menu-text">لیست فایل ها</span></a>
+                                <a href="{% url 'public:project_file__list' %}" class="nk-menu-link"><span
+                                        class="nk-menu-text">لیست فایل ها</span></a>
                             </li>
                         </ul>
                         <!-- .nk-menu-sub -->
@@ -195,12 +203,12 @@
                         </a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
-                                <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
-                                   target="_blank"><span class="nk-menu-text">ایجاد گزارش</span></a>
+                                <a href="{% url 'support:ticket__add' %}" class="nk-menu-link"
+                                ><span class="nk-menu-text">ایجاد گزارش</span></a>
                             </li>
                             <li class="nk-menu-item">
-                                <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
-                                   target="_blank"><span class="nk-menu-text">لیست گزارشات</span></a>
+                                <a href="{% url 'support:ticket__list' %}" class="nk-menu-link"
+                                ><span class="nk-menu-text">لیست گزارشات</span></a>
                             </li>
                         </ul>
                         <!-- .nk-menu-sub -->
@@ -214,29 +222,11 @@
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
                                 <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
-                                   target="_blank"><span class="nk-menu-text">ایجاد اعلان</span></a>
+                                ><span class="nk-menu-text">ایجاد اعلان</span></a>
                             </li>
                             <li class="nk-menu-item">
                                 <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
-                                   target="_blank"><span class="nk-menu-text">لیست اعلانات</span></a>
-                            </li>
-                        </ul>
-                        <!-- .nk-menu-sub -->
-                    </li>
-                    <!-- .nk-menu-item -->
-                    <li class="nk-menu-item has-sub">
-                        <a href="#" class="nk-menu-link nk-menu-toggle">
-                            <span class="nk-menu-icon"><em class="icon ni ni-ticket"></em></span>
-                            <span class="nk-menu-text">تیکت ها</span>
-                        </a>
-                        <ul class="nk-menu-sub">
-                            <li class="nk-menu-item">
-                                <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
-                                   target="_blank"><span class="nk-menu-text">ایجاد تیکت</span></a>
-                            </li>
-                            <li class="nk-menu-item">
-                                <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
-                                   target="_blank"><span class="nk-menu-text">لیست تیکت ها</span></a>
+                                ><span class="nk-menu-text">لیست اعلانات</span></a>
                             </li>
                         </ul>
                         <!-- .nk-menu-sub -->
@@ -250,11 +240,11 @@
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
                                 <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
-                                   target="_blank"><span class="nk-menu-text">تغییر رمز عبور</span></a>
+                                ><span class="nk-menu-text">تغییر رمز عبور</span></a>
                             </li>
                             <li class="nk-menu-item">
                                 <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
-                                   target="_blank"><span class="nk-menu-text">فراموشی رمز عبور</span></a>
+                                ><span class="nk-menu-text">فراموشی رمز عبور</span></a>
                             </li>
                         </ul>
                         <!-- .nk-menu-sub -->

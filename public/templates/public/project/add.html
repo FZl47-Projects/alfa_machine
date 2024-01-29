@@ -109,11 +109,10 @@
                                                             <label class="form-label" for="client_user">مشتری</label>
                                                             <div class="form-control-wrap">
                                                                 <select id="client_user" name="task_master"
-                                                                        class="form-select js-select2" data-search="on"
-                                                                        tabindex="-1" aria-hidden="true" required>
+                                                                        class="form-select js-select2 select-by-filter" data-search="on"
+                                                                        tabindex="-1" aria-hidden="true" required value="{{ request.GET.task_master }}">
                                                                     {% for task_master in task_masters %}
-                                                                        <option value="{{ task_master.id }}"
-                                                                                data-select2-id="49">{{ task_master.name }}</option>
+                                                                        <option value="{{ task_master.id }}">{{ task_master.name }}</option>
                                                                     {% endfor %}
                                                                 </select>
                                                             </div>

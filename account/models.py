@@ -84,7 +84,7 @@ class User(AbstractUser,BaseModel):
         return '-'
 
     def get_tickets(self):
-        return self.department.ticket_departments.filter(is_open=True)
+        return self.department.to_deps_ticket.filter(is_open=True)
 
     def get_reports(self):
         return self.department.report_set.all()

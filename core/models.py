@@ -1,4 +1,5 @@
 from django.db import models
+from .mixins import RemoveOldFileMixin
 from core.utils import get_time, get_timesince_persian, random_str
 
 
@@ -25,7 +26,9 @@ class BaseModel(models.Model):
         return get_timesince_persian(self.created_at)
 
 
-class FileAbstract(models.Model):
+class FileAbstract(RemoveOldFileMixin, models.Model):
+    FIELDS_REMOVE_FILES = ('file',)
+
     file = models.FileField(upload_to=upload_file_src, max_length=400, null=True, blank=True)
 
     class Meta:
@@ -40,4 +43,3 @@ class FileAbstract(models.Model):
             return self.file.url
         except:
             return None
-

@@ -67,17 +67,32 @@ class TaskMasterCreate(forms.ModelForm):
         fields = '__all__'
 
 
-# ----
+class TaskMasterUpdate(TaskMasterCreate):
+    pass
 
-# TaskMasterAdd form
+
+class DepartmentCreate(forms.ModelForm):
+    class Meta:
+        model = models.Department
+        fields = '__all__'
 
 
-class ProjectFile(forms.ModelForm):
+class DepartmentUpdate(DepartmentCreate):
+    pass
+
+
+class ProjectFileCreate(forms.ModelForm):
+    description = forms.CharField(required=False)
     file = forms.FileField(required=True)
 
     class Meta:
         model = models.ProjectFile
         fields = '__all__'
+
+
+# ----
+
+# TaskMasterAdd form
 
 
 class ProjectCreate(forms.ModelForm):

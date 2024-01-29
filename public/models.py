@@ -11,30 +11,33 @@ class Department(BaseModel):
     def __str__(self):
         return self.name
 
-    def get_image(self):
-        # TODO: should be complete
-        pass
+    @classmethod
+    def has_perm_to_modify(cls, user):
+        if user.is_anonymous:
+            return False
+        if user.role in ('super_user', 'control_project_user'):
+            return True
+        return False
 
-    def get_state_busy(self):
-        tasks_count = self.task_set.exclude(status__status='finished').count()
-        if tasks_count != 0:
-            return 'مشغول'
-        return 'بیکار'
+    @classmethod
+    def has_perm_to_delete(cls, user):
+        if user.is_anonymous:
+            return False
+        if user.role in ('super_user',):
+            return True
+        return False
 
-    def get_absolute_url_manage_tasks(self):
-        return reverse('public:task_owner_department', args=(self.id,))
+    def get_users(self):
+        return self.user_set.all()
 
     def get_absolute_url(self):
-        return reverse('public:department_detail', args=(self.id,))
-
-    def get_delete_url(self):
-        return reverse('departments.general:delete_department', args=(self.id,))
+        return reverse('public:department__detail', args=(self.id,))
 
     def get_notifications(self):
         return self.notification_departments.filter(is_showing=True)
 
     def get_tickets(self):
-        return self.ticket_departments.filter(is_open=True)
+        return self.from_dep_ticket.filter(is_open=True)
 
     def get_tasks(self):
         return self.task_set.all()
@@ -43,7 +46,8 @@ class Department(BaseModel):
         return self.get_tasks().filter(taskstatus__status='finished')
 
     def get_tasks_queue(self):
-        return self.get_tasks().filter(taskstatus__status='queue') | self.get_tasks().filter(taskstatus=None)
+        tasks = self.get_tasks().filter(taskstatus__status='queue') | self.get_tasks().filter(taskstatus=None)
+        return tasks.distinct()
 
     def get_tasks_progress(self):
         return self.get_tasks().filter(taskstatus__status='progress')
@@ -57,6 +61,9 @@ class Department(BaseModel):
     def get_tasks_need_to_replan(self):
         return self.get_tasks().filter(taskstatus__status='need-to-replan')
 
+    def get_tasks_remaining(self):
+        return self.get_tasks().exclude(taskstatus__status='finished')
+
 
 class TaskMaster(BaseModel):
     name = models.CharField('Task Master name', max_length=128)
@@ -68,12 +75,30 @@ class TaskMaster(BaseModel):
     def __str__(self):
         return self.name
 
+    @classmethod
+    def has_perm_to_modify(cls, user):
+        if user.is_anonymous:
+            return False
+        if user.role in ('super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user'):
+            return True
+        return False
+
+    @classmethod
+    def has_perm_to_delete(cls, user):
+        if user.is_anonymous:
+            return False
+        if user.role in ('super_user',):
+            return True
+        return False
+
     def get_absolute_url(self):
-        # TODO: should be completed
-        pass
+        return reverse('public:task_master__detail', args=(self.id,))
 
     def get_projects(self):
         return self.projects.all()
+
+    def get_inquiries(self):
+        return self.inquiry_set.all()
 
 
 class Project(BaseModel):
@@ -84,7 +109,7 @@ class Project(BaseModel):
         ('completed', 'تایید و اتمام'),
         ('paused', 'متوقف شده'),
     )
-    image_cover = models.ImageField(default='/static/frontend/images/colors/bg-creamy.png')
+    # image_cover = models.ImageField()
     number_id = models.CharField(max_length=150, null=True, blank=True)
     prepayment_datetime = models.DateField(null=True, blank=True)
     item = models.TextField(null=True, blank=True)
@@ -138,19 +163,25 @@ class Project(BaseModel):
         pass
 
     def get_progress_percentage(self):
-        # try:
-        #     all_count = self.get_tasks().count()
-        #     finished_count = self.get_tasks().filter(state='finished').count()
-        #     p = (100 / all_count) * finished_count
-        #     return round(p, 1)
-        # except:
-        #     return 0
         return self.progress_percentage
 
     def get_image_cover_url(self):
+        LIST_IMAGES = [
+            'bg-black.png',
+            'bg-blue.png',
+            'bg-creamy.png',
+            'bg-gray.png',
+            'bg-green.png',
+            'bg-light-purple.png',
+            'bg-purple.png',
+            'bg-pink.png',
+            'bg-red.png',
+            'bg-yellow.png',
+        ]
         try:
-            return str(self.image_cover.url).replace('/media', '')
-        except AttributeError:
+            n = LIST_IMAGES[int(str(self.id)[-1])]
+            return f'/static/frontend/images/colors/{n}'
+        except Exception as e:
             return '/static/frontend/images/colors/bg-creamy.png'
 
     def get_absolute_url(self):
@@ -218,54 +249,23 @@ class Project(BaseModel):
 
         return unique_tickets
 
-    def get_prepayment_datetime(self):
-        if self.prepayment_datetime:
-            return self.prepayment_datetime.strftime('%Y-%m-%d %H:%M')
-        return ''
-
-    def get_sample_delivery_date(self):
-        if self.sample_delivery_date:
-            return self.sample_delivery_date.strftime('%Y-%m-%d %H:%M')
-        return ''
-
-    def get_mass_delivery_date(self):
-        if self.mass_delivery_date:
-            return self.mass_delivery_date.strftime('%Y-%m-%d %H:%M')
-        return ''
-
-    def get_mass_delivery_date_input(self):
-        if self.mass_delivery_date:
-            return self.mass_delivery_date.strftime('%Y-%m-%d')
-        return ''
-
-    def get_sample_delivery_date_input(self):
-        if self.sample_delivery_date:
-            return self.sample_delivery_date.strftime('%Y-%m-%d')
-        return ''
-
-    def get_prepayment_datetime_input(self):
-        if self.prepayment_datetime:
-            return self.prepayment_datetime.strftime('%Y-%m-%d')
-        return ''
-
-    def get_time_end_input(self):
-        if self.time_end:
-            return self.time_end.strftime('%Y-%m-%d')
-        return ''
-
-    def get_time_start_input(self):
-        if self.time_start:
-            return self.time_start.strftime('%Y-%m-%d')
-        return ''
-
     def get_participating_departments(self):
         departments = Department.objects.filter(task__project=self).distinct()
         return departments
+
+    def get_remaining_time_end(self):
+        # remaining time by days
+        tend = self.time_end
+        if tend:
+            t = jdatetime.date(tend.year, tend.month, tend.day) - jdatetime.date.today()
+            return t.days
+        return '-'
 
 
 class ProjectFile(BaseModel, FileAbstract):
     name = models.CharField(max_length=100)
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
+    allocator_user = models.ForeignKey('account.User', on_delete=models.SET_NULL, null=True)
     from_department = models.ForeignKey('Department', on_delete=models.SET_NULL, null=True)
     description = models.TextField(null=True)
 
@@ -274,6 +274,16 @@ class ProjectFile(BaseModel, FileAbstract):
 
     def __str__(self):
         return self.name
+
+    def has_perm_to_modify(self, user):
+        if user.is_anonymous:
+            return False
+        if user == self.allocator_user or user.role in ('super_user',):
+            return True
+        return False
+
+    def get_absolute_url(self):
+        return reverse('public:project_file__detail', args=(self.id,))
 
 
 class Task(BaseModel, FileAbstract):
@@ -322,7 +332,7 @@ class Task(BaseModel, FileAbstract):
     def get_status_label(self):
         s = self.get_last_status()
         if s:
-            return s.status
+            return s.get_status_label()
         return 'در صف'
 
     def get_remaining_time(self):
