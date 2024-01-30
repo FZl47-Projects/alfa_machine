@@ -271,7 +271,7 @@
                                                             <span>تاریخ اتمام قرارداد</span></div>
                                                         <div class="nk-tb-col nk-tb-col-status ">
                                                             <span
-                                                                class="sub-text d-none d-md-block">وضعیت</span>
+                                                                    class="sub-text d-none d-md-block">وضعیت</span>
                                                         </div>
                                                         <div class="nk-tb-col nk-tb-col-tools"></div>
                                                     </div>
@@ -281,7 +281,8 @@
                                                             <div class="nk-tb-col text-start">
                                                                 <a href="{{ project.get_absolute_url }}">
                                                                     <div class="nk-tnx-type">
-                                                                        <div class="nk-tnx-type-icon" style="background:none;">
+                                                                        <div class="nk-tnx-type-icon"
+                                                                             style="background:none;">
                                                                             <img src="{{ project.get_image_cover_url }}"
                                                                                  alt="{{ project.name }}"
                                                                                  style="border-radius: 50%" width="35"
@@ -299,7 +300,10 @@
                                                                 </a>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-xxl">
-                                                                <span class="tb-lead-sub badge badge-dim bg-info">{{ project.get_last_step.name|default:'-'|truncatechars:30 }}</span>
+                                                                <span class="tb-lead-sub py-1">
+                                                                    <a class=" badge badge-dim bg-info"
+                                                                       href="{{ project.get_last_step.get_absolute_url }}">{{ project.get_last_step.name|default:'-'|truncatechars:30 }}</a>
+                                                                </span>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-sm">
                                                                 <span>{{ project.time_start|default:'-' }}</span>
