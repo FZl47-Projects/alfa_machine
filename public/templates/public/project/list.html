@@ -299,7 +299,7 @@
                                                                 </a>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-xxl">
-                                                                <span class="tb-lead-sub badge badge-dim bg-info">{{ project.get_last_step.get_status_label|default:'-' }}</span>
+                                                                <span class="tb-lead-sub badge badge-dim bg-info">{{ project.get_last_step.name|default:'-'|truncatechars:30 }}</span>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-sm">
                                                                 <span>{{ project.time_start|default:'-' }}</span>
