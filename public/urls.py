@@ -13,6 +13,11 @@ urlpatterns = [
     # project note
     path('project/note/add', views.ProjectNoteAdd.as_view(), name='project_note__add'),
     path('project/note/<int:note_id>/delete', views.ProjectNoteDelete.as_view(), name='project_note__delete'),
+    # project step
+    path('project/step/add', views.ProjectStepAdd.as_view(), name='project_step__add'),
+    path('project/step/<int:step_id>/detail', views.ProjectStepDetail.as_view(), name='project_step__detail'),
+    path('project/step/<int:step_id>/delete', views.ProjectStepDelete.as_view(), name='project_step__delete'),
+    path('project/step/<int:step_id>/update', views.ProjectStepUpdate.as_view(), name='project_step__update'),
     # task
     path('task/add', views.TaskAdd.as_view(), name='task__add'),
     path('task/list', views.TaskList.as_view(), name='task__list'),
@@ -52,28 +57,5 @@ urlpatterns = [
     path('project/file/<int:project_file_id>/detail', views.ProjectFileDetail.as_view(), name='project_file__detail'),
     path('project/file/<int:project_file_id>/delete', views.ProjectFileDelete.as_view(), name='project_file__delete'),
 
-    # ---
-    path('error', views.Error.as_view(), name='error'),
-    path('success', views.Success.as_view(), name='success'),
     path('', views.Index.as_view(), name='index'),
-    # path('task_masters/', views.TaskMasterView.as_view(), name='task_master'),
-
-    # path('project/<int:project_id>/update', views.ProjectUpdate.as_view(), name='project_update'),
-    # path('project/<int:project_id>/delete', views.ProjectDelete.as_view(), name='project_delete'),
-    # path('project/add', views.ProjectAdd.as_view(), name='project_add'),
-    # path('project/file', views.ProjectFile.as_view(), name='project_file'),
-    # path('project/<int:project_id>/file', views.ProjectDetailFileList.as_view(), name='project_detail_file_list'),
-    # path('project/<int:project_id>', views.ProjectDetail.as_view(), name='project_detail'),
-
-    # path('task', views.Task.as_view(), name='task'),
-    # path('task/remind/<int:task_id>', views.TaskRemind.as_view(), name='task_remind'),
-    # path('task/owner', views.TaskOwner.as_view(), name='task_owner'),
-    # path('task/owner/<int:task_id>', views.TaskOwner.as_view(), name='task_owner_detail'),
-    # path('task/owner/department/<int:department_id>', views.TaskOwnerDepartment.as_view(),
-    #      name='task_owner_department'),
-    # path('task/list/state', views.TaskListStateUpdate.as_view(), name='task_list_state_update'),
-
-    # path('inquiry/<int:inquiry_id>/status', views.InquiryStatus.as_view(), name='inquiry_status'),
-    # path('inquiry/owner', views.InquiryOwner.as_view(), name='inquiry_owner'),
-    # path('inquiry/<int:inquiry_id>/file', views.InquiryFile.as_view(), name='inquiry_file__add'),
 ]

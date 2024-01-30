@@ -132,7 +132,7 @@
                                                                 <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
                                                                     <ul class="link-list-opt no-bdr">
                                                                         <li>
-                                                                            <a href="#"><span>افزودن پروژه</span></a>
+                                                                            <a href="{% url 'public:project__add' %}"><span>افزودن پروژه</span></a>
                                                                         </li>
                                                                         <li>
                                                                             <a href="{% url 'public:project__list' %}"><span>لیست پروژه ها</span></a>
@@ -147,8 +147,6 @@
                                                 <div class="nk-ck-wrap mt-auto overflow-hidden rounded-bottom">
                                                     <div class="nk-cmwg1-ck box-icon">
                                                         <i class="icon ni ni-dashboard"></i>
-                                                        {#                                                        <canvas class="campaign-line-chart-s1 rounded-bottom"#}
-                                                        {#                                                                id="runningCampaign"></canvas>#}
                                                     </div>
                                                 </div>
                                             </div>
@@ -177,10 +175,10 @@
                                                                 <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
                                                                     <ul class="link-list-opt no-bdr">
                                                                         <li>
-                                                                            <a href="#"><span>افزودن واحد</span></a>
+                                                                            <a href="{% url 'public:department__add' %}"><span>افزودن واحد</span></a>
                                                                         </li>
                                                                         <li>
-                                                                            <a href="#"><span>لیست واحد ها</span></a>
+                                                                            <a href="{% url 'public:department__list' %}"><span>لیست واحد ها</span></a>
                                                                         </li>
                                                                     </ul>
                                                                 </div>
@@ -191,8 +189,6 @@
                                                 <!-- .card-inner -->
                                                 <div class="nk-cmwg1-ck mt-auto box-icon">
                                                     <i class="icon ni ni-building"></i>
-                                                    {#                                                    <canvas class="campaign-line-chart-s1 rounded-bottom"#}
-                                                    {#                                                            id="totalAudience"></canvas>#}
                                                 </div>
                                             </div>
                                             <!-- .nk-cmwg -->
@@ -220,10 +216,10 @@
                                                                 <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
                                                                     <ul class="link-list-opt no-bdr">
                                                                         <li>
-                                                                            <a href="#"><span>افزودن کاربر</span></a>
+                                                                            <a href="{% url 'account:user__add' %}"><span>افزودن کاربر</span></a>
                                                                         </li>
                                                                         <li>
-                                                                            <a href="#"><span>لیست کاربران</span></a>
+                                                                            <a href="{% url 'account:user__list' %}"><span>لیست کاربران</span></a>
                                                                         </li>
                                                                     </ul>
                                                                 </div>
@@ -235,8 +231,6 @@
                                                 <div class="nk-ck-wrap mt-auto overflow-hidden rounded-bottom">
                                                     <div class="nk-cmwg1-ck box-icon">
                                                         <i class="icon ni ni-users"></i>
-                                                        {#                                                        <canvas class="campaign-bar-chart-s1 rounded-bottom"#}
-                                                        {#                                                                id="avgRating"></canvas>#}
                                                     </div>
                                                 </div>
                                             </div>
@@ -265,10 +259,10 @@
                                                                 <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
                                                                     <ul class="link-list-opt no-bdr">
                                                                         <li>
-                                                                            <a href="#"><span>افزودن مشتری</span></a>
+                                                                            <a href="{% url 'public:task_master__add' %}"><span>افزودن مشتری</span></a>
                                                                         </li>
                                                                         <li>
-                                                                            <a href="#"><span>لیست مشتریان</span></a>
+                                                                            <a href="{% url 'public:task_master__list' %}"><span>لیست مشتریان</span></a>
                                                                         </li>
                                                                     </ul>
                                                                 </div>
@@ -280,8 +274,6 @@
                                                 <div class="nk-ck-wrap mt-auto overflow-hidden rounded-bottom">
                                                     <div class="nk-cmwg1-ck box-icon">
                                                         <i class="icon ni ni-user-group"></i>
-                                                        {#                                                        <canvas class="campaign-line-chart-s1 rounded-bottom"#}
-                                                        {#                                                                id="newSubscriber"></canvas>#}
                                                     </div>
                                                 </div>
                                             </div>
@@ -309,6 +301,9 @@
                                                                         class="icon ni ni-more-v"></em></a>
                                                                 <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
                                                                     <ul class="link-list-opt no-bdr">
+                                                                        <li>
+                                                                            <a href="{% url 'public:inquiry__add' %}"><span>افزودن استعلام</span></a>
+                                                                        </li>
                                                                         <li>
                                                                             <a href="{% url 'public:inquiry__list' %}"><span>لیست استعلامات</span></a>
                                                                         </li>
@@ -339,7 +334,7 @@
                                                             <div class="text-white d-flex flex-wrap">
                                                                 <span class="fs-1 me-1">{{ request.user.get_tickets.count }}</span>
                                                             </div>
-                                                            <h6 class="text-white">تعداد تیکت ها</h6>
+                                                            <h6 class="text-white">تعداد گزارشات</h6>
                                                         </div>
                                                         <div class="card-tools me-n1">
                                                             <div class="dropdown">
@@ -350,7 +345,10 @@
                                                                 <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
                                                                     <ul class="link-list-opt no-bdr">
                                                                         <li>
-                                                                            <a href="#"><span>لیست تیکت ها</span></a>
+                                                                            <a href="{% url 'support:ticket__add' %}"><span>افزودن گزارش</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="{% url 'support:ticket__list' %}"><span>لیست گزارشات</span></a>
                                                                         </li>
                                                                     </ul>
                                                                 </div>
@@ -361,7 +359,7 @@
                                                 <!-- .card-inner -->
                                                 <div class="nk-ck-wrap mt-auto overflow-hidden rounded-bottom">
                                                     <div class="nk-cmwg1-ck box-icon">
-                                                        <i class="icon ni ni-ticket"></i>
+                                                        <em class="icon ni ni-view-col"></em>
                                                     </div>
                                                 </div>
                                             </div>
@@ -390,7 +388,10 @@
                                                                 <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
                                                                     <ul class="link-list-opt no-bdr">
                                                                         <li>
-                                                                            <a href="#"><span>لیست اعلانات</span></a>
+                                                                            <a href="{% url 'notification:notification__add' %}"><span>افزودن اعلان</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="{% url 'notification:notification__list' %}"><span>لیست اعلانات</span></a>
                                                                         </li>
                                                                     </ul>
                                                                 </div>

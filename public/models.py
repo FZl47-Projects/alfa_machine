@@ -103,6 +103,46 @@ class TaskMaster(BaseModel):
         return self.inquiry_set.all()
 
 
+class ProjectStep(BaseModel):
+    PERSON_TRAFFIC_OPTIONS = (
+        ('person/day', 'نفر/روز'),
+        ('person/hour', 'نفر/ساعت'),
+    )
+
+    name = models.CharField(max_length=100)
+    from_department = models.ForeignKey('Department', on_delete=models.CASCADE)
+    project = models.ForeignKey('Project', on_delete=models.CASCADE)
+    person_traffic = models.CharField(max_length=15, choices=PERSON_TRAFFIC_OPTIONS)
+    plan = models.IntegerField()
+    actual = models.IntegerField(null=True)
+    description = models.TextField(null=True)
+
+    class Meta:
+        ordering = ('-id',)
+
+    def __str__(self):
+        return self.name
+
+    @classmethod
+    def has_perm_to_modify(cls, user):
+        if user.is_anonymous:
+            return False
+        if user.role in ('super_user', 'control_project_user'):
+            return True
+        return False
+
+    def get_absolute_url(self):
+        return reverse('public:project_step__detail', args=(self.id,))
+
+    def get_person_traffic_label(self):
+        return self.get_person_traffic_display()
+
+    def get_status_result(self):
+        if self.actual:
+            return self.plan - self.actual
+        return None
+
+
 class ProjectNote(BaseModel):
     user = models.ForeignKey('account.User', on_delete=models.CASCADE)
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
@@ -158,6 +198,14 @@ class Project(BaseModel):
             return True
         return False
 
+    @classmethod
+    def has_perm_to_steps(cls, user):
+        if user.is_anonymous:
+            return False
+        if user.role in ('super_user', 'control_project_user'):
+            return True
+        return False
+
     def get_state_label(self):
         pr = self.get_progress_percentage()
         if pr == 100:
@@ -172,9 +220,11 @@ class Project(BaseModel):
             return 'دارد'
         return 'ندارد'
 
+    def get_steps(self):
+        return self.projectstep_set.all()
+
     def get_last_step(self):
-        # TODO: should be completed
-        pass
+        return self.get_steps().first()
 
     def get_progress_percentage(self):
         return self.progress_percentage
@@ -344,12 +394,7 @@ class Task(BaseModel, FileAbstract):
         return 'در صف'
 
     def get_remaining_time(self):
-        # remaining time by days
-        tend = self.time_end
-        if tend:
-            t = jdatetime.date(tend.year, tend.month, tend.day) - jdatetime.date.today()
-            return t.days
-        return '-'
+        return self.get_remaining_date_field(self.time_end)
 
 
 class TaskStatus(BaseModel, FileAbstract):
@@ -441,12 +486,7 @@ class Inquiry(BaseModel):
         return f"{reverse('public:project__add')}?inquiry-id={self.id}"
 
     def get_remaining_deadline(self):
-        # remaining time by days(deadline)
-        td = self.time_deadline_response
-        if td:
-            t = jdatetime.date(td.year, td.month, td.day) - jdatetime.date.today()
-            return t.days
-        return None
+        return self.get_remaining_date_field(self.time_deadline_response)
 
 
 class InquiryStatus(BaseModel, FileAbstract):

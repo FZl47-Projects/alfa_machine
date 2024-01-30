@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
@@ -9,16 +9,6 @@ from core.utils import form_validate_err
 from account.auth.decorators import user_role_required_cbv
 from notification.utils import create_notification
 from public import models, forms
-
-
-class Success(View):
-    def get(self, request):
-        return HttpResponse('عملیات با موفقیت انجام شد')
-
-
-class Error(View):
-    def get(self, request):
-        return HttpResponse('عملیات با خطا مواجه شد')
 
 
 class Index(View):
@@ -37,6 +27,7 @@ class ProjectDetail(LoginRequiredMixin, View):
             'task_masters': models.TaskMaster.objects.all(),
             # permissions
             'has_perm_to_modify': project.has_perm_to_modify(request.user),
+            'has_perm_to_steps': project.has_perm_to_steps(request.user),
         }
         return render(request, self.template_name, context)
 
@@ -139,6 +130,17 @@ class ProjectUpdate(LoginRequiredMixin, View):
         return redirect(project.get_absolute_url())
 
 
+class ProjectDelete(LoginRequiredMixin, View):
+
+    def get(self, request, project_id):
+        if not models.Project.has_perm_to_modify(request.user):
+            raise PermissionDenied
+        project = get_object_or_404(models.Project, id=project_id)
+        project.delete()
+        messages.success(request, 'پروژه با موفقیت حذف شد')
+        return redirect('public:project__list')
+
+
 class ProjectNoteAdd(LoginRequiredMixin, View):
 
     def post(self, request):
@@ -155,17 +157,6 @@ class ProjectNoteAdd(LoginRequiredMixin, View):
         return redirect(note.project.get_absolute_url())
 
 
-class ProjectDelete(LoginRequiredMixin, View):
-
-    def get(self, request, project_id):
-        if not models.Project.has_perm_to_modify(request.user):
-            raise PermissionDenied
-        project = get_object_or_404(models.Project, id=project_id)
-        project.delete()
-        messages.success(request, 'پروژه با موفقیت حذف شد')
-        return redirect('public:project__list')
-
-
 class ProjectNoteDelete(LoginRequiredMixin, View):
 
     def get(self, request, note_id):
@@ -173,6 +164,69 @@ class ProjectNoteDelete(LoginRequiredMixin, View):
         note.delete()
         messages.success(request, 'یادداشت با موفقیت حذف شد')
         return redirect(note.project.get_absolute_url())
+
+
+class ProjectStepAdd(LoginRequiredMixin, View):
+
+    def post(self, request):
+        user = request.user
+        if not models.Project.has_perm_to_steps(user):
+            raise PermissionDenied
+        referer_url = request.META.get('HTTP_REFERER')
+        data = request.POST.copy()
+        # set additional values
+        data['from_department'] = user.department
+        f = forms.ProjectStepCreate(data)
+        if not f.is_valid():
+            messages.error(request, 'لطفا فیلد هارا به درستی وارد نمایید')
+            return redirect(referer_url)
+        step = f.save()
+        messages.success(request, 'مرحله با موفقیت ایجاد شد')
+        return redirect(step.project.get_absolute_url())
+
+
+class ProjectStepDetail(LoginRequiredMixin, View):
+    template_name = 'public/project_step/detail.html'
+
+    def get(self, request, step_id):
+        user = request.user
+        if not models.Project.has_perm_to_steps(user):
+            raise PermissionDenied
+        step = get_object_or_404(models.ProjectStep, id=step_id)
+        context = {
+            'step': step,
+            # permissions
+            'has_perm_to_modify': step.has_perm_to_modify(user)
+        }
+        return render(request, self.template_name, context)
+
+
+class ProjectStepDelete(LoginRequiredMixin, View):
+
+    def get(self, request, step_id):
+        user = request.user
+        if not models.Project.has_perm_to_modify(user):
+            raise PermissionDenied
+        step = get_object_or_404(models.ProjectStep, id=step_id)
+        step.delete()
+        messages.success(request, 'مرحله پروژه با موفقیت حذف شد')
+        return redirect(step.project.get_absolute_url())
+
+
+class ProjectStepUpdate(LoginRequiredMixin, View):
+
+    def post(self, request, step_id):
+        user = request.user
+        if not models.Project.has_perm_to_modify(user):
+            raise PermissionDenied
+        step = get_object_or_404(models.ProjectStep, id=step_id)
+        f = forms.ProjectStepUpdate(data=request.POST, instance=step)
+        if not f.is_valid():
+            messages.error(request, 'لطفا فیلد هارا به درستی پر نمایید')
+            return redirect(step.get_absolute_url())
+        f.save()
+        messages.success(request, 'مرحله پروژه با موفقیت بروزرسانی شد')
+        return redirect(step.get_absolute_url())
 
 
 class TaskAdd(LoginRequiredMixin, View):

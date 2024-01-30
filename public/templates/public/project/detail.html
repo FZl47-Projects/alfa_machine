@@ -79,22 +79,34 @@
                                                        href="{% url 'public:task__list' %}?filter=true&project={{ project.id }}"><em
                                                             class="icon ni ni-task"></em><span>تسک ها</span></a>
                                                 </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" data-bs-toggle="tab" href="#"><em
-                                                            class="icon ni ni-activity-round"></em><span>مرحله ها</span></a>
-                                                </li>
+                                                {% if has_perm_to_steps %}
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" data-bs-toggle="tab" href="#steps"><em
+                                                                class="icon ni ni-activity-round"></em><span>مرحله ها</span></a>
+                                                    </li>
+                                                {% endif %}
                                                 <li class="nav-item">
                                                     <a class="nav-link"
                                                        href="{% url 'support:ticket__list' %}?filter=true&projects={{ project.id }}"><em
                                                             class="icon ni ni-view-col"></em><span>گزارشات</span></a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" href="{% url 'public:project_file__list' %}?filter=true&project={{ project.id }}"><em
+                                                    <a class="nav-link"
+                                                       href="{% url 'public:project_file__list' %}?filter=true&project={{ project.id }}"><em
                                                             class="icon ni ni-file-text"></em><span>فایل ها</span></a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" href="{% url 'notification:notification__list' %}?filter=true&projects={{ project.id }}"><em
+                                                    <a class="nav-link"
+                                                       href="{% url 'notification:notification__list' %}?filter=true&projects={{ project.id }}"><em
                                                             class="icon ni ni-notice"></em><span>اعلانات</span></a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-bs-toggle="tab" href="#"><em
+                                                            class="icon ni ni-book"></em><span>ایتم های انبار</span></a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link" data-bs-toggle="tab" href="#financial"><em
+                                                            class="icon ni ni-coin-alt"></em><span>امور مالی</span></a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link" data-bs-toggle="tab" href="#note"><em
@@ -273,395 +285,83 @@
                                                     <div class="card-inner">
                                                         <div class="nk-block">
                                                             <div class="nk-block-head">
-                                                                <h5 class="title">اطلاعات پایه</h5>
+                                                                <h5 class="title">نمودارها</h5>
                                                             </div>
-                                                            <!-- .nk-block-head -->
-                                                            <div class="profile-ud-list">
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">نام</span>
-                                                                        <span class="profile-ud-value">{{ project.name }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">مشتری</span>
-                                                                        <span class="profile-ud-value">
-                                                                    <a href="{{ project.task_master.get_absolute_url }}">{{ project.task_master.name }}</a>
-                                                                </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">شماره درخواست</span>
-                                                                        <span class="profile-ud-value">{{ project.number_id|default:'-' }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">پرداخت شده</span>
-                                                                        <span class="profile-ud-value">
-                                                                    {% if project.is_paid %}
-                                                                        <span class="text-success">پرداخت شده</span>
-                                                                    {% else %}
-                                                                        <span class="text-danger">پرداخت نشده</span>
-                                                                    {% endif %}
-                                                                </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">نمونه</span>
-                                                                        <span class="profile-ud-value">
-                                                                    {% if project.has_sample %}
-                                                                        <span class="text-info">
-                                                                            دارد
-                                                                        </span>
-                                                                    {% else %}
-                                                                        <span class="text-warning">
-                                                                            ندارد
-                                                                        </span>
-                                                                    {% endif %}
-                                                                </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">قیمت</span>
-                                                                        <span class="profile-ud-value">
-                                                                    {% if project.price %}
-                                                                        <span class="price-el">
-                                                                            {{ project.price }}
-                                                                            تومان
-                                                                        </span>
-                                                                    {% else %}
-                                                                        <span>ثبت نشده است</span>
-                                                                    {% endif %}
-                                                                </span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!-- .profile-ud-list -->
                                                         </div>
                                                         <!-- .nk-block -->
-                                                        <div class="nk-block">
-                                                            <div class="nk-block-head nk-block-head-line">
-                                                                <h6 class="title overline-title text-base">اطلاعات
-                                                                    تکمیلی</h6>
-                                                            </div>
-                                                            <!-- .nk-block-head -->
-                                                            <div class="profile-ud-list">
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">تعداد کل</span>
-                                                                        <span class="profile-ud-value">{{ project.count_total }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">تعداد باقی مانده</span>
-                                                                        <span class="profile-ud-value">{{ project.count_remaining }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">مرحله</span>
-                                                                        <span class="profile-ud-value">{{ project.get_last_step|default:'-' }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">تاریخ پیش پرداخت</span>
-                                                                        <span class="profile-ud-value">{{ project.prepayment_datetime|default:'-' }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">تاریخ تحویل نمونه</span>
-                                                                        <span class="profile-ud-value">{{ project.sample_delivery_date|default:'-' }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">تاریخ تحویل انبوه</span>
-                                                                        <span class="profile-ud-value">{{ project.mass_delivery_date|default:'-' }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">تاریخ ابلاغ(شروع)</span>
-                                                                        <span class="profile-ud-value">{{ project.time_start|default:'-' }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">تاریخ اتمام قرارداد</span>
-                                                                        <span class="profile-ud-value">{{ project.time_end|default:'-' }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item w-100">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">ایتم ها</span>
-                                                                        <span class="profile-ud-value">{{ project.item|default:'-' }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item w-100">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">توضیحات</span>
-                                                                        <span class="profile-ud-value">{{ project.description|default:'-' }}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!-- .profile-ud-list -->
-                                                        </div>
-                                                        <!-- .nk-block -->
-                                                        <div class="nk-divider divider md"></div>
-                                                        <div class="nk-block">
-                                                            <div class="nk-block-head nk-block-head-sm nk-block-between">
-                                                                <h5 class="title">یاد داشت های شخصی</h5>
-                                                                <a data-bs-toggle="modal"
-                                                                   data-bs-target="#modal-create-note-object"
-                                                                   class="link link-sm">+ افزودن یادداشت</a>
-                                                            </div>
-                                                            <!-- .nk-block-head -->
-                                                            <div class="bq-note">
-                                                                {% for note in notes %}
-                                                                    <div class="bq-note-item">
-                                                                        <div class="bq-note-text">
-                                                                            <p>
-                                                                                {{ note.text }}
-                                                                            </p>
-                                                                        </div>
-                                                                        <div class="bq-note-meta">
-                                                                        <span class="bq-note-added">اضافه شده در
-                                                                            <span class="datetime-convert">
-                                                                                {{ note.get_created_at_date }}
-                                                                            </span>
-                                                                            <span class="fs-10px">{{ note.get_created_at_timepast }}</span>
-                                                                            <span class="bq-note-sep sep">|</span>
-                                                                            <a href="{% url 'public:project_note__delete' note_id=note.id %}"
-                                                                               class="link link-sm link-danger">حذف
-                                                                                یادداشت
-                                                                            </a>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!-- .bq-note-item -->
-                                                                {% empty %}
-                                                                    <div class="my-5">
-                                                                        <a data-bs-toggle="modal"
-                                                                           data-bs-target="#modal-create-note-object"
-                                                                           class="link link-sm">+ افزودن یادداشت</a>
-                                                                    </div>
-                                                                {% endfor %}
-                                                            </div>
-                                                            <!-- .bq-note -->
-                                                        </div>
-                                                        <!-- .nk-block -->
+                                                        <div class="nk-divider divider md d-none"></div>
+
                                                     </div>
                                                 </div>
 
-                                                <div class="tab-pane" id="steps">
-                                                    <div class="card-inner">
-                                                        <div class="nk-block">
-                                                            <div class="nk-block-head">
-                                                                <h5 class="title">اطلاعات پایه</h5>
-                                                            </div>
-                                                            <!-- .nk-block-head -->
-                                                            <div class="profile-ud-list">
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">نام</span>
-                                                                        <span class="profile-ud-value">{{ project.name }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">مشتری</span>
-                                                                        <span class="profile-ud-value">
-                                                                    <a href="{{ project.task_master.get_absolute_url }}">{{ project.task_master.name }}</a>
-                                                                </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">شماره درخواست</span>
-                                                                        <span class="profile-ud-value">{{ project.number_id|default:'-' }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">پرداخت شده</span>
-                                                                        <span class="profile-ud-value">
-                                                                    {% if project.is_paid %}
-                                                                        <span class="text-success">پرداخت شده</span>
-                                                                    {% else %}
-                                                                        <span class="text-danger">پرداخت نشده</span>
-                                                                    {% endif %}
-                                                                </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">نمونه</span>
-                                                                        <span class="profile-ud-value">
-                                                                    {% if project.has_sample %}
-                                                                        <span class="text-info">
-                                                                            دارد
-                                                                        </span>
-                                                                    {% else %}
-                                                                        <span class="text-warning">
-                                                                            ندارد
-                                                                        </span>
-                                                                    {% endif %}
-                                                                </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">قیمت</span>
-                                                                        <span class="profile-ud-value">
-                                                                    {% if project.price %}
-                                                                        <span class="price-el">
-                                                                            {{ project.price }}
-                                                                            تومان
-                                                                        </span>
-                                                                    {% else %}
-                                                                        <span>ثبت نشده است</span>
-                                                                    {% endif %}
-                                                                </span>
-                                                                    </div>
+                                                {% if has_perm_to_steps %}
+                                                    <div class="tab-pane" id="steps">
+                                                        <div class="card-inner">
+                                                            <div class="nk-block">
+                                                                <div class="nk-block-head nk-block-head-sm nk-block-between">
+                                                                    <h5 class="title">مرحله ها</h5>
+                                                                    <a data-bs-toggle="modal"
+                                                                       data-bs-target="#modal-create-step-object"
+                                                                       class="link link-sm"> افزودن مرحله +</a>
                                                                 </div>
                                                             </div>
-                                                            <!-- .profile-ud-list -->
-                                                        </div>
-                                                        <!-- .nk-block -->
-                                                        <div class="nk-block">
-                                                            <div class="nk-block-head nk-block-head-line">
-                                                                <h6 class="title overline-title text-base">اطلاعات
-                                                                    تکمیلی</h6>
-                                                            </div>
-                                                            <!-- .nk-block-head -->
-                                                            <div class="profile-ud-list">
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">تعداد کل</span>
-                                                                        <span class="profile-ud-value">{{ project.count_total }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">تعداد باقی مانده</span>
-                                                                        <span class="profile-ud-value">{{ project.count_remaining }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">استعلام مربوطه</span>
-                                                                        <span class="profile-ud-value">
-                                                                            {% if project.inquiry %}
-                                                                                <a href="{{ project.inquiry.get_absolute_url }}">{{ project.inquiry.title|truncatechars:30 }}</a>
-                                                                            {% else %}
-                                                                                <em class="icon ni ni-cross"></em>
-                                                                            {% endif %}
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">تاریخ پیش پرداخت</span>
-                                                                        <span class="profile-ud-value">{{ project.prepayment_datetime|default:'-' }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">تاریخ تحویل نمونه</span>
-                                                                        <span class="profile-ud-value">{{ project.sample_delivery_date|default:'-' }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">تاریخ تحویل انبوه</span>
-                                                                        <span class="profile-ud-value">{{ project.mass_delivery_date|default:'-' }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">تاریخ ابلاغ(شروع)</span>
-                                                                        <span class="profile-ud-value">{{ project.time_start|default:'-' }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">تاریخ اتمام قرارداد</span>
-                                                                        <span class="profile-ud-value">{{ project.time_end|default:'-' }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item w-100">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">مرحله</span>
-                                                                        <span class="profile-ud-value">{{ project.get_last_step|default:'-' }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item w-100">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">ایتم ها</span>
-                                                                        <span class="profile-ud-value">{{ project.item|default:'-' }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item w-100">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">توضیحات</span>
-                                                                        <span class="profile-ud-value">{{ project.description|default:'-' }}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <!-- .profile-ud-list -->
-                                                        </div>
-                                                        <!-- .nk-block -->
-                                                        <div class="nk-divider divider md"></div>
-                                                        <div class="nk-block">
-                                                            <div class="nk-block-head nk-block-head-sm nk-block-between">
-                                                                <h5 class="title">یاد داشت های شخصی</h5>
-                                                                <a data-bs-toggle="modal"
-                                                                   data-bs-target="#modal-create-note-object"
-                                                                   class="link link-sm">+ افزودن یادداشت</a>
-                                                            </div>
-                                                            <!-- .nk-block-head -->
-                                                            <div class="bq-note">
-                                                                {% for note in notes %}
-                                                                    <div class="bq-note-item">
-                                                                        <div class="bq-note-text">
-                                                                            <p>
-                                                                                {{ note.text }}
-                                                                            </p>
+                                                            <!-- .nk-block -->
+                                                            <div class="nk-block">
+                                                                <div class="nk-tb-list nk-tb-ulist is-compact card">
+                                                                    <div class="nk-tb-item nk-tb-head">
+                                                                        <div class="nk-tb-col">
+                                                                            <span class="sub-text">نام</span>
                                                                         </div>
-                                                                        <div class="bq-note-meta">
-                                                                        <span class="bq-note-added">اضافه شده در
-                                                                            <span class="datetime-convert">
-                                                                                {{ note.get_created_at_date }}
-                                                                            </span>
-                                                                            <span class="fs-10px">{{ note.get_created_at_timepast }}</span>
-                                                                            <span class="bq-note-sep sep">|</span>
-                                                                            <a href="{% url 'public:project_note__delete' note_id=note.id %}"
-                                                                               class="link link-sm link-danger">حذف
-                                                                                یادداشت
-                                                                            </a>
+                                                                        <div class="nk-tb-col">
+                                                                            <span class="sub-text text-center">نوع ترافیک</span>
+                                                                        </div>
+                                                                        <div class="nk-tb-col tb-col-sm text-center">
+                                                                            <span class="sub-text">پلن</span>
+                                                                        </div>
+                                                                        <div class="nk-tb-col tb-col-sm text-center">
+                                                                            <span class="sub-text">درواقع</span>
+                                                                        </div>
+                                                                        <div class="nk-tb-col text-center">
+                                                                            <span class="sub-text">وضعیت نهایی</span>
                                                                         </div>
                                                                     </div>
-                                                                    <!-- .bq-note-item -->
-                                                                {% empty %}
-                                                                    <div class="my-5">
-                                                                        <a data-bs-toggle="modal"
-                                                                           data-bs-target="#modal-create-note-object"
-                                                                           class="link link-sm">+ افزودن یادداشت</a>
-                                                                    </div>
-                                                                {% endfor %}
+                                                                    {% for step in project.get_steps %}
+                                                                        <div class="nk-tb-item">
+                                                                            <div class="nk-tb-col">
+                                                                                <a href="{{ step.get_absolute_url }}"><span
+                                                                                        class="fw-bold">{{ step.name|truncatechars:35 }}</span></a>
+                                                                            </div>
+                                                                            <div class="nk-tb-col text-center">
+                                                                                <span>{{ step.get_person_traffic_label }}</span>
+                                                                            </div>
+                                                                            <div class="nk-tb-col tb-col-sm text-center">
+                                                                                <span class="badge badge-sm badge-dim bg-secondary">{{ step.plan }}</span>
+                                                                            </div>
+                                                                            <div class="nk-tb-col tb-col-sm text-center">
+                                                                                <span class="badge badge-sm badge-dim bg-secondary">{{ step.actual|default:'-' }}</span>
+                                                                            </div>
+                                                                            <div class="nk-tb-col text-center">
+                                                                                {% if step.get_status_result > -1 %}
+                                                                                    <em class="icon ni ni-thumbs-up text-success"></em>
+                                                                                {% elif step.get_status_result < 0 %}
+                                                                                    <em class="icon ni ni-thumbs-down text-danger"></em>
+                                                                                {% else %}
+                                                                                    -
+                                                                                {% endif %}
+                                                                            </div>
+                                                                        </div>
+                                                                    {% empty %}
+                                                                        <div class="container-not-found-base">
+                                                                            <p>چیزی ثبت نشده است</p>
+                                                                        </div>
+                                                                    {% endfor %}
+                                                                </div>
+                                                                <!-- .nk-tb-list -->
                                                             </div>
-                                                            <!-- .bq-note -->
+                                                            <!-- .nk-block -->
                                                         </div>
-                                                        <!-- .nk-block -->
                                                     </div>
-                                                </div>
+                                                {% endif %}
 
                                                 <div class="tab-pane" id="note">
                                                     <div class="card-inner">
@@ -683,8 +383,9 @@
                                                                             </p>
                                                                         </div>
                                                                         <div class="bq-note-meta">
-                                                                        <span class="bq-note-added">اضافه شده در
-                                                                            <span class="datetime-convert" dir="ltr">
+                                                                            <span class="bq-note-added">اضافه شده در</span>
+                                                                            <span class="datetime-convert"
+                                                                                  dir="ltr">
                                                                                 {{ note.get_created_at_date }}
                                                                             </span>
                                                                             <span class="fs-10px text-soft">({{ note.get_created_at_timepast }})</span>
@@ -708,7 +409,6 @@
                                                         <!-- .nk-block -->
                                                     </div>
                                                 </div>
-
                                             </div>
                                             <!-- .card-inner -->
                                         </div>
@@ -1244,6 +944,87 @@
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-lg btn-primary">
                                             ایجاد یادداشت
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" tabindex="-1" id="modal-create-step-object">
+            <div class="modal-dialog modal-dialog-top" role="document">
+                <div class="modal-content">
+                    <a href="#" class="close" data-dismiss="modal" aria-label="بستن">
+                        <em class="icon ni ni-cross"></em>
+                    </a>
+                    <div class="modal-header">
+                        <h5 class="modal-title">ایجاد مرحله</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'public:project_step__add' %}"
+                              class="form-validate is-alter" method="post">
+                            <input type="hidden" name="project" value="{{ project.id }}">
+                            {% csrf_token %}
+                            <div class="row g-4">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="name">نام</label>
+                                        <div class="form-control-wrap">
+                                            <input name="name" id="name"
+                                                   class="form-control"
+                                                   placeholder="نام" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="person_traffic">نوع ترافیک کاری</label>
+                                        <div class="form-control-wrap">
+                                            <select name="person_traffic" id="person_traffic"
+                                                    class="form-control js-select2">
+                                                <option value="person/day">نفر/روز</option>
+                                                <option value="person/hour">نفر/ساعت</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="plan">پلن</label>
+                                        <div class="form-control-wrap">
+                                            <input type="number" name="plan" id="plan"
+                                                   class="form-control"
+                                                   placeholder="پلن" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="actual">در واقع</label>
+                                        <div class="form-control-wrap">
+                                            <input type="number" name="actual" id="actual"
+                                                   class="form-control"
+                                                   placeholder="در واقع">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="description">توضیحات</label>
+                                        <div class="form-control-wrap">
+                                            <textarea name="text" id="text"
+                                                      class="form-control"
+                                                      placeholder="توضیحات"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-left">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-lg btn-primary">
+                                            ایجاد مرحله
                                         </button>
                                     </div>
                                 </div>

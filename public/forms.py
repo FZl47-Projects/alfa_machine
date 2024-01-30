@@ -120,3 +120,18 @@ class ProjectNoteCreate(forms.ModelForm):
     class Meta:
         model = models.ProjectNote
         fields = '__all__'
+
+
+class ProjectStepCreate(forms.ModelForm):
+    description = forms.CharField(required=False)
+    actual = forms.IntegerField(required=False)
+
+    class Meta:
+        model = models.ProjectStep
+        fields = '__all__'
+
+
+class ProjectStepUpdate(ProjectStepCreate):
+    class Meta:
+        model = models.ProjectStep
+        exclude = ('from_department', 'project')
