@@ -2,6 +2,32 @@ from django import forms
 from . import models
 
 
+class ProjectCreate(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(ProjectCreate, self).__init__(*args, **kwargs)
+        for field_name, field_inp in self.fields.items():
+            if field_name in self.Meta.not_required:
+                field_inp.required = False
+
+    item = forms.CharField(required=False)
+    description = forms.CharField(required=False)
+
+    class Meta:
+        model = models.Project
+        exclude = ('is_active',)
+        not_required = ('inquiry',)
+
+
+class ProjectUpdate(forms.ModelForm):
+    item = forms.CharField(required=False)
+    description = forms.CharField(required=False)
+
+    class Meta:
+        model = models.Project
+        exclude = ('is_active',)
+
+
 class TaskCreate(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(TaskCreate, self).__init__(*args, **kwargs)
@@ -90,32 +116,7 @@ class ProjectFileCreate(forms.ModelForm):
         fields = '__all__'
 
 
-# ----
-
-# TaskMasterAdd form
-
-
-class ProjectCreate(forms.ModelForm):
-
-    def __init__(self, *args, **kwargs):
-        super(ProjectCreate, self).__init__(*args, **kwargs)
-        for field_name, field_inp in self.fields.items():
-            if field_name in self.Meta.not_required:
-                field_inp.required = False
-
-    item = forms.CharField(required=False)
-    description = forms.CharField(required=False)
-
+class ProjectNoteCreate(forms.ModelForm):
     class Meta:
-        model = models.Project
-        exclude = ('is_active',)
-        not_required = ('inquiry',)
-
-
-class ProjectUpdate(forms.ModelForm):
-    item = forms.CharField(required=False)
-    description = forms.CharField(required=False)
-
-    class Meta:
-        model = models.Project
-        exclude = ('is_active',)
+        model = models.ProjectNote
+        fields = '__all__'

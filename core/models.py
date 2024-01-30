@@ -1,6 +1,7 @@
+import jdatetime
 from django.db import models
-from .mixins import RemoveOldFileMixin
 from core.utils import get_time, get_timesince_persian, random_str
+from .mixins import RemoveOldFileMixin
 
 
 def upload_file_src(instance, path):
@@ -24,6 +25,13 @@ class BaseModel(models.Model):
 
     def get_created_at_timepast(self):
         return get_timesince_persian(self.created_at)
+
+    def get_remaining_date_field(self,date_field):
+        # remaining time by days
+        if date_field:
+            t = jdatetime.date(date_field.year, date_field.month, date_field.day) - jdatetime.date.today()
+            return t.days
+        return '-'
 
 
 class FileAbstract(RemoveOldFileMixin, models.Model):

@@ -1,9 +1,9 @@
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib import messages
 from django.views.generic import View
-from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
-from core.utils import form_validate_err
 from public.models import Department, Project
 from account.auth.decorators import user_role_required_cbv
 from . import forms, models
@@ -88,10 +88,10 @@ class TicketList(LoginRequiredMixin, View):
             tickets = tickets.filter(projects_type='other')
         else:
             if (projects != 'all') and (projects.isdigit()):
-                tickets = tickets.filter(projects_pk__in=[projects])
+                tickets = tickets.filter(projects__in=[projects])
 
         if (to_departments != 'all') and (to_departments.isdigit()):
-            tickets = tickets.filter(to_departments_pk__in=[to_departments])
+            tickets = tickets.filter(to_departments__in=[to_departments])
 
         if status != 'all':
             if status == 'open':
@@ -115,3 +115,40 @@ class TicketList(LoginRequiredMixin, View):
         return render(request, self.template_name, context)
 
 
+class TicketDetail(LoginRequiredMixin, View):
+    template_name = 'support/ticket/detail.html'
+
+    def get(self, request, ticket_id):
+        ticket = get_object_or_404(models.TicketDepartment, id=ticket_id)
+        context = {
+            'ticket': ticket,
+            # permissions
+            'has_perm_to_modify': ticket.has_perm_to_modify(request.user)
+        }
+        return render(request, self.template_name, context)
+
+
+class TicketDelete(LoginRequiredMixin, View):
+
+    def get(self, request, ticket_id):
+        ticket = get_object_or_404(models.TicketDepartment, id=ticket_id)
+        if not ticket.has_perm_to_modify(request.user):
+            raise PermissionDenied
+        ticket.delete()
+        messages.success(request, 'گزارش با موفقیت حذف شد')
+        return redirect('support:ticket__list')
+
+
+class TicketUpdate(LoginRequiredMixin, View):
+
+    def post(self, request, ticket_id):
+        ticket = get_object_or_404(models.TicketDepartment, id=ticket_id)
+        if not ticket.has_perm_to_modify(request.user):
+            raise PermissionDenied
+        f = forms.TicketDepartmentUpdate(request.POST, files=request.FILES, instance=ticket)
+        if not f.is_valid():
+            messages.error(request, 'لطفا فیلد هارا به درستی پر نمایید')
+            return redirect(ticket.get_absolute_url())
+        f.save()
+        messages.success(request, 'گزارش با موفقیت بروزرسانی شد')
+        return redirect(ticket.get_absolute_url())

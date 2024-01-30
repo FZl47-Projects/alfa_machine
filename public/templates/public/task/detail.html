@@ -66,6 +66,15 @@
                                                 </button>
                                                 <div class="dropdown-menu">
                                                     <ul class="link-list-opt">
+                                                        {% if has_perm_to_send_notify %}
+                                                            <li>
+                                                                <a href="{% url 'public:task__remind' task_id=task.id %}"
+                                                                   class="d-flex justify-content-between text-success">
+                                                                    <span>یاد اوری</span>
+                                                                    <em class="icon ni ni-bell"></em>
+                                                                </a>
+                                                            </li>
+                                                        {% endif %}
                                                         <li data-bs-toggle="modal"
                                                             data-bs-target="#modal-update-object">
                                                             <a class="d-flex justify-content-between text-info">

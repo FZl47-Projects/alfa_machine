@@ -1,5 +1,4 @@
-import jdatetime
-from django.db.models import Sum, Count
+from django.db.models import Sum
 from django.urls import reverse
 from django.db import models
 from core.models import BaseModel, FileAbstract
@@ -34,7 +33,10 @@ class Department(BaseModel):
         return reverse('public:department__detail', args=(self.id,))
 
     def get_notifications(self):
-        return self.notification_departments.filter(is_showing=True)
+        return self.to_dp_notification.all()
+
+    def get_unread_notifications(self):
+        return self.get_notifications().filter(seen_status=None)
 
     def get_tickets(self):
         return self.from_dep_ticket.filter(is_open=True)
@@ -99,6 +101,18 @@ class TaskMaster(BaseModel):
 
     def get_inquiries(self):
         return self.inquiry_set.all()
+
+
+class ProjectNote(BaseModel):
+    user = models.ForeignKey('account.User', on_delete=models.CASCADE)
+    project = models.ForeignKey('Project', on_delete=models.CASCADE)
+    text = models.TextField()
+
+    class Meta:
+        ordering = ('-id',)
+
+    def __str__(self):
+        return self.text[:20]
 
 
 class Project(BaseModel):
@@ -187,6 +201,9 @@ class Project(BaseModel):
     def get_absolute_url(self):
         return reverse('public:project__detail', args=(self.id,))
 
+    def get_notes(self, user):
+        return self.projectnote_set.filter(user=user)
+
     def get_tasks(self):
         return self.task_set.all()
 
@@ -239,27 +256,18 @@ class Project(BaseModel):
         except (AttributeError, TypeError):
             return []
 
-    def get_tickets(self):
-        tickets = self.ticketdepartment_set.values('description').annotate(count=Count('description'))
-        unique_tickets = []
-
-        for ticket in tickets:
-            obj = self.ticketdepartment_set.filter(description=ticket['description']).first()
-            unique_tickets.append(obj)
-
-        return unique_tickets
-
     def get_participating_departments(self):
         departments = Department.objects.filter(task__project=self).distinct()
         return departments
 
     def get_remaining_time_end(self):
-        # remaining time by days
-        tend = self.time_end
-        if tend:
-            t = jdatetime.date(tend.year, tend.month, tend.day) - jdatetime.date.today()
-            return t.days
-        return '-'
+        return self.get_remaining_date_field(self.time_end)
+
+    def get_remaining_mass_delivery(self):
+        return self.get_remaining_date_field(self.mass_delivery_date)
+
+    def get_remaining_sample_delivery(self):
+        return self.get_remaining_date_field(self.mass_delivery_date)
 
 
 class ProjectFile(BaseModel, FileAbstract):

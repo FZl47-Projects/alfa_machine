@@ -2,32 +2,16 @@ from django import forms
 from . import models
 
 
-class NotificationDepartmentForm(forms.ModelForm):
+class NotificationDepartmentCreate(forms.ModelForm):
+    description = forms.CharField(required=False)
+    file = forms.FileField(required=False)
+
     class Meta:
         model = models.NotificationDepartment
-        exclude = ('is_showing',)
+        exclude = ('projects', 'projects_type')
 
-    def clean_is_all_projects(self):
-        cleaned_data = self.clean()
 
-        project_selection = self.data.get('project_selection')
-        is_all_projects = cleaned_data.get('is_all_projects')
-        projects = cleaned_data.get('projects')
-
-        if project_selection == 'null':
-            pass
-        elif is_all_projects is False and not projects:
-            self.add_error('projects', 'please enter project object')
-
-        return is_all_projects
-
-    def clean_is_all_departments(self):
-        cleaned_data = self.clean()
-
-        is_all_departments = cleaned_data.get('is_all_departments')
-        departments = cleaned_data.get('departments')
-
-        if is_all_departments is False and not departments:
-            self.add_error('departments', 'please enter department object')
-
-        return is_all_departments
+class NotificationDepartmentUpdate(NotificationDepartmentCreate):
+    class Meta:
+        model = models.NotificationDepartment
+        exclude = ('projects', 'projects_type', 'from_department', 'to_departments')

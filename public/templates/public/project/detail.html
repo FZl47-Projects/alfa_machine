@@ -75,22 +75,25 @@
                                                             class="icon ni ni-chart-up"></em><span>امار</span></a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" href="#"><em class="icon ni ni-task"></em><span>تسک ها</span></a>
+                                                    <a class="nav-link"
+                                                       href="{% url 'public:task__list' %}?filter=true&project={{ project.id }}"><em
+                                                            class="icon ni ni-task"></em><span>تسک ها</span></a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link" data-bs-toggle="tab" href="#"><em
                                                             class="icon ni ni-activity-round"></em><span>مرحله ها</span></a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" href="#"><em
+                                                    <a class="nav-link"
+                                                       href="{% url 'support:ticket__list' %}?filter=true&projects={{ project.id }}"><em
                                                             class="icon ni ni-view-col"></em><span>گزارشات</span></a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" href="#"><em
+                                                    <a class="nav-link" href="{% url 'public:project_file__list' %}?filter=true&project={{ project.id }}"><em
                                                             class="icon ni ni-file-text"></em><span>فایل ها</span></a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" href="#"><em
+                                                    <a class="nav-link" href="{% url 'notification:notification__list' %}?filter=true&projects={{ project.id }}"><em
                                                             class="icon ni ni-notice"></em><span>اعلانات</span></a>
                                                 </li>
                                                 <li class="nav-item">
@@ -416,56 +419,40 @@
                                                         <div class="nk-block">
                                                             <div class="nk-block-head nk-block-head-sm nk-block-between">
                                                                 <h5 class="title">یاد داشت های شخصی</h5>
-                                                                <a href="#" class="link link-sm">+ افزودن یادداشت</a>
+                                                                <a data-bs-toggle="modal"
+                                                                   data-bs-target="#modal-create-note-object"
+                                                                   class="link link-sm">+ افزودن یادداشت</a>
                                                             </div>
                                                             <!-- .nk-block-head -->
                                                             <div class="bq-note">
-                                                                <div class="bq-note-item">
-                                                                    <div class="bq-note-text">
-                                                                        <p>
-                                                                            لورم ایپسوم متن ساختگی با تولید سادگی
-                                                                            نامفهوم از
-                                                                            صنعت چاپ و با استفاده از طراحان گرافیک است
-                                                                            چاپگرها و
-                                                                            متون بلکه روزنامه و مجله در ستون و سطرآنچنان
-                                                                            که لازم
-                                                                            است و برای شرایط فعلی تکنولوژی مورد نیاز.
-                                                                        </p>
+                                                                {% for note in notes %}
+                                                                    <div class="bq-note-item">
+                                                                        <div class="bq-note-text">
+                                                                            <p>
+                                                                                {{ note.text }}
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="bq-note-meta">
+                                                                        <span class="bq-note-added">اضافه شده در
+                                                                            <span class="datetime-convert">
+                                                                                {{ note.get_created_at_date }}
+                                                                            </span>
+                                                                            <span class="fs-10px">{{ note.get_created_at_timepast }}</span>
+                                                                            <span class="bq-note-sep sep">|</span>
+                                                                            <a href="{% url 'public:project_note__delete' note_id=note.id %}"
+                                                                               class="link link-sm link-danger">حذف
+                                                                                یادداشت
+                                                                            </a>
+                                                                        </div>
                                                                     </div>
-                                                                    <div class="bq-note-meta">
-                                                                <span class="bq-note-added">اضافه شده در <span
-                                                                        class="date">18 آبان 1402</span> در <span
-                                                                        class="time">5:34 بعد از ظهر</span></span>
-                                                                        <span class="bq-note-sep sep">|</span>
-                                                                        <span class="bq-note-by">توسط <span>سافت نیو</span></span>
-                                                                        <a href="#" class="link link-sm link-danger">حذف
-                                                                            یادداشت</a>
+                                                                    <!-- .bq-note-item -->
+                                                                {% empty %}
+                                                                    <div class="my-5">
+                                                                        <a data-bs-toggle="modal"
+                                                                           data-bs-target="#modal-create-note-object"
+                                                                           class="link link-sm">+ افزودن یادداشت</a>
                                                                     </div>
-                                                                </div>
-                                                                <!-- .bq-note-item -->
-                                                                <div class="bq-note-item">
-                                                                    <div class="bq-note-text">
-                                                                        <p>
-                                                                            لورم ایپسوم متن ساختگی با تولید سادگی
-                                                                            نامفهوم از
-                                                                            صنعت چاپ و با استفاده از طراحان گرافیک است
-                                                                            چاپگرها و
-                                                                            متون بلکه روزنامه و مجله در ستون و سطرآنچنان
-                                                                            که لازم
-                                                                            است و برای شرایط فعلی تکنولوژی مورد نیاز.
-                                                                        </p>
-                                                                    </div>
-                                                                    <div class="bq-note-meta">
-                                                                <span class="bq-note-added">اضافه شده در <span
-                                                                        class="date">18 آبان 1402</span> در <span
-                                                                        class="time">5:34 بعد از ظهر</span></span>
-                                                                        <span class="bq-note-sep sep">|</span>
-                                                                        <span class="bq-note-by">توسط <span>سافت نیو</span></span>
-                                                                        <a href="#" class="link link-sm link-danger">حذف
-                                                                            یادداشت</a>
-                                                                    </div>
-                                                                </div>
-                                                                <!-- .bq-note-item -->
+                                                                {% endfor %}
                                                             </div>
                                                             <!-- .bq-note -->
                                                         </div>
@@ -635,56 +622,40 @@
                                                         <div class="nk-block">
                                                             <div class="nk-block-head nk-block-head-sm nk-block-between">
                                                                 <h5 class="title">یاد داشت های شخصی</h5>
-                                                                <a href="#" class="link link-sm">+ افزودن یادداشت</a>
+                                                                <a data-bs-toggle="modal"
+                                                                   data-bs-target="#modal-create-note-object"
+                                                                   class="link link-sm">+ افزودن یادداشت</a>
                                                             </div>
                                                             <!-- .nk-block-head -->
                                                             <div class="bq-note">
-                                                                <div class="bq-note-item">
-                                                                    <div class="bq-note-text">
-                                                                        <p>
-                                                                            لورم ایپسوم متن ساختگی با تولید سادگی
-                                                                            نامفهوم از
-                                                                            صنعت چاپ و با استفاده از طراحان گرافیک است
-                                                                            چاپگرها و
-                                                                            متون بلکه روزنامه و مجله در ستون و سطرآنچنان
-                                                                            که لازم
-                                                                            است و برای شرایط فعلی تکنولوژی مورد نیاز.
-                                                                        </p>
+                                                                {% for note in notes %}
+                                                                    <div class="bq-note-item">
+                                                                        <div class="bq-note-text">
+                                                                            <p>
+                                                                                {{ note.text }}
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="bq-note-meta">
+                                                                        <span class="bq-note-added">اضافه شده در
+                                                                            <span class="datetime-convert">
+                                                                                {{ note.get_created_at_date }}
+                                                                            </span>
+                                                                            <span class="fs-10px">{{ note.get_created_at_timepast }}</span>
+                                                                            <span class="bq-note-sep sep">|</span>
+                                                                            <a href="{% url 'public:project_note__delete' note_id=note.id %}"
+                                                                               class="link link-sm link-danger">حذف
+                                                                                یادداشت
+                                                                            </a>
+                                                                        </div>
                                                                     </div>
-                                                                    <div class="bq-note-meta">
-                                                                <span class="bq-note-added">اضافه شده در <span
-                                                                        class="date">18 آبان 1402</span> در <span
-                                                                        class="time">5:34 بعد از ظهر</span></span>
-                                                                        <span class="bq-note-sep sep">|</span>
-                                                                        <span class="bq-note-by">توسط <span>سافت نیو</span></span>
-                                                                        <a href="#" class="link link-sm link-danger">حذف
-                                                                            یادداشت</a>
+                                                                    <!-- .bq-note-item -->
+                                                                {% empty %}
+                                                                    <div class="my-5">
+                                                                        <a data-bs-toggle="modal"
+                                                                           data-bs-target="#modal-create-note-object"
+                                                                           class="link link-sm">+ افزودن یادداشت</a>
                                                                     </div>
-                                                                </div>
-                                                                <!-- .bq-note-item -->
-                                                                <div class="bq-note-item">
-                                                                    <div class="bq-note-text">
-                                                                        <p>
-                                                                            لورم ایپسوم متن ساختگی با تولید سادگی
-                                                                            نامفهوم از
-                                                                            صنعت چاپ و با استفاده از طراحان گرافیک است
-                                                                            چاپگرها و
-                                                                            متون بلکه روزنامه و مجله در ستون و سطرآنچنان
-                                                                            که لازم
-                                                                            است و برای شرایط فعلی تکنولوژی مورد نیاز.
-                                                                        </p>
-                                                                    </div>
-                                                                    <div class="bq-note-meta">
-                                                                <span class="bq-note-added">اضافه شده در <span
-                                                                        class="date">18 آبان 1402</span> در <span
-                                                                        class="time">5:34 بعد از ظهر</span></span>
-                                                                        <span class="bq-note-sep sep">|</span>
-                                                                        <span class="bq-note-by">توسط <span>سافت نیو</span></span>
-                                                                        <a href="#" class="link link-sm link-danger">حذف
-                                                                            یادداشت</a>
-                                                                    </div>
-                                                                </div>
-                                                                <!-- .bq-note-item -->
+                                                                {% endfor %}
                                                             </div>
                                                             <!-- .bq-note -->
                                                         </div>
@@ -698,56 +669,39 @@
                                                         <div class="nk-block">
                                                             <div class="nk-block-head nk-block-head-sm nk-block-between">
                                                                 <h5 class="title">یاد داشت های شخصی</h5>
-                                                                <a href="#" class="link link-sm">+ افزودن یادداشت</a>
+                                                                <a data-bs-toggle="modal"
+                                                                   data-bs-target="#modal-create-note-object"
+                                                                   class="link link-sm">+ افزودن یادداشت</a>
                                                             </div>
                                                             <!-- .nk-block-head -->
                                                             <div class="bq-note">
-                                                                <div class="bq-note-item">
-                                                                    <div class="bq-note-text">
-                                                                        <p>
-                                                                            لورم ایپسوم متن ساختگی با تولید سادگی
-                                                                            نامفهوم از
-                                                                            صنعت چاپ و با استفاده از طراحان گرافیک است
-                                                                            چاپگرها و
-                                                                            متون بلکه روزنامه و مجله در ستون و سطرآنچنان
-                                                                            که لازم
-                                                                            است و برای شرایط فعلی تکنولوژی مورد نیاز.
-                                                                        </p>
+                                                                {% for note in notes %}
+                                                                    <div class="bq-note-item">
+                                                                        <div class="bq-note-text">
+                                                                            <p>
+                                                                                {{ note.text }}
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="bq-note-meta">
+                                                                        <span class="bq-note-added">اضافه شده در
+                                                                            <span class="datetime-convert" dir="ltr">
+                                                                                {{ note.get_created_at_date }}
+                                                                            </span>
+                                                                            <span class="fs-10px text-soft">({{ note.get_created_at_timepast }})</span>
+                                                                            <span class="mx-1">|</span>
+                                                                            <a href="{% url 'public:project_note__delete' note_id=note.id %}"
+                                                                               class="link link-sm link-danger m-0">حذف
+                                                                                یادداشت
+                                                                            </a>
+                                                                        </div>
                                                                     </div>
-                                                                    <div class="bq-note-meta">
-                                                                <span class="bq-note-added">اضافه شده در <span
-                                                                        class="date">18 آبان 1402</span> در <span
-                                                                        class="time">5:34 بعد از ظهر</span></span>
-                                                                        <span class="bq-note-sep sep">|</span>
-                                                                        <span class="bq-note-by">توسط <span>سافت نیو</span></span>
-                                                                        <a href="#" class="link link-sm link-danger">حذف
-                                                                            یادداشت</a>
+                                                                    <!-- .bq-note-item -->
+                                                                {% empty %}
+                                                                    <div class="my-5 text-center ">
+                                                                        <h6 class="text-soft">اولین یادداشت خود را
+                                                                            بنویسید</h6>
                                                                     </div>
-                                                                </div>
-                                                                <!-- .bq-note-item -->
-                                                                <div class="bq-note-item">
-                                                                    <div class="bq-note-text">
-                                                                        <p>
-                                                                            لورم ایپسوم متن ساختگی با تولید سادگی
-                                                                            نامفهوم از
-                                                                            صنعت چاپ و با استفاده از طراحان گرافیک است
-                                                                            چاپگرها و
-                                                                            متون بلکه روزنامه و مجله در ستون و سطرآنچنان
-                                                                            که لازم
-                                                                            است و برای شرایط فعلی تکنولوژی مورد نیاز.
-                                                                        </p>
-                                                                    </div>
-                                                                    <div class="bq-note-meta">
-                                                                <span class="bq-note-added">اضافه شده در <span
-                                                                        class="date">18 آبان 1402</span> در <span
-                                                                        class="time">5:34 بعد از ظهر</span></span>
-                                                                        <span class="bq-note-sep sep">|</span>
-                                                                        <span class="bq-note-by">توسط <span>سافت نیو</span></span>
-                                                                        <a href="#" class="link link-sm link-danger">حذف
-                                                                            یادداشت</a>
-                                                                    </div>
-                                                                </div>
-                                                                <!-- .bq-note-item -->
+                                                                {% endfor %}
                                                             </div>
                                                             <!-- .bq-note -->
                                                         </div>
@@ -901,15 +855,15 @@
                                                     <div class="row g-3">
                                                         <div class="col-6">
                                                             <span class="sub-text">زمان باقی مانده تا تحویل انبوه:</span>
-                                                            <span>-</span>
+                                                            <span>{{ project.get_remaining_mass_delivery }} روز </span>
                                                         </div>
                                                         <div class="col-6">
                                                             <span class="sub-text">زمان باقی مانده تا تحویل نمونه:</span>
-                                                            <span>-</span>
+                                                            <span>{{ project.get_remaining_sample_delivery }} روز </span>
                                                         </div>
                                                         <div class="col-6">
                                                             <span class="sub-text">زمان باقی مانده تا اتمام قرارداد:</span>
-                                                            <span>-</span>
+                                                            <span>{{ project.get_remaining_time_end }} روز </span>
                                                         </div>
                                                         <div class="col-6">
                                                             <span class="sub-text">زمان ایجاد پروژه:</span>
@@ -1250,6 +1204,46 @@
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-lg btn-primary">
                                             بروزرسانی پروژه
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" tabindex="-1" id="modal-create-note-object">
+            <div class="modal-dialog modal-dialog-top" role="document">
+                <div class="modal-content">
+                    <a href="#" class="close" data-dismiss="modal" aria-label="بستن">
+                        <em class="icon ni ni-cross"></em>
+                    </a>
+                    <div class="modal-header">
+                        <h5 class="modal-title">افزودن یادداشت شخصی</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'public:project_note__add' %}"
+                              class="form-validate is-alter" method="post">
+                            <input type="hidden" name="project" value="{{ project.id }}">
+                            {% csrf_token %}
+                            <div class="row g-4">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="description">توضیحات</label>
+                                        <div class="form-control-wrap">
+                                            <textarea name="text" id="text"
+                                                      class="form-control" required
+                                                      placeholder="یادداشت خود را بنویسید"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-left">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-lg btn-primary">
+                                            ایجاد یادداشت
                                         </button>
                                     </div>
                                 </div>

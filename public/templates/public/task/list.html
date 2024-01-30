@@ -353,7 +353,7 @@
                                                                                 <ul class="link-list-opt">
                                                                                     {% if has_perm_to_send_notify %}
                                                                                         <li>
-                                                                                            <a href="#"><em
+                                                                                            <a href="{% url 'public:task__remind' task_id=task.id %}"><em
                                                                                                     class="icon ni ni-bell"></em><span>ارسال یادآور</span></a>
                                                                                         </li>
                                                                                     {% endif %}

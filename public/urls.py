@@ -10,12 +10,16 @@ urlpatterns = [
     path('project/<int:project_id>/detail', views.ProjectDetail.as_view(), name='project__detail'),
     path('project/<int:project_id>/delete', views.ProjectDelete.as_view(), name='project__delete'),
     path('project/<int:project_id>/update', views.ProjectUpdate.as_view(), name='project__update'),
+    # project note
+    path('project/note/add', views.ProjectNoteAdd.as_view(), name='project_note__add'),
+    path('project/note/<int:note_id>/delete', views.ProjectNoteDelete.as_view(), name='project_note__delete'),
     # task
     path('task/add', views.TaskAdd.as_view(), name='task__add'),
     path('task/list', views.TaskList.as_view(), name='task__list'),
     path('task/<int:task_id>/detail', views.TaskDetail.as_view(), name='task__detail'),
     path('task/<int:task_id>/delete', views.TaskDelete.as_view(), name='task__delete'),
     path('task/<int:task_id>/update', views.TaskUpdate.as_view(), name='task__update'),
+    path('task/<int:task_id>/remind', views.TaskRemind.as_view(), name='task__remind'),
     # task status
     path('task/<int:task_id>/status/add', views.TaskStatusAdd.as_view(), name='task_status__add'),
     # inquiry

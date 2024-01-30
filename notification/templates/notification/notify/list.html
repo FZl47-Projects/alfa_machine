@@ -3,7 +3,7 @@
 {% load render_partial %}
 
 {% block Title %}
-    لیست گزارشات
+    لیست اعلانات
 {% endblock %}
 
 {% block BodyClass %}
@@ -30,13 +30,13 @@
                             <div class="nk-block-head nk-block-head-sm">
                                 <div class="nk-block-between g-3">
                                     <div class="nk-block-head-content">
-                                        <h3 class="nk-block-title page-title">لیست گزارشات</h3>
+                                        <h3 class="nk-block-title page-title">لیست اعلانات</h3>
                                         <nav>
                                             <ul class="breadcrumb breadcrumb-arrow">
                                                 <li class="breadcrumb-item"><a href="{% url 'public:index' %}">صفحه
                                                     اصلی</a></li>
-                                                <li class="breadcrumb-item"><a>گزارشات</a></li>
-                                                <li class="breadcrumb-item active">لیست گزارشات</li>
+                                                <li class="breadcrumb-item"><a>اعلانات</a></li>
+                                                <li class="breadcrumb-item active">لیست اعلانات</li>
                                             </ul>
                                         </nav>
                                     </div>
@@ -81,8 +81,8 @@
                                                 <div class="card-title-group">
                                                     <div class="card-title">
                                                         <h5 class="title">
-                                                            لیست گزارشات
-                                                            <span class="fs-15px">({{ tickets.count }})</span>
+                                                            لیست اعلانات
+                                                            <span class="fs-15px">({{ notifications.count }})</span>
                                                         </h5>
                                                     </div>
                                                     <div class="card-tools me-n1">
@@ -108,7 +108,7 @@
                                                                                 <input type="hidden" name="filter"
                                                                                        value="true">
                                                                                 <div class="row gx-6 gy-4">
-                                                                                    <div class="col-6">
+                                                                                    <div class="col-12">
                                                                                         <div class="form-group">
                                                                                             <label class="overline-title overline-title-alt">مرتب
                                                                                                 سازی</label>
@@ -122,22 +122,8 @@
                                                                                                 <option value="oldest">
                                                                                                     قدیمی ترین
                                                                                                 </option>
-                                                                                            </select>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="col-6">
-                                                                                        <div class="form-group">
-                                                                                            <label class="overline-title overline-title-alt">وضعیت</label>
-                                                                                            <select class="form-select js-select2 select-by-filter"
-                                                                                                    name="status"
-                                                                                                    tabindex="-1"
-                                                                                                    aria-hidden="true">
-                                                                                                <option value="all">همه
-                                                                                                </option>
-                                                                                                <option value="open">باز
-                                                                                                </option>
-                                                                                                <option value="closed">
-                                                                                                    بسته شده
+                                                                                                 <option value="high-priority">
+                                                                                                    اولویت بالا
                                                                                                 </option>
                                                                                             </select>
                                                                                         </div>
@@ -190,7 +176,7 @@
                                                                         </div>
                                                                         <div class="dropdown-foot between">
                                                                             <a class="clickable"
-                                                                               href="{% url 'support:ticket__list' %}">بازنشانی
+                                                                               href="{% url 'notification:notification__list' %}">بازنشانی
                                                                                 فیلتر</a>
                                                                         </div>
                                                                     </div>
@@ -237,33 +223,30 @@
                                             <div class="card-inner p-0">
                                                 <div class="nk-tb-list nk-tb-tnx">
                                                     <div class="nk-tb-item nk-tb-head text-center">
-                                                        <div class="nk-tb-col text-start"><span>شماره</span></div>
-                                                        <div class="nk-tb-col"><span>عنوان</span></div>
+                                                        <div class="nk-tb-col text-start"><span>عنوان</span></div>
                                                         <div class="nk-tb-col tb-col-sm"><span>پروژه ها</span></div>
                                                         <div class="nk-tb-col tb-col-md"><span>از واحد</span></div>
-                                                        <div class="nk-tb-col tb-col-xs"><span>برای واحد های</span>
+                                                        <div class="nk-tb-col tb-col-md"><span>برای واحد های</span>
                                                         </div>
-                                                        <div class="nk-tb-col nk-tb-col-status ">
-                                                            <span class="sub-text d-none d-md-block">وضعیت</span>
+                                                        <div class="nk-tb-col tb-col-xs"><span>اولویت</span>
+                                                        </div>
+                                                        <div class="nk-tb-col tb-col-xs"><span>وضعیت مشاهده</span>
                                                         </div>
                                                         <div class="nk-tb-col nk-tb-col-tools"></div>
                                                     </div>
-                                                    {% for ticket in tickets %}
+                                                    {% for notification in notifications %}
                                                         <!-- .nk-tb-item -->
                                                         <div class="nk-tb-item text-center">
                                                             <div class="nk-tb-col text-start">
-                                                                <a href="{{ ticket.get_absolute_url }}">
+                                                                <a href="{{ notification.get_absolute_url }}">
                                                                     <div class="nk-tnx-type-text">
-                                                                        <span>{{ ticket.number_id }}#</span>
+                                                                        <span>{{ notification.title }}</span>
                                                                     </div>
                                                                 </a>
                                                             </div>
-                                                            <div class="nk-tb-col">
-                                                                {{ ticket.title|truncatechars:20|default:'-' }}
-                                                            </div>
                                                             <div class="nk-tb-col tb-col-sm">
-                                                                {% if ticket.projects_type == 'selected' %}
-                                                                    {% for project in ticket.get_projects %}
+                                                                {% if notification.projects_type == 'selected' %}
+                                                                    {% for project in notification.get_projects %}
                                                                         <a class="badge badge-dim bg-info fs-9px rounded-pill"
                                                                            href="{{ project.get_absolute_url }}">{{ project.name|truncatechars:15 }}</a>
                                                                     {% empty %}
@@ -274,35 +257,57 @@
                                                                 {% endif %}
                                                             </div>
                                                             <div class="nk-tb-col tb-col-md">
-                                                                <a href="{{ ticket.from_department.get_absolute_url }}">
-                                                                    {% if ticket.from_department != user.department %}
-                                                                        {{ ticket.from_department.name }}
+                                                                <a href="{{ notification.from_department.get_absolute_url }}">
+                                                                    {% if notification.from_department != user.department %}
+                                                                        {{ notification.from_department.name }}
                                                                     {% else %}
                                                                         از طرف شما
                                                                     {% endif %}
                                                                 </a>
                                                             </div>
-                                                            <div class="nk-tb-col tb-col-xs">
-                                                                {% for department in ticket.get_to_departments %}
+                                                            <div class="nk-tb-col tb-col-md">
+                                                                {% for department in notification.get_to_departments %}
                                                                     <a class="badge badge-dim bg-black fs-9px rounded-pill"
                                                                        href="{{ department.get_absolute_url }}">{{ department.name|truncatechars:15 }}</a>
                                                                 {% empty %}
                                                                     <span>-</span>
                                                                 {% endfor %}
                                                             </div>
-                                                            <div class="nk-tb-col nk-tb-col-status">
-                                                                {% if ticket.is_open %}
-                                                                    <div class="dot d-md-none dot-danger"></div>
-                                                                    <span class="badge badge-sm badge-dim d-none d-md-inline-flex fs-11px bg-danger">باز</span>
-                                                                {% else %}
-                                                                    <div class="dot d-md-none dot-success"></div>
-                                                                    <span class="badge badge-sm badge-dim d-none d-md-inline-flex fs-11px bg-success">بسته</span>
-                                                                {% endif %}
+                                                            <div class="nk-tb-col tb-col-xs">
+                                                                <span class="badge badge-dim bg-secondary">{{ notification.priority }}</span>
+                                                            </div>
+                                                            <div class="nk-tb-col tb-col-xs fs-11px">
+                                                                {% with seen_departments_dep_ids=notification.get_departments_seen_status_dep_ids %}
+                                                                    {% if notification.from_department != user.department %}
+                                                                        {% if user.department.id in seen_departments_dep_ids %}
+                                                                            <span class="text-success">
+                                                                                دیده شده
+                                                                                 <em class="icon ni ni-check-c"></em>
+                                                                            </span>
+                                                                        {% else %}
+                                                                            <span class="text-danger">
+                                                                                دیده نشده
+                                                                                 <em class="icon ni ni-cross-c"></em>
+                                                                            </span>
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {% for seen_status in notification.get_departments_seen_status %}
+                                                                            <a href="{{ seen_status.department.get_absolute_url }}" class="badge badge-dim bg-black fs-9px rounded-pill">
+                                                                                {{ seen_status.department.name }}
+                                                                            </a>
+                                                                        {% empty %}
+                                                                            <span class="text-danger">
+                                                                                دیده نشده
+                                                                                 <em class="icon ni ni-cross-c"></em>
+                                                                            </span>
+                                                                        {% endfor %}
+                                                                    {% endif %}
+                                                                {% endwith %}
                                                             </div>
                                                             <div class="nk-tb-col nk-tb-col-tools">
                                                                 <ul class="nk-tb-actions gx-2">
                                                                     <li class="nk-tb-action-hidden">
-                                                                        <a href="{{ ticket.get_absolute_url }}"
+                                                                        <a href="{{ notification.get_absolute_url }}"
                                                                            class="bg-white btn btn-sm btn-outline-light btn-icon btn-tooltip"
                                                                            aria-label="جزئیات"
                                                                            data-bs-original-title="جزئیات"><em
@@ -319,7 +324,7 @@
                                                                                  style="">
                                                                                 <ul class="link-list-opt">
                                                                                     <li>
-                                                                                        <a href="{{ ticket.get_absolute_url }}"><em
+                                                                                        <a href="{{ notification.get_absolute_url }}"><em
                                                                                                 class="icon ni ni-eye"></em><span>مشاهده جزئیات</span></a>
                                                                                     </li>
                                                                                 </ul>
@@ -334,7 +339,7 @@
                                                         <div class="nk-tb-item">
                                                             <div class="nk-tb-col">
                                                                 <div class="container-not-found-base">
-                                                                    <p>گزارشی یافت نشد</p>
+                                                                    <p>اعلانی یافت نشد</p>
                                                                 </div>
                                                             </div>
                                                         </div>

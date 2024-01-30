@@ -3,7 +3,7 @@
 {% load render_partial %}
 
 {% block Title %}
-    جزئیات گزارش - {{ ticket.title }}
+    جزئیات اعلان - {{ notification.title }}
 {% endblock %}
 
 {% block BodyClass %}
@@ -47,18 +47,18 @@
                                 <div class="nk-block-between g-3">
                                     <div class="nk-block-head-content">
                                         <h3 class="nk-block-title page-title">
-                                            جزئیات گزارش
+                                            جزئیات اعلان
                                         </h3>
                                         <nav>
                                             <ul class="breadcrumb breadcrumb-arrow">
                                                 <li class="breadcrumb-item"><a href="{% url 'public:index' %}">صفحه
                                                     اصلی</a></li>
-                                                <li class="breadcrumb-item"><a>گزارشات</a></li>
+                                                <li class="breadcrumb-item"><a>اعلانات</a></li>
                                                 <li class="breadcrumb-item">
-                                                    <a href="{% url 'support:ticket__list' %}">
-                                                        لیست گزارشات
+                                                    <a href="{% url 'notification:notification__list' %}">
+                                                        لیست اعلانات
                                                     </a></li>
-                                                <li class="breadcrumb-item"><a>{{ ticket.title }}</a></li>
+                                                <li class="breadcrumb-item"><a>{{ notification.title }}</a></li>
                                             </ul>
                                         </nav>
                                     </div>
@@ -117,34 +117,24 @@
                                             <ul class="data-list is-compact">
                                                 <li class="data-item">
                                                     <div class="data-col">
-                                                        <div class="data-label">وضعیت</div>
-                                                        <div class="data-value">
-                                                            {% if ticket.is_open %}
-                                                                <span class="badge bg-danger fs-12px">باز</span>
-                                                            {% else %}
-                                                                <span class="badge bg-success fs-12px">بسته</span>
-                                                            {% endif %}
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li class="data-item">
-                                                    <div class="data-col">
-                                                        <div class="data-label">شماره گزارش</div>
-                                                        <div class="data-value">{{ ticket.number_id }}</div>
-                                                    </div>
-                                                </li>
-                                                <li class="data-item">
-                                                    <div class="data-col">
                                                         <div class="data-label">عنوان</div>
-                                                        <div class="data-value">{{ ticket.title }}</div>
+                                                        <div class="data-value">{{ notification.title }}</div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">اولویت</div>
+                                                        <div class="data-value">
+                                                            <span class="badge badge-dim bg-secondary">{{ notification.priority }}</span>
+                                                        </div>
                                                     </div>
                                                 </li>
                                                 <li class="data-item">
                                                     <div class="data-col">
                                                         <div class="data-label"> پروژه ها</div>
                                                         <div class="data-value">
-                                                            {% if ticket.projects_type == 'selected' %}
-                                                                {% for project in ticket.get_projects %}
+                                                            {% if notification.projects_type == 'selected' %}
+                                                                {% for project in notification.get_projects %}
                                                                     <a href="{{ project.get_absolute_url }}"
                                                                        class="badge badge-dim bg-info fs-13px rounded-pill">{{ project.name|truncatechars:30 }}</a>
                                                                 {% endfor %}
@@ -158,7 +148,11 @@
                                                     <div class="data-col">
                                                         <div class="data-label">واحد ثبت کننده</div>
                                                         <div class="data-value">
-                                                            <a href="{{ ticket.from_department.get_absolute_url }}">{{ ticket.from_department.name|default:'-' }}</a>
+                                                            {% if notification.from_department != user.department %}
+                                                                <a href="{{ notification.from_department.get_absolute_url }}">{{ notification.from_department.name|default:'-' }}</a>
+                                                            {% else %}
+                                                                از طرف شما
+                                                            {% endif %}
                                                         </div>
                                                     </div>
                                                 </li>
@@ -166,21 +160,53 @@
                                                     <div class="data-col">
                                                         <div class="data-label">برای واحد های</div>
                                                         <div class="data-value">
-                                                            {% for department in ticket.get_to_departments %}
+                                                            {% for department in notification.get_to_departments %}
                                                                 <a href="{{ department.get_absolute_url }}"
-                                                                   class="badge badge-dim bg-black fs-9px rounded-pill">{{ department.name|truncatechars:30 }}</a>
+                                                                   class="badge badge-dim bg-black fs-13px">{{ department.name|truncatechars:30 }}</a>
                                                             {% empty %}
                                                                 <span>-</span>
                                                             {% endfor %}
                                                         </div>
                                                     </div>
                                                 </li>
+                                                {% if user.department == notification.from_department %}
+                                                    <li class="data-item">
+                                                        <div class="data-col">
+                                                            <div class="data-label">وضعیت مشاهده</div>
+                                                            <div class="data-value">
+                                                                {% for seen_status in notification.get_departments_seen_status %}
+                                                                    <a class="badge badge-dim bg-black fs-13px"
+                                                                       href="{{ seen_status.department.get_absolute_url }}">
+                                                                        {{ seen_status.department.name|truncatechars:30 }}
+                                                                    </a>
+                                                                {% empty %}
+                                                                    <span class="text-danger fs-12px">
+                                                                        دیده نشده
+                                                                        <em class="icon ni ni-cross-circle text-danger"></em>
+                                                                    </span>
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                {% else %}
+                                                    <li class="data-item">
+                                                        <div class="data-col">
+                                                            <div class="data-label">وضعیت مشاهده</div>
+                                                            <div class="data-value">
+                                                                <span class="text-success fs-12px">
+                                                                        دیده شده
+                                                                    <em class="icon ni ni-check-circle text-success"></em>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                {% endif %}
                                                 <li class="data-item">
                                                     <div class="data-col">
                                                         <div class="data-label">فایل پیوست</div>
                                                         <div class="data-value">
-                                                            {% if ticket.file %}
-                                                                <a href="{{ ticket.file.url }}"
+                                                            {% if notification.file %}
+                                                                <a href="{{ notification.file.url }}"
                                                                    class="view-file badge bg-secondary fs-13px py-1">
                                                                     دانلود و مشاهده
                                                                 </a>
@@ -192,14 +218,30 @@
                                                 </li>
                                                 <li class="data-item">
                                                     <div class="data-col">
+                                                        <div class="data-label">لینک پیوست</div>
+                                                        <div class="data-value">
+                                                            {% if notification.attached_link %}
+                                                                <a href="{{ notification.attached_link }}"
+                                                                   target="_blank"
+                                                                   class="view-file badge bg-secondary fs-13px py-1">
+                                                                    مشاهده
+                                                                </a>
+                                                            {% else %}
+                                                                <em class="icon ni ni-cross-c text-warning"></em>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
                                                         <div class="data-label">توضیحات</div>
-                                                        <div class="data-value">{{ ticket.description|default:'-' }}</div>
+                                                        <div class="data-value">{{ notification.description|default:'-' }}</div>
                                                     </div>
                                                 </li>
                                                 <li class="data-item">
                                                     <div class="data-col">
                                                         <div class="data-label">زمان ثبت</div>
-                                                        <div class="data-value datetime-convert">{{ ticket.get_created_at|default:'-' }}</div>
+                                                        <div class="data-value datetime-convert">{{ notification.get_created_at|default:'-' }}</div>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -227,19 +269,19 @@
                     <div class="modal-body modal-body-lg text-center">
                         <div class="nk-modal">
                             <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-trash-empty bg-danger"></em>
-                            <h4 class="nk-modal-title">حذف گزارش</h4>
+                            <h4 class="nk-modal-title">حذف اعلان</h4>
                             <div class="nk-modal-text">
                                 <p class="bg-outline-danger">
-                                    ایا از حذف گزارش
-                                    <b>{{ ticket.number_id }}</b>
+                                    ایا از حذف اعلان
+                                    <b>{{ notification.title|truncatechars:30 }}</b>
                                     اطمینان دارید ؟
                                     پس از حذف امکان بازگشت وجود نخواهد داشت
                                 </p>
                             </div>
                             <div class="nk-modal-action mt-5">
                                 <a class="btn btn-lg btn-mw btn-light m-1" data-bs-dismiss="modal">لغو</a>
-                                <a href="{% url 'support:ticket__delete' ticket_id=ticket.id %}"
-                                   class="btn btn-lg btn-mw btn-danger m-1">بله ، حذف گزارش</a>
+                                <a href="{% url 'notification:notification__delete' notification_id=notification.id %}"
+                                   class="btn btn-lg btn-mw btn-danger m-1">بله ، حذف اعلان</a>
                             </div>
                         </div>
                     </div>
@@ -254,10 +296,10 @@
                         <em class="icon ni ni-cross"></em>
                     </a>
                     <div class="modal-header">
-                        <h5 class="modal-title">ویرایش گزارش</h5>
+                        <h5 class="modal-title">ویرایش اعلان</h5>
                     </div>
                     <div class="modal-body">
-                        <form action="{% url 'support:ticket__update' ticket_id=ticket.id %}"
+                        <form action="{% url 'notification:notification__update' notification_id=notification.id %}"
                               class="form-validate is-alter" method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="row g-4">
@@ -267,17 +309,18 @@
                                         <div class="form-control-wrap">
                                             <input type="text" class="form-control" name="title"
                                                    placeholder="عنوان"
-                                                   id="title" required value="{{ ticket.title|default:'' }}">
+                                                   id="title" required value="{{ notification.title|default:'' }}">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label class="form-label" for="number_id">شماره گزارش</label>
+                                        <label class="form-label" for="priority">اولویت</label>
                                         <div class="form-control-wrap">
-                                            <input type="text" class="form-control" name="number_id"
-                                                   placeholder="شماره گزارش"
-                                                   id="number_id" required value="{{ ticket.number_id|default:'' }}">
+                                            <input type="text" class="form-control" name="priority"
+                                                   placeholder="اولویت"
+                                                   id="priority" required
+                                                   value="{{ notification.priority|default:'' }}">
                                         </div>
                                     </div>
                                 </div>
@@ -293,15 +336,16 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12">
+                                <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label class="form-label" for="is_open">وضعیت</label>
+                                        <label class="form-label" for="attached_link">لینک
+                                            پیوست</label>
                                         <div class="form-control-wrap">
-                                            <select name="is_open" id="is_open"
-                                                    class="form-control js-select2">
-                                                <option value="true" {% if ticket.is_open %}selected{% endif %}>باز</option>
-                                                <option value="false" {% if not ticket.is_open %}selected{% endif %}>بسته</option>
-                                            </select>
+                                            <input type="text" id="attached_link"
+                                                   name="attached_link"
+                                                   class="form-select" placeholder="لینک پیوست"
+                                                   value="{{ notification.attached_link|default:'' }}">
+                                            </input>
                                         </div>
                                     </div>
                                 </div>
@@ -311,14 +355,14 @@
                                         <div class="form-control-wrap">
                                                                 <textarea name="description" id="description"
                                                                           class="form-control"
-                                                                          placeholder="توضیحات">{{ ticket.description|default:'' }}</textarea>
+                                                                          placeholder="توضیحات">{{ notification.description|default:'' }}</textarea>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-12 text-left">
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-lg btn-primary">
-                                            بروزرسانی گزارش
+                                            بروزرسانی اعلان
                                         </button>
                                     </div>
                                 </div>

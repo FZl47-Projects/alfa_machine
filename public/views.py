@@ -5,11 +5,9 @@ from django.core.paginator import Paginator
 from django.views.generic import View
 from django.contrib import messages
 from django.db.models import Q, Count
-
-from account.auth.decorators import user_role_required_cbv
-from notification.models import NotificationDepartment
-from notification.utils import create_notification
 from core.utils import form_validate_err
+from account.auth.decorators import user_role_required_cbv
+from notification.utils import create_notification
 from public import models, forms
 
 
@@ -34,9 +32,11 @@ class ProjectDetail(LoginRequiredMixin, View):
     def get(self, request, project_id):
         project = get_object_or_404(models.Project, id=project_id)
         context = {
-            'has_perm_to_modify': project.has_perm_to_modify(request.user),
             'project': project,
-            'task_masters': models.TaskMaster.objects.all()
+            'notes': project.get_notes(request.user),
+            'task_masters': models.TaskMaster.objects.all(),
+            # permissions
+            'has_perm_to_modify': project.has_perm_to_modify(request.user),
         }
         return render(request, self.template_name, context)
 
@@ -139,224 +139,40 @@ class ProjectUpdate(LoginRequiredMixin, View):
         return redirect(project.get_absolute_url())
 
 
+class ProjectNoteAdd(LoginRequiredMixin, View):
+
+    def post(self, request):
+        referer_url = request.META.get('HTTP_REFERER')
+        data = request.POST.copy()
+        # set additional values
+        data['user'] = request.user
+        f = forms.ProjectNoteCreate(data)
+        if not f.is_valid():
+            messages.error(request, 'لطفا فیلد هارا به درستی وارد نمایید')
+            return redirect(referer_url)
+        note = f.save()
+        messages.success(request, 'یادداشت با موفقیت ایجاد شد')
+        return redirect(note.project.get_absolute_url())
+
+
 class ProjectDelete(LoginRequiredMixin, View):
 
     def get(self, request, project_id):
         if not models.Project.has_perm_to_modify(request.user):
             raise PermissionDenied
-        project = models.Project.objects.get(id=project_id)
+        project = get_object_or_404(models.Project, id=project_id)
         project.delete()
         messages.success(request, 'پروژه با موفقیت حذف شد')
         return redirect('public:project__list')
 
 
-# class ProjectFile(LoginRequiredMixin, View):
-#
-#     def search(self, request, items):
-#         search = request.GET.get('search', None)
-#         if not search:
-#             return items
-#         items = items.filter(name__icontains=search)
-#         return items
-#
-#     @user_role_required_cbv(
-#         ['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user', 'control_quality_user',
-#          'technical_user', 'production_user'])
-#     def get(self, request):
-#         projects = models.Project.objects.filter(is_active=True)
-#         projects = self.search(request, projects)
-#         context = {
-#             'projects': projects
-#         }
-#         return render(request, 'public/project/file/list.html', context)
-#
-#     def post(self, request):
-#         referer_url = request.META.get('HTTP_REFERER', None)
-#         data = request.POST.copy()
-#         # set additional values
-#         data['from_department'] = request.user.department
-#
-#         f = forms.ProjectFile(data, request.FILES)
-#         if form_validate_err(request, f) is False:
-#             return redirect(referer_url or '/error')
-#         obj = f.save()
-#
-#         # Create notification for each department
-#         notif_title = 'اعلان آپلود فایل پروژه'
-#         notif_description = f'فایل جدید برای پروژه ({obj.project.name})'
-#         create_notification(from_department=obj.from_department, title=notif_title, description=notif_description,
-#                             projects=obj.project, all_departments=True)
-#
-#         messages.success(request, 'عملیات مورد نظر با موفقیت انجام شد')
-#         return redirect(referer_url or '/success')
+class ProjectNoteDelete(LoginRequiredMixin, View):
 
-
-# class ProjectDetailFileList(LoginRequiredMixin, View):
-#
-#     def search(self, request, items):
-#         search = request.GET.get('search', None)
-#         if not search:
-#             return items
-#         items = items.filter(name__icontains=search)
-#         return items
-#
-#     def sort(self, request, items):
-#         sort_by = request.GET.get('sort_by', 'latest')
-#         if sort_by == 'latest':
-#             items = items.order_by('-id')
-#         elif sort_by == 'oldest':
-#             items = items.order_by('id')
-#         return items
-#
-#     def filter(self, request, items):
-#         # search
-#         items = self.search(request, items)
-#         # filter
-#         filter_by = request.GET.get('filter_by')
-#         if filter_by and filter_by.isdigit():
-#             items = items.filter(from_department__id=filter_by)
-#         # sort
-#         items = self.sort(request, items)
-#         return items
-#
-#     @user_role_required_cbv(
-#         ['super_user', 'commerce_user', 'procurement_commerce_user', 'control_project_user', 'control_quality_user',
-#          'technical_user', 'production_user'])
-#     def get(self, request, project_id):
-#         project = models.Project.objects.get(id=project_id, is_active=True)
-#         files = project.get_files()
-#         # search & filter
-#         files = self.filter(request, files)
-#         context = {
-#             'files': files,
-#             'project': project,
-#             'departments': models.Department.objects.all()
-#         }
-#         return render(request, 'public/project/file/detail.html', context)
-
-
-# class TaskOwner(LoginRequiredMixin, View):
-#     """
-#         get tasks who created and crud task with post method
-#     """
-#
-#     def pagination(self, request, objects, count=20):
-#         paginator = Paginator(objects, count)  # show how many objects per page.
-#         page_number = request.GET.get("page")
-#         page_obj = paginator.get_page(page_number)
-#         return page_obj, page_obj.object_list
-#
-#     def search(self, request, tasks):
-#         search = request.GET.get('search', None)
-#         if not search:
-#             return tasks
-#         lookup = Q(name__icontains=search) | Q(from_department__name__icontains=search)
-#         tasks = tasks.filter(lookup)
-#         return tasks
-#
-#     def sort(self, request, tasks):
-#         sort_by = request.GET.get('sort_by', 'latest')
-#         if sort_by == 'latest':
-#             tasks = tasks.order_by('-id')
-#         elif sort_by == 'oldest':
-#             tasks = tasks.order_by('id')
-#         return tasks
-#
-#     def get(self, request):
-#         # get task list by type state
-#         task_state = request.GET.get('task_state', None)
-#         department = request.user.department
-#
-#         if request.user.role in ('super_user',):
-#             tasks = models.Task.objects.filter(is_active=True)
-#         else:
-#             tasks = models.Task.objects.filter(is_active=True, from_department=department)
-#
-#         if task_state:
-#             tasks = tasks.filter(state=task_state)
-#
-#         tasks = self.search(request, tasks)
-#         tasks = self.sort(request, tasks)
-#         paginator, tasks = self.pagination(request, tasks)
-#         context = {
-#             'tasks': tasks,
-#             'paginator': paginator,
-#             'departments': models.Department.objects.all(),
-#             'projects': models.Project.objects.filter(is_active=True)
-#         }
-#
-#         return render(request, 'public/task/list-state.html', context)
-#
-#     def post(self, request, task_id):
-#         type_request = request.POST.get('type_request', None)
-#         referer_url = request.META.get('HTTP_REFERER', None)
-#
-#         if type_request == 'update':
-#             data = request.POST
-#             task_obj = models.Task.objects.get(id=task_id, from_department=request.user.department)
-#
-#             f = forms.TaskUpdateForm(data, request.FILES, instance=task_obj)
-#             if form_validate_err(request, f) is False:
-#                 return redirect(referer_url or '/error')
-#             task = f.save()
-#
-#             notif = NotificationDepartment.objects.create(
-#                 from_department=request.user.department,
-#                 department=task.to_department,
-#                 title='اعلان بروزرسانی تسک',
-#                 description=f'بروزرسانی برای تسک: "{task.name}"'
-#             )
-#             notif.projects.set([task.project])
-#
-#             messages.success(request, 'تسک با موفقیت بروزرسانی شد')
-#         elif type_request == 'delete':
-#             models.Task.objects.get(id=task_id).delete()
-#
-#         return redirect(referer_url or '/success')
-#
-#
-# class TaskOwnerDepartment(View):
-#     template_name = 'public/task/department-each.html'
-#
-#     def pagination(self, request, objects, count=20):
-#         paginator = Paginator(objects, count)  # show how many objects per page.
-#         page_number = request.GET.get("page")
-#         page_obj = paginator.get_page(page_number)
-#         return page_obj, page_obj.object_list
-#
-#     def search(self, request, tasks):
-#         search = request.GET.get('search', None)
-#         if not search:
-#             return tasks
-#         lookup = Q(name__icontains=search) | Q(from_department__name__icontains=search)
-#         tasks = tasks.filter(lookup)
-#         return tasks
-#
-#     def sort(self, request, tasks):
-#         sort_by = request.GET.get('sort_by', 'latest')
-#         if sort_by == 'latest':
-#             tasks = tasks.order_by('-id')
-#         elif sort_by == 'oldest':
-#             tasks = tasks.order_by('id')
-#         return tasks
-#
-#     def get(self, request, department_id):
-#         department = models.Department.objects.get(id=department_id)
-#         tasks = models.Task.objects.filter(to_department=department)
-#
-#         tasks = self.search(request, tasks)
-#         tasks = self.sort(request, tasks)
-#         paginator, tasks = self.pagination(request, tasks)
-#
-#         context = {
-#             'tasks': tasks,
-#             'paginator': paginator,
-#             'department': department,
-#             'departments': models.Department.objects.all(),
-#             'projects': models.Project.objects.filter(is_active=True)
-#         }
-#
-#         return render(request, self.template_name, context)
+    def get(self, request, note_id):
+        note = get_object_or_404(models.ProjectNote, id=note_id)
+        note.delete()
+        messages.success(request, 'یادداشت با موفقیت حذف شد')
+        return redirect(note.project.get_absolute_url())
 
 
 class TaskAdd(LoginRequiredMixin, View):
@@ -382,7 +198,6 @@ class TaskAdd(LoginRequiredMixin, View):
             messages.error(request, 'لطفا فیلد هارا به درستی پر نمایید')
             return redirect('public:task__add')
         task = f.save()
-        # TODO: should use in signals
         # create status task(queue)
         models.TaskStatus.objects.create(
             department=task.to_department,
@@ -390,14 +205,13 @@ class TaskAdd(LoginRequiredMixin, View):
             status='queue',
             description='ایجاد به صورت خودکار'
         )
-        # Create notification for department
-        # TODO: should be refactor and completed
-        notif_title = 'اطلاعیه تسک جدید'
-        notif_description = f'عنوان تسک: "{task.name}"'
+        # create notification for department
         create_notification(
+            'تسک جدید',
             from_department=request.user.department,
-            title=notif_title, description=notif_description,
-            projects=task.project, departments=[task.to_department]
+            to_departments=[task.to_department],
+            projects=[task.project],
+            attached_link=task.get_absolute_url(),
         )
         messages.success(request, 'تسک با موفقیت ایجاد شد')
         return redirect('public:task__add')
@@ -559,27 +373,24 @@ class TaskStatusAdd(LoginRequiredMixin, View):
 
 
 class TaskRemind(LoginRequiredMixin, View):
-    # TODO: should be refactor and completed
 
-    def post(self, request, task_id):
+    def get(self, request, task_id):
         referer_url = request.META.get('HTTP_REFERER', None)
-
-        user = request.user
-        department = user.department
         task = get_object_or_404(models.Task, id=task_id)
-
-        # Create notification for department
-        notif_title = 'یادآوری انجام تسک'
-        notif_description = f'یادآوری جهت انجام تسک ({task.name})'
+        user = request.user
+        if not task.has_perm_to_send_notify(request.user):
+            raise PermissionDenied
+        # create notification for department
         create_notification(
-            from_department=department,
-            title=notif_title, description=notif_description,
-            projects=task.project, departments=[task.to_department]
+            'یادآوری انجام تسک',
+            from_department=user.department,
+            to_departments=[task.to_department],
+            projects=[task.project],
+            attached_link=task.get_absolute_url(),
+            description=f'یادآوری جهت انجام تسک ({task.name})'
         )
-
-        messages.success(request, 'عملیات مورد نظر با موفقیت ایجاد شد')
-
-        return redirect(referer_url or '/success')
+        messages.success(request, 'یاداوری تسک با موفقیت انجام شد')
+        return redirect(referer_url or task.get_absolute_url())
 
 
 class InquiryAdd(LoginRequiredMixin, View):
