@@ -1,15 +1,15 @@
 from django.urls import path
 from . import views
 
-
 app_name = 'departments.financial'
 
 urlpatterns = [
     path('', views.Index.as_view(), name='index'),
-    path('project/list/', views.ProjectListView.as_view(), name='projects_list'),
-    path('project/<int:project_id>', views.PaymentProject.as_view(), name='payment_project'),
-    path('payment', views.Payment.as_view(), name='payment'),
-    path('prepayment', views.PrePayment.as_view(), name='prepayment'),
-    path('surety-bond/save/', views.SaveSuretyBondView.as_view(), name='save_surety_bond'),
-    path('surety-bond/reminder/', views.ReminderTimeView.as_view(), name='save_reminder_time'),
+    # payment
+    path('payment/add', views.PaymentAdd.as_view(), name='payment__add'),
+    path('payment/list', views.PaymentList.as_view(), name='payment__list'),
+    path('payment/<int:payment_id>/detail', views.PaymentDetail.as_view(), name='payment__detail'),
+    path('payment/<int:payment_id>/delete', views.PaymentDelete.as_view(), name='payment__delete'),
+    path('payment/<int:payment_id>/update', views.PaymentUpdate.as_view(), name='payment__update'),
+
 ]

@@ -1,5 +1,6 @@
-from .models import WarehouseRegistration
 from django.contrib import admin
+from . import models
 
 
-admin.site.register(WarehouseRegistration)
+admin.site.register(models.ItemWarehouse)
+admin.site.register(models.ItemFile)

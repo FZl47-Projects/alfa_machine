@@ -101,7 +101,7 @@
                                                             class="icon ni ni-notice"></em><span>اعلانات</span></a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" data-bs-toggle="tab" href="#"><em
+                                                    <a class="nav-link" href="{% url 'dp_warehouse:item__list' %}?filter=true&project={{ project.id }}"><em
                                                             class="icon ni ni-book"></em><span>ایتم های انبار</span></a>
                                                 </li>
                                                 <li class="nav-item">
@@ -221,7 +221,7 @@
                                                                             {% if project.inquiry %}
                                                                                 <a href="{{ project.inquiry.get_absolute_url }}">{{ project.inquiry.title|truncatechars:30 }}</a>
                                                                             {% else %}
-                                                                                <em class="icon ni ni-cross-c text-warning-dim"></em>
+                                                                                <em class="icon ni ni-cross-c text-warning"></em>
                                                                             {% endif %}
                                                                         </span>
                                                                     </div>
@@ -529,7 +529,9 @@
                                                         <div class="col-4">
                                                             <div class="profile-stats">
                                                                 <span class="amount"
-                                                                      title="{{ project.get_last_step.name|default:'-' }}">{{ project.get_last_step.name|default:'-'|truncatechars:20 }}</span>
+                                                                      title="{{ project.get_last_step.name|default:'-' }}">
+                                                                    <a href="{{ project.get_last_step.get_absolute_url }}" class="badge badge-dim bg-secondary fs-13px mb-1">{{ project.get_last_step.name|default:'-'|truncatechars:10 }}</a>
+                                                                </span>
                                                                 <span class="sub-text">مرحله</span>
                                                             </div>
                                                         </div>

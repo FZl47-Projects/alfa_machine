@@ -141,11 +141,11 @@
                         </a>
                         <ul class="nk-menu-sub">
                             <li class="nk-menu-item">
-                                <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
+                                <a href="{% url 'dp_warehouse:item__add' %}" class="nk-menu-link"
                                 ><span class="nk-menu-text">ثبت ایتم</span></a>
                             </li>
                             <li class="nk-menu-item">
-                                <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
+                                <a href="{% url 'dp_warehouse:item__list' %}" class="nk-menu-link"
                                 ><span class="nk-menu-text">لیست انبار</span></a>
                             </li>
                         </ul>
@@ -158,21 +158,45 @@
                             <span class="nk-menu-text">مالی</span>
                         </a>
                         <ul class="nk-menu-sub">
-                            <li class="nk-menu-item">
-                                <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
-                                ><span class="nk-menu-text">ثبت پرداخت</span></a>
+                            <li class="nk-menu-item has-sub">
+                                <a href="#" class="nk-menu-link nk-menu-toggle"><span class="nk-menu-text">پرداخت</span></a>
+                                <ul class="nk-menu-sub">
+                                    <li class="nk-menu-item">
+                                        <a href="{% url 'dp_financial:payment__add' %}" class="nk-menu-link"><span
+                                                class="nk-menu-text">ثبت پرداخت</span></a>
+                                    </li>
+                                    <li class="nk-menu-item">
+                                        <a href="{% url 'dp_financial:payment__list' %}" class="nk-menu-link"
+                                        ><span class="nk-menu-text">لیست پرداختی ها</span></a>
+                                    </li>
+                                </ul>
                             </li>
-                            <li class="nk-menu-item">
-                                <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
-                                ><span class="nk-menu-text">لیست پرداختی ها</span></a>
+                            <li class="nk-menu-item has-sub">
+                                <a href="#" class="nk-menu-link nk-menu-toggle"><span
+                                        class="nk-menu-text">ضمانت نامه</span></a>
+                                <ul class="nk-menu-sub">
+                                    <li class="nk-menu-item">
+                                        <a href="html/pages/auths/auth-login-v2.html" class="nk-menu-link"
+                                        ><span class="nk-menu-text">ثبت ضمانت نامه</span></a>
+                                    </li>
+                                    <li class="nk-menu-item">
+                                        <a href="html/pages/auths/auth-register-v2.html" class="nk-menu-link"
+                                        ><span class="nk-menu-text">لیست ضمانت ها</span></a>
+                                    </li>
+                                </ul>
                             </li>
-                            <li class="nk-menu-item">
-                                <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
-                                ><span class="nk-menu-text">ثبت حسن انجام</span></a>
-                            </li>
-                            <li class="nk-menu-item">
-                                <a href="html/pages/auths/auth-login.html" class="nk-menu-link"
-                                ><span class="nk-menu-text">ثبت ضمانت نامه</span></a>
+                            <li class="nk-menu-item has-sub">
+                                <a href="#" class="nk-menu-link nk-menu-toggle"><span class="nk-menu-text">یادآور</span></a>
+                                <ul class="nk-menu-sub">
+                                    <li class="nk-menu-item">
+                                        <a href="html/pages/auths/auth-login-v2.html" class="nk-menu-link"
+                                        ><span class="nk-menu-text">ثبت یادآور</span></a>
+                                    </li>
+                                    <li class="nk-menu-item">
+                                        <a href="html/pages/auths/auth-register-v2.html" class="nk-menu-link"
+                                        ><span class="nk-menu-text">لیست یادآور ها</span></a>
+                                    </li>
+                                </ul>
                             </li>
                         </ul>
                         <!-- .nk-menu-sub -->

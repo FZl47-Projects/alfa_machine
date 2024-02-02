@@ -2,25 +2,31 @@ from django import forms
 from . import models
 
 
-class PaymentForm(forms.ModelForm):
+class PaymentCreate(forms.ModelForm):
     class Meta:
         model = models.Payment
-        exclude = ('file',)  # TEMP
+        fields = '__all__'
 
 
-class PrePaymentForm(forms.ModelForm):
-    class Meta:
-        model = models.PrePayment
-        exclude = ('file',)  # TEMP
+class PaymentUpdate(PaymentCreate):
+    pass
 
 
-class SaveSuretyBondForm(forms.ModelForm):
+class SuretyBondCreate(forms.ModelForm):
     class Meta:
         model = models.SuretyBond
-        exclude = ('reminder_time',)
+        fields = '__all__'
 
 
-class SaveReminderTimeForm(forms.ModelForm):
+class SuretyBondUpdate(SuretyBondCreate):
+    pass
+
+
+class ReminderTimeProjectCreate(forms.ModelForm):
     class Meta:
-        model = models.SuretyBond
-        fields = ('project', 'reminder_time',)
+        model = models.ReminderProject
+        fields = '__all__'
+
+
+class ReminderTimeProjectUpdate(ReminderTimeProjectCreate):
+    pass

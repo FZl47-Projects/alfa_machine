@@ -1,14 +1,18 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.contrib import messages
 from django.views.generic import View
+from django.core.exceptions import PermissionDenied
+from django.core.paginator import Paginator
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django_q.models import Schedule
-from account.auth.decorators import user_role_required_cbv
 from core.utils import form_validate_err
-from public.models import Project, TaskMaster
-from . import forms
+from account.auth.decorators import user_role_required_cbv
+from notification.utils import create_notification_by_role
+from public.models import Project
+from . import forms, models
 
 
-class Index(View):
+class Index(LoginRequiredMixin, View):
     template_name = 'financial/index.html'
 
     @user_role_required_cbv(['financial_user'])
@@ -24,137 +28,128 @@ class Index(View):
         return render(request, self.template_name, context)
 
 
-# ProjectsList view
-class ProjectListView(View):
-    template = 'financial/projects_list.html'
+class PaymentAdd(LoginRequiredMixin, View):
+    template_name = 'financial/payment/add.html'
 
-    def filter(self, request, projects):
-        search = request.GET.get('search')
-        task_master = request.GET.get('task_master', None)
-
-        if search:
-            projects = projects.filter(name__icontains=search)
-
-        if task_master and task_master.isdigit():
-            projects = projects.filter(task_master_id=task_master)
-
-        return projects
-
+    @user_role_required_cbv(['financial_user', 'super_user'])
     def get(self, request):
-        projects = Project.objects.all()
-        projects = self.filter(request, projects)  # Filter projects
-
         context = {
-            'projects': projects,
-            'task_masters': TaskMaster.objects.all(),
+            'payment': models.Payment,
+            'projects': Project.objects.filter(is_active=True)
         }
+        return render(request, self.template_name, context)
 
-        return render(request, self.template, context)
-
-
-class Payment(View):
-
-    @user_role_required_cbv(['financial_user'])
+    @user_role_required_cbv(['financial_user', 'super_user'])
     def post(self, request):
-        referer_url = request.META.get('HTTP_REFERER', None)
         data = request.POST
-        f = forms.PaymentForm(data)
-        if form_validate_err(request, f) is False:
-            return redirect(referer_url or '/error')
-        f.save()
-        messages.success(request, 'عملیات با موفقیت انجام شد')
-        return redirect(referer_url or '/success')
+        f = forms.PaymentCreate(data, files=request.FILES)
+        if not f.is_valid():
+            messages.error(request, 'لطفا فیلد هارا به درستی پر نمایید')
+            return redirect('dp_financial:payment__add')
+        payment = f.save()
+        create_notification_by_role(
+            'پرداختی جدید',
+            description='ایجاد به صورت خودکار',
+            from_department=request.user.department,
+            to_users=('financial_user', 'super_user', 'control_project_user'),
+            projects=(payment.project,),
+            attached_link=payment.get_absolute_url()
+        )
+        messages.success(request, 'پرداختی با موفقیت ثبت شد')
+        return redirect('dp_financial:payment__add')
 
 
-class PrePayment(View):
+class PaymentList(LoginRequiredMixin, View):
+    template_name = 'financial/payment/list.html'
+    pagination_count = 25
 
-    @user_role_required_cbv(['financial_user'])
-    def post(self, request):
-        referer_url = request.META.get('HTTP_REFERER', None)
-        data = request.POST
+    def pagination(self, objects):
+        paginator = Paginator(objects, self.pagination_count)
+        page_number = self.request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+        return page_obj, page_obj.object_list
 
-        f = forms.PrePaymentForm(data)
-        if form_validate_err(request, f) is False:
-            return redirect(referer_url or '/error')
-        obj = f.save()
+    def sort(self, payments):
+        sort_by = self.request.GET.get('sort_by', 'latest')
+        if sort_by == 'latest':
+            payments = payments.order_by('-id')
+        elif sort_by == 'oldest':
+            payments = payments.order_by('id')
+        elif sort_by == 'high-price':
+            payments = payments.order_by('-price')
+        return payments
 
-        # Save prepayment for project
-        project = obj.project
-        project.prepayment_datetime = obj.submited_at
-        project.save()
+    def filter(self, payments):
+        qs = self.request.GET
+        search = qs.get('search', None)
+        project = qs.get('project', 'all')
+        type_payment = qs.get('type_payment', 'all')
+        type_status_payment = qs.get('type_status_payment', 'all')
+        if search:
+            payments = payments.filter(tracking_code__icontains=search)
+        if (project != 'all') and (project.isdigit()):
+            payments = payments.filter(project_id=project)
 
-        messages.success(request, 'عملیات با موفقیت انجام شد')
-        return redirect(referer_url or '/success')
+        if type_status_payment != 'all':
+            payments = payments.filter(type_status_payment=type_status_payment)
 
+        if type_payment != 'all':
+            payments = payments.filter(type_payment=type_payment)
+        return payments
 
-class PaymentProject(View):
-    template_name = 'financial/project_payments.html'
-
-    @user_role_required_cbv(['financial_user'])
-    def get(self, request, project_id):
-        project_obj = Project.objects.get(id=project_id)
+    @user_role_required_cbv(['financial_user', 'super_user', 'control_project_user'])
+    def get(self, request):
+        payments = models.Payment.objects.all()
+        payments = self.filter(payments)
+        payments = self.sort(payments)
+        pagination, payments = self.pagination(payments)
         context = {
-            'project': project_obj
+            'pagination': pagination,
+            'payments': payments,
+            'projects': Project.objects.filter(is_active=True),
+            'TYPE_PAYMENT_OPTIONS': models.Payment.TYPE_PAYMENT_OPTIONS,
+            'TYPE_STATUS_PAYMENT_OPTIONS': models.Payment.TYPE_STATUS_PAYMENT_OPTIONS,
         }
         return render(request, self.template_name, context)
 
 
-# SaveSuretyBond view
-class SaveSuretyBondView(View):
-    @user_role_required_cbv(['financial_user'])
-    def post(self, request):
+class PaymentDetail(LoginRequiredMixin, View):
+    template_name = 'financial/payment/detail.html'
+
+    @user_role_required_cbv(['financial_user', 'super_user', 'control_project_user'])
+    def get(self, request, payment_id):
+        payment = get_object_or_404(models.Payment, id=payment_id)
+        context = {
+            'payment': payment,
+            'projects': Project.objects.filter(is_active=True),
+            # permissions
+            'has_perm_to_modify': models.Payment.has_perm_to_modify(request.user)
+        }
+        return render(request, self.template_name, context)
+
+
+class PaymentDelete(LoginRequiredMixin, View):
+
+    def get(self, request, payment_id):
+        payment = get_object_or_404(models.Payment, id=payment_id)
+        if not payment.has_perm_to_modify(request.user):
+            raise PermissionDenied
+        payment.delete()
+        messages.success(request, 'پرداختی با موفقیت حذف شد')
+        return redirect('dp_financial:payment__list')
+
+
+class PaymentUpdate(LoginRequiredMixin, View):
+
+    def post(self, request, payment_id):
+        payment = get_object_or_404(models.Payment, id=payment_id)
+        if not payment.has_perm_to_modify(request.user):
+            raise PermissionDenied
         data = request.POST
-        project = Project.objects.get(id=data.get('project'))
-
-        if hasattr(project, 'surety_bond'):
-            f = forms.SaveSuretyBondForm(data, instance=project.surety_bond, files=request.FILES)
-        else:
-            f = forms.SaveSuretyBondForm(data, files=request.FILES)
-
-        if form_validate_err(request, f) is False:
-            return redirect(reverse('departments.financial:payment_project', args=(project.id,)))
+        f = forms.PaymentUpdate(data, files=request.FILES, instance=payment)
+        if not f.is_valid():
+            messages.error(request, 'لطفا فیلد هارا به درستی پر نمایید')
+            return redirect(payment.get_absolute_url())
         f.save()
-
-        messages.success(request, 'عملیات با موفقیت انجام شد')
-        return redirect(reverse('departments.financial:payment_project', args=(project.id,)))
-
-
-# Save ReminderTime view
-class ReminderTimeView(View):
-
-    def create_schedule_task(self, request, task_name='financial_reminder_task'):
-        try:
-            task = Schedule.objects.get(name=task_name)
-            task.delete()
-        except Schedule.DoesNotExist:
-            pass
-
-        department = request.user.department
-        Schedule.objects.create(
-            name=task_name,
-            func='core.tasks.send_reminder_notif',
-            kwargs={'from_department': department, 'department': department},
-            schedule_type=Schedule.DAILY,
-        )
-
-    def create_form(self, data, instance=None, attr: str = None):
-        if hasattr(instance, attr):
-            instance = getattr(instance, attr)
-            return forms.SaveReminderTimeForm(data, instance=instance)
-
-        return forms.SaveReminderTimeForm(data)
-
-    @user_role_required_cbv(['financial_user'])
-    def post(self, request):
-        data = request.POST
-        project = Project.objects.get(id=data.get('project'))
-
-        f = self.create_form(data, project, 'surety_bond')
-        if form_validate_err(request, f) is False:
-            return redirect(reverse('departments.financial:payment_project', args=(project.id,)))
-        obj = f.save()
-
-        self.create_schedule_task(request)  # Create schedule reminder
-
-        messages.success(request, 'عملیات با موفقیت انجام شد')
-        return redirect(reverse('departments.financial:payment_project', args=(project.id,)))
+        messages.success(request, 'پرداختی با موفقیت بروزرسانی شد')
+        return redirect(payment.get_absolute_url())

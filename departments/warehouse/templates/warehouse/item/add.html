@@ -1,0 +1,181 @@
+{% extends 'base/base_template.html' %}
+{% load static %}
+{% load render_partial %}
+
+{% block Title %}
+    ثبت ایتم انبار
+{% endblock %}
+
+{% block BodyClass %}
+    has-rtl nk-body ui-rounder has-sidebar no-touch nk-nio-theme
+{% endblock %}
+
+{% block Content %}
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main">
+            <!-- sidebar @s -->
+            {% render_partial 'public.components.MenuComponent' %}
+            <!-- sidebar @e -->
+            <!-- wrap @s -->
+            <div class="nk-wrap">
+                <!-- main header @s -->
+                {% include 'base/components/header.html' %}
+                <!-- main header @e -->
+                <!-- content @s -->
+                <div class="nk-content nk-content-fluid">
+                    <div class="container-xl wide-xl">
+                        <div class="nk-content-body">
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block-between g-3">
+                                    <div class="nk-block-head-content">
+                                        <h3 class="nk-block-title page-title">ثبت ایتم انبار</h3>
+                                        <nav>
+                                            <ul class="breadcrumb breadcrumb-arrow">
+                                                <li class="breadcrumb-item"><a href="{% url 'public:index' %}">صفحه
+                                                    اصلی</a></li>
+                                                <li class="breadcrumb-item"><a>انبار</a></li>
+                                                <li class="breadcrumb-item active">ثبت ایتم انبار</li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                    <div class="nk-block-head-content">
+                                        <div class="toggle-wrap nk-block-tools-toggle">
+                                            <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1"
+                                               data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
+                                            <div class="toggle-expand-content" data-content="pageMenu">
+                                                <ul class="nk-block-tools g-3">
+                                                    <li class="nk-block-tools-opt">
+                                                        <div class="drodown">
+                                                            <a href="#" class="dropdown-toggle btn btn-icon btn-primary"
+                                                               data-bs-toggle="dropdown"><em
+                                                                    class="icon ni ni-plus"></em></a>
+                                                            <div class="dropdown-menu dropdown-menu-end">
+                                                                <ul class="link-list-opt no-bdr">
+                                                                    <li>
+                                                                        <a href="#"><span>ایمپورت از فایل اکسل</span></a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                </div>
+                                <!-- .nk-block-between -->
+                            </div>
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block nk-block-lg">
+                                    <div class="card">
+                                        <div class="card-inner">
+                                            <div class="card-head">
+                                                <h5 class="card-title">اطلاعات ایتم انبار</h5>
+                                            </div>
+                                            <form action="{% url 'dp_warehouse:item__add' %}"
+                                                  class="form-validate is-alter" method="post">
+                                                {% csrf_token %}
+                                                <div class="row g-4">
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="name">نام</label>
+                                                            <div class="form-control-wrap">
+                                                                <input type="text" name="name" id="name"
+                                                                       class="form-control"
+                                                                       placeholder="نام" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="project">پروژه</label>
+                                                            <div class="form-control-wrap">
+                                                                <select id="project" name="project"
+                                                                        class="form-select js-select2 select-by-value"
+                                                                        data-search="on"
+                                                                        tabindex="-1" aria-hidden="true" required
+                                                                        value="{{ request.GET.project }}">
+                                                                    {% for project in projects %}
+                                                                        <option value="{{ project.id }}">{{ project.name }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="register_time">تاریخ
+                                                                ثبت</label>
+                                                            <div class="form-control-wrap">
+                                                                <input type="text" name="register_time"
+                                                                       id="register_time"
+                                                                       class="form-control date-picker-alt"
+                                                                       placeholder="روز-ماه-سال" readonly required>
+                                                            </div>
+                                                            <div class="form-note">فرمت تاریخ <code>روز-ماه-سال</code>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="inpPrice">قیمت</label>
+                                                            <div class="form-control-wrap">
+                                                                <input type="number" name="price" id="inpPrice"
+                                                                       class="form-control"
+                                                                       placeholder="قیمت" required>
+                                                            </div>
+                                                            <div class="text-left font-80 text-muted mt-1">
+                                                                <span id="amount-value">0</span>
+                                                                <span>تومان</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="description">توضیحات</label>
+                                                            <div class="form-control-wrap">
+                                                                <textarea name="description" id="description"
+                                                                          class="form-control"
+                                                                          placeholder="توضیحات"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 text-left">
+                                                        <div class="form-group">
+                                                            <button type="submit" class="btn btn-lg btn-primary">
+                                                                ثبت ایتم
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- .components-preview -->
+                        </div>
+                    </div>
+                </div>
+                <!-- content @e -->
+                <!-- footer @s -->
+                {% include 'base/components/footer.html' %}
+                <!-- footer @e -->
+            </div>
+            <!-- wrap @e -->
+        </div>
+        <!-- main @e -->
+    </div>
+{% endblock %}
+
+{% block Script %}
+    <script>
+        // set amount value
+        document.querySelector('#inpPrice').addEventListener('input', function () {
+            document.querySelector('#amount-value').innerHTML = numberWithCommas(this.value) || 0
+        })
+    </script>
+{% endblock %}

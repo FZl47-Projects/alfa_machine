@@ -2,13 +2,17 @@ from django import forms
 from . import models
 
 
-class WarehouseRegistrationForm(forms.ModelForm):
+class ItemWarehouseCreate(forms.ModelForm):
     class Meta:
-        model = models.WarehouseRegistration
+        model = models.ItemWarehouse
         fields = '__all__'
 
 
-class RegistrationFileForm(forms.ModelForm):
+class ItemWarehouseUpdate(ItemWarehouseCreate):
+    pass
+
+
+class ItemWarehouseFileCreate(forms.ModelForm):
     class Meta:
-        model = models.RegistrationFile
+        model = models.ItemFile
         fields = '__all__'
