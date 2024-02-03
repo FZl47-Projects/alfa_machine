@@ -13,6 +13,7 @@ class PaymentUpdate(PaymentCreate):
 
 
 class SuretyBondCreate(forms.ModelForm):
+
     class Meta:
         model = models.SuretyBond
         fields = '__all__'

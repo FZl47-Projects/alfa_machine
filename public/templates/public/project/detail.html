@@ -101,8 +101,9 @@
                                                             class="icon ni ni-notice"></em><span>اعلانات</span></a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" href="{% url 'dp_warehouse:item__list' %}?filter=true&project={{ project.id }}"><em
-                                                            class="icon ni ni-book"></em><span>ایتم های انبار</span></a>
+                                                    <a class="nav-link" data-bs-toggle="tab"
+                                                       href="#warehouse"><em
+                                                            class="icon ni ni-book"></em><span>امور انبار</span></a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link" data-bs-toggle="tab" href="#financial"><em
@@ -294,6 +295,129 @@
                                                     </div>
                                                 </div>
 
+                                                <div class="tab-pane" id="financial">
+                                                    <div class="card-inner">
+                                                        <div class="nk-block">
+                                                            <div class="nk-block-head">
+                                                                <h5 class="title">امور مالی</h5>
+                                                            </div>
+                                                            <div class="profile-ud-list">
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">پرداختی ها</span>
+                                                                        <span class="profile-ud-value">
+                                                                            <a href="{% url 'dp_financial:payment__list' %}?filter=true&project={{ project.id }}">مشاهده</a>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">ضمانت نامه </span>
+                                                                        <span class="profile-ud-value">
+                                                                            {% if project.suretybond %}
+                                                                                <a href="{{ project.suretybond.get_aboslute_url }}">مشاهده</a>
+                                                                            {% else %}
+                                                                                <span class="text-warning">ثبت نشده است</span>
+                                                                            {% endif %}
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">یادآور</span>
+                                                                        <span class="profile-ud-value">
+                                                                            {% if project.reminderproject %}
+                                                                                {{ project.reminderproject.time }}
+                                                                                {% with remaining_time=project.reminderproject.get_remaining_time %}
+                                                                                    <div class="badge badge-dim rounded-pill {% if remaining_time > -1 %}bg-success{% else %}bg-danger{% endif %}">
+                                                                                        {{ remaining_time }}
+                                                                                        روز مانده
+                                                                                    </div>
+                                                                                {% endwith %}
+                                                                            {% else %}
+                                                                                <span class="text-warning">ثبت نشده است</span>
+                                                                            {% endif %}
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">تعداد پرداختی ها</span>
+                                                                        <span class="profile-ud-value">
+                                                                            {% if has_perm_to_financial_amount %}
+                                                                                <span class="price-el">{{ project.get_payments.count }}</span>
+                                                                            {% else %}
+                                                                                <span>غیر قابل مشاهده</span>
+                                                                            {% endif %}
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">مبلغ پیش پرداخت</span>
+                                                                        <span class="profile-ud-value">
+                                                                            {% if has_perm_to_financial_amount %}
+                                                                                <span class="price-el">{{ project.get_total_prepayments_amount }}</span>
+                                                                                تومان
+                                                                            {% else %}
+                                                                                <span>غیر قابل مشاهده</span>
+                                                                            {% endif %}
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">مبلغ پرداختی کل</span>
+                                                                        <span class="profile-ud-value">
+                                                                            {% if has_perm_to_financial_amount %}
+                                                                                <span class="price-el">{{ project.get_total_payments_amount }}</span>
+                                                                                تومان
+                                                                            {% else %}
+                                                                                <span>غیر قابل مشاهده</span>
+                                                                            {% endif %}
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- .nk-block -->
+                                                    </div>
+                                                </div>
+
+                                                <div class="tab-pane" id="warehouse">
+                                                    <div class="card-inner">
+                                                        <div class="nk-block">
+                                                            <div class="nk-block-head">
+                                                                <h5 class="title">امور انبار</h5>
+                                                            </div>
+                                                            <div class="profile-ud-list">
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">لیست ایتم ها</span>
+                                                                        <span class="profile-ud-value">
+                                                                            <a href="{% url 'dp_warehouse:item__list' %}?filter=true&project={{ project.id }}">مشاهده</a>
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">مبلغ کل</span>
+                                                                        <span class="profile-ud-value">
+                                                                            {% if has_perm_to_warehouse_amount %}
+                                                                                <span class="price-el">{{ project.get_total_warehouse_items_amount }}</span>
+                                                                                تومان
+                                                                            {% else %}
+                                                                                <span>غیر قابل مشاهده</span>
+                                                                            {% endif %}
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- .nk-block -->
+                                                    </div>
+                                                </div>
+
                                                 {% if has_perm_to_steps %}
                                                     <div class="tab-pane" id="steps">
                                                         <div class="card-inner">
@@ -368,7 +492,7 @@
                                                         <!-- .nk-block -->
                                                         <div class="nk-block">
                                                             <div class="nk-block-head nk-block-head-sm nk-block-between">
-                                                                <h5 class="title">یاد داشت های شخصی</h5>
+                                                                <h5 class="title mb-1">یاد داشت های شخصی</h5>
                                                                 <a data-bs-toggle="modal"
                                                                    data-bs-target="#modal-create-note-object"
                                                                    class="link link-sm">+ افزودن یادداشت</a>
@@ -530,7 +654,8 @@
                                                             <div class="profile-stats">
                                                                 <span class="amount"
                                                                       title="{{ project.get_last_step.name|default:'-' }}">
-                                                                    <a href="{{ project.get_last_step.get_absolute_url }}" class="badge badge-dim bg-secondary fs-13px mb-1">{{ project.get_last_step.name|default:'-'|truncatechars:10 }}</a>
+                                                                    <a href="{{ project.get_last_step.get_absolute_url }}"
+                                                                       class="badge badge-dim bg-secondary fs-13px mb-1">{{ project.get_last_step.name|default:'-'|truncatechars:10 }}</a>
                                                                 </span>
                                                                 <span class="sub-text">مرحله</span>
                                                             </div>

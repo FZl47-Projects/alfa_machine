@@ -11,6 +11,18 @@ from notification.utils import create_notification
 from public import models, forms
 
 
+def err_403_handler(request, exception):
+    return render(request, 'public/errors/403.html')
+
+
+def err_404_handler(request, exception):
+    return render(request, 'public/errors/404.html')
+
+
+def err_500_handler(request):
+    return render(request, 'public/errors/500.html')
+
+
 class Index(View):
     def get(self, request):
         return redirect(request.user.get_absolute_url_dashboard())
@@ -28,6 +40,8 @@ class ProjectDetail(LoginRequiredMixin, View):
             # permissions
             'has_perm_to_modify': project.has_perm_to_modify(request.user),
             'has_perm_to_steps': project.has_perm_to_steps(request.user),
+            'has_perm_to_financial_amount': project.has_perm_to_financial_amount(request.user),
+            'has_perm_to_warehouse_amount': project.has_perm_to_warehouse_amount(request.user),
         }
         return render(request, self.template_name, context)
 

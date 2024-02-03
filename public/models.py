@@ -206,6 +206,22 @@ class Project(BaseModel):
             return True
         return False
 
+    @classmethod
+    def has_perm_to_financial_amount(cls, user):
+        if user.is_anonymous:
+            return False
+        if user.role in ('super_user', 'control_project_user', 'financial_user', 'commerce_user'):
+            return True
+        return False
+
+    @classmethod
+    def has_perm_to_warehouse_amount(cls, user):
+        if user.is_anonymous:
+            return False
+        if user.role in ('super_user', 'control_project_user', 'financial_user', 'commerce_user', 'warehouse_user'):
+            return True
+        return False
+
     def get_state_label(self):
         pr = self.get_progress_percentage()
         if pr == 100:
@@ -281,30 +297,27 @@ class Project(BaseModel):
     def get_notifications(self):
         return self.notificationdepartment_set.all()
 
-    def get_prepayment(self):
-        p = self.prepayment_set.first()
-        return p
-
     def get_last_payment(self):
         p = self.payment_set.first()
         return p
 
-    def get_payments_price(self):
-        payments = self.payment_set.all().aggregate(p=Sum('price'))['p'] or 0
-        pre_payments = self.prepayment_set.all().aggregate(p=Sum('price'))['p'] or 0
-        return pre_payments + payments
+    def get_total_payments_amount(self):
+        payments = self.get_payments().aggregate(p=Sum('price'))['p'] or 0
+        return payments
+
+    def get_total_prepayments_amount(self):
+        payments = self.get_payments().filter(type_payment='prepayment').aggregate(p=Sum('price'))['p'] or 0
+        return payments
 
     def get_payments(self):
         return self.payment_set.all()
 
-    def get_prepayments(self):
-        return self.prepayment_set.all()
+    def get_total_warehouse_items_amount(self):
+        t = self.get_warehouse_items().aggregate(p=Sum('price'))['p'] or 0
+        return t
 
-    def get_warehouse_registrations(self):
-        try:
-            return self.warehouse_registrations.all()
-        except (AttributeError, TypeError):
-            return []
+    def get_warehouse_items(self):
+        return self.itemwarehouse_set.all()
 
     def get_participating_departments(self):
         departments = Department.objects.filter(task__project=self).distinct()

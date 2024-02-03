@@ -54,7 +54,7 @@ class SuretyBond(BaseModel, FileAbstract):
     project = models.OneToOneField('public.Project', on_delete=models.CASCADE)
     number_id = models.CharField(max_length=40, null=True, blank=True)
     status = models.CharField(max_length=12, choices=STATUS_OPTIONS)
-    reminder_time = models.DateField(null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
 
     class Meta:
         ordering = ('-id',)
@@ -62,14 +62,36 @@ class SuretyBond(BaseModel, FileAbstract):
     def __str__(self):
         return f'{self.project.name}: {self.number_id}'
 
-    def get_reminder_time(self):
-        if self.reminder_time:
-            return self.reminder_time.strftime('%Y-%m-%d')
+    @classmethod
+    def has_perm_to_modify(cls, user):
+        if user.is_anonymous:
+            return False
+        if user.role in ('financial_user', 'super_user'):
+            return True
+        return False
+
+    def get_absolute_url(self):
+        return reverse('dp_financial:surety_bond__detail', args=(self.id,))
+
+    def get_status_label(self):
+        return self.get_status_display()
 
 
 class ReminderProject(BaseModel):
     project = models.OneToOneField('public.Project', on_delete=models.CASCADE)
     time = models.DateField()
+    description = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return f'reminder - {self.project.name}'
+
+    @classmethod
+    def has_perm_to_modify(cls, user):
+        if user.is_anonymous:
+            return False
+        if user.role in ('financial_user', 'super_user'):
+            return True
+        return False
+
+    def get_remaining_time(self):
+        return self.get_remaining_date_field(self.time)
