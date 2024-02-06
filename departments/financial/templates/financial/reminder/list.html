@@ -213,10 +213,17 @@
                                                             <h5 class="card-title">
                                                                 <span class="d-block mb-1">{{ reminder.time }}</span>
                                                                 {% with remaining_time=reminder.get_remaining_time %}
-                                                                    <div class="badge badge-dim rounded-pill {% if remaining_time > -1 %}bg-success{% else %}bg-danger{% endif %}">
-                                                                        {{ remaining_time }}
-                                                                        روز مانده
-                                                                    </div>
+                                                                    {% if remaining_time > -1 %}
+                                                                        <div class="badge badge-dim rounded-pill bg-success">
+                                                                            {{ remaining_time }}
+                                                                            روز مانده
+                                                                        </div>
+                                                                    {% else %}
+                                                                        <div class="badge badge-dim rounded-pill bg-danger">
+                                                                            {{ remaining_time }}
+                                                                            گذشته
+                                                                        </div>
+                                                                    {% endif %}
                                                                 {% endwith %}
                                                             </h5>
                                                             <p class="card-text mt-3">

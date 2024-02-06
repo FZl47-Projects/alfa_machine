@@ -5,6 +5,7 @@ from django.views.generic import View
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Sum
 from django_q.models import Schedule
 from account.auth.decorators import user_role_required_cbv
 from notification.utils import create_notification_by_role
@@ -12,18 +13,20 @@ from public.models import Project
 from . import forms, models
 
 
-class Index(LoginRequiredMixin, View):
+class Index(View):
     template_name = 'financial/index.html'
 
     @user_role_required_cbv(['financial_user'])
     def get(self, request):
         projects = Project.objects.filter(is_active=True)
-
+        payments = models.Payment.objects.all()
+        surety_bonds = models.SuretyBond.objects.all()
+        payments_total_amount = payments.aggregate(total=Sum('price'))['total'] or 0
         context = {
-            'tickets': request.user.get_tickets(),
-            'notifications': request.user.department.get_notifications(),
             'projects': projects,
-            'ongoing_projects': projects.filter(status__in=['checking', 'paused', 'under_construction'])[:4],
+            'payments': payments,
+            'surety_bonds': surety_bonds,
+            'payments_total_amount': payments_total_amount,
         }
         return render(request, self.template_name, context)
 

@@ -3,7 +3,7 @@
 {% load render_partial %}
 
 {% block Title %}
-    پنل مدیریت
+    پنل
     {{ user.department.name }}
 {% endblock %}
 
@@ -486,12 +486,10 @@
                                                     </div>
                                                     <div class="card-tools">
                                                         <ul class="card-tools-nav">
-                                                            <li class="font-80">
-                                                                <a href="{% url 'public:project__list' %}">
-                                                                    <span>مشاهده پروژه ها</span>
-                                                                    <i class="icon ni ni-arrow-right"></i>
-                                                                </a>
-                                                            </li>
+                                                            <a class="font-80" href="{% url 'public:task__list' %}">
+                                                                <span>مشاهده همه</span>
+                                                                <i class="icon ni ni-arrow-right"></i>
+                                                            </a>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -581,7 +579,7 @@
                                                     {% for department in departments %}
                                                         <div class="nk-tb-item">
                                                             <div class="nk-tb-col">
-                                                                <a href="{{ departments.get_absolute_url }}">
+                                                                <a href="{{ department.get_absolute_url }}">
                                                                      <span>
                                                                          {{ department.name }}
                                                                      </span>

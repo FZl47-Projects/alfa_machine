@@ -1,18 +1,17 @@
 from django.views.generic import TemplateView
-from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class MenuComponent(LoginRequiredMixin, TemplateView):
+class MenuComponent(TemplateView):
     USER_ROLES_MENU = {
         'super_user': 'general/components/menu.html',
-        'control_project_user': '',
-        'control_quality_user': '',
-        'commerce_user': '',
-        'procurement_commerce_user': '',
-        'financial_user': '',
-        'warehouse_user': '',
-        'production_user': '',
-        'technical_user': '',
+        'control_project_user': 'control_project/components/menu.html',
+        'control_quality_user': 'control_quality/components/menu.html',
+        'commerce_user': 'commerce/components/menu.html',
+        'procurement_commerce_user': 'commerce/components/menu.html',
+        'financial_user': 'financial/components/menu.html',
+        'warehouse_user': 'warehouse/components/menu.html',
+        'production_user': 'production/components/menu.html',
+        'technical_user': 'technical/components/menu.html',
     }
 
     def get_template_names(self):

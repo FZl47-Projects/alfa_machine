@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
@@ -33,10 +34,18 @@ class ProjectDetail(LoginRequiredMixin, View):
 
     def get(self, request, project_id):
         project = get_object_or_404(models.Project, id=project_id)
+        steps = project.get_steps()
+        data_chart_step_1 = list(steps.filter(person_traffic='person/day').values('name', 'plan', 'actual'))
+        data_chart_step_2 = list(steps.filter(person_traffic='person/hour').values('name', 'plan', 'actual'))
+
         context = {
             'project': project,
+            'steps': steps,
             'notes': project.get_notes(request.user),
             'task_masters': models.TaskMaster.objects.all(),
+            # chart data
+            'data_chart_step_1': json.dumps(data_chart_step_1),
+            'data_chart_step_2': json.dumps(data_chart_step_2),
             # permissions
             'has_perm_to_modify': project.has_perm_to_modify(request.user),
             'has_perm_to_steps': project.has_perm_to_steps(request.user),
@@ -543,6 +552,7 @@ class InquiryList(LoginRequiredMixin, View):
             inquiries = inquiries.order_by('id')
         return inquiries
 
+    @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user', 'financial_user'])
     def get(self, request):
         inquiries = models.Inquiry.objects.all()
         inquiries = self.filter(inquiries)

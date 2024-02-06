@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import View
-from public.models import Project, Department, Task
+from public.models import Project, Department, TaskMaster, Inquiry
 from account.auth.decorators import user_role_required_cbv
 
 
@@ -9,23 +9,11 @@ class Index(View):
 
     @user_role_required_cbv(['control_project_user'])
     def get(self, request):
-        user = request.user
-        department = user.department
         projects = Project.objects.filter(is_active=True)
-
         context = {
-            'tickets': user.get_tickets(),
-            'notifications': department.get_notifications(),
-            'projects': projects,
-            'ongoing_projects': projects.filter(status__in=['checking', 'paused', 'under_construction'])[:4],
+            'task_masters': TaskMaster.objects.all(),
+            'inquiries': Inquiry.objects.all(),
             'departments': Department.objects.all(),
-            'tasks': {
-                'progress': Task.objects.filter(state='progress', from_department=department).count(),
-                'queue': Task.objects.filter(state='queue', from_department=department).count(),
-                'need_to_check': Task.objects.filter(state='need-to-check', from_department=department).count(),
-                'hold': Task.objects.filter(state='hold', from_department=department).count(),
-                'need_to_replan': Task.objects.filter(state='need-to-replan', from_department=department).count(),
-                'finished': Task.objects.filter(state='finished', from_department=department).count(),
-            }
+            'projects': projects,
         }
         return render(request, self.template_name, context)

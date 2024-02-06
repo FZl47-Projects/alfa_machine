@@ -286,12 +286,27 @@
                                                     <div class="card-inner">
                                                         <div class="nk-block">
                                                             <div class="nk-block-head">
-                                                                <h5 class="title">نمودارها</h5>
+                                                                <h5 class="title">امار</h5>
                                                             </div>
                                                         </div>
-                                                        <!-- .nk-block -->
-                                                        <div class="nk-divider divider md d-none"></div>
-
+                                                        <div class="nk-block">
+                                                            <div class="nk-block-head nk-block-head-line">
+                                                                <h6 class="title overline-title text-base">نمودار مرحله
+                                                                    ها</h6>
+                                                            </div>
+                                                            <div class="my-2">
+                                                                <p class="text-center fs-17px">نفر/روز</p>
+                                                                <canvas id="chart_step_1" width="400"
+                                                                        data-chart="{{ data_chart_step_1 }}"
+                                                                        height="350"></canvas>
+                                                            </div>
+                                                            <div class="my-2">
+                                                                <p class="text-center fs-17px">نفر/ساعت</p>
+                                                                <canvas id="chart_step_2" width="400"
+                                                                        data-chart="{{ data_chart_step_2 }}"
+                                                                        height="350"></canvas>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
 
@@ -449,7 +464,7 @@
                                                                             <span class="sub-text">وضعیت نهایی</span>
                                                                         </div>
                                                                     </div>
-                                                                    {% for step in project.get_steps %}
+                                                                    {% for step in steps %}
                                                                         <div class="nk-tb-item">
                                                                             <div class="nk-tb-col">
                                                                                 <a href="{{ step.get_absolute_url }}"><span
@@ -1186,5 +1201,71 @@
         document.querySelectorAll('.bg-dim-paused').forEach(function (e) {
             e.classList.add('bg-outline-danger')
         })
+
+        // charts
+        function chart_step() {
+
+            function chart(cnv) {
+                let options = {
+                    responsive: true,
+                    // maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                        },
+                    },
+                    borderRadius: 5,
+                    indexAxis: 'y',
+                };
+                let data_chart = JSON.parse(cnv.getAttribute('data-chart'))
+                // check empty
+                if (data_chart.length != 0) {
+                    let labels = []
+                    let data_plan = []
+                    let data_actual = []
+                    for (let i of data_chart) {
+                        labels.push(i['name'])
+                        data_plan.push(i['plan'])
+                        data_actual.push(i['actual'])
+                    }
+                    let data = {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'پلن',
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1,
+                                data: data_plan
+                            },
+                            {
+                                label: 'درواقع',
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1,
+                                data: data_actual
+                            }
+                        ]
+                    };
+                    let ctx = cnv.getContext('2d')
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: data,
+                        options: options
+                    })
+                } else {
+                    cnv.parentElement.style.display = 'none'
+                }
+
+            }
+
+            chart(document.getElementById('chart_step_1'))
+            chart(document.getElementById('chart_step_2'))
+        }
+
+        chart_step()
+
     </script>
 {% endblock %}

@@ -1,4 +1,5 @@
-from django.shortcuts import reverse
+from django.shortcuts import Http404
+from django.urls import reverse_lazy, reverse
 from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
@@ -30,7 +31,7 @@ class CustomBaseUserManager(BaseUserManager):
                                 **extra_fields)
 
 
-class User(AbstractUser,BaseModel):
+class User(AbstractUser, BaseModel):
     ROLE_USER_OPTIONS = (
         ('super_user', 'کاربر مدیر'),
         ('control_project_user', 'کاربر کنترل پروژه'),
@@ -108,27 +109,22 @@ class User(AbstractUser,BaseModel):
         return unseen
 
     def get_absolute_url_dashboard(self):
-
+        user_dashboards = {
+            'super_user': reverse_lazy('dp_general:index'),
+            'control_project_user': reverse_lazy('dp_control_project:index'),
+            'control_quality_user': reverse_lazy('dp_control_quality:index'),
+            'commerce_user': reverse_lazy('dp_commerce:index'),
+            'procurement_commerce_user': reverse_lazy('dp_commerce:procurement_index'),
+            'financial_user': reverse_lazy('dp_financial:index'),
+            'warehouse_user': reverse_lazy('dp_warehouse:index'),
+            'production_user': reverse_lazy('dp_production:index'),
+            'technical_user': reverse_lazy('dp_technical:index'),
+        }
         role = self.role
-        if role == 'super_user':
-            return reverse('dp_general:index')
-        elif role == 'control_project_user':
-            return reverse('dp_control_project:index')
-        elif role == 'control_quality_user':
-            return reverse('dp_control_quality:index')
-        elif role == 'commerce_user':
-            return reverse('dp_commerce:index')
-        elif role == 'procurement_commerce_user':
-            return reverse('dp_commerce:procurement_index')
-        elif role == 'financial_user':
-            return reverse('dp_financial:index')
-        elif role == 'warehouse_user':
-            return reverse('dp_warehouse:index')
-        elif role == 'production_user':
-            return reverse('dp_production:index')
-        elif role == 'technical_user':
-            return reverse('dp_technical:index')
-        return reverse('public:error')
+        try:
+            return user_dashboards[role]
+        except KeyError:
+            raise Http404
 
     def get_absolute_url(self):
         return reverse('account:user__detail', args=(self.id,))

@@ -2,9 +2,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import View
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.db.models import Sum
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
-from public.models import Project, Department
+from public.models import Project
 from notification.utils import create_notification_by_role
 from account.auth.decorators import user_role_required_cbv
 from . import models, forms
@@ -16,13 +17,12 @@ class Index(View):
     @user_role_required_cbv(['warehouse_user'])
     def get(self, request):
         projects = Project.objects.filter(is_active=True)
-
+        items = models.ItemWarehouse.objects.all()
+        items_total_amount = items.aggregate(total=Sum('price'))['total'] or 0
         context = {
-            'tickets': request.user.get_tickets(),
-            'notifications': request.user.department.get_notifications(),
-            'departments': Department.objects.all(),
             'projects': projects,
-            'ongoing_projects': projects.filter(status__in=['checking', 'paused', 'under_construction'])[:4],
+            'items': items,
+            'items_total_amount': items_total_amount,
         }
         return render(request, self.template_name, context)
 
@@ -87,7 +87,9 @@ class ItemList(LoginRequiredMixin, View):
 
         return items
 
-    @user_role_required_cbv(['warehouse_user', 'control_project_user', 'super_user', 'commerce_user', 'financial_user'])
+    @user_role_required_cbv(
+        ['warehouse_user', 'control_project_user', 'super_user', 'commerce_user', 'procurement_commerce_user',
+         'financial_user', 'control_quality_user', 'production_user'])
     def get(self, request):
         items = models.ItemWarehouse.objects.all()
         items = self.filter(items)
@@ -105,7 +107,9 @@ class ItemList(LoginRequiredMixin, View):
 class ItemDetail(LoginRequiredMixin, View):
     template_name = 'warehouse/item/detail.html'
 
-    @user_role_required_cbv(['warehouse_user', 'control_project_user', 'super_user', 'commerce_user', 'financial_user'])
+    @user_role_required_cbv(
+        ['warehouse_user', 'control_project_user', 'super_user', 'commerce_user', 'procurement_commerce_user',
+         'financial_user', 'control_quality_user'])
     def get(self, request, item_id):
         item = get_object_or_404(models.ItemWarehouse, id=item_id)
         context = {

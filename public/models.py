@@ -156,6 +156,8 @@ class ProjectNote(BaseModel):
 
 
 class Project(BaseModel):
+    # TODO: (refactor) add manager for handle active project and ..
+
     STATUS_OPTIONS = (
         ('checking', 'در حال بررسی قبل ساخت'),
         ('under_construction', 'در حال ساخت'),
@@ -163,7 +165,6 @@ class Project(BaseModel):
         ('completed', 'تایید و اتمام'),
         ('paused', 'متوقف شده'),
     )
-    # image_cover = models.ImageField()
     number_id = models.CharField(max_length=150, null=True, blank=True)
     prepayment_datetime = models.DateField(null=True, blank=True)
     item = models.TextField(null=True, blank=True)
