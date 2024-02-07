@@ -435,7 +435,7 @@
                                                         <div class="nk-tb-col"><span>مهلت پاسخ</span></div>
                                                     </div>
                                                     <!-- .nk-tb-head -->
-                                                    {% for inquiry in inquiries %}
+                                                    {% for inquiry in inquiries|slice:':6' %}
                                                         <div class="nk-tb-item">
                                                             <div class="nk-tb-col">
                                                                 <a href="{{ inquiry.get_absolute_url }}">
@@ -468,6 +468,10 @@
                                                             </div>
                                                         </div>
                                                         <!-- .nk-tb-item -->
+                                                        {% empty %}
+                                                        <div class="container-not-found-base">
+                                                            <p>استعلامی یافت نشد</p>
+                                                        </div>
                                                     {% endfor %}
 
                                                 </div>
