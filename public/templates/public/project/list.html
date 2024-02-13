@@ -335,15 +335,15 @@
                                                                                  style="">
                                                                                 <ul class="link-list-opt">
                                                                                     <li>
-                                                                                        <a href="#"><em
+                                                                                        <a href="{% url 'public:project_file__list' %}?filter=true&project={{ project.id }}"><em
                                                                                                 class="icon ni ni-file"></em><span>لیست فایل ها</span></a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a href="#"><em
+                                                                                        <a href="{% url 'public:task__list' %}?filter=true&project={{ project.id }}"><em
                                                                                                 class="icon ni ni-task"></em><span>لیست تسک ها</span></a>
                                                                                     </li>
                                                                                     <li>
-                                                                                        <a href="#"><em
+                                                                                        <a href="{% url 'support:ticket__list' %}?filter=true&projects={{ project.id }}"><em
                                                                                                 class="icon ni ni-ticket"></em><span>لیست گزارشات</span></a>
                                                                                     </li>
                                                                                     <li>
