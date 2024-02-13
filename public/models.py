@@ -1,6 +1,7 @@
 from django.db.models import Sum
 from django.urls import reverse
 from django.db import models
+from django.db.models import F, Max
 from core.models import BaseModel, FileAbstract
 
 
@@ -44,24 +45,34 @@ class Department(BaseModel):
     def get_tasks(self):
         return self.task_set.all()
 
+    def get_tasks_by_last_status(self):
+        return self.get_tasks().annotate(last_status=Max('taskstatus__id'))
+
     def get_tasks_finished(self):
-        return self.get_tasks().filter(taskstatus__status='finished')
+        return self.get_tasks_by_last_status().filter(taskstatus__status='finished',
+                                                      taskstatus__id__gte=F('last_status'))
 
     def get_tasks_queue(self):
-        tasks = self.get_tasks().filter(taskstatus__status='queue') | self.get_tasks().filter(taskstatus=None)
+        tasks = self.get_tasks_by_last_status().filter(taskstatus__status='queue',
+                                                       taskstatus__id__gte=F('last_status')) \
+                | self.get_tasks().filter(taskstatus=None)
         return tasks.distinct()
 
     def get_tasks_progress(self):
-        return self.get_tasks().filter(taskstatus__status='progress')
+        return self.get_tasks_by_last_status().filter(taskstatus__status='progress',
+                                                      taskstatus__id__gte=F('last_status'))
 
     def get_tasks_hold(self):
-        return self.get_tasks().filter(taskstatus__status='hold')
+        return self.get_tasks_by_last_status().filter(taskstatus__status='hold',
+                                                      taskstatus__id__gte=F('last_status'))
 
     def get_tasks_need_to_check(self):
-        return self.get_tasks().filter(taskstatus__status='need-to-check')
+        return self.get_tasks_by_last_status().filter(taskstatus__status='need-to-check',
+                                                      taskstatus__id__gte=F('last_status'))
 
     def get_tasks_need_to_replan(self):
-        return self.get_tasks().filter(taskstatus__status='need-to-replan')
+        return self.get_tasks_by_last_status().filter(taskstatus__status='need-to-replan',
+                                                      taskstatus__id__gte=F('last_status'))
 
     def get_tasks_remaining(self):
         return self.get_tasks().exclude(taskstatus__status='finished')
@@ -274,26 +285,34 @@ class Project(BaseModel):
     def get_tasks(self):
         return self.task_set.all()
 
+    def get_tasks_by_last_status(self):
+        return self.get_tasks().annotate(last_status=Max('taskstatus__id'))
+
     def get_files(self):
         return self.projectfile_set.order_by('-id')
 
     def get_tasks_progress(self):
-        return self.get_tasks().filter(taskstatus__status='progress')
+        return self.get_tasks_by_last_status().filter(taskstatus__status='progress',
+                                                      taskstatus__id__gte=F('last_status'))
 
     def get_tasks_queue(self):
-        return self.get_tasks().filter(taskstatus__status='queue') | self.get_tasks().filter(taskstatus=None)
+        return self.get_tasks_by_last_status().filter(taskstatus__status='queue',
+                                                      taskstatus__id__gte=F('last_status'))
 
     def get_tasks_need_to_check(self):
-        return self.get_tasks().filter(taskstatus__status='need-to-check')
+        return self.get_tasks_by_last_status().filter(taskstatus__status='need-to-check',
+                                                      taskstatus__id__gte=F('last_status'))
 
     def get_tasks_need_to_replan(self):
-        return self.get_tasks().filter(taskstatus__status='need-to-replan')
+        return self.get_tasks_by_last_status().filter(taskstatus__status='need-to-replan',
+                                                      taskstatus__id__gte=F('last_status'))
 
     def get_tasks_hold(self):
-        return self.get_tasks().filter(taskstatus__status='hold')
+        return self.get_tasks_by_last_status().filter(taskstatus__status='hold', taskstatus__id__gte=F('last_status'))
 
     def get_tasks_finished(self):
-        return self.get_tasks().filter(taskstatus__status='finished')
+        return self.get_tasks_by_last_status().filter(taskstatus__status='finished',
+                                                      taskstatus__id__gte=F('last_status'))
 
     def get_notifications(self):
         return self.notificationdepartment_set.all()
