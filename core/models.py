@@ -1,13 +1,15 @@
 import jdatetime
 from django.db import models
-from core.utils import get_time, get_timesince_persian, random_str
+from core.utils import get_time, get_timesince_persian
 from .mixins import RemoveOldFileMixin
 
 
 def upload_file_src(instance, path):
-    frmt = str(path).split('.')[-1]
+    path = str(path).split('.')
+    frmt = path[-1]
+    file_name = path[0]
     tm = get_time('%Y-%m-%d')
-    return f'files/{tm}/{random_str()}.{frmt}'
+    return f'files/{tm}/{file_name}.{frmt}'
 
 
 class BaseModel(models.Model):
