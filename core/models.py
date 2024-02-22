@@ -22,11 +22,17 @@ class BaseModel(models.Model):
     def get_created_at(self):
         return self.created_at.strftime('%Y-%m-%d %H:%M:%S')
 
+    def get_updated_at(self):
+        return self.updated_at.strftime('%Y-%m-%d %H:%M:%S')
+
     def get_created_at_date(self):
         return self.created_at.strftime('%Y-%m-%d')
 
     def get_created_at_timepast(self):
         return get_timesince_persian(self.created_at)
+
+    def get_updated_at_timepast(self):
+        return get_timesince_persian(self.updated_at)
 
     def get_remaining_date_field(self, date_field):
         # remaining time by days

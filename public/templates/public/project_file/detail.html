@@ -134,7 +134,7 @@
                                                     <div class="data-col">
                                                         <div class="data-label">کاربر ثبت کننده</div>
                                                         <div class="data-value">
-                                                            <a href="{{ project_file.allocator_user.get_absolute_url }}">{{ project_file.allocator_user.name|default:'-' }}</a>
+                                                            <a href="{{ project_file.allocator_user.get_absolute_url }}">{{ project_file.allocator_user.get_full_name|default:'-' }}</a>
                                                         </div>
                                                     </div>
                                                 </li>

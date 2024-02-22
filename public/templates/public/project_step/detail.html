@@ -166,6 +166,14 @@
                                                 </li>
                                                 <li class="data-item">
                                                     <div class="data-col">
+                                                        <div class="data-label">تاخیرات/تعجیلات</div>
+                                                        <div class="data-value">
+                                                            <span class="badge badge-dim fs-13px step-subtract-plan-actual" data-plan="{{ step.plan }}" data-actual="{{ step.actual }}"></span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
                                                         <div class="data-label">نتیجه نهایی</div>
                                                         <div class="data-value">
                                                             {% if step.get_status_result > -1 %}
@@ -186,10 +194,19 @@
                                                 </li>
                                                 <li class="data-item">
                                                     <div class="data-col">
-                                                        <div class="data-label">زمان ثبت</div>
+                                                        <div class="data-label">تاریخ ثبت</div>
                                                         <div class="data-value">
                                                             <span class="datetime-convert">{{ step.get_created_at }}</span>
                                                             <span class="badge badge-dim bg-info rounded-pill">{{ step.get_created_at_timepast }}</span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">تاریخ بروزرسانی</div>
+                                                        <div class="data-value">
+                                                            <span class="datetime-convert">{{ step.get_updated_at }}</span>
+                                                            <span class="badge badge-dim bg-info rounded-pill">{{ step.get_updated_at_timepast }}</span>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -223,7 +240,8 @@
                         <h5 class="modal-title">ویرایش مرحله</h5>
                     </div>
                     <div class="modal-body">
-                        <form action="{% url 'public:project_step__update' step_id=step.id %}" class="form-validate is-alter" method="post"
+                        <form action="{% url 'public:project_step__update' step_id=step.id %}"
+                              class="form-validate is-alter" method="post"
                               enctype="multipart/form-data" novalidate="novalidate">
                             {% csrf_token %}
                             <div class="row g-4">
@@ -240,8 +258,9 @@
                                     <div class="form-group">
                                         <label class="form-label" for="person_traffic">نوع ترافیک کاری</label>
                                         <div class="form-control-wrap">
-                                            <select class="form-control js-select2 select-by-value" name="person_traffic"
-                                                   id="person_traffic" required="" value="{{ step.person_traffic }}">
+                                            <select class="form-control js-select2 select-by-value"
+                                                    name="person_traffic"
+                                                    id="person_traffic" required="" value="{{ step.person_traffic }}">
                                                 <option value="person/day">نفر/روز</option>
                                                 <option value="person/hour">نفر/ساعت</option>
                                             </select>
@@ -257,7 +276,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                 <div class="col-12">
+                                <div class="col-12">
                                     <div class="form-group">
                                         <label class="form-label" for="actual">درواقع</label>
                                         <div class="form-control-wrap">
@@ -317,4 +336,25 @@
         </div>
         <!-- end modals -->
     </div>
+{% endblock %}
+
+{% block Script %}
+    <script>
+        // step plan/actual
+        document.querySelectorAll('.step-subtract-plan-actual').forEach(function (el) {
+            let plan = el.getAttribute('data-plan')
+            let actual = el.getAttribute('data-actual')
+            let result = plan - actual
+            if (isNaN(result)) {
+                el.classList.add('bg-secondary')
+                el.innerHTML = '-'
+            } else if (result > -1) {
+                el.classList.add('bg-success')
+                el.innerHTML = result
+            } else {
+                el.classList.add('bg-danger')
+                el.innerHTML = result
+            }
+        })
+    </script>
 {% endblock %}

@@ -283,12 +283,15 @@
                                                                 </a>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-xs">
-                                                                {% for department in ticket.get_to_departments %}
+                                                                {% for department in ticket.get_to_departments|slice:':5' %}
                                                                     <a class="badge badge-dim bg-black fs-9px rounded-pill"
                                                                        href="{{ department.get_absolute_url }}">{{ department.name|truncatechars:15 }}</a>
                                                                 {% empty %}
                                                                     <span>-</span>
                                                                 {% endfor %}
+                                                                {% if ticket.get_to_departments.count > 5 %}
+                                                                    <b class="fs-18px">...</b>
+                                                                {% endif %}
                                                             </div>
                                                             <div class="nk-tb-col nk-tb-col-status">
                                                                 {% if ticket.is_open %}

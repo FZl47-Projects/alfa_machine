@@ -130,7 +130,7 @@
                                                     <div class="data-col">
                                                         <div class="data-label">کاربر ایجاد کننده</div>
                                                         <div class="data-value">
-                                                            {{ task.allocator_user.get_full_name }}
+                                                            <a href="{{ task.allocator_user.get_absolute_url }}">{{ task.allocator_user.get_full_name }}</a>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -331,7 +331,7 @@
                                                                         <span class="badge badge-dim bg-{{ status.status }} py-1 fs-14px d-none d-md-inline-flex">{{ status.get_status_label }}</span>
                                                                     </div>
                                                                     <div class="nk-tb-col">
-                                                                        <span>{{ status.allocator_user.get_full_name|default:'-' }}</span>
+                                                                        <a href="{{ status.allocator_user.get_absolute_url }}"><span>{{ status.allocator_user.get_full_name|default:'-' }}</span></a>
                                                                     </div>
                                                                     <div class="nk-tb-col">
                                                                         {{ status.description|default:'-' }}

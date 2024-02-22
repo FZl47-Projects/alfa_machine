@@ -122,7 +122,7 @@
                                                                                                 <option value="oldest">
                                                                                                     قدیمی ترین
                                                                                                 </option>
-                                                                                                 <option value="high-priority">
+                                                                                                <option value="high-priority">
                                                                                                     اولویت بالا
                                                                                                 </option>
                                                                                             </select>
@@ -266,12 +266,15 @@
                                                                 </a>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-md">
-                                                                {% for department in notification.get_to_departments %}
+                                                                {% for department in notification.get_to_departments|slice:':5' %}
                                                                     <a class="badge badge-dim bg-black fs-9px rounded-pill"
                                                                        href="{{ department.get_absolute_url }}">{{ department.name|truncatechars:15 }}</a>
                                                                 {% empty %}
                                                                     <span>-</span>
                                                                 {% endfor %}
+                                                                {% if notification.get_to_departments.count > 5 %}
+                                                                    <b class="fs-18px">...</b>
+                                                                {% endif %}
                                                             </div>
                                                             <div class="nk-tb-col tb-col-xs">
                                                                 <span class="badge badge-dim bg-secondary">{{ notification.priority }}</span>
@@ -291,8 +294,9 @@
                                                                             </span>
                                                                         {% endif %}
                                                                     {% else %}
-                                                                        {% for seen_status in notification.get_departments_seen_status %}
-                                                                            <a href="{{ seen_status.department.get_absolute_url }}" class="badge badge-dim bg-black fs-9px rounded-pill">
+                                                                        {% for seen_status in notification.get_departments_seen_status|slice:':5' %}
+                                                                            <a href="{{ seen_status.department.get_absolute_url }}"
+                                                                               class="badge badge-dim bg-black fs-9px rounded-pill">
                                                                                 {{ seen_status.department.name }}
                                                                             </a>
                                                                         {% empty %}
@@ -301,6 +305,9 @@
                                                                                  <em class="icon ni ni-cross-c"></em>
                                                                             </span>
                                                                         {% endfor %}
+                                                                        {% if notification.get_departments_seen_status.count > 5 %}
+                                                                            <b class="fs-18px">...</b>
+                                                                        {% endif %}
                                                                     {% endif %}
                                                                 {% endwith %}
                                                             </div>

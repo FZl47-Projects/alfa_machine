@@ -13,6 +13,9 @@ urlpatterns = [
     # project note
     path('project/note/add', views.ProjectNoteAdd.as_view(), name='project_note__add'),
     path('project/note/<int:note_id>/delete', views.ProjectNoteDelete.as_view(), name='project_note__delete'),
+    # project comment
+    path('project/comment/add', views.ProjectCommentAdd.as_view(), name='project_comment__add'),
+    path('project/comment/<int:comment_id>/delete', views.ProjectCommentDelete.as_view(), name='project_comment__delete'),
     # project step
     path('project/step/add', views.ProjectStepAdd.as_view(), name='project_step__add'),
     path('project/step/<int:step_id>/detail', views.ProjectStepDetail.as_view(), name='project_step__detail'),

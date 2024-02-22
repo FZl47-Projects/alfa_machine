@@ -116,6 +116,12 @@ class ProjectFileCreate(forms.ModelForm):
         fields = '__all__'
 
 
+class ProjectCommentCreate(forms.ModelForm):
+    class Meta:
+        model = models.ProjectComment
+        fields = '__all__'
+
+
 class ProjectNoteCreate(forms.ModelForm):
     class Meta:
         model = models.ProjectNote

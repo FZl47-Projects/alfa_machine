@@ -33,16 +33,21 @@ class ProjectDetail(LoginRequiredMixin, View):
     template_name = 'public/project/detail.html'
 
     def get(self, request, project_id):
+        user_dp = request.user.department
         project = get_object_or_404(models.Project, id=project_id)
         steps = project.get_steps()
+        comments = project.get_comments()
+        comments = (comments.filter(from_department=user_dp) | comments.filter(to_departments__in=[user_dp])).distinct()
         data_chart_step_1 = list(steps.filter(person_traffic='person/day').values('name', 'plan', 'actual'))
         data_chart_step_2 = list(steps.filter(person_traffic='person/hour').values('name', 'plan', 'actual'))
 
         context = {
             'project': project,
             'steps': steps,
+            'comments': comments,
             'notes': project.get_notes(request.user),
             'task_masters': models.TaskMaster.objects.all(),
+            'departments': models.Department.objects.all(),
             # chart data
             'data_chart_step_1': json.dumps(data_chart_step_1),
             'data_chart_step_2': json.dumps(data_chart_step_2),
@@ -162,6 +167,31 @@ class ProjectDelete(LoginRequiredMixin, View):
         project.delete()
         messages.success(request, 'پروژه با موفقیت حذف شد')
         return redirect('public:project__list')
+
+
+class ProjectCommentAdd(LoginRequiredMixin, View):
+
+    def post(self, request):
+        referer_url = request.META.get('HTTP_REFERER')
+        data = request.POST.copy()
+        # set additional values
+        data['from_department'] = request.user.department
+        f = forms.ProjectCommentCreate(data)
+        if not f.is_valid():
+            messages.error(request, 'لطفا فیلد هارا به درستی وارد نمایید')
+            return redirect(referer_url)
+        comment = f.save()
+        messages.success(request, 'نظر با موفقیت ثبت شد')
+        return redirect(comment.project.get_absolute_url())
+
+
+class ProjectCommentDelete(LoginRequiredMixin, View):
+
+    def get(self, request, comment_id):
+        comment = get_object_or_404(models.ProjectComment, id=comment_id)
+        comment.delete()
+        messages.success(request, 'نظر با موفقیت حذف شد')
+        return redirect(comment.project.get_absolute_url())
 
 
 class ProjectNoteAdd(LoginRequiredMixin, View):

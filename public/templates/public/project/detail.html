@@ -110,6 +110,10 @@
                                                             class="icon ni ni-coin-alt"></em><span>امور مالی</span></a>
                                                 </li>
                                                 <li class="nav-item">
+                                                    <a class="nav-link" data-bs-toggle="tab" href="#comment"><em
+                                                            class="icon ni ni-comments"></em><span>نظرات</span></a>
+                                                </li>
+                                                <li class="nav-item">
                                                     <a class="nav-link" data-bs-toggle="tab" href="#note"><em
                                                             class="icon ni ni-pen2"></em><span>یادداشت های شخصی</span></a>
                                                 </li>
@@ -131,7 +135,7 @@
                                                             <div class="profile-ud-list">
                                                                 <div class="profile-ud-item">
                                                                     <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">نام</span>
+                                                                        <span class="profile-ud-label">نام درخواست</span>
                                                                         <span class="profile-ud-value">{{ project.name }}</span>
                                                                     </div>
                                                                 </div>
@@ -460,6 +464,9 @@
                                                                         <div class="nk-tb-col tb-col-sm text-center">
                                                                             <span class="sub-text">درواقع</span>
                                                                         </div>
+                                                                        <div class="nk-tb-col tb-col-sm text-center">
+                                                                            <span class="sub-text">تاخیرات/تعجیلات</span>
+                                                                        </div>
                                                                         <div class="nk-tb-col text-center">
                                                                             <span class="sub-text">وضعیت نهایی</span>
                                                                         </div>
@@ -478,6 +485,12 @@
                                                                             </div>
                                                                             <div class="nk-tb-col tb-col-sm text-center">
                                                                                 <span class="badge badge-sm badge-dim bg-secondary">{{ step.actual|default:'-' }}</span>
+                                                                            </div>
+                                                                            <div class="nk-tb-col tb-col-sm text-center">
+                                                                                <span class="badge badge-sm badge-dim step-subtract-plan-actual"
+                                                                                      data-plan="{{ step.plan }}"
+                                                                                      data-actual="{{ step.actual }}"
+                                                                                      data-teraffic="{{ step.person_traffic }}"></span>
                                                                             </div>
                                                                             <div class="nk-tb-col text-center">
                                                                                 {% if step.get_status_result > -1 %}
@@ -499,9 +512,116 @@
                                                             </div>
                                                             <!-- .nk-block -->
                                                         </div>
+                                                        <div class="card-inner">
+                                                            <div class="nk-block">
+                                                                <div class="nk-block-head nk-block-head-sm nk-block-between">
+                                                                    <h5 class="title">جمع بندی</h5>
+                                                                </div>
+                                                            </div>
+                                                            <!-- .nk-block -->
+                                                            <div class="nk-block">
+                                                                <div class="row">
+                                                                    <div class="col-12 col-sm-6">
+                                                                        <div class="card" id="step-person_day">
+                                                                            <div class="card-header border-bottom">
+                                                                                نفر/روز
+                                                                            </div>
+                                                                            <ul class="list-group list-group-flush">
+                                                                                <li class="list-group-item d-flex justify-content-between">
+                                                                                    <span>پلن</span>
+                                                                                    <span class="badge badge-sm badge-dim bg-secondary data-value-plan">-</span>
+                                                                                </li>
+                                                                                <li class="list-group-item d-flex justify-content-between">
+                                                                                    <span>درواقع</span>
+                                                                                    <span class="badge badge-sm badge-dim bg-secondary data-value-actual">-</span>
+                                                                                </li>
+                                                                                <li class="list-group-item d-flex justify-content-between">
+                                                                                    <span>تاخیرات/تعجیلات</span>
+                                                                                    <span class="badge badge-sm badge-dim data-value-diff">-</span>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-12 col-sm-6">
+                                                                        <div class="card" id="step-person_hour">
+                                                                            <div class="card-header border-bottom">
+                                                                                نفر/ساعت
+                                                                            </div>
+                                                                            <ul class="list-group list-group-flush">
+                                                                                <li class="list-group-item d-flex justify-content-between">
+                                                                                    <span>پلن</span>
+                                                                                    <span class="badge badge-sm badge-dim bg-secondary data-value-plan">-</span>
+                                                                                </li>
+                                                                                <li class="list-group-item d-flex justify-content-between">
+                                                                                    <span>درواقع</span>
+                                                                                    <span class="badge badge-sm badge-dim bg-secondary data-value-actual">-</span>
+                                                                                </li>
+                                                                                <li class="list-group-item d-flex justify-content-between">
+                                                                                    <span>تاخیرات/تعجیلات</span>
+                                                                                    <span class="badge badge-sm badge-dim data-value-diff">-</span>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- .nk-block -->
+                                                        </div>
                                                     </div>
                                                 {% endif %}
-
+                                                <div class="tab-pane" id="comment">
+                                                    <div class="card-inner">
+                                                        <!-- .nk-block -->
+                                                        <div class="nk-block">
+                                                            <div class="nk-block-head nk-block-head-sm nk-block-between">
+                                                                <h5 class="title mb-1">نظرات</h5>
+                                                                <a data-bs-toggle="modal"
+                                                                   data-bs-target="#modal-create-comment-object"
+                                                                   class="link link-sm">+ افزودن نظر</a>
+                                                            </div>
+                                                            <!-- .nk-block-head -->
+                                                            <div class="bq-note">
+                                                                {% for comment in comments %}
+                                                                    <div class="bq-note-item">
+                                                                        <div class="bq-note-text">
+                                                                            {% if comment.from_department == user.department %}
+                                                                                <span class="text-success"> شما</span>
+                                                                            {% else %}
+                                                                                <a href="{{ comment.from_department.get_absolute_url }}">{{ comment.from_department.name }}</a>
+                                                                            {% endif %}
+                                                                            :
+                                                                            <p style="margin-right: 20px;">
+                                                                                {{ comment.text }}
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="bq-note-meta">
+                                                                            <span class="bq-note-added">اضافه شده در</span>
+                                                                            <span class="datetime-convert"
+                                                                                  dir="ltr">
+                                                                                {{ comment.get_created_at_date }}
+                                                                            </span>
+                                                                            <span class="fs-10px text-soft">({{ comment.get_created_at_timepast }})</span>
+                                                                            {% if comment.from_department == user.department %}
+                                                                                <span class="mx-1">|</span>
+                                                                                <a href="{% url 'public:project_comment__delete' comment_id=comment.id %}"
+                                                                                   class="link link-sm link-danger m-0">حذف
+                                                                                    نظر
+                                                                                </a>
+                                                                            {% endif %}
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- .bq-note-item -->
+                                                                {% empty %}
+                                                                    <div class="my-5 text-center ">
+                                                                        <h6 class="text-soft">نظری ثبت نشده است</h6>
+                                                                    </div>
+                                                                {% endfor %}
+                                                            </div>
+                                                            <!-- .bq-note -->
+                                                        </div>
+                                                        <!-- .nk-block -->
+                                                    </div>
+                                                </div>
                                                 <div class="tab-pane" id="note">
                                                     <div class="card-inner">
                                                         <!-- .nk-block -->
@@ -1095,6 +1215,62 @@
             </div>
         </div>
 
+        <div class="modal fade" tabindex="-1" id="modal-create-comment-object">
+            <div class="modal-dialog modal-dialog-top" role="document">
+                <div class="modal-content">
+                    <a href="#" class="close" data-dismiss="modal" aria-label="بستن">
+                        <em class="icon ni ni-cross"></em>
+                    </a>
+                    <div class="modal-header">
+                        <h5 class="modal-title">افزودن نظر</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'public:project_comment__add' %}"
+                              class="form-validate is-alter" method="post">
+                            <input type="hidden" name="project" value="{{ project.id }}">
+                            {% csrf_token %}
+                            <div class="row g-4">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="description">نظر</label>
+                                        <div class="form-control-wrap">
+                                            <textarea name="text" id="text"
+                                                      class="form-control" required
+                                                      placeholder="نظر خود را بنویسید"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label" for="to_departments">واحد
+                                            ها</label>
+                                        <div class="form-control-wrap">
+                                            <select id="to_departments" name="to_departments"
+                                                    class="form-select js-select2 select-by-filter"
+                                                    data-search="on" multiple
+                                                    tabindex="-1" aria-hidden="true" required>
+                                                {% for department in departments %}
+                                                    {% if department != user.department %}
+                                                        <option value="{{ department.id }}"
+                                                                selected>{{ department.name }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-left">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-lg btn-primary">
+                                            ثبت نظر
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="modal fade" tabindex="-1" id="modal-create-step-object">
             <div class="modal-dialog modal-dialog-top" role="document">
                 <div class="modal-content">
@@ -1224,10 +1400,15 @@
                     let labels = []
                     let data_plan = []
                     let data_actual = []
+                    let data_diff = []
                     for (let i of data_chart) {
                         labels.push(i['name'])
-                        data_plan.push(i['plan'])
-                        data_actual.push(i['actual'])
+                        let plan = i['plan']
+                        let actual = i['actual']
+                        let diff = plan - actual
+                        data_plan.push(plan)
+                        data_actual.push(actual)
+                        data_diff.push(diff)
                     }
                     let data = {
                         labels: labels,
@@ -1245,6 +1426,13 @@
                                 borderColor: 'rgba(54, 162, 235, 1)',
                                 borderWidth: 1,
                                 data: data_actual
+                            },
+                            {
+                                label: 'تاخیرات/تعجیلات',
+                                backgroundColor: 'rgba(255,218,39,0.2)',
+                                borderColor: 'rgb(255,218,39)',
+                                borderWidth: 1,
+                                data: data_diff
                             }
                         ]
                     };
@@ -1257,7 +1445,6 @@
                 } else {
                     cnv.parentElement.style.display = 'none'
                 }
-
             }
 
             chart(document.getElementById('chart_step_1'))
@@ -1265,6 +1452,68 @@
         }
 
         chart_step()
+
+        // step plan/actual
+        let step_data = {
+            'person/day': {
+                'plan': 0,
+                'actual': 0
+            },
+            'person/hour': {
+                'plan': 0,
+                'actual': 0
+            },
+        }
+        document.querySelectorAll('.step-subtract-plan-actual').forEach(function (el) {
+            let plan = Number(el.getAttribute('data-plan'))
+            let actual = Number(el.getAttribute('data-actual'))
+            let teraffic = el.getAttribute('data-teraffic')
+            let result = plan - actual
+
+            step_data[teraffic]['plan'] += plan || 0
+            step_data[teraffic]['actual'] += actual || 0
+
+            if (isNaN(result)) {
+                el.classList.add('bg-secondary')
+                el.innerHTML = '-'
+            } else if (result > -1) {
+                el.classList.add('bg-success')
+                el.innerHTML = result
+            } else {
+                el.classList.add('bg-danger')
+                el.innerHTML = result
+            }
+        })
+
+        function set_result_steps() {
+            // person/day
+            let cnt_step_person_day = document.getElementById('step-person_day')
+            cnt_step_person_day.querySelector('.data-value-plan').innerHTML = step_data['person/day']['plan']
+            cnt_step_person_day.querySelector('.data-value-actual').innerHTML = step_data['person/day']['actual']
+            let pd_diff = step_data['person/day']['plan'] - step_data['person/day']['actual']
+            let pd_diff_el = cnt_step_person_day.querySelector('.data-value-diff')
+            pd_diff_el.innerHTML = pd_diff
+            if (pd_diff > -1) {
+                pd_diff_el.classList.add('bg-success')
+            } else {
+                pd_diff_el.classList.add('bg-danger')
+            }
+            // person/hour
+            let cnt_step_person_hour = document.getElementById('step-person_hour')
+            cnt_step_person_hour.querySelector('.data-value-plan').innerHTML = step_data['person/hour']['plan']
+            cnt_step_person_hour.querySelector('.data-value-actual').innerHTML = step_data['person/hour']['actual']
+            let ph_diff = step_data['person/hour']['plan'] - step_data['person/hour']['actual']
+            let ph_diff_el = cnt_step_person_hour.querySelector('.data-value-diff')
+            ph_diff_el.innerHTML = ph_diff
+            if (ph_diff > -1) {
+                ph_diff_el.classList.add('bg-success')
+            } else {
+                ph_diff_el.classList.add('bg-danger')
+            }
+        }
+
+        set_result_steps()
+
 
     </script>
 {% endblock %}

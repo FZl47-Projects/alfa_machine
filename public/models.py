@@ -222,7 +222,7 @@ class Project(BaseModel):
     def has_perm_to_financial_amount(cls, user):
         if user.is_anonymous:
             return False
-        if user.role in ('super_user', 'control_project_user', 'financial_user', 'commerce_user'):
+        if user.role in ('super_user', 'financial_user'):
             return True
         return False
 
@@ -281,6 +281,9 @@ class Project(BaseModel):
 
     def get_notes(self, user):
         return self.projectnote_set.filter(user=user)
+
+    def get_comments(self):
+        return self.projectcomment_set.all()
 
     def get_tasks(self):
         return self.task_set.all()
@@ -375,6 +378,26 @@ class ProjectFile(BaseModel, FileAbstract):
 
     def get_absolute_url(self):
         return reverse('public:project_file__detail', args=(self.id,))
+
+
+class ProjectComment(BaseModel):
+    from_department = models.ForeignKey('Department', on_delete=models.CASCADE, related_name='project_comment_from_dp')
+    to_departments = models.ManyToManyField('Department', related_name='project_comment_to_dp')
+    project = models.ForeignKey('Project', on_delete=models.CASCADE)
+    text = models.TextField()
+
+    class Meta:
+        ordering = '-id',
+
+    def __str__(self):
+        return self.text[:10]
+
+    def has_perm_to_modify(self, user):
+        if user.is_anonymous:
+            return False
+        if user.department == self.from_department:
+            return True
+        return False
 
 
 class Task(BaseModel, FileAbstract):

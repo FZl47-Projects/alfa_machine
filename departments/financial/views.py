@@ -54,7 +54,7 @@ class PaymentAdd(LoginRequiredMixin, View):
             'پرداختی جدید',
             description='ایجاد به صورت خودکار',
             from_department=request.user.department,
-            to_users=('financial_user', 'super_user', 'control_project_user'),
+            to_users=('financial_user', 'super_user'),
             projects=(payment.project,),
             attached_link=payment.get_absolute_url()
         )
@@ -100,7 +100,7 @@ class PaymentList(LoginRequiredMixin, View):
             payments = payments.filter(type_payment=type_payment)
         return payments
 
-    @user_role_required_cbv(['financial_user', 'super_user', 'control_project_user'])
+    @user_role_required_cbv(['financial_user', 'super_user'])
     def get(self, request):
         payments = models.Payment.objects.all()
         payments = self.filter(payments)
@@ -119,7 +119,7 @@ class PaymentList(LoginRequiredMixin, View):
 class PaymentDetail(LoginRequiredMixin, View):
     template_name = 'financial/payment/detail.html'
 
-    @user_role_required_cbv(['financial_user', 'super_user', 'control_project_user'])
+    @user_role_required_cbv(['financial_user', 'super_user'])
     def get(self, request, payment_id):
         payment = get_object_or_404(models.Payment, id=payment_id)
         context = {
