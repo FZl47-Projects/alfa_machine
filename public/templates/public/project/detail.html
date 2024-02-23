@@ -75,8 +75,8 @@
                                                             class="icon ni ni-chart-up"></em><span>امار</span></a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link"
-                                                       href="{% url 'public:task__list' %}?filter=true&project={{ project.id }}"><em
+                                                    <a class="nav-link" data-bs-toggle="tab"
+                                                       href="#tasks"><em
                                                             class="icon ni ni-task"></em><span>تسک ها</span></a>
                                                 </li>
                                                 {% if has_perm_to_steps %}
@@ -86,18 +86,15 @@
                                                     </li>
                                                 {% endif %}
                                                 <li class="nav-item">
-                                                    <a class="nav-link"
-                                                       href="{% url 'support:ticket__list' %}?filter=true&projects={{ project.id }}"><em
+                                                    <a class="nav-link" data-bs-toggle="tab" href="#tickets"><em
                                                             class="icon ni ni-view-col"></em><span>گزارشات</span></a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link"
-                                                       href="{% url 'public:project_file__list' %}?filter=true&project={{ project.id }}"><em
+                                                    <a class="nav-link" data-bs-toggle="tab" href="#files"><em
                                                             class="icon ni ni-file-text"></em><span>فایل ها</span></a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link"
-                                                       href="{% url 'notification:notification__list' %}?filter=true&projects={{ project.id }}"><em
+                                                    <a class="nav-link" data-bs-toggle="tab" href="#notifications"><em
                                                             class="icon ni ni-notice"></em><span>اعلانات</span></a>
                                                 </li>
                                                 <li class="nav-item">
@@ -309,6 +306,149 @@
                                                                 <canvas id="chart_step_2" width="400"
                                                                         data-chart="{{ data_chart_step_2 }}"
                                                                         height="350"></canvas>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="tab-pane" id="tasks">
+                                                    <div class="card-inner">
+                                                        <div class="nk-block-head nk-block-head-sm nk-block-between">
+                                                            <h5 class="title mb-1">تسک ها</h5>
+                                                        </div>
+                                                        <div class="nk-block col-12 d-block d-sm-flex justify-content-evenly align-items-center">
+                                                            <div class="card col-12 col-sm-5 m-1">
+                                                                <em class="icon ni ni-list text-left"
+                                                                    style="font-size: 60px"></em>
+                                                                <div class="card-inner">
+                                                                    <h5 class="card-title">مشاهده تسک های پروژه</h5>
+                                                                    <p class="card-text" style="height:55px">مشاهده تسک
+                                                                        های ثبت شده بر روی
+                                                                        این پروژه</p>
+                                                                    <a class="btn btn-primary"
+                                                                       href="{% url 'public:task__list' %}?filter=true&project={{ project.id }}">مشاهده</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card col-12 col-sm-5 m-1">
+                                                                <em class="icon ni ni-plus text-left"
+                                                                    style="font-size: 60px"></em>
+                                                                <div class="card-inner">
+                                                                    <h5 class="card-title">ایجاد تسک پروژه</h5>
+                                                                    <p class="card-text" style="height: 55px">افزودن
+                                                                        مستقیم تسک بر روی
+                                                                        پروژه</p>
+                                                                    <a data-bs-toggle="modal"
+                                                                       data-bs-target="#modal-create-task-project-object"
+                                                                       class="btn btn-primary">ایجاد</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="tab-pane" id="tickets">
+                                                    <div class="card-inner">
+                                                        <div class="nk-block-head nk-block-head-sm nk-block-between">
+                                                            <h5 class="title mb-1">گزارشات</h5>
+                                                        </div>
+                                                        <div class="nk-block col-12 d-block d-sm-flex justify-content-evenly align-items-center">
+                                                            <div class="card col-12 col-sm-5 m-1">
+                                                                <em class="icon ni ni-list text-left"
+                                                                    style="font-size: 60px"></em>
+                                                                <div class="card-inner">
+                                                                    <h5 class="card-title">مشاهده گزارش های پروژه</h5>
+                                                                    <p class="card-text" style="height:55px">مشاهده
+                                                                        گزارش
+                                                                        های ثبت شده بر روی
+                                                                        این پروژه</p>
+                                                                    <a class="btn btn-primary"
+                                                                       href="{% url 'support:ticket__list' %}?filter=true&projects={{ project.id }}">مشاهده</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card col-12 col-sm-5 m-1">
+                                                                <em class="icon ni ni-plus text-left"
+                                                                    style="font-size: 60px"></em>
+                                                                <div class="card-inner">
+                                                                    <h5 class="card-title">ایجاد گزارش پروژه</h5>
+                                                                    <p class="card-text" style="height: 55px">افزودن
+                                                                        مستقیم گزارش بر روی
+                                                                        پروژه</p>
+                                                                    <a data-bs-toggle="modal"
+                                                                       data-bs-target="#modal-create-ticket-project-object"
+                                                                       class="btn btn-primary">ایجاد</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="tab-pane" id="files">
+                                                    <div class="card-inner">
+                                                        <div class="nk-block-head nk-block-head-sm nk-block-between">
+                                                            <h5 class="title mb-1">فایل ها</h5>
+                                                        </div>
+                                                        <div class="nk-block col-12 d-block d-sm-flex justify-content-evenly align-items-center">
+                                                            <div class="card col-12 col-sm-5 m-1">
+                                                                <em class="icon ni ni-list text-left"
+                                                                    style="font-size: 60px"></em>
+                                                                <div class="card-inner">
+                                                                    <h5 class="card-title">مشاهده فایل های پروژه</h5>
+                                                                    <p class="card-text" style="height:55px">مشاهده
+                                                                        فایل
+                                                                        های ثبت شده بر روی
+                                                                        این پروژه</p>
+                                                                    <a class="btn btn-primary"
+                                                                       href="{% url 'public:project_file__list' %}?filter=true&project={{ project.id }}">مشاهده</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card col-12 col-sm-5 m-1">
+                                                                <em class="icon ni ni-plus text-left"
+                                                                    style="font-size: 60px"></em>
+                                                                <div class="card-inner">
+                                                                    <h5 class="card-title">اپلود فایل پروژه</h5>
+                                                                    <p class="card-text" style="height: 55px">افزودن
+                                                                        مستقیم فایل بر روی
+                                                                        پروژه</p>
+                                                                    <a data-bs-toggle="modal"
+                                                                       data-bs-target="#modal-create-file-project-object"
+                                                                       class="btn btn-primary">ثبت و اپلود</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="tab-pane" id="notifications">
+                                                    <div class="card-inner">
+                                                        <div class="nk-block-head nk-block-head-sm nk-block-between">
+                                                            <h5 class="title mb-1">اعلانات</h5>
+                                                        </div>
+                                                        <div class="nk-block col-12 d-block d-sm-flex justify-content-evenly align-items-center">
+                                                            <div class="card col-12 col-sm-5 m-1">
+                                                                <em class="icon ni ni-list text-left"
+                                                                    style="font-size: 60px"></em>
+                                                                <div class="card-inner">
+                                                                    <h5 class="card-title">مشاهده اعلانات پروژه</h5>
+                                                                    <p class="card-text" style="height:55px">مشاهده
+                                                                        اعلانات
+                                                                        ثبت شده بر روی
+                                                                        این پروژه</p>
+                                                                    <a class="btn btn-primary"
+                                                                       href="{% url 'notification:notification__list' %}?filter=true&projects={{ project.id }}">مشاهده</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card col-12 col-sm-5 m-1">
+                                                                <em class="icon ni ni-plus text-left"
+                                                                    style="font-size: 60px"></em>
+                                                                <div class="card-inner">
+                                                                    <h5 class="card-title">ایجاد اعلان پروژه</h5>
+                                                                    <p class="card-text" style="height: 55px">افزودن
+                                                                        مستقیم اعلان بر روی
+                                                                        پروژه</p>
+                                                                    <a data-bs-toggle="modal"
+                                                                       data-bs-target="#modal-create-notification-project-object"
+                                                                       class="btn btn-primary">ایجاد</a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1342,6 +1482,364 @@
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-lg btn-primary">
                                             ایجاد مرحله
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" tabindex="-1" id="modal-create-task-project-object">
+            <div class="modal-dialog modal-dialog-top modal-lg" role="document">
+                <div class="modal-content">
+                    <a href="#" class="close" data-dismiss="modal" aria-label="بستن">
+                        <em class="icon ni ni-cross"></em>
+                    </a>
+                    <div class="modal-header">
+                        <h5 class="modal-title">ایجاد تسک</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'public:task__add' %}" class="form-validate is-alter"
+                              method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="project" value="{{ project.id }}">
+                            {% csrf_token %}
+                            <div class="row g-4">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="name">نام تسک</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" name="name"
+                                                   placeholder="نام تسک"
+                                                   id="name" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="time_start">تاریخ
+                                            شروع</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" name="time_start" id="time_start"
+                                                   class="form-control date-picker-alt"
+                                                   placeholder="روز-ماه-سال" readonly>
+                                        </div>
+                                        <div class="form-note">فرمت تاریخ <code>روز-ماه-سال</code>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="time_end">تاریخ پایان</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" name="time_end" id="time_end"
+                                                   class="form-control date-picker-alt"
+                                                   placeholder="روز-ماه-سال" readonly>
+                                        </div>
+                                        <div class="form-note">فرمت تاریخ <code>روز-ماه-سال</code>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="to_department">برای واحد</label>
+                                        <div class="form-control-wrap">
+                                            <select id="to_department" name="to_department"
+                                                    class="form-select js-select2 select-by-value" data-search="on"
+                                                    tabindex="-1" aria-hidden="true" required
+                                                    value="{{ request.GET.department }}">
+                                                {% for department in departments %}
+                                                    <option value="{{ department.id }}">{{ department.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="priority">اولویت</label>
+                                        <div class="form-control-wrap">
+                                            <input type="number" class="form-control"
+                                                   name="priority"
+                                                   placeholder="اولویت"
+                                                   id="priority" required value="1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="customFileLabel">فایل پیوست</label>
+                                        <div class="form-control-wrap">
+                                            <div class="form-file">
+                                                <input type="file" name="file" class="form-file-input"
+                                                       id="file">
+                                                <label class="form-file-label" for="file">انتخاب
+                                                    فایل</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="description">توضیحات</label>
+                                        <div class="form-control-wrap">
+                                            <textarea class="form-control" name="description" id="description"
+                                                      placeholder="توضیحات"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-left">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-lg btn-primary">
+                                            ایجاد تسک
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" tabindex="-1" id="modal-create-ticket-project-object">
+            <div class="modal-dialog modal-dialog-top modal-lg" role="document">
+                <div class="modal-content">
+                    <a href="#" class="close" data-dismiss="modal" aria-label="بستن">
+                        <em class="icon ni ni-cross"></em>
+                    </a>
+                    <div class="modal-header">
+                        <h5 class="modal-title">ایجاد گزارش</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'support:ticket__add' %}"
+                              class="form-validate is-alter" method="post"
+                              enctype="multipart/form-data">
+                            <input type="hidden" name="projects" value="{{ project.id }}">
+                            {% csrf_token %}
+                            <div class="row g-4">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="title">عنوان</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" name="title"
+                                                   placeholder="عنوان"
+                                                   id="title" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="customFileLabel">فایل
+                                            پیوست</label>
+                                        <div class="form-control-wrap">
+                                            <div class="form-file">
+                                                <input type="file" name="file"
+                                                       class="form-file-input" id="file">
+                                                <label class="form-file-label" for="file">انتخاب
+                                                    فایل</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="to_departments_2">واحد ها</label>
+                                        <div class="form-control-wrap">
+                                            <select id="to_departments_2" name="to_departments"
+                                                    class="form-select js-select2 select-by-filter"
+                                                    data-search="on" multiple
+                                                    tabindex="-1" aria-hidden="true" required>
+                                                {% for department in departments %}
+                                                    <option value="{{ department.id }}">{{ department.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="description">توضیحات</label>
+                                        <div class="form-control-wrap">
+                                                                <textarea name="description" id="description"
+                                                                          class="form-control"
+                                                                          placeholder="توضیحات"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-left">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-lg btn-primary">
+                                            ایجاد گزارش
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" tabindex="-1" id="modal-create-file-project-object">
+            <div class="modal-dialog modal-dialog-top modal-lg" role="document">
+                <div class="modal-content">
+                    <a href="#" class="close" data-dismiss="modal" aria-label="بستن">
+                        <em class="icon ni ni-cross"></em>
+                    </a>
+                    <div class="modal-header">
+                        <h5 class="modal-title">اپلود فایل</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'public:project_file__add' %}"
+                              class="form-validate is-alter" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="project" value="{{ project.id }}">
+                            {% csrf_token %}
+                            <div class="row g-4">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="name">نام</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" name="name"
+                                                   placeholder="نام فایل"
+                                                   id="name" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="customFileLabel">فایل</label>
+                                        <div class="form-control-wrap">
+                                            <div class="form-file">
+                                                <input type="file" name="file" class="form-file-input" id="file"
+                                                       required>
+                                                <label class="form-file-label" for="file">انتخاب
+                                                    فایل</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="description">توضیحات</label>
+                                        <div class="form-control-wrap">
+                                                                <textarea name="description" id="description"
+                                                                          class="form-control"
+                                                                          placeholder="توضیحات"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-left">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-lg btn-primary">
+                                            ایجاد و اپلود فایل
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" tabindex="-1" id="modal-create-notification-project-object">
+            <div class="modal-dialog modal-dialog-top modal-lg" role="document">
+                <div class="modal-content">
+                    <a href="#" class="close" data-dismiss="modal" aria-label="بستن">
+                        <em class="icon ni ni-cross"></em>
+                    </a>
+                    <div class="modal-header">
+                        <h5 class="modal-title">ایجاد اعلان</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'notification:notification__add' %}"
+                              class="form-validate is-alter" method="post"
+                              enctype="multipart/form-data">
+                            <input type="hidden" name="projects" value="{{ project.id }}">
+                            {% csrf_token %}
+                            <div class="row g-4">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="title">عنوان</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" name="title"
+                                                   placeholder="عنوان"
+                                                   id="title" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="customFileLabel">فایل
+                                            پیوست</label>
+                                        <div class="form-control-wrap">
+                                            <div class="form-file">
+                                                <input type="file" name="file"
+                                                       class="form-file-input" id="file">
+                                                <label class="form-file-label" for="file">انتخاب
+                                                    فایل</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="to_departments">واحد
+                                            ها</label>
+                                        <div class="form-control-wrap">
+                                            <select id="to_departments" name="to_departments"
+                                                    class="form-select js-select2 select-by-filter"
+                                                    data-search="on" multiple
+                                                    tabindex="-1" aria-hidden="true" required>
+                                                {% for department in departments %}
+                                                    <option value="{{ department.id }}">{{ department.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="priority">اولویت</label>
+                                        <div class="form-control-wrap">
+                                            <input type="number" id="priority" name="priority"
+                                                   class="form-select" required value="1" placeholder="اولویت">
+                                            </input>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="attached_link">لینک
+                                            پیوست</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" id="attached_link"
+                                                   name="attached_link"
+                                                   class="form-select" placeholder="لینک پیوست">
+                                            </input>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="description">توضیحات</label>
+                                        <div class="form-control-wrap">
+                                                                <textarea name="description" id="description"
+                                                                          class="form-control"
+                                                                          placeholder="توضیحات"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-left">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-lg btn-primary">
+                                            ایجاد اعلان
                                         </button>
                                     </div>
                                 </div>

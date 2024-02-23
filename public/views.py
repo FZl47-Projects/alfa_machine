@@ -321,7 +321,7 @@ class TaskAdd(LoginRequiredMixin, View):
             attached_link=task.get_absolute_url(),
         )
         messages.success(request, 'تسک با موفقیت ایجاد شد')
-        return redirect('public:task__add')
+        return redirect(task.get_absolute_url())
 
 
 class TaskList(LoginRequiredMixin, View):
@@ -913,6 +913,7 @@ class ProjectFileAdd(LoginRequiredMixin, View):
         return render(request, self.template_name, context)
 
     def post(self, request):
+        referer_url = request.META.get('HTTP_REFERER')
         data = request.POST.copy()
         # set additional values
         user = request.user
@@ -924,7 +925,7 @@ class ProjectFileAdd(LoginRequiredMixin, View):
             return redirect('public:project_file__add')
         f.save()
         messages.success(request, 'فایل پروژه با موفقیت ایجاد و اپلود شد')
-        return redirect('public:project_file__add')
+        return redirect(referer_url or 'public:project_file__add')
 
 
 class ProjectFileList(LoginRequiredMixin, View):

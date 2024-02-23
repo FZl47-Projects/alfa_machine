@@ -41,7 +41,7 @@ class TicketAdd(LoginRequiredMixin, View):
             ticket.projects.add(*projects)
         ticket.to_departments.add(*data.getlist('to_departments'))
         messages.success(request, 'گزارش با موفقیت ایجاد شد')
-        return redirect('support:ticket__add')
+        return redirect(ticket.get_absolute_url())
 
 
 class TicketList(LoginRequiredMixin, View):

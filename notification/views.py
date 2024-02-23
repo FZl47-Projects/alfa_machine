@@ -20,6 +20,7 @@ class NotificationAdd(LoginRequiredMixin, View):
         return render(request, self.template_name, context)
 
     def post(self, request):
+        referer_url = request.META.get('HTTP_REFERER')
         data = request.POST.copy()
         # set additional values
         user = request.user
@@ -39,7 +40,7 @@ class NotificationAdd(LoginRequiredMixin, View):
             notif.projects.add(*projects)
         notif.to_departments.add(*data.getlist('to_departments'))
         messages.success(request, 'اعلان با موفقیت ایجاد شد')
-        return redirect('notification:notification__add')
+        return redirect(referer_url or 'notification:notification__add')
 
 
 class NotificationList(LoginRequiredMixin, View):
