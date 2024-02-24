@@ -130,13 +130,13 @@
                                                             </div>
                                                             <!-- .nk-block-head -->
                                                             <div class="profile-ud-list">
-                                                                <div class="profile-ud-item">
+                                                                <div class="profile-ud-item w-100">
                                                                     <div class="profile-ud wider">
                                                                         <span class="profile-ud-label">نام درخواست</span>
                                                                         <span class="profile-ud-value">{{ project.name }}</span>
                                                                     </div>
                                                                 </div>
-                                                                <div class="profile-ud-item">
+                                                                <div class="profile-ud-item w-100">
                                                                     <div class="profile-ud wider">
                                                                         <span class="profile-ud-label">مشتری</span>
                                                                         <span class="profile-ud-value">
@@ -144,41 +144,41 @@
                                                                 </span>
                                                                     </div>
                                                                 </div>
-                                                                <div class="profile-ud-item">
+                                                                <div class="profile-ud-item w-100">
                                                                     <div class="profile-ud wider">
                                                                         <span class="profile-ud-label">شماره درخواست</span>
                                                                         <span class="profile-ud-value">{{ project.number_id|default:'-' }}</span>
                                                                     </div>
                                                                 </div>
-                                                                <div class="profile-ud-item">
+                                                                <div class="profile-ud-item w-100">
                                                                     <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">پرداخت شده</span>
+                                                                        <span class="profile-ud-label">وضعیت پرداخت</span>
                                                                         <span class="profile-ud-value">
-                                                                    {% if project.is_paid %}
-                                                                        <span class="text-success">پرداخت شده</span>
-                                                                    {% else %}
-                                                                        <span class="text-danger">پرداخت نشده</span>
-                                                                    {% endif %}
-                                                                </span>
+                                                                        {% if project.is_paid %}
+                                                                            <span class="text-success">پرداخت شده</span>
+                                                                        {% else %}
+                                                                            <span class="text-danger">پرداخت نشده</span>
+                                                                        {% endif %}
+                                                                    </span>
                                                                     </div>
                                                                 </div>
-                                                                <div class="profile-ud-item">
+                                                                <div class="profile-ud-item w-100">
                                                                     <div class="profile-ud wider">
                                                                         <span class="profile-ud-label">نمونه</span>
                                                                         <span class="profile-ud-value">
-                                                                    {% if project.has_sample %}
-                                                                        <span class="text-info">
-                                                                            دارد
+                                                                            {% if project.has_sample %}
+                                                                                <span class="text-info">
+                                                                                    دارد
+                                                                                </span>
+                                                                            {% else %}
+                                                                                <span class="text-warning">
+                                                                                    ندارد
+                                                                                </span>
+                                                                            {% endif %}
                                                                         </span>
-                                                                    {% else %}
-                                                                        <span class="text-warning">
-                                                                            ندارد
-                                                                        </span>
-                                                                    {% endif %}
-                                                                </span>
                                                                     </div>
                                                                 </div>
-                                                                <div class="profile-ud-item">
+                                                                <div class="profile-ud-item w-100">
                                                                     <div class="profile-ud wider">
                                                                         <span class="profile-ud-label">قیمت</span>
                                                                         <span class="profile-ud-value">
@@ -204,19 +204,19 @@
                                                             </div>
                                                             <!-- .nk-block-head -->
                                                             <div class="profile-ud-list">
-                                                                <div class="profile-ud-item">
+                                                                <div class="profile-ud-item w-100">
                                                                     <div class="profile-ud wider">
                                                                         <span class="profile-ud-label">تعداد کل</span>
                                                                         <span class="profile-ud-value">{{ project.count_total }}</span>
                                                                     </div>
                                                                 </div>
-                                                                <div class="profile-ud-item">
+                                                                <div class="profile-ud-item w-100">
                                                                     <div class="profile-ud wider">
                                                                         <span class="profile-ud-label">تعداد باقی مانده</span>
                                                                         <span class="profile-ud-value">{{ project.count_remaining }}</span>
                                                                     </div>
                                                                 </div>
-                                                                <div class="profile-ud-item">
+                                                                <div class="profile-ud-item w-100">
                                                                     <div class="profile-ud wider">
                                                                         <span class="profile-ud-label">استعلام مربوطه</span>
                                                                         <span class="profile-ud-value">
@@ -228,31 +228,31 @@
                                                                         </span>
                                                                     </div>
                                                                 </div>
-                                                                <div class="profile-ud-item">
+                                                                <div class="profile-ud-item w-100">
                                                                     <div class="profile-ud wider">
                                                                         <span class="profile-ud-label">تاریخ پیش پرداخت</span>
                                                                         <span class="profile-ud-value">{{ project.prepayment_datetime|default:'-' }}</span>
                                                                     </div>
                                                                 </div>
-                                                                <div class="profile-ud-item">
+                                                                <div class="profile-ud-item w-100">
                                                                     <div class="profile-ud wider">
                                                                         <span class="profile-ud-label">تاریخ تحویل نمونه</span>
                                                                         <span class="profile-ud-value">{{ project.sample_delivery_date|default:'-' }}</span>
                                                                     </div>
                                                                 </div>
-                                                                <div class="profile-ud-item">
+                                                                <div class="profile-ud-item w-100">
                                                                     <div class="profile-ud wider">
                                                                         <span class="profile-ud-label">تاریخ تحویل انبوه</span>
                                                                         <span class="profile-ud-value">{{ project.mass_delivery_date|default:'-' }}</span>
                                                                     </div>
                                                                 </div>
-                                                                <div class="profile-ud-item">
+                                                                <div class="profile-ud-item w-100">
                                                                     <div class="profile-ud wider">
                                                                         <span class="profile-ud-label">تاریخ ابلاغ(شروع)</span>
                                                                         <span class="profile-ud-value">{{ project.time_start|default:'-' }}</span>
                                                                     </div>
                                                                 </div>
-                                                                <div class="profile-ud-item">
+                                                                <div class="profile-ud-item w-100">
                                                                     <div class="profile-ud wider">
                                                                         <span class="profile-ud-label">تاریخ اتمام قرارداد</span>
                                                                         <span class="profile-ud-value">{{ project.time_end|default:'-' }}</span>
@@ -267,13 +267,13 @@
                                                                 <div class="profile-ud-item w-100">
                                                                     <div class="profile-ud wider">
                                                                         <span class="profile-ud-label">ایتم ها</span>
-                                                                        <span class="profile-ud-value">{{ project.item|default:'-' }}</span>
+                                                                        <span class="profile-ud-value"><pre>{{ project.item|default:'-' }}</pre></span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="profile-ud-item w-100">
                                                                     <div class="profile-ud wider">
                                                                         <span class="profile-ud-label">توضیحات</span>
-                                                                        <span class="profile-ud-value">{{ project.description|default:'-' }}</span>
+                                                                        <span class="profile-ud-value"><pre>{{ project.description|default:'-' }}</pre></span>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -537,6 +537,26 @@
                                                                         </span>
                                                                     </div>
                                                                 </div>
+                                                                {% if has_perm_to_financial_amount %}
+                                                                    <div class="profile-ud-item w-100">
+                                                                        <div class="profile-ud wider">
+                                                                            <span class="profile-ud-label">پیش پرداختی ها</span>
+                                                                        </div>
+                                                                        {% for prepayment in project.get_prepayments %}
+                                                                            <div class="bq-note">
+                                                                                <div class="bq-note-item">
+                                                                                    <div class="bq-note-text d-flex justify-content-between align-items-center">
+                                                                                        <p>
+                                                                                            <a href="{{ prepayment.get_absolute_url }}">پیش
+                                                                                            پرداخت {{ forloop.counter }}</a>
+                                                                                        </p>
+                                                                                        <p>{{ prepayment.submited_at }}</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        {% endfor %}
+                                                                    </div>
+                                                                {% endif %}
                                                             </div>
                                                         </div>
                                                         <!-- .nk-block -->
@@ -1269,7 +1289,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-lg-6">
+                                <div class="col-lg-12">
                                     <div class="form-group">
                                         <label class="form-label" for="item">ایتم پروژه</label>
                                         <div class="form-control-wrap">
@@ -1279,7 +1299,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-12">
                                     <div class="form-group">
                                         <label class="form-label" for="description">توضیحات</label>
                                         <div class="form-control-wrap">

@@ -658,7 +658,7 @@ body {
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 
-    overflow-x: hidden!important;
+    overflow-x: hidden !important;
 }
 
 hr {
@@ -52943,4 +52943,17 @@ em.icon.ni.ni-comments {
     left: 15px;
     opacity: .2;
     color: #e5ffff;
+}
+
+pre {
+    white-space: pre-wrap;
+    font-family: 'YekanBakhFaNum', monospace;
+    font-size: 16px;
+    line-height: 28px;
+    text-align: justify;
+    direction: rtl;
+}
+
+.dark-mode pre {
+    color: #b6c6e3;
 }

@@ -290,7 +290,7 @@
                                                 <li class="data-item">
                                                     <div class="data-col">
                                                         <div class="data-label">توضیحات</div>
-                                                        <div class="data-value">{{ task.description|default:'-' }}</div>
+                                                        <div class="data-value"><pre>{{ task.description|default:'-' }}</pre></div>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -334,7 +334,7 @@
                                                                         <a href="{{ status.allocator_user.get_absolute_url }}"><span>{{ status.allocator_user.get_full_name|default:'-' }}</span></a>
                                                                     </div>
                                                                     <div class="nk-tb-col">
-                                                                        {{ status.description|default:'-' }}
+                                                                        <pre>{{ status.description|default:'-' }}</pre>
                                                                     </div>
                                                                     <div class="nk-tb-col nk-tb-col-status text-center">
                                                                         {% if status.file %}
