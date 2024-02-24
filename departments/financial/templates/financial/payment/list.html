@@ -346,6 +346,47 @@
                                     </div>
                                     <!-- .card -->
                                 </div>
+                                <div class="nk-block">
+                                    <div class="nk-block-head nk-block-head-sm nk-block-between">
+                                        <h5 class="title">مجموع</h5>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-6">
+                                            <div class="card" id="step-person_day">
+                                                <div class="card-header border-bottom">
+                                                    پرداخت
+                                                </div>
+                                                <ul class="list-group list-group-flush">
+                                                    <li class="list-group-item d-flex justify-content-between">
+                                                        <span>مبلغ کل</span>
+                                                        <span class="badge badge-sm badge-dim bg-secondary">
+                                                            <span class="price-el">{{ total_payments }}</span>
+                                                            &nbsp;
+                                                            تومان
+                                                        </span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-6">
+                                            <div class="card" id="step-person_day">
+                                                <div class="card-header border-bottom">
+                                                     پیش پرداخت
+                                                </div>
+                                                <ul class="list-group list-group-flush">
+                                                    <li class="list-group-item d-flex justify-content-between">
+                                                        <span>مبلغ کل</span>
+                                                        <span class="badge badge-sm badge-dim bg-secondary data-value-plan">
+                                                            <span class="price-el">{{ total_prepayments }}</span>
+                                                            &nbsp;
+                                                            تومان
+                                                        </span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             {% endwith %}
                         </div>
                     </div>

@@ -105,10 +105,14 @@ class PaymentList(LoginRequiredMixin, View):
         payments = models.Payment.objects.all()
         payments = self.filter(payments)
         payments = self.sort(payments)
+        total_payments = payments.filter(type_payment='payment').aggregate(total=Sum('price'))['total'] or 0
+        total_prepayments = payments.filter(type_payment='prepayment').aggregate(total=Sum('price'))['total'] or 0
         pagination, payments = self.pagination(payments)
         context = {
             'pagination': pagination,
             'payments': payments,
+            'total_payments': total_payments,
+            'total_prepayments': total_prepayments,
             'projects': Project.objects.filter(is_active=True),
             'TYPE_PAYMENT_OPTIONS': models.Payment.TYPE_PAYMENT_OPTIONS,
             'TYPE_STATUS_PAYMENT_OPTIONS': models.Payment.TYPE_STATUS_PAYMENT_OPTIONS,
