@@ -329,11 +329,14 @@ class Project(BaseModel):
         return payments
 
     def get_total_prepayments_amount(self):
-        payments = self.get_payments().filter(type_payment='prepayment').aggregate(p=Sum('price'))['p'] or 0
+        payments = self.get_prepayments().aggregate(p=Sum('price'))['p'] or 0
         return payments
 
     def get_payments(self):
         return self.payment_set.all()
+
+    def get_prepayments(self):
+        return self.get_payments().filter(type_payment='prepayment')
 
     def get_total_warehouse_items_amount(self):
         t = self.get_warehouse_items().aggregate(p=Sum('price'))['p'] or 0
