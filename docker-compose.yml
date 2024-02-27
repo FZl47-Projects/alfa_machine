@@ -46,7 +46,6 @@ services:
       - '3306'
     environment:
       MYSQL_DATABASE: 'alfa_machine_db'
-      MYSQL_USER: 'root'
       MYSQL_ROOT_PASSWORD: 'alfa_machine_password'
     volumes:
       - type: 'bind'
