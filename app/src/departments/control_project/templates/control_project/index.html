@@ -1,0 +1,995 @@
+{% extends 'base/base_template.html' %}
+{% load static %}
+{% load render_partial %}
+
+{% block Title %}
+    پنل
+    {{ user.department.name }}
+{% endblock %}
+
+{% block Link %}
+    <link rel="stylesheet" href="{% static 'frontend/styles/Project-control-panel.css' %}"/>
+{% endblock %}
+
+{% block BodyClass %}
+    has-rtl nk-body ui-rounder has-sidebar
+{% endblock %}
+
+{% block Content %}
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main">
+            <!-- sidebar @s -->
+            {% render_partial 'public.components.MenuComponent' %}
+            <!-- sidebar @e -->
+            <!-- wrap @s -->
+            <div class="nk-wrap">
+                <!-- main header @s -->
+                {% include 'base/components/header.html' %}
+                <!-- main header @e -->
+                <!-- content @s -->
+                <div class="nk-content nk-content-fluid">
+                    <div class="container-xl wide-xl">
+                        <div class="nk-content-body">
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block-between">
+                                    <div class="nk-block-head-content">
+                                        <h3 class="nk-block-title page-title">داشبورد</h3>
+                                        <div class="nk-block-des text-soft">
+                                            <p>به داشبورد ماشین سازی الفا خوش امدید .</p>
+                                        </div>
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                    <div class="nk-block-head-content">
+                                        <div class="toggle-wrap nk-block-tools-toggle">
+                                            <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1"
+                                               data-target="pageMenu"><em class="icon ni ni-more-v"></em></a>
+                                            <div class="toggle-expand-content" data-content="pageMenu">
+                                                <ul class="nk-block-tools g-3">
+                                                    <li class="dropdown chats-dropdown hide-mb-sm">
+                                                        <a href="#"
+                                                           class="dropdown-toggle btn btn-primary"
+                                                           data-bs-toggle="dropdown">
+                                                            <div class="icon-status icon-status-na">
+                                                                <em class="icon ni ni-reports"></em><span>گزارش ها</span>
+                                                            </div>
+                                                        </a>
+                                                        <div class="dropdown-menu dropdown-menu-md dropdown-menu-end">
+                                                            <div class="dropdown-head">
+                                                                <span class="sub-title nk-dropdown-title">خروجی اکسل</span>
+                                                            </div>
+                                                            <div class="dropdown-body">
+                                                                <ul class="chat-list">
+                                                                    <li class="chat-item">
+                                                                        <a class="chat-link"
+                                                                           href="#">
+                                                                            <div class="chat-media user-avatar bg-success">
+                                                                                <em class="icon ni ni-users"></em>
+                                                                            </div>
+                                                                            <div class="chat-info">
+                                                                                <div class="chat-context text-muted">
+                                                                                    <div>
+                                                                                        خروجی کاربران
+                                                                                    </div>
+                                                                                    <div class="status delivered">
+                                                                                        <em class="icon ni ni-download"></em>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li class="chat-item">
+                                                                        <a class="chat-link"
+                                                                           href="#">
+                                                                            <div class="chat-media user-avatar bg-info">
+                                                                                <em class="icon ni ni-dashboard"></em>
+                                                                            </div>
+                                                                            <div class="chat-info">
+                                                                                <div class="chat-context text-muted">
+                                                                                    <div>
+                                                                                        خروجی پروژه ها
+                                                                                    </div>
+                                                                                    <div class="status delivered">
+                                                                                        <em class="icon ni ni-download"></em>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                                <!-- .chat-list -->
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                </div>
+                                <!-- .nk-block-between -->
+                            </div>
+                            <!-- .nk-block-head -->
+                            <div class="nk-block">
+                                <div class="row g-gs">
+                                    <div class="col-lg-4 col-sm-6">
+                                        <div class="card h-100 bg-primary">
+                                            <div class="nk-cmwg nk-cmwg1">
+                                                <div class="card-inner pt-3">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="flex-item">
+                                                            <div class="text-white d-flex flex-wrap">
+                                                                <span class="fs-1 me-1">{{ projects.count }}</span>
+                                                            </div>
+                                                            <h6 class="text-white">تعداد پروژه ها</h6>
+                                                        </div>
+                                                        <div class="card-tools me-n1">
+                                                            <div class="dropdown">
+                                                                <a href="#"
+                                                                   class="dropdown-toggle btn btn-icon btn-sm btn-trigger on-dark"
+                                                                   data-bs-toggle="dropdown"><em
+                                                                        class="icon ni ni-more-v"></em></a>
+                                                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                                                    <ul class="link-list-opt no-bdr">
+                                                                        <li>
+                                                                            <a href="{% url 'public:project__add' %}"><span>افزودن پروژه</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="{% url 'public:project__list' %}"><span>لیست پروژه ها</span></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- .card-inner -->
+                                                <div class="nk-ck-wrap mt-auto overflow-hidden rounded-bottom">
+                                                    <div class="nk-cmwg1-ck box-icon">
+                                                        <i class="icon ni ni-dashboard"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- .nk-cmwg -->
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <!-- .col -->
+                                    <div class="col-lg-4 col-sm-6">
+                                        <div class="card h-100 bg-info">
+                                            <div class="nk-cmwg nk-cmwg1">
+                                                <div class="card-inner pt-3">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="flex-item">
+                                                            <div class="text-white d-flex flex-wrap">
+                                                                <span class="fs-1 me-1">{{ departments.count }}</span>
+                                                            </div>
+                                                            <h6 class="text-white">تعداد واحد ها</h6>
+                                                        </div>
+                                                        <div class="card-tools me-n1">
+                                                            <div class="dropdown">
+                                                                <a href="#"
+                                                                   class="dropdown-toggle btn btn-icon btn-sm btn-trigger on-dark"
+                                                                   data-bs-toggle="dropdown"><em
+                                                                        class="icon ni ni-more-v"></em></a>
+                                                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                                                    <ul class="link-list-opt no-bdr">
+                                                                        <li>
+                                                                            <a href="{% url 'public:department__add' %}"><span>افزودن واحد</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="{% url 'public:department__list' %}"><span>لیست واحد ها</span></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- .card-inner -->
+                                                <div class="nk-cmwg1-ck mt-auto box-icon">
+                                                    <i class="icon ni ni-building"></i>
+                                                </div>
+                                            </div>
+                                            <!-- .nk-cmwg -->
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <!-- .col -->
+                                    <div class="col-lg-4 col-sm-6">
+                                        <div class="card h-100 bg-danger">
+                                            <div class="nk-cmwg nk-cmwg1">
+                                                <div class="card-inner pt-3">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="flex-item">
+                                                            <div class="text-white d-flex flex-wrap">
+                                                                <span class="fs-1 me-1">{{ task_masters.count }}</span>
+                                                            </div>
+                                                            <h6 class="text-white">تعداد مشتریان</h6>
+                                                        </div>
+                                                        <div class="card-tools me-n1">
+                                                            <div class="dropdown">
+                                                                <a href="#"
+                                                                   class="dropdown-toggle btn btn-icon btn-sm btn-trigger on-dark"
+                                                                   data-bs-toggle="dropdown"><em
+                                                                        class="icon ni ni-more-v"></em></a>
+                                                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                                                    <ul class="link-list-opt no-bdr">
+                                                                        <li>
+                                                                            <a href="{% url 'public:task_master__add' %}"><span>افزودن مشتری</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="{% url 'public:task_master__list' %}"><span>لیست مشتریان</span></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- .card-inner -->
+                                                <div class="nk-ck-wrap mt-auto overflow-hidden rounded-bottom">
+                                                    <div class="nk-cmwg1-ck box-icon">
+                                                        <i class="icon ni ni-user-group"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- .nk-cmwg -->
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <!-- .col -->
+                                    <div class="col-lg-4 col-sm-6">
+                                        <div class="card h-100 bg-black">
+                                            <div class="nk-cmwg nk-cmwg1">
+                                                <div class="card-inner pt-3">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="flex-item">
+                                                            <div class="text-white d-flex flex-wrap">
+                                                                <span class="fs-1 me-1">{{ inquiries.count }}</span>
+                                                            </div>
+                                                            <h6 class="text-white">تعداد استعلامات</h6>
+                                                        </div>
+                                                        <div class="card-tools me-n1">
+                                                            <div class="dropdown">
+                                                                <a href="#"
+                                                                   class="dropdown-toggle btn btn-icon btn-sm btn-trigger on-dark"
+                                                                   data-bs-toggle="dropdown"><em
+                                                                        class="icon ni ni-more-v"></em></a>
+                                                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                                                    <ul class="link-list-opt no-bdr">
+                                                                        <li>
+                                                                            <a href="{% url 'public:inquiry__add' %}"><span>افزودن استعلام</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="{% url 'public:inquiry__list' %}"><span>لیست استعلامات</span></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- .card-inner -->
+                                                <div class="nk-ck-wrap mt-auto overflow-hidden rounded-bottom">
+                                                    <div class="nk-cmwg1-ck box-icon">
+                                                        <i class="icon ni ni-info-i"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- .nk-cmwg -->
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <!-- .col -->
+                                    <div class="col-lg-4 col-sm-6">
+                                        <div class="card h-100 bg-secondary">
+                                            <div class="nk-cmwg nk-cmwg1">
+                                                <div class="card-inner pt-3">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="flex-item">
+                                                            <div class="text-white d-flex flex-wrap">
+                                                                <span class="fs-1 me-1">{{ request.user.get_tickets.count }}</span>
+                                                            </div>
+                                                            <h6 class="text-white">تعداد گزارشات</h6>
+                                                        </div>
+                                                        <div class="card-tools me-n1">
+                                                            <div class="dropdown">
+                                                                <a href="#"
+                                                                   class="dropdown-toggle btn btn-icon btn-sm btn-trigger on-dark"
+                                                                   data-bs-toggle="dropdown"><em
+                                                                        class="icon ni ni-more-v"></em></a>
+                                                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                                                    <ul class="link-list-opt no-bdr">
+                                                                        <li>
+                                                                            <a href="{% url 'support:ticket__add' %}"><span>افزودن گزارش</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="{% url 'support:ticket__list' %}"><span>لیست گزارشات</span></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- .card-inner -->
+                                                <div class="nk-ck-wrap mt-auto overflow-hidden rounded-bottom">
+                                                    <div class="nk-cmwg1-ck box-icon">
+                                                        <em class="icon ni ni-view-col"></em>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- .nk-cmwg -->
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <!-- .col -->
+                                    <div class="col-lg-4 col-sm-6">
+                                        <div class="card h-100 bg-success">
+                                            <div class="nk-cmwg nk-cmwg1">
+                                                <div class="card-inner pt-3">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="flex-item">
+                                                            <div class="text-white d-flex flex-wrap">
+                                                                <span class="fs-1 me-1">{{ request.user.department.get_notifications.count }}</span>
+                                                            </div>
+                                                            <h6 class="text-white">تعداد اعلانات</h6>
+                                                        </div>
+                                                        <div class="card-tools me-n1">
+                                                            <div class="dropdown">
+                                                                <a href="#"
+                                                                   class="dropdown-toggle btn btn-icon btn-sm btn-trigger on-dark"
+                                                                   data-bs-toggle="dropdown"><em
+                                                                        class="icon ni ni-more-v"></em></a>
+                                                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                                                    <ul class="link-list-opt no-bdr">
+                                                                        <li>
+                                                                            <a href="{% url 'notification:notification__add' %}"><span>افزودن اعلان</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="{% url 'notification:notification__list' %}"><span>لیست اعلانات</span></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- .card-inner -->
+                                                <div class="nk-ck-wrap mt-auto overflow-hidden rounded-bottom">
+                                                    <div class="nk-cmwg1-ck box-icon">
+                                                        <i class="icon ni ni-notice"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- .nk-cmwg -->
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <!-- .col -->
+                                    <div class="col-12">
+                                        <div class="card card-full">
+                                            <div class="card-inner mb-2">
+                                                <div class="card-title-group">
+                                                    <div class="card-title">
+                                                        <h6 class="title">استعلامات</h6>
+                                                    </div>
+                                                    <div class="card-tools">
+                                                        <a href="{% url 'public:inquiry__list' %}" class="link">مشاهده
+                                                            همه</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-inner py-0 mt-n2 text-center">
+                                                <div class="nk-tb-list nk-tb-flush nk-tb-dashed">
+                                                    <div class="nk-tb-item nk-tb-head">
+                                                        <div class="nk-tb-col"><span> استعلام</span></div>
+                                                        <div class="nk-tb-col tb-col-mb"><span>استعلام گیرنده</span>
+                                                        </div>
+                                                        <div class="nk-tb-col tb-col-sm"><span>وضعیت</span></div>
+                                                        <div class="nk-tb-col tb-col-md"><span>کارفرما</span></div>
+                                                        <div class="nk-tb-col"><span>مهلت پاسخ</span></div>
+                                                    </div>
+                                                    <!-- .nk-tb-head -->
+                                                    {% for inquiry in inquiries|slice:':6' %}
+                                                        <div class="nk-tb-item">
+                                                            <div class="nk-tb-col">
+                                                                <a href="{{ inquiry.get_absolute_url }}">
+                                                                     <span class="tb-lead">{{ inquiry.title }}
+    {#                                                                <span#}
+    {#                                                                    class="dot dot-success d-sm-none ms-1"></span>#}
+                                                                        </span>
+                                                                    <span class="tb-sub">{{ inquiry.number_id|default:'-' }}</span>
+                                                                </a>
+                                                            </div>
+                                                            <div class="nk-tb-col tb-col-mb">
+                                                                <a href="{{ inquiry.from_department.get_absolute_url }}">{{ inquiry.from_department }}</a>
+                                                            </div>
+                                                            <div class="nk-tb-col tb-col-sm">
+                                                                <div class="badge badge-dim
+                                                                    {% if inquiry.state == 'price_recorded' %}
+                                                                            bg-success
+                                                                        {% elif inquiry.state == 'waiting_for_price' %}
+                                                                            bg-warning
+                                                                        {% else %}
+                                                                            bg-danger
+                                                                    {% endif %}
+                                                                ">{{ inquiry.get_state_label }}</div>
+                                                            </div>
+                                                            <div class="nk-tb-col tb-col-md">
+                                                                <a href="{{ inquiry.task_master.get_absolute_url }}">{{ inquiry.task_master.name }}</a>
+                                                            </div>
+                                                            <div class="nk-tb-col">
+                                                                {{ inquiry.time_deadline_response|default:'-' }}
+                                                            </div>
+                                                        </div>
+                                                        <!-- .nk-tb-item -->
+                                                    {% endfor %}
+
+                                                </div>
+                                                <!-- .nk-tb-list -->
+                                            </div>
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <!-- .col -->
+                                       <div class="col-xxl-8 col-lg-7">
+                                        <div class="card card-full">
+                                            <div class="card-inner">
+                                                <div class="card-title-group">
+                                                    <div class="card-title">
+                                                        <h6 class="title">تسک های اخیر</h6>
+                                                    </div>
+                                                    <div class="card-tools">
+                                                        <ul class="card-tools-nav">
+                                                            <a class="font-80" href="{% url 'public:task__list' %}">
+                                                                <span>مشاهده همه</span>
+                                                            </a>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-inner p-0">
+                                                <div class="nk-tb-list nk-tb-tnx">
+                                                    <div class="nk-tb-item nk-tb-head text-center">
+                                                        <div class="nk-tb-col"><span>نام</span></div>
+                                                        <div class="nk-tb-col"><span>پروژه</span></div>
+                                                        <div class="nk-tb-col"><span>از واحد</span></div>
+                                                        <div class="nk-tb-col"><span>اولویت</span></div>
+                                                        <div class="nk-tb-col nk-tb-col-status"><span
+                                                                class="sub-text d-none d-md-block">وضعیت</span></div>
+                                                        <div class="nk-tb-col nk-tb-col-tools"></div>
+                                                    </div>
+                                                    {% for task in request.user.department.get_tasks|slice:':8' %}
+                                                        <!-- .nk-tb-item -->
+                                                        <div class="nk-tb-item text-center">
+                                                            <div class="nk-tb-col">
+                                                                <a href="{{ task.get_absolute_url }}">
+                                                                    <div class="nk-tnx-type-text">
+                                                                        <span>{{ task.name|truncatechars:10 }}</span>
+                                                                    </div>
+                                                                </a>
+                                                            </div>
+                                                            <div class="nk-tb-col">
+                                                                <a href="{{ task.project.get_absolute_url }}">
+                                                                    {{ task.project.name|truncatechars:10 }}
+                                                                </a>
+                                                            </div>
+                                                            <div class="nk-tb-col">
+                                                                <a href="{{ task.from_department.get_absolute_url }}">
+                                                                    {{ task.from_department.name|truncatechars:10 }}
+                                                                </a>
+                                                            </div>
+                                                            <div class="nk-tb-col">
+                                                                <span class="tb-lead-sub badge badge-dim bg-info py-1 fs-14px">{{ task.priority }}</span>
+                                                            </div>
+                                                            <div class="nk-tb-col nk-tb-col-status">
+                                                                <div class="dot d-md-none dot-{{ task.get_last_status.status }}"></div>
+                                                                <span class="badge badge-sm badge-dim d-none d-md-inline-flex fs-9px bg-{{ task.get_last_status.status }}">{{ task.get_last_status.get_status_label }}</span>
+                                                            </div>
+                                                            <div class="nk-tb-col nk-tb-col-tools">
+                                                                <ul class="nk-tb-actions gx-2">
+                                                                    <li class="nk-tb-action-hidden">
+                                                                        <a href="{{ task.get_absolute_url }}"
+                                                                           class="bg-white btn btn-sm btn-outline-light btn-icon btn-tooltip"
+                                                                           aria-label="جزئیات"
+                                                                           data-bs-original-title="جزئیات"><em
+                                                                                class="icon ni ni-eye"></em></a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <div class="dropdown">
+                                                                            <a href="#"
+                                                                               class="dropdown-toggle bg-white btn btn-sm btn-outline-light btn-icon"
+                                                                               data-bs-toggle="dropdown"
+                                                                               aria-expanded="false"><em
+                                                                                    class="icon ni ni-more-h"></em></a>
+                                                                            <div class="dropdown-menu dropdown-menu-end"
+                                                                                 style="">
+                                                                                <ul class="link-list-opt">
+                                                                                    {% if has_perm_to_send_notify %}
+                                                                                        <li>
+                                                                                            <a href="{% url 'public:task__remind' task_id=task.id %}"><em
+                                                                                                    class="icon ni ni-bell"></em><span>ارسال یادآور</span></a>
+                                                                                        </li>
+                                                                                    {% endif %}
+                                                                                    <li>
+                                                                                        <a href="{{ task.get_absolute_url }}"><em
+                                                                                                class="icon ni ni-eye"></em><span>مشاهده جزئیات</span></a>
+                                                                                    </li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <!-- .nk-tb-item -->
+                                                    {% empty %}
+                                                        <div class="nk-tb-item">
+                                                            <div class="nk-tb-col">
+                                                                <div class="container-not-found-base">
+                                                                    <p>تسکی یافت نشد</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                                <!-- .nk-tb-list -->
+                                            </div>
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <!-- .col -->
+                                    <div class="col-xxl-4 col-lg-5">
+                                        <div class="card card-full">
+                                            <div class="card-inner">
+                                                <div class="card-title-group">
+                                                    <div class="card-title">
+                                                        <h6 class="title">برخی از پروژه ها</h6>
+                                                    </div>
+                                                    <div class="card-tools">
+                                                        <a href="{% url 'public:project__list' %}" class="link">مشاهده
+                                                            همه</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-inner pt-0">
+                                                <ul class="gy-4">
+                                                    {% for project in projects|slice:':5' %}
+                                                        <li class="justify-between align-center {% if not forloop.last %}border-bottom border-0 border-dashed{% endif %}">
+                                                            <div class="align-center">
+                                                                <div class="user-avatar sq bg-transparent"><img
+                                                                        width="30" height="30"
+                                                                        src="{{ project.get_image_cover_url }}"
+                                                                        alt="{{ project.name }}"/></div>
+                                                                <div class="ms-2">
+                                                                    <div class="lead-text">
+                                                                        <a href="{{ project.get_absolute_url }}">{{ project.name }}</a>
+                                                                    </div>
+                                                                    <div class="sub-text">{{ project.get_last_step|default:'-' }}</div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="align-center">
+                                                                <div class="sub-text me-2">{{ project.progress_percentage }}%</div>
+                                                                <div class="progress rounded-pill w-80px">
+                                                                    <div class="progress-bar random-bg rounded-pill"
+                                                                         data-progress="{{ project.progress_percentage }}"></div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    {% empty %}
+                                                        <div class="container-not-found-base">
+                                                            <p>پروژه ای یافت نشد</p>
+                                                        </div>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <!-- .col -->
+                                    <div class="col-12">
+                                        <div class="card card-full">
+                                            <div class="card-inner mb-2">
+                                                <div class="card-title-group">
+                                                    <div class="card-title">
+                                                        <h6 class="title">واحد ها</h6>
+                                                    </div>
+                                                    <div class="card-tools">
+                                                        <a href="{% url 'public:department__list' %}" class="link">مشاهده
+                                                            همه</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-inner py-0 mt-n2 px-5">
+                                                <div class="nk-tb-list nk-tb-flush nk-tb-dashed">
+                                                    <div class="nk-tb-item nk-tb-head">
+                                                        <div class="nk-tb-col"><span>نام واحد</span></div>
+                                                        <div class="nk-tb-col tb-col-mb text-center">
+                                                            <span>وضعیت تسک ها</span>
+                                                        </div>
+                                                    </div>
+                                                    <!-- .nk-tb-head -->
+                                                    {% for department in departments %}
+                                                        <div class="nk-tb-item">
+                                                            <div class="nk-tb-col">
+                                                                <a href="{{ department.get_absolute_url }}">
+                                                                     <span>
+                                                                         {{ department.name }}
+                                                                     </span>
+                                                                </a>
+                                                            </div>
+                                                            <div class="nk-tb-col text-center">
+                                                                <span class="badge badge-pill badge-dim bg-success">تمام شده({{ department.get_tasks_finished.count }})</span>
+                                                                <span class="badge badge-pill badge-dim bg-warning">در صف({{ department.get_tasks_queue.count }})</span>
+                                                                <span class="badge badge-pill badge-dim bg-primary">در حال انجام({{ department.get_tasks_progress.count }})</span>
+                                                                <span class="badge badge-pill badge-dim bg-gray">نگه داشته شده({{ department.get_tasks_hold.count }})</span>
+                                                                <span class="badge badge-pill badge-dim bg-danger">نیاز به بررسی({{ department.get_tasks_need_to_check.count }})</span>
+                                                                <span class="badge badge-pill badge-dim bg-dark">نیاز به برنامه ریزی({{ department.get_tasks_need_to_replan.count }})</span>
+                                                            </div>
+                                                        </div>
+                                                        <!-- .nk-tb-item -->
+                                                    {% endfor %}
+                                                </div>
+                                                <!-- .nk-tb-list -->
+                                            </div>
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <div class="d-none">
+                                        <!-- .col -->
+                                        <div class="col-xxl-4 col-md-6">
+                                            <div class="card card-full">
+                                                <div class="card-inner">
+                                                    <div class="card-title-group">
+                                                        <div class="card-title">
+                                                            <h6 class="title">آمار کلیدی</h6>
+                                                        </div>
+                                                        <div class="card-tools me-n1 mt-n1">
+                                                            <div class="dropdown">
+                                                                <a href="#"
+                                                                   class="dropdown-toggle btn btn-icon btn-trigger"
+                                                                   data-bs-toggle="dropdown"><em
+                                                                        class="icon ni ni-more-h"></em></a>
+                                                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                                                    <ul class="link-list-opt no-bdr">
+                                                                        <li>
+                                                                            <a href="#"
+                                                                               class="active"><span>15 روز</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#"><span>30 روز</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#"><span>3 ماه</span></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-inner pt-0">
+                                                    <ul class="gy-4">
+                                                        <li class="border-bottom border-0 border-dashed">
+                                                            <div class="mb-1">
+                                                                <span class="fs-2 lh-1 mb-1 text-head">85.6هزار</span>
+                                                                <div class="sub-text">میانگین لایک ها</div>
+                                                            </div>
+                                                            <div class="align-center">
+                                                                <div class="small text-primary me-2">54%</div>
+                                                                <div class="progress progress-md rounded-pill w-100 bg-primary-dim">
+                                                                    <div class="progress-bar bg-primary rounded-pill"
+                                                                         data-progress="54"></div>
+                                                                </div>
+                                                                <div class="dropdown ms-3">
+                                                                    <a class="dropdown-toggle dropdown-indicator sub-text"
+                                                                       href="#" type="button" data-bs-toggle="dropdown"
+                                                                       data-bs-offset="0, 10">دی 21 - فروردین 21</a>
+                                                                    <div class="dropdown-menu dropdown-menu-end text-right">
+                                                                        <ul class="link-list-opt">
+                                                                            <li>
+                                                                                <a href="#"><span>فروردین 21 - تیر 21</span></a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="#"><span>تیر 21 - مهر 21</span></a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="#"><span>مهر 21 - دی 21</span></a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="#"><span>دی 21 - فروردین 21</span></a>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <!-- li -->
+                                                        <li class="border-bottom border-0 border-dashed">
+                                                            <div class="mb-1">
+                                                                <span class="fs-2 lh-1 mb-1 text-head">42.7هزار</span>
+                                                                <div class="sub-text">میانگین ​​نظرات</div>
+                                                            </div>
+                                                            <div class="align-center">
+                                                                <div class="small text-danger me-2">84%</div>
+                                                                <div class="progress progress-md rounded-pill w-100 bg-danger-dim">
+                                                                    <div class="progress-bar bg-danger rounded-pill"
+                                                                         data-progress="84"></div>
+                                                                </div>
+                                                                <div class="dropdown ms-3">
+                                                                    <a class="dropdown-toggle dropdown-indicator sub-text"
+                                                                       href="#" type="button" data-bs-toggle="dropdown"
+                                                                       data-bs-offset="0, 10">دی 21 - فروردین 21</a>
+                                                                    <div class="dropdown-menu dropdown-menu-end text-right">
+                                                                        <ul class="link-list-opt">
+                                                                            <li>
+                                                                                <a href="#"><span>فروردین 21 - تیر 21</span></a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="#"><span>تیر 21 - مهر 21</span></a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="#"><span>مهر 21 - دی 21</span></a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="#"><span>دی 21 - فروردین 21</span></a>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <!-- li -->
+                                                        <li>
+                                                            <div class="mb-1">
+                                                                <span class="fs-2 lh-1 mb-1 text-head">25.4هزار</span>
+                                                                <div class="sub-text">میانگین ​​اشتراک گذاری ها</div>
+                                                            </div>
+                                                            <div class="align-center">
+                                                                <div class="small text-success me-2">62%</div>
+                                                                <div class="progress progress-md rounded-pill w-100 bg-success-dim">
+                                                                    <div class="progress-bar bg-success rounded-pill"
+                                                                         data-progress="62"></div>
+                                                                </div>
+                                                                <div class="dropdown ms-3">
+                                                                    <a class="dropdown-toggle dropdown-indicator sub-text"
+                                                                       href="#" type="button" data-bs-toggle="dropdown"
+                                                                       data-bs-offset="0, 10">دی 21 - فروردین 21</a>
+                                                                    <div class="dropdown-menu dropdown-menu-end text-right">
+                                                                        <ul class="link-list-opt">
+                                                                            <li>
+                                                                                <a href="#"><span>فروردین 21 - تیر 21</span></a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="#"><span>تیر 21 - مهر 21</span></a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="#"><span>مهر 21 - دی 21</span></a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <a href="#"><span>دی 21 - فروردین 21</span></a>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <!-- li -->
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <!-- .card -->
+                                        </div>
+                                        <!-- .col -->
+                                        <div class="col-xxl-4 col-md-6">
+                                            <div class="card card-full">
+                                                <div class="card-inner">
+                                                    <div class="card-title-group">
+                                                        <div class="card-title">
+                                                            <h6 class="title">کمپین اینستاگرام</h6>
+                                                        </div>
+                                                        <div class="card-tools">
+                                                            <ul class="d-flex gx-2">
+                                                                <li>
+                                                                    <button class="btn btn-icon btn-sm btn-outline-light rounded-pill">
+                                                                        <em class="icon ni ni-chevron-left"></em>
+                                                                    </button>
+                                                                </li>
+                                                                <li>
+                                                                    <button class="btn btn-icon btn-sm btn-outline-primary rounded-pill">
+                                                                        <em class="icon ni ni-chevron-right"></em>
+                                                                    </button>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-inner pt-0">
+                                                    <div class="rounded px-2 py-4 bg-primary">
+                                                        <div class="d-flex">
+                                                            <div class="w-50 px-4">
+                                                                <span class="fs-2 lh-1 mb-1 text-white">24.6هزار</span>
+                                                                <div class="fs-14px text-white text-opacity-75">فالوور
+                                                                    جدید
+                                                                </div>
+                                                            </div>
+                                                            <div class="border-start opacity-50"></div>
+                                                            <div class="w-50 px-4">
+                                                                <span class="fs-2 lh-1 mb-1 text-white">120هزار</span>
+                                                                <div class="fs-14px text-white text-opacity-75">هدف
+                                                                    فالوور
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="nk-cmwg3-ck mt-3">
+                                                        <canvas class="campaign-line-chart-s3"
+                                                                id="instagramCampaign"></canvas>
+                                                    </div>
+                                                    <div class="chart-label-group ms-5 mt-0">
+                                                        <div class="chart-label">01 فروردین</div>
+                                                        <div class="chart-label d-none d-sm-block">10 فروردین</div>
+                                                        <div class="chart-label d-none d-sm-block">17 فروردین</div>
+                                                        <div class="chart-label d-none d-sm-block">24 فروردین</div>
+                                                        <div class="chart-label">31 فروردین</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- .card -->
+                                        </div>
+                                        <!-- .col -->
+                                        <div class="col-xxl-4 col-md-6">
+                                            <div class="card card-full">
+                                                <div class="card-inner">
+                                                    <div class="card-title-group">
+                                                        <div class="card-title">
+                                                            <h6 class="title">کلیک بر اساس مکان</h6>
+                                                        </div>
+                                                        <div class="card-tools me-n1 mt-n1">
+                                                            <div class="dropdown">
+                                                                <a href="#"
+                                                                   class="dropdown-toggle btn btn-icon btn-trigger"
+                                                                   data-bs-toggle="dropdown"><em
+                                                                        class="icon ni ni-more-h"></em></a>
+                                                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                                                    <ul class="link-list-opt no-bdr">
+                                                                        <li>
+                                                                            <a href="#"
+                                                                               class="active"><span>15 روز</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#"><span>30 روز</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#"><span>3 ماه</span></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-inner pt-0">
+                                                    <ul class="my-n2">
+                                                        <li class="align-center justify-between py-1 gx-1 border-bottom border-0 border-dashed">
+                                                            <div class="lead-text">ایالات متحده آمریکا</div>
+                                                            <div class="sub-text">14,356</div>
+                                                        </li>
+                                                        <!-- li -->
+                                                        <li class="align-center justify-between py-1 gx-1 border-bottom border-0 border-dashed">
+                                                            <div class="lead-text">ایرلند</div>
+                                                            <div class="sub-text">11,203</div>
+                                                        </li>
+                                                        <!-- li -->
+                                                        <li class="align-center justify-between py-1 gx-1 border-bottom border-0 border-dashed">
+                                                            <div class="lead-text">انگلستان</div>
+                                                            <div class="sub-text">10,653</div>
+                                                        </li>
+                                                        <!-- li -->
+                                                        <li class="align-center justify-between py-1 gx-1 border-bottom border-0 border-dashed">
+                                                            <div class="lead-text">کانادا</div>
+                                                            <div class="sub-text">7,215</div>
+                                                        </li>
+                                                        <!-- li -->
+                                                        <li class="align-center justify-between py-1 gx-1 border-bottom border-0 border-dashed">
+                                                            <div class="lead-text">استرالیا</div>
+                                                            <div class="sub-text">6,653</div>
+                                                        </li>
+                                                        <!-- li -->
+                                                        <li class="align-center justify-between py-1 gx-1 border-bottom border-0 border-dashed">
+                                                            <div class="lead-text">ژاپن</div>
+                                                            <div class="sub-text">3,945</div>
+                                                        </li>
+                                                        <!-- li -->
+                                                        <li class="align-center justify-between py-1 gx-1 border-bottom border-0 border-dashed">
+                                                            <div class="lead-text">چین</div>
+                                                            <div class="sub-text">2,945</div>
+                                                        </li>
+                                                        <!-- li -->
+                                                        <li class="align-center justify-between py-1 gx-1">
+                                                            <div class="lead-text">فرانسه</div>
+                                                            <div class="sub-text">954</div>
+                                                        </li>
+                                                        <!-- li -->
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <!-- .card -->
+                                        </div>
+                                        <!-- .col -->
+                                        <div class="col-xxl-4 col-md-6">
+                                            <div class="card card-full">
+                                                <div class="card-inner">
+                                                    <div class="card-title-group">
+                                                        <div class="card-title">
+                                                            <h6 class="title">نرخ تبدیل وب</h6>
+                                                        </div>
+                                                        <div class="card-tools me-n1 mt-n1">
+                                                            <div class="dropdown">
+                                                                <a href="#"
+                                                                   class="dropdown-toggle btn btn-icon btn-trigger"
+                                                                   data-bs-toggle="dropdown"><em
+                                                                        class="icon ni ni-more-h"></em></a>
+                                                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                                                    <ul class="link-list-opt no-bdr">
+                                                                        <li>
+                                                                            <a href="#"
+                                                                               class="active"><span>15 روز</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#"><span>30 روز</span></a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#"><span>3 ماه</span></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-inner pt-0">
+                                                    <div class="">
+                                                        <span class="fs-2 lh-1 mb-1 text-head">3.86%</span>
+                                                        <div class="fs-14px">این ماه</div>
+                                                    </div>
+                                                    <div class="nk-cmwg4-ck mt-4">
+                                                        <canvas class="campaign-line-chart-s3"
+                                                                id="webConvRate"></canvas>
+                                                    </div>
+                                                    <div class="chart-label-group ms-5 mt-0">
+                                                        <div class="chart-label">فروردین</div>
+                                                        <div class="chart-label d-none d-sm-block">اردیبهشت</div>
+                                                        <div class="chart-label d-none d-sm-block">خرداد</div>
+                                                        <div class="chart-label d-none d-sm-block">تیر</div>
+                                                        <div class="chart-label d-none d-sm-block">مرداد</div>
+                                                        <div class="chart-label">شهریور</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- .card -->
+                                        </div>
+                                        <!-- .col -->
+                                    </div>
+                                </div>
+                                <!-- .row -->
+                            </div>
+                            <!-- .nk-block -->
+                        </div>
+                    </div>
+                </div>
+                <!-- content @e -->
+                <!-- footer @s -->
+                {% include 'base/components/footer.html' %}
+                <!-- footer @e -->
+            </div>
+            <!-- wrap @e -->
+        </div>
+        <!-- main @e -->
+    </div>
+    <!-- app-root @e -->
+{% endblock %}
+
+

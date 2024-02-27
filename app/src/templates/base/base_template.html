@@ -1,0 +1,98 @@
+{% load static %}
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link rel="shortcut icon" href="{% static 'frontend/images/logo/logo.png' %}" />
+
+    <title>
+        {% block Title %}
+
+        {% endblock %}
+        |
+        ماشین سازی الفا
+    </title>
+    <link rel="stylesheet" href="{% static 'styles/base.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/notify.css' %}">
+
+
+    <link rel="stylesheet" href="{% static 'frontend/css/dashlite.rtl.css' %}"/>
+    <link id="skin-default" rel="stylesheet" href="{% static 'frontend/css/theme.css' %}"/>
+
+    {% block Link %}
+    {% endblock %}
+
+    {% block Style %}
+    {% endblock %}
+
+</head>
+<body class="{% block BodyClass %}{% endblock %}">
+{% block Content %}
+
+{% endblock %}
+
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>#}
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.43/moment-timezone.min.js"></script>#}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="{% static 'scripts/urls.js' %}"></script>
+<script src="{% static 'scripts/notify.js' %}"></script>
+<script src="{% static 'scripts/base.js' %}"></script>
+
+{##}
+
+{#<script src="{% static 'frontend/static/js/lib/jquery-3.2.1.min.js' %}"></script>#}
+{#<script src="{% static 'frontend/static/js/lib/persian-date.min.js' %}"></script>#}
+{#<script src="{% static 'frontend/static/js/lib/persian-datepicker.min.js' %}"></script>#}
+{#<script src="{% static 'frontend/static/js/app.js' %}"></script>#}
+
+<script src="{% static 'frontend/js/bundle.js' %}"></script>
+<script src="{% static 'frontend/js/scripts.js' %}"></script>
+<script src="{% static 'frontend/js/charts/gd-campaign.js' %}"></script>
+<script src="{% static 'frontend/js/jdate.js' %}"></script>
+
+
+<script>
+    {% for message in messages %}
+        createNotify({
+            title: '{{ message.tags }}' == 'success' ? 'موفق' : 'ارور',
+            message: '{{ message }}',
+            theme: '{{ message.tags }}'
+        })
+    {% endfor %}
+
+    $(document).ready(function () {
+        $('.select2-input').select2({
+            width: '100%',
+        });
+
+        $('#ticketProjectsSelect').select2({
+            width: '100%',
+            dropdownParent: $('#addTicketForm'),
+        });
+
+        $('#notifProjectsSelect').select2({
+            width: '100%',
+            dropdownParent: $('#addNotifForm'),
+        });
+
+        $('#uploadProjectSelect').select2({
+            width: '100%',
+            dropdownParent: $('#uploadProjectFileForm'),
+        });
+    });
+
+    function clearInput(id){
+        document.getElementById(id).value = "";
+    }
+</script>
+
+{% block Script %}
+{% endblock %}
+
+{% block Js %}
+{% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,189 @@
+{% load static %}
+<div class="col-12 col-md-2 notifcation">
+    <div class="overly">
+        <div class="inner-notfication pt-2">
+            <div class="btns">
+                {% if request.user.has_new_ticket %}
+                    <div class="btn-change col-3 text-center active text-nowrap text-danger align-items-center d-flex position-relative">
+                        تیکت‌ها
+                        <span class="rounded-circle font-80 text-white position-absolute" style="background-color: #cc0000; right: 58px; width: 1.125rem;">
+                            {{ request.user.get_unseen_tickets.count }}
+                        </span>
+                    </div>
+                {% else %}
+                    <div class="btn-change col-3 text-center active text-nowrap">
+                        تیکت‌ها
+                    </div>
+                {% endif %}
+                {% if request.user.has_new_notification %}
+                    <div class="btn-change col-3 text-center text-danger d-flex position-relative">
+                        اعلانات
+                        <span class="rounded-circle font-80 text-white position-absolute" style="background-color: #cc0000; right: 52px; width: 1.125rem;">
+                            {{ request.user.get_unseen_notifications.count }}
+                        </span>
+                    </div>
+                {% else %}
+                    <div class="btn-change col-3 text-end">اعلانات</div>
+                {% endif %}
+                <div class="col-3 me-1">
+                    <a href="{% url 'support:report_department_list' %}">گزارشات</a>
+                </div>
+                <div class="col-2">
+                    <a href="{% url 'account:logout' %}">خروج</a>
+                </div>
+            </div>
+            <section class="content-notifcation">
+                <div class="content-items p-2 active">
+                    <div class="my-3">
+                        <button data-bs-toggle="modal" data-bs-target="#addTicketModal" class="btn-add-ticket btn btn-primary col-12">
+                            ایجاد تیکت
+                            <span class="font-80">(ثبت مشکل)</span>
+                        </button>
+                    </div>
+                    {% for ticket in tickets|slice:':5' %}
+                        <div class="col-12">
+                            <div class="notifcation-item">
+                                <div class="top">
+                                    <div class="title">
+                                        <span class="right-title">نیاز به بررسی</span>
+                                        <span class="style-conent-box datetime-convert">{{ ticket.get_created_at_timepast }}</span>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    <div class="des-notif style-conent-box">
+                                        {{ ticket.description|truncatechars:50 }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="container-not-found-base mt-5">
+                            <p>چیزی یافت نشد</p>
+                        </div>
+                    {% endfor %}
+                    {% if tickets.count > 0 %}
+                        <div class="all-notif mt-5">
+                            <a href="{% url 'support:ticket' %}">مشاهده همه</a>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="content-items p-2 ">
+                    <div class="my-3">
+                        <button data-bs-toggle="modal" data-bs-target="#addNotifModal" class=" btn btn-primary col-12">ایجاد اعلان</button>
+                    </div>
+                    {% for notification in notifications|slice:':5' %}
+                        <div class="col-12">
+                            <div class="notifcation-item">
+                                <div class="top">
+                                    <div class="title">
+                                        <span class="right-title">{{ notification.title }}</span>
+                                        <span class="style-conent-box">{{ notification.get_created_at_timepast }}</span>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    <div class="des-notif style-conent-box">
+                                        {{ notification.description|truncatechars:40 }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="container-not-found-base mt-5">
+                            <p>چیزی یافت نشد</p>
+                        </div>
+                    {% endfor %}
+                    {% if notifications.count > 0 %}
+                        <div class="all-notif mt-5">
+                            <a href="{% url 'notification:list_department' %}">مشاهده همه</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<!-- Extra components -->
+{% include 'notification/components/add_notification.html' %}
+{% include 'support/components/new-ticket.html' %}
+
+
+{#<div class="content-modal-two modal-request-unit modal-ticket">#}
+{#    <div class="inner-modal">#}
+{#        <form class="p-4" action="{% url 'support:ticket_department' %}" method="post" enctype="multipart/form-data">#}
+{#            {% csrf_token %}#}
+{#            <div class="information-section">#}
+{#                <div class="information-item">#}
+{#                    <label for="lihh">توضیحات</label>#}
+{#                    <textarea name="description" id="" cols="30" rows="10" required></textarea>#}
+{#                </div>#}
+{#                <div class="information-item">#}
+{#                    <div class="uploade-imge">#}
+{#                        <label class="item-upload" for="add">#}
+{#                            آپلود فایل#}
+{#                        </label>#}
+{#                        <input type="file" name="file" id="add" hidden="">#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="information-item container-select-choices">#}
+{#                    <div class="select-choices">#}
+{#                        <div>#}
+{#                            <label for="">#}
+{#                                همه واحد ها#}
+{#                            </label>#}
+{#                            <input type="radio" name="select_department_ticket" value="all" checked>#}
+{#                        </div>#}
+{#                        <div>#}
+{#                            <label for="">#}
+{#                                انتخاب واحد#}
+{#                            </label>#}
+{#                            <input type="radio" name="select_department_ticket" value="select">#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="select-choices-content">#}
+{#                        <label for="lihh">نام واحد:</label>#}
+{#                        <div class="units d-flex flex-wrap">#}
+{#                            {% for department in departments %}#}
+{#                                <div class="d-flex align-items-center justify-content-center col-6 col-md-3 p-2">#}
+{#                                    <label class="mt-2" for="inp-to-dep-{{ forloop.counter }}">#}
+{#                                        {{ department.name }}#}
+{#                                    </label>#}
+{#                                    <input type="checkbox" id="inp-to-dep-{{ forloop.counter }}" name="departments"#}
+{#                                           value="{{ department.id }}"#}
+{#                                    >#}
+{#                                </div>#}
+{#                            {% endfor %}#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="information-item container-select-choices">#}
+{#                    <div class="select-choices">#}
+{#                        <div>#}
+{#                            <label for="">#}
+{#                                همه پروژه ها#}
+{#                            </label>#}
+{#                            <input type="radio" name="select_project_ticket" value="all" checked>#}
+{#                        </div>#}
+{#                        <div>#}
+{#                            <label for="">#}
+{#                                انتخاب پروژه#}
+{#                            </label>#}
+{#                            <input type="radio" name="select_project_ticket" value="select">#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="select-choices-content">#}
+{#                        <label for="lihh"> پروژه ها :</label>#}
+{#                        <select name="projects" multiple>#}
+{#                            {% for project in projects %}#}
+{#                                <option value="{{ project.id }}">{{ project.name }}</option>#}
+{#                            {% endfor %}#}
+{#                        </select>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="information-section">#}
+{#                <button class="d-inline-block col-12 p-2 bg-primary text-white">ثبت</button>#}
+{#            </div>#}
+{#        </form>#}
+{#    </div>#}
+{#</div>#}

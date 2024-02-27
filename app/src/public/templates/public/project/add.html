@@ -1,0 +1,364 @@
+{% extends 'base/base_template.html' %}
+{% load static %}
+{% load render_partial %}
+
+{% block Title %}
+    ایجاد پروژه
+{% endblock %}
+
+{% block BodyClass %}
+    has-rtl nk-body ui-rounder has-sidebar no-touch nk-nio-theme
+{% endblock %}
+
+{% block Content %}
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main">
+            <!-- sidebar @s -->
+            {% render_partial 'public.components.MenuComponent' %}
+            <!-- sidebar @e -->
+            <!-- wrap @s -->
+            <div class="nk-wrap">
+                <!-- main header @s -->
+                {% include 'base/components/header.html' %}
+                <!-- main header @e -->
+                <!-- content @s -->
+                <div class="nk-content nk-content-fluid">
+                    <div class="container-xl wide-xl">
+                        <div class="nk-content-body">
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block-between g-3">
+                                    <div class="nk-block-head-content">
+                                        <h3 class="nk-block-title page-title">ایجاد پروژه</h3>
+                                        <nav>
+                                            <ul class="breadcrumb breadcrumb-arrow">
+                                                <li class="breadcrumb-item"><a href="{% url 'public:index' %}">صفحه
+                                                    اصلی</a></li>
+                                                <li class="breadcrumb-item"><a>پروژه ها</a></li>
+                                                <li class="breadcrumb-item active">ایجاد پروژه</li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                    <div class="nk-block-head-content">
+                                        <div class="toggle-wrap nk-block-tools-toggle">
+                                            <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1"
+                                               data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
+                                            <div class="toggle-expand-content" data-content="pageMenu">
+                                                <ul class="nk-block-tools g-3">
+                                                    <li class="nk-block-tools-opt">
+                                                        <div class="drodown">
+                                                            <a href="#" class="dropdown-toggle btn btn-icon btn-primary"
+                                                               data-bs-toggle="dropdown"><em
+                                                                    class="icon ni ni-plus"></em></a>
+                                                            <div class="dropdown-menu dropdown-menu-end">
+                                                                <ul class="link-list-opt no-bdr">
+                                                                    <li>
+                                                                        <a href="#"><span>ایمپورت از فایل اکسل</span></a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                </div>
+                                <!-- .nk-block-between -->
+                            </div>
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block nk-block-lg">
+                                    <div class="card">
+                                        <div class="card-inner">
+                                            <div class="card-head">
+                                                <h5 class="card-title">اطلاعات پروژه</h5>
+                                            </div>
+                                            <form action="{% url 'public:project__add' %}"
+                                                  class="form-validate is-alter" method="post">
+                                                {% if inquiry %}
+                                                    <input type="hidden" name="inquiry" value="{{ inquiry.id }}">
+                                                {% endif %}
+                                                {% csrf_token %}
+                                                <div class="row g-4">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="number_id">شماره
+                                                                درخواست</label>
+                                                            <div class="form-control-wrap">
+                                                                <input type="text" class="form-control" name="number_id"
+                                                                       id="number_id"
+                                                                       value="{{ inquiry.number_id|default:'' }}"
+                                                                       placeholder="1234">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="name_project">نام درخواست</label>
+                                                            <div class="form-control-wrap">
+                                                                <input type="text" class="form-control" name="name"
+                                                                       placeholder="نام درخواست"
+                                                                       id="name_project" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="client_user">مشتری</label>
+                                                            <div class="form-control-wrap">
+                                                                <select id="client_user" name="task_master"
+                                                                        class="form-select js-select2 select-by-filter" data-search="on"
+                                                                        tabindex="-1" aria-hidden="true" required value="{{ request.GET.task_master }}">
+                                                                    {% for task_master in task_masters %}
+                                                                        <option value="{{ task_master.id }}">{{ task_master.name }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="time_start">تاریخ ابلاغ به
+                                                                کار</label>
+                                                            <div class="form-control-wrap">
+                                                                <input type="text" name="time_start" id="time_start"
+                                                                       class="form-control date-picker-alt"
+                                                                       placeholder="روز-ماه-سال" readonly
+                                                                       data-date-format='yyyy-mm-d'>
+                                                            </div>
+                                                            <div class="form-note">فرمت تاریخ <code>روز-ماه-سال</code>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="time_end">تاریخ اتمام
+                                                                قرارداد</label>
+                                                            <div class="form-control-wrap">
+                                                                <input type="text" name="time_end" id="time_end"
+                                                                       class="form-control date-picker-alt"
+                                                                       placeholder="روز-ماه-سال" readonly>
+                                                            </div>
+                                                            <div class="form-note">فرمت تاریخ <code>روز-ماه-سال</code>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="is_paid">وضعیت
+                                                                پرداخت</label>
+                                                            <div class="form-control-wrap">
+                                                                <select name="is_paid" id="is_paid"
+                                                                        class="form-select js-select2">
+                                                                    <option value="false">پرداخت نشده</option>
+                                                                    <option value="true">پرداخت شده</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="prepayment_datetime">تاریخ
+                                                                پیش پرداخت</label>
+                                                            <div class="form-control-wrap">
+                                                                <input type="text" name="prepayment_datetime"
+                                                                       id="prepayment_datetime"
+                                                                       class="form-control date-picker-alt"
+                                                                       placeholder="روز-ماه-سال" readonly>
+                                                            </div>
+                                                            <div class="form-note">فرمت تاریخ <code>روز-ماه-سال</code>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="count_total">تعداد کل</label>
+                                                            <div class="form-control-wrap">
+                                                                <input type="number" class="form-control"
+                                                                       name="count_total"
+                                                                       placeholder="تعداد کل"
+                                                                       id="count_total" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="count_remaining">تعداد باقی
+                                                                مانده</label>
+                                                            <div class="form-control-wrap">
+                                                                <input type="number" class="form-control"
+                                                                       name="count_remaining"
+                                                                       placeholder="تعداد باقی مانده"
+                                                                       id="count_remaining" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="status">وضعیت
+                                                                پرداخت</label>
+                                                            <div class="form-control-wrap">
+                                                                <select name="status" id="status"
+                                                                        class="form-select js-select2">
+                                                                    <option value="checking" selected="">در حال بررسی
+                                                                        قبل اجرا
+                                                                    </option>
+                                                                    <option value="under_construction">در حال ساخت
+                                                                    </option>
+                                                                    <option value="posted">ارسال شده</option>
+                                                                    <option value="paused">متوقف شده</option>
+                                                                    <option value="completed">تایید و اتمام</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="mass_delivery_date">تاریخ
+                                                                تحویل انبوه</label>
+                                                            <div class="form-control-wrap">
+                                                                <input type="text" name="mass_delivery_date"
+                                                                       id="mass_delivery_date"
+                                                                       class="form-control date-picker-alt"
+                                                                       placeholder="روز-ماه-سال" readonly>
+                                                            </div>
+                                                            <div class="form-note">فرمت تاریخ <code>روز-ماه-سال</code>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="price">قیمت</label>
+                                                            <div class="form-control-wrap">
+                                                                <input type="number" name="price"
+                                                                       id="price"
+                                                                       class="form-control"
+                                                                       placeholder="قیمت">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label"
+                                                                   for="count_remaining">نمونه</label>
+                                                            <div class="form-control-wrap text-center">
+                                                                <ul class="custom-control-group">
+                                                                    <li>
+                                                                        <div class="custom-control custom-control-sm custom-radio custom-control-pro">
+                                                                            <input type="radio"
+                                                                                   class="custom-control-input"
+                                                                                   value="false"
+                                                                                   name="has_sample" id="btnRadio1"
+                                                                                   oninput="toggleRelatedField('sample_date_cnt', false)"
+                                                                                   checked>
+                                                                            <label class="custom-control-label"
+                                                                                   for="btnRadio1">ندارد</label>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li>
+                                                                        <div class="custom-control custom-control-sm custom-radio custom-control-pro">
+                                                                            <input type="radio"
+                                                                                   class="custom-control-input"
+                                                                                   value="true"
+                                                                                   name="has_sample" id="btnRadio2"
+                                                                                   oninput="toggleRelatedField('sample_date_cnt', true)">
+                                                                            <label class="custom-control-label"
+                                                                                   for="btnRadio2">دارد</label>
+                                                                        </div>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 d-none" id="sample_date_cnt">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="sample_delivery_date">تاریخ
+                                                                تحویل نمونه</label>
+                                                            <div class="form-control-wrap">
+                                                                <input type="text" name="sample_delivery_date"
+                                                                       id="sample_delivery_date"
+                                                                       class="form-control date-picker-alt"
+                                                                       placeholder="روز-ماه-سال" readonly>
+                                                            </div>
+                                                            <div class="form-note">فرمت تاریخ <code>روز-ماه-سال</code>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="item">ایتم پروژه</label>
+                                                            <div class="form-control-wrap">
+                                                                <textarea name="item" id="item"
+                                                                          class="form-control"
+                                                                          placeholder="ایتم پروژه"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="description">توضیحات</label>
+                                                            <div class="form-control-wrap">
+                                                                <textarea name="description" id="description"
+                                                                          class="form-control"
+                                                                          placeholder="توضیحات"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="progress_percentage">درصد
+                                                                پیشرفت</label>
+                                                            <div class="form-control-wrap">
+                                                                <input type="number" class="form-control"
+                                                                       name="progress_percentage"
+                                                                       placeholder="درصد پیشرفت"
+                                                                       id="progress_percentage" required value="0">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="form-group">
+                                                            <ul class="custom-control-group col-12 m-0">
+                                                                <li class="col-12">
+                                                                    <div class="custom-control custom-control-sm custom-checkbox custom-control-pro col-12">
+                                                                        <input type="checkbox"
+                                                                               class="custom-control-input"
+                                                                               name="btnCheckControl"
+                                                                               id="btnCheckControl1">
+                                                                        <label class="custom-control-label col-12"
+                                                                               for="btnCheckControl1">ارسال اعلان به
+                                                                            تمامی واحدها</label>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 text-left">
+                                                        <div class="form-group">
+                                                            <button type="submit" class="btn btn-lg btn-primary">
+                                                                ایجاد پروژه
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- .components-preview -->
+                        </div>
+                    </div>
+                </div>
+                <!-- content @e -->
+                <!-- footer @s -->
+                {% include 'base/components/footer.html' %}
+                <!-- footer @e -->
+            </div>
+            <!-- wrap @e -->
+        </div>
+        <!-- main @e -->
+    </div>
+{% endblock %}

@@ -1,0 +1,335 @@
+{% extends 'base/base_template.html' %}
+{% load static %}
+{% load render_partial %}
+
+{% block Title %}
+    واحد - {{ department.name }}
+{% endblock %}
+
+{% block BodyClass %}
+    has-rtl nk-body ui-rounder has-sidebar no-touch nk-nio-theme
+{% endblock %}
+
+
+{% block Content %}
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main">
+            <!-- sidebar @s -->
+            {% render_partial 'public.components.MenuComponent' %}
+            <!-- sidebar @e -->
+            <!-- wrap @s -->
+            <div class="nk-wrap">
+                <!-- main header @s -->
+                {% include 'base/components/header.html' %}
+                <!-- main header @e -->
+                <!-- content @s -->
+                <div class="nk-content nk-content-fluid">
+                    <div class="container-xl wide-xl">
+                        <div class="nk-content-body">
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block-between g-3">
+                                    <div class="nk-block-head-content">
+                                        <h3 class="nk-block-title page-title">جزئیات واحد</h3>
+                                        <nav>
+                                            <ul class="breadcrumb breadcrumb-arrow">
+                                                <li class="breadcrumb-item"><a href="{% url 'public:index' %}">صفحه
+                                                    اصلی</a></li>
+                                                <li class="breadcrumb-item"><a>واحد ها</a></li>
+                                                <li class="breadcrumb-item"><a
+                                                        href="{% url 'public:department__list' %}">لیست
+                                                    واحد ها</a></li>
+                                                <li class="breadcrumb-item active">{{ department.name }}</li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                    <div class="nk-block-head-content">
+                                        <div class="toggle-wrap nk-block-tools-toggle">
+                                            <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1"
+                                               data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
+                                            <div class="toggle-expand-content" data-content="pageMenu">
+                                                <ul class="nk-block-tools g-3">
+                                                    <li>
+                                                        <a href="#" class="btn btn-white btn-dim btn-outline-light"><em
+                                                                class="icon ni ni-download-cloud"></em><span>خروجی گرفتن</span></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                </div>
+                                <!-- .nk-block-between -->
+                            </div>
+                            <div class="nk-block">
+                                <div class="row g-gs">
+                                    <div class="col-xl-4">
+                                        <div class="card">
+                                            <div class="card-inner-group">
+                                                <div class="card-inner">
+                                                    <div class="user-card user-card-s2">
+                                                        <div class="user-avatar lg bg-primary">
+                                                            <em class="icon ni ni-building"></em>
+                                                        </div>
+                                                        <div class="user-info">
+                                                            <h5>{{ department.name }}</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {% if has_perm_to_modify %}
+                                                    <div class="card-inner card-inner-sm">
+                                                        <ul class="btn-toolbar justify-center gx-1">
+                                                            <li>
+                                                                <a href="{% url 'public:task__add' %}?department={{ department.id }}"
+                                                                   class="btn btn-trigger btn-icon text-success"
+                                                                   data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                                   aria-label="ایجاد تسک"
+                                                                   data-bs-original-title="ایجاد تسک">
+                                                                    <em
+                                                                            class="icon ni ni-task"></em>
+                                                                </a>
+                                                            </li>
+                                                            <li data-bs-toggle="modal"
+                                                                data-bs-target="#modal-update-object">
+                                                                <a class="btn btn-trigger btn-icon"
+                                                                   data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                                   aria-label="ویرایش"
+                                                                   data-bs-original-title="ویرایش"><em
+                                                                        class="icon ni ni-pen"></em></a>
+                                                            </li>
+                                                            {% if has_perm_to_delete %}
+                                                                <li data-bs-toggle="modal"
+                                                                    data-bs-target="#modal-delete-object">
+                                                                    <a class="btn btn-trigger btn-icon text-danger"
+                                                                       data-bs-toggle="tooltip"
+                                                                       data-bs-placement="bottom"
+                                                                       aria-label="حذف" data-bs-original-title="حذف"><em
+                                                                            class="icon ni ni-trash-empty"></em></a>
+
+                                                                </li>
+                                                            {% endif %}
+                                                        </ul>
+                                                    </div>
+                                                {% endif %}
+                                                <div class="card-inner">
+                                                    <div class="row gy-3 justify-content-center text-center">
+                                                        <div class="col">
+                                                            <div class="profile-stats">
+                                                                <span class="amount">{{ department.get_users.count }}</span>
+                                                                <span class="sub-text">تعداد کاربران</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="profile-stats">
+                                                                <span class="amount">{{ department.get_tasks_remaining.count }}</span>
+                                                                <span class="sub-text">تعداد کل تسک ها</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row gy-3 justify-content-center text-center mt-2">
+                                                        <div class="col">
+                                                            <div class="profile-stats">
+                                                                <span class="amount">{{ department.get_tickets.count }}</span>
+                                                                <span class="sub-text">تعداد تیکت ها</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="profile-stats">
+                                                                <span class="amount">{{ department.get_notifications.count }}</span>
+                                                                <span class="sub-text">تعداد اعلانات</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- .card-inner -->
+                                                <div class="card-inner">
+                                                    <h6 class="overline-title mb-2">وضعیت تسک ها</h6>
+                                                    <div class="text-center">
+                                                        <span class="badge badge-pill badge-dim bg-success">تمام شده({{ department.get_tasks_finished.count }})</span>
+                                                        <span class="badge badge-pill badge-dim bg-warning">در صف({{ department.get_tasks_queue.count }})</span>
+                                                        <span class="badge badge-pill badge-dim bg-primary">در حال انجام({{ department.get_tasks_progress.count }})</span>
+                                                        <span class="badge badge-pill badge-dim bg-gray">نگه داشته شده({{ department.get_tasks_hold.count }})</span>
+                                                        <span class="badge badge-pill badge-dim bg-danger">نیاز به بررسی({{ department.get_tasks_need_to_check.count }})</span>
+                                                        <span class="badge badge-pill badge-dim bg-dark">نیاز به برنامه ریزی({{ department.get_tasks_need_to_replan.count }})</span>
+                                                    </div>
+                                                </div>
+                                                <!-- .card-inner -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- .col -->
+                                    <div class="col-xl-8">
+                                        <div class="card">
+                                            <div class="card-inner">
+                                                <div class="nk-block">
+                                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                                        <h6 class="lead-text">تسک های های اخیر</h6>
+                                                        <a href="{% url 'public:task__list' %}?to_department={{ department.id }}&filter=true"
+                                                           class="fs-13px">مشاهده همه</a>
+                                                    </div>
+                                                    <div class="nk-tb-list nk-tb-ulist is-compact card">
+                                                        <div class="nk-tb-item nk-tb-head">
+                                                            <div class="nk-tb-col">
+                                                                <span class="sub-text">نام</span>
+                                                            </div>
+                                                            <div class="nk-tb-col tb-col-sm text-center">
+                                                                <span class="sub-text">پروژه</span>
+                                                            </div>
+                                                            <div class="nk-tb-col text-center">
+                                                                <span class="sub-text">اولویت</span>
+                                                            </div>
+                                                            <div class="nk-tb-col nk-tb-col-status text-end"><span
+                                                                    class="sub-text d-none d-md-block">وضعیت</span>
+                                                            </div>
+                                                        </div>
+                                                        {% for task in department.get_tasks|slice:':8' %}
+                                                            <div class="nk-tb-item">
+                                                                <div class="nk-tb-col">
+                                                                    <a href="{{ task.get_absolute_url }}"><span
+                                                                            class="fw-bold">{{ task.name|truncatechars:30 }}</span></a>
+                                                                </div>
+                                                                <div class="nk-tb-col tb-col-sm text-center">
+                                                                    <a href="{{ task.project.get_absolute_url }}"><span
+                                                                            class="fw-bold">{{ task.project.name|truncatechars:30 }}</span></a>
+                                                                </div>
+                                                                <div class="nk-tb-col text-center">
+                                                                    <span class="badge badge-sm badge-dim fs-11px bg-gray">{{ task.priority }}</span>
+                                                                </div>
+                                                                <div class="nk-tb-col nk-tb-col-status text-end">
+                                                                    <div class="dot d-md-none dot-{{ task.get_last_status.status }}"></div>
+                                                                    <span class="badge badge-sm badge-dim d-none d-md-inline-flex fs-11px bg-{{ task.get_last_status.status }}">
+                                                                        {{ task.get_status_label }}
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        {% empty %}
+                                                            <div class="container-not-found-base">
+                                                                <p>چیزی یافت نشد</p>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                    <!-- .nk-tb-list -->
+                                                </div>
+                                                <div class="nk-block">
+                                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                                        <h6 class="lead-text">برخی از کاربران</h6>
+                                                        <a href="{% url 'account:user__list' %}?department={{ department.id }}&filter=true"
+                                                           class="fs-13px">مشاهده همه</a>
+                                                    </div>
+                                                    <div class="nk-tb-list nk-tb-ulist is-compact card">
+                                                        <div class="nk-tb-item nk-tb-head">
+                                                            <div class="nk-tb-col">
+                                                                <span class="sub-text">نام</span>
+                                                            </div>
+                                                            <div class="nk-tb-col text-center">
+                                                                <span class="sub-text">ایمیل</span>
+                                                            </div>
+                                                        </div>
+                                                        {% for user in department.get_users|slice:':8' %}
+                                                            <div class="nk-tb-item">
+                                                                <div class="nk-tb-col">
+                                                                    <a href="{{ user.get_absolute_url }}"><span
+                                                                            class="fw-bold">{{ user.get_full_name|truncatechars:30 }}</span></a>
+                                                                </div>
+                                                                <div class="nk-tb-col text-center">
+                                                                    <span>{{ user.get_email }}</span>
+                                                                </div>
+                                                            </div>
+                                                        {% empty %}
+                                                            <div class="container-not-found-base">
+                                                                <p>چیزی یافت نشد</p>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                    <!-- .nk-tb-list -->
+                                                </div>
+                                            </div>
+                                            <!-- .card-inner -->
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+                                    <!-- .col -->
+                                </div>
+                                <!-- .row -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- content @e -->
+                <!-- footer @s -->
+                {% include 'base/components/footer.html' %}
+                <!-- footer @e -->
+            </div>
+            <!-- wrap @e -->
+        </div>
+        <!-- main @e -->
+        <!-- modals -->
+        <div class="modal fade" tabindex="-1" id="modal-delete-object" aria-modal="true" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body modal-body-lg text-center">
+                        <div class="nk-modal">
+                            <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-trash-empty bg-danger"></em>
+                            <h4 class="nk-modal-title">حذف واحد</h4>
+                            <div class="nk-modal-text">
+                                <p class="bg-outline-danger">
+                                    ایا از حذف واحد
+                                    <b>{{ department.name }}</b>
+                                    اطمینان دارید ؟ با حذف واحد تمام موارد مربوطه به ان از جمله پروژه ها ، استعلامات ،
+                                    فایل ها و
+                                    ..
+                                    حذف خواهند شد و امکان بازگشت وجود ندارد
+                                </p>
+                            </div>
+                            <div class="nk-modal-action mt-5">
+                                <a class="btn btn-lg btn-mw btn-light m-1" data-bs-dismiss="modal">لغو</a>
+                                <a href="{% url 'public:department__delete' department_id=department.id %}"
+                                   class="btn btn-lg btn-mw btn-danger m-1">بله ، حذف واحد</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- .modal-body -->
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" tabindex="-1" id="modal-update-object">
+            <div class="modal-dialog modal-dialog-top" role="document">
+                <div class="modal-content">
+                    <a href="#" class="close" data-dismiss="modal" aria-label="بستن">
+                        <em class="icon ni ni-cross"></em>
+                    </a>
+                    <div class="modal-header">
+                        <h5 class="modal-title">تغییر واحد</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'public:department__update' department_id=department.id %}"
+                              class="form-validate is-alter" method="post">
+                            {% csrf_token %}
+                            <div class="row g-4">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="name">نام</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" name="name"
+                                                   placeholder="نام واحد"
+                                                   id="name" required value="{{ department.name|default:'' }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-left">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-lg btn-primary">
+                                            بروزرسانی واحد
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end modals -->
+    </div>
+{% endblock %}

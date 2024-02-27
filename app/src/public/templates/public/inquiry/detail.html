@@ -1,0 +1,908 @@
+{% extends 'base/base_template.html' %}
+{% load static %}
+{% load render_partial %}
+
+{% block Title %}
+    جزئیات استعلام - {{ inquiry.title }}
+{% endblock %}
+
+{% block BodyClass %}
+    has-rtl nk-body ui-rounder has-sidebar no-touch nk-nio-theme
+{% endblock %}
+
+{% block Style %}
+    <style>
+        .data-value {
+            width: 50%;
+            text-align: center;
+            display: block;
+        }
+
+        @media (max-width: 767.98px) {
+            .data-value {
+                width: 100%;
+            }
+        }
+
+    </style>
+{% endblock %}
+
+{% block Content %}
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main">
+            <!-- sidebar @s -->
+            {% render_partial 'public.components.MenuComponent' %}
+            <!-- sidebar @e -->
+            <!-- wrap @s -->
+            <div class="nk-wrap">
+                <!-- main header @s -->
+                {% include 'base/components/header.html' %}
+                <!-- main header @e -->
+                <!-- content @s -->
+                <div class="nk-content nk-content-fluid">
+                    <div class="container-xl wide-xl">
+                        <div class="nk-content-body">
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block-between g-3">
+                                    <div class="nk-block-head-content">
+                                        <h3 class="nk-block-title page-title">
+                                            جزئیات استعلام
+                                            <b>{{ inquiry.name }}</b>
+                                        </h3>
+                                        <nav>
+                                            <ul class="breadcrumb breadcrumb-arrow">
+                                                <li class="breadcrumb-item"><a href="{% url 'public:index' %}">صفحه
+                                                    اصلی</a></li>
+                                                <li class="breadcrumb-item"><a>استعلامات</a></li>
+                                                <li class="breadcrumb-item">
+                                                    <a href="{% url 'public:task__list' %}">
+                                                        لیست استعلامات
+                                                    </a></li>
+                                                <li class="breadcrumb-item"><a>{{ inquiry.title }}</a></li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                    <div class="nk-block-head-content d-flex justify-content-between gx-1">
+                                        {% if has_perm_to_modify %}
+                                            <div class="dropdown">
+                                                <button
+                                                        class="btn btn-outline-light bg-white d-none d-sm-inline-flex dropdown-toggle"
+                                                        data-bs-toggle="dropdown">
+                                                     <span>
+                                                        عملیات
+                                                    </span>
+                                                    <em class="icon ni ni-setting"></em>
+                                                </button>
+                                                <button
+                                                        class="btn btn-icon btn-outline-light bg-white d-inline-flex d-sm-none dropdown-toggle"
+                                                        data-bs-toggle="dropdown">
+                                                    <em class="icon ni ni-setting">
+                                                    </em>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <ul class="link-list-opt">
+                                                        {% if not inquiry.get_project %}
+                                                            <li>
+                                                                <a href="{{ inquiry.get_referral_to_project_url }}"
+                                                                   class="d-flex justify-content-between text-success">
+                                                                    <span>تبدیل به پروژه</span>
+                                                                    <em class="icon ni ni-note-add-c"></em>
+                                                                </a>
+                                                            </li>
+                                                        {% endif %}
+                                                        <li data-bs-toggle="modal"
+                                                            data-bs-target="#modal-update-object">
+                                                            <a class="d-flex justify-content-between text-info">
+                                                                <span>ویرایش</span>
+                                                                <em class="icon ni ni-pen2"></em>
+                                                            </a>
+                                                        </li>
+                                                        <li data-bs-toggle="modal"
+                                                            data-bs-target="#modal-delete-object">
+                                                            <a class="d-flex justify-content-between text-danger">
+                                                                <span>حذف</span>
+                                                                <em class="icon ni ni-trash-empty"></em>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                        {% if has_perm_to_manage_status %}
+                                            {% if not inquiry.status %}
+                                                <div>
+                                                    <button data-bs-toggle="modal"
+                                                            data-bs-target="#modal-manage-status-reject"
+                                                            class="btn btn-outline-danger bg-danger text-white d-none d-sm-inline-flex">
+                                                         <span>
+                                                           رد
+                                                        </span>
+                                                        <em class="icon ni ni-cross-circle"></em>
+                                                    </button>
+                                                    <button data-bs-toggle="modal"
+                                                            data-bs-target="#modal-manage-status-reject"
+                                                            class="btn btn-icon btn-outline-danger bg-danger text-white d-inline-flex d-sm-none">
+                                                        <em class="icon ni ni ni-cross-circle"></em></button>
+                                                </div>
+                                            {% endif %}
+
+                                            {% if not inquiry.status or inquiry.status.status == 'rejected' %}
+                                                <div>
+                                                    <button data-bs-toggle="modal"
+                                                            data-bs-target="#modal-manage-status-accept"
+                                                            class="btn btn-outline-success bg-success text-white d-none d-sm-inline-flex">
+                                                         <span>
+                                                           تایید
+                                                        </span>
+                                                        <em class="icon ni ni-check-circle"></em>
+                                                    </button>
+                                                    <button data-bs-toggle="modal"
+                                                            data-bs-target="#modal-manage-status-accept"
+                                                            class="btn btn-icon btn-outline-success bg-success text-white d-inline-flex d-sm-none">
+                                                        <em class="icon ni ni ni-check-circle"></em></button>
+                                                </div>
+                                            {% endif %}
+
+                                        {% endif %}
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                </div>
+                                <!-- .nk-block-between -->
+                            </div>
+                            <div class="nk-block">
+                                <div class="row gy-5">
+                                    <div class="col-12">
+                                        <div class="nk-block-head">
+                                            <div class="nk-block-head-content">
+                                                <h5 class="nk-block-title title">اطلاعات پایه</h5>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <ul class="data-list is-compact">
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">عنوان</div>
+                                                        <div class="data-value">{{ inquiry.title }}</div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">شماره استعلام</div>
+                                                        <div class="data-value">{{ inquiry.number_id|default:'-' }}</div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">واحد استعلام گیرنده</div>
+                                                        <div class="data-value">
+                                                            <a href="{{ inquiry.from_department.get_absolute_url }}">
+                                                                {{ inquiry.from_department.name }}
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">مشتری</div>
+                                                        <div class="data-value">
+                                                            <a href="{{ inquiry.task_master.get_absolute_url }}">
+                                                                {{ inquiry.task_master.name }}
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                {% if inquiry.get_project %}
+                                                    <li class="data-item">
+                                                        <div class="data-col">
+                                                            <div class="data-label">پروژه</div>
+                                                            <div class="data-value">
+                                                                <a href="{{ inquiry.project.get_absolute_url }}">
+                                                                    {{ inquiry.project.name }}
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                {% endif %}
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">وضعیت</div>
+                                                        <div class="data-value">
+                                                            <span class="badge p-1 bg-{{ inquiry.state }}">{{ inquiry.get_state_label }}</span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">وضعیت بررسی</div>
+                                                        <div class="data-value">
+                                                            <span class="badge p-1 bg-{{ inquiry.status.status }}">{{ inquiry.get_status_label }}</span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">تاریخ دریافت</div>
+                                                        <div class="data-value">
+                                                            {{ inquiry.time_receive|default:'-' }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">مهلت پاسخ</div>
+                                                        <div class="data-value">
+                                                            {{ inquiry.time_deadline_response|default:'-' }}
+                                                            {% with remaining=inquiry.get_remaining_deadline %}
+                                                                {% if remaining %}
+                                                                    <span class="badge badge-dim rounded-pill text-soft fs-10px {% if remaining > 0 %}bg-outline-info{% else %}bg-outline-danger{% endif %}">
+                                                                        {{ inquiry.get_remaining_deadline }}
+                                                                        روز
+                                                                    </span>
+                                                                {% endif %}
+                                                            {% endwith %}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">تاریخ ارسال</div>
+                                                        <div class="data-value">
+                                                            {{ inquiry.time_submit|default:'-' }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">زمان ثبت</div>
+                                                        <div class="data-value datetime-convert">
+                                                            {{ inquiry.get_created_at|default:'-' }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">توضیحات</div>
+                                                        <div class="data-value">{{ inquiry.description|default:'-' }}</div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- .col -->
+                                    {% if inquiry.status %}
+                                        <div class="col-12">
+                                            <div class="nk-block-head">
+                                                <div class="nk-block-head-content">
+                                                    <h5 class="nk-block-title title">اطلاعات تکمیلی</h5>
+                                                </div>
+                                            </div>
+                                            <div class="card">
+                                                <ul class="data-list is-compact">
+                                                    <li class="data-item">
+                                                        <div class="data-col">
+                                                            <div class="data-label">وضعیت بررسی</div>
+                                                            <div class="data-value">
+                                                                <span class="badge p-1 bg-{{ inquiry.status.status }}">{{ inquiry.get_status_label }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="data-item">
+                                                        <div class="data-col">
+                                                            <div class="data-label">توضیحات وضعیت</div>
+                                                            <div class="data-value">
+                                                                {{ inquiry.status.description|default:'-' }}
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li class="data-item">
+                                                        <div class="data-col">
+                                                            <div class="data-label">فایل پیوست</div>
+                                                            <div class="data-value">
+                                                                {% if inquiry.status.file %}
+                                                                    <a href="{{ inquiry.status.file.url }}"
+                                                                       class="view-file">
+                                                                        دانلود و مشاهده
+                                                                    </a>
+                                                                {% else %}
+                                                                    <span>
+                                                                        <em class="icon ni ni-cross-c text-danger"></em>
+                                                                    </span>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    <!-- .col -->
+                                    <div class="col-12">
+                                        <div class="nk-block-head">
+                                            <div class="nk-block-head-content d-flex justify-content-between gx-1 align-items-center">
+                                                <h5 class="nk-block-title title">فایل های پیوست</h5>
+                                                <div>
+                                                    <div>
+                                                        <button data-bs-toggle="modal"
+                                                                data-bs-target="#modal-create-file-object"
+                                                                class="btn btn-outline-info bg-info text-white d-none d-sm-inline-flex">
+                                                                    <span>
+                                                                       اپلود فایل
+                                                                    </span>
+                                                            <em class="icon ni ni-upload"></em>
+                                                        </button>
+                                                        <button data-bs-toggle="modal"
+                                                                data-bs-target="#modal-create-file-object"
+                                                                class="btn btn-icon btn-outline-info bg-info text-white d-inline-flex d-sm-none">
+                                                            <em class="icon ni ni ni-upload"></em>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="nk-block">
+                                            <div class="card card-stretch">
+                                                <div class="card-inner-group">
+                                                    <!-- .card-inner -->
+                                                    <div class="card-inner p-2">
+                                                        <div class="nk-tb-list nk-tb-tnx">
+                                                            <div class="nk-tb-item nk-tb-head text-center">
+                                                                <div class="nk-tb-col"><span>نام</span></div>
+                                                                <div class="nk-tb-col"><span>واحد ثبت کننده</span></div>
+                                                                <div class="nk-tb-col tb-col-md"><span>توضیحات</span></div>
+                                                                <div class="nk-tb-col text-center">
+                                                                    <span>فایل ها</span>
+                                                                </div>
+                                                                <div class="nk-tb-col nk-tb-col-tools"></div>
+                                                            </div>
+                                                            {% for file in inquiry_files %}
+                                                                <!-- .nk-tb-item -->
+                                                                <div class="nk-tb-item text-center">
+                                                                    <div class="nk-tb-col">
+                                                                        <span>{{ file.name }}</span>
+                                                                    </div>
+                                                                    <div class="nk-tb-col">
+                                                                        {% if file.from_department == user.department %}
+                                                                            <span>از طرف شما</span>
+                                                                        {% else %}
+                                                                            <a href="{{ file.from_department.get_absolute_url }}">{{ file.from_department.name }}</a>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                    <div class="nk-tb-col tb-col-md">
+                                                                        {{ file.description|truncatechars:30|default:'-' }}
+                                                                    </div>
+                                                                    <div class="nk-tb-col">
+                                                                        {% for file in file.get_files %}
+                                                                            <span class="badge badge-pill bg-primary">
+                                                                                <a href="{{ file.file.url }}"
+                                                                                   class="view-file text-white">
+                                                                                    فایل
+                                                                                    {{ forloop.counter }}
+                                                                                </a>
+                                                                            </span>
+                                                                        {% endfor %}
+                                                                    </div>
+                                                                    <div class="nk-tb-col nk-tb-col-tools">
+                                                                        <ul class="nk-tb-actions gx-2">
+                                                                            <li class="nk-tb-action-hidden"
+                                                                                data-bs-toggle="modal"
+                                                                                data-bs-target="#modal-detail-file-object-{{ file.id }}">
+                                                                                <a
+                                                                                        class="bg-white btn btn-sm btn-outline-light btn-icon btn-tooltip"
+                                                                                        aria-label="جزئیات"
+                                                                                        data-bs-original-title="جزئیات"><em
+                                                                                        class="icon ni ni-eye"></em></a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <div class="dropdown">
+                                                                                    <a href="#"
+                                                                                       class="dropdown-toggle bg-white btn btn-sm btn-outline-light btn-icon"
+                                                                                       data-bs-toggle="dropdown"
+                                                                                       aria-expanded="false"><em
+                                                                                            class="icon ni ni-more-h"></em></a>
+                                                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                                                         style="">
+                                                                                        <ul class="link-list-opt">
+                                                                                            <li data-bs-toggle="modal"
+                                                                                                data-bs-target="#modal-detail-file-object-{{ file.id }}">
+                                                                                                <a><em
+                                                                                                        class="icon ni ni-eye"></em><span>مشاهده جزئیات</span></a>
+                                                                                            </li>
+                                                                                            {% if file.from_department == user.department %}
+                                                                                                <li class="text-danger"
+                                                                                                    data-bs-toggle="modal"
+                                                                                                    data-bs-target="#modal-delete-file-object-{{ file.id }}">
+                                                                                                    <a><em
+                                                                                                            class="icon ni ni-trash-empty"></em><span>حذف فایل</span></a>
+                                                                                                </li>
+                                                                                            {% endif %}
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            {% empty %}
+                                                                <div class="container-not-found-base">
+                                                                    <p>چیزی یافت نشد</p>
+                                                                </div>
+                                                                <!-- .nk-tb-item -->
+                                                            {% endfor %}
+                                                        </div>
+                                                        <!-- .nk-tb-list -->
+                                                    </div>
+                                                    <!-- .card-inner -->
+                                                </div>
+                                                <!-- .card-inner-group -->
+                                            </div>
+                                            <!-- .card -->
+                                        </div>
+                                    </div>
+                                    <!-- .col -->
+                                </div>
+                                <!-- .row -->
+                            </div>
+                            <!-- .components-preview -->
+                        </div>
+                    </div>
+                </div>
+                <!-- content @e -->
+                <!-- footer @s -->
+                {% include 'base/components/footer.html' %}
+                <!-- footer @e -->
+            </div>
+            <!-- wrap @e -->
+        </div>
+        <!-- main @e -->
+        <!-- modals -->
+
+        <!-- files -->
+        {% for file in inquiry_files %}
+            <div class="modal fade" tabindex="-1" id="modal-delete-file-object-{{ file.id }}" aria-modal="true"
+                 role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body modal-body-lg text-center">
+                            <div class="nk-modal">
+                                <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-trash-empty bg-danger"></em>
+                                <h4 class="nk-modal-title">حذف فایل استعلام</h4>
+                                <div class="nk-modal-text">
+                                    <p class="bg-outline-danger">
+                                        ایا از حذف فایل استعلام
+                                        <b>{{ inquiry.title }}</b>
+                                        اطمینان دارید ؟ پس از
+                                        حذف امکان بازگشت وجود ندارد
+                                    </p>
+                                </div>
+                                <div class="nk-modal-action mt-5">
+                                    <a class="btn btn-lg btn-mw btn-light m-1" data-bs-dismiss="modal">لغو</a>
+                                    <a href="{% url 'public:inquiry_file__delete' inquiry_id=inquiry.id inquiry_file_id=file.id %}"
+                                       class="btn btn-lg btn-mw btn-danger m-1">بله ، حذف فایل استعلام</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- .modal-body -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" tabindex="-1" id="modal-detail-file-object-{{ file.id }}" aria-modal="true"
+                 role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body text-center">
+                            <div class="nk-modal">
+                                <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-info bg-info"></em>
+                                <h4 class="nk-modal-title">جزئیات فایل استعلام</h4>
+                                <div class="nk-modal-text">
+                                    <div class="card">
+                                        <ul class="data-list is-compact">
+                                            <li class="data-item">
+                                                <div class="data-col">
+                                                    <div class="data-label">نام</div>
+                                                    <div class="data-value">{{ file.name }}</div>
+                                                </div>
+                                            </li>
+                                            <li class="data-item">
+                                                <div class="data-col">
+                                                    <div class="data-label">زمان ثبت</div>
+                                                    <div class="data-value">
+                                                        <span class="datetime-convert">{{ file.get_created_at }}</span>
+                                                        <span class="font-60 badge badge-pill bg-secondary text-white">{{ file.get_created_at_timepast }}</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="data-item">
+                                                <div class="data-col">
+                                                    <div class="data-label">برای واحد های</div>
+                                                    <div class="data-value">
+                                                        {% for department in file.get_to_departments %}
+                                                            <span class="m-1 badge badge-dim bg-gray">
+                                                                <a href="{{ department.get_absolute_url }}">{{ department.name }}</a>
+                                                            </span>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="data-item">
+                                                <div class="data-col">
+                                                    <div class="data-label">کاربر ثبت کننده</div>
+                                                    <div class="data-value">
+                                                        {{ file.allocator_user.get_full_name|default:'-' }}
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="data-item">
+                                                <div class="data-col">
+                                                    <div class="data-label">توضیحات</div>
+                                                    <div class="data-value">
+                                                        {{ file.description|default:'-' }}
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="nk-modal-action mt-5">
+                                    <a class="btn btn-lg btn-mw btn-light" data-bs-dismiss="modal">بستن</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- .modal-body -->
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+
+        <!-- manage status modals -->
+        <div class="modal fade" tabindex="-1" id="modal-manage-status-reject" aria-modal="true" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="nk-modal">
+                            <div class="text-center mb-3">
+                                <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-cross-circle bg-danger"></em>
+                                <h4 class="nk-modal-title">رد استعلام</h4>
+                            </div>
+                            <div>
+                                <form action="{% url 'public:inquiry_status__modify' inquiry_id=inquiry.id %}"
+                                      method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="status" value="rejected">
+                                    <div class="row g-4">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label" for="description">فایل پیوست</label>
+                                                <div class="form-control-wrap">
+                                                    <div class="form-file">
+                                                        <input type="file" name="file" class="form-file-input"
+                                                               id="file">
+                                                        <label class="form-file-label" for="file">انتخاب
+                                                            فایل</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label" for="description">توضیحات</label>
+                                                <div class="form-control-wrap">
+                                                    <textarea type="text" class="form-control" name="description"
+                                                              placeholder="توضیحات"
+                                                              id="description" required></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="nk-modal-action mt-5 text-left">
+                                        <a class="btn btn-lg btn-mw btn-light m-1" data-bs-dismiss="modal">لغو</a>
+                                        <button type="submit"
+                                                class="btn btn-lg btn-mw btn-danger m-1">رد استعلام
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- .modal-body -->
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" tabindex="-1" id="modal-manage-status-accept" aria-modal="true" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="nk-modal">
+                            <div class="text-center mb-3">
+                                <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-check-circle bg-success"></em>
+                                <h4 class="nk-modal-title">تایید استعلام</h4>
+                            </div>
+                            <div>
+                                <form action="{% url 'public:inquiry_status__modify' inquiry_id=inquiry.id %}"
+                                      method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="status" value="accepted">
+                                    <div class="row g-4">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label" for="description">فایل پیوست</label>
+                                                <div class="form-control-wrap">
+                                                    <div class="form-file">
+                                                        <input type="file" name="file" class="form-file-input"
+                                                               id="file">
+                                                        <label class="form-file-label" for="file">انتخاب
+                                                            فایل</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label" for="description">توضیحات</label>
+                                                <div class="form-control-wrap">
+                                                    <textarea type="text" class="form-control" name="description"
+                                                              placeholder="توضیحات"
+                                                              id="description" required></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="nk-modal-action mt-5 text-left">
+                                        <a class="btn btn-lg btn-mw btn-light m-1" data-bs-dismiss="modal">لغو</a>
+                                        <button type="submit"
+                                                class="btn btn-lg btn-mw btn-success m-1">تایید استعلام
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- .modal-body -->
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" tabindex="-1" id="modal-delete-object" aria-modal="true" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body modal-body-lg text-center">
+                        <div class="nk-modal">
+                            <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-trash-empty bg-danger"></em>
+                            <h4 class="nk-modal-title">حذف استعلام</h4>
+                            <div class="nk-modal-text">
+                                <p class="bg-outline-danger">
+                                    ایا از حذف استعلام
+                                    <b>{{ inquiry.title }}</b>
+                                    اطمینان دارید ؟ با حذف استعلام تمام موارد مربوطه به ان
+                                    حذف خواهند شد و امکان بازگشت وجود ندارد
+                                </p>
+                            </div>
+                            <div class="nk-modal-action mt-5">
+                                <a class="btn btn-lg btn-mw btn-light m-1" data-bs-dismiss="modal">لغو</a>
+                                <a href="{% url 'public:inquiry__delete' inquiry_id=inquiry.id %}"
+                                   class="btn btn-lg btn-mw btn-danger m-1">بله ، حذف استعلام</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- .modal-body -->
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" tabindex="-1" id="modal-update-object">
+            <div class="modal-dialog modal-dialog-top" role="document">
+                <div class="modal-content">
+                    <a href="#" class="close" data-dismiss="modal" aria-label="بستن">
+                        <em class="icon ni ni-cross"></em>
+                    </a>
+                    <div class="modal-header">
+                        <h5 class="modal-title">ویرایش تسک</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'public:inquiry__update' inquiry_id=inquiry.id %}"
+                              class="form-validate is-alter" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row g-4">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="title">عنوان</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" name="title"
+                                                   placeholder="عنوان"
+                                                   id="title" required value="{{ inquiry.title|default:'' }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="number_id">شماره استعلام</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" name="number_id"
+                                                   placeholder="شماره استعلام"
+                                                   id="number_id" value="{{ inquiry.number_id|default:'' }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="task_master">مشتری</label>
+                                        <div class="form-control-wrap">
+                                            <select id="task_master" name="task_master"
+                                                    class="form-select js-select2" data-search="on" required>
+                                                {% for task_master in task_masters %}
+                                                    <option value="{{ task_master.id }}"
+                                                            {% if task_master.id == inquiry.task_master.id %}selected{% endif %}>{{ task_master.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="state">وضعیت</label>
+                                        <div class="form-control-wrap">
+                                            <select id="state" name="state"
+                                                    class="form-select js-select2"
+                                                    tabindex="-1" required>
+                                                {% for state in inquiry.STATE_OPTIONS %}
+                                                    <option value="{{ state.0 }}"
+                                                            {% if state.0 == inquiry.state %}selected{% endif %}>{{ state.1 }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="time_receive">تاریخ
+                                            دریافت</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" name="time_receive" id="time_receive"
+                                                   class="form-control date-picker-alt"
+                                                   placeholder="روز-ماه-سال" readonly
+                                                   value="{{ inquiry.time_receive|default:'' }}">
+                                        </div>
+                                        <div class="form-note">فرمت تاریخ <code>روز-ماه-سال</code>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="time_deadline_response">
+                                            مهلت پاسخ
+                                            <span class="text-soft fs-10px">(تاریخ ددلاین)</span>
+                                        </label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" name="time_deadline_response"
+                                                   id="time_deadline_response"
+                                                   class="form-control date-picker-alt"
+                                                   placeholder="روز-ماه-سال" readonly
+                                                   value="{{ inquiry.time_deadline_response|default:'' }}">
+                                        </div>
+                                        <div class="form-note">فرمت تاریخ <code>روز-ماه-سال</code>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="time_submit">
+                                            تاریخ ارسال
+                                        </label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" name="time_submit" id="time_submit"
+                                                   class="form-control date-picker-alt"
+                                                   placeholder="روز-ماه-سال" readonly
+                                                   value="{{ inquiry.time_submit|default:'' }}">
+                                        </div>
+                                        <div class="form-note">فرمت تاریخ <code>روز-ماه-سال</code>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="description">توضیحات</label>
+                                        <div class="form-control-wrap">
+                                                                <textarea name="description" id="description"
+                                                                          class="form-control"
+                                                                          placeholder="توضیحات">{{ inquiry.description }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-left">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-lg btn-primary">
+                                            بروزرسانی استعلام
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" tabindex="-1" id="modal-create-file-object">
+            <div class="modal-dialog modal-dialog-top modal-lg" role="document">
+                <div class="modal-content">
+                    <button class="close" data-dismiss="modal" aria-label="بستن">
+                        <em class="icon ni ni-cross"></em>
+                    </button>
+                    <div class="modal-header">
+                        <h5 class="modal-title">اپلود فایل پیوست</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'public:inquiry_file__add' inquiry_id=inquiry.id %}"
+                              class="form-validate is-alter" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row g-4">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="name">نام</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" name="name"
+                                                   placeholder="نام"
+                                                   id="name" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="description">فایل ها</label>
+                                        <div class="form-control-wrap">
+                                            <div class="form-file">
+                                                <input type="file" multiple name="files" class="form-file-input"
+                                                       id="file" required>
+                                                <label class="form-file-label overflow-hidden" for="file">انتخاب
+                                                    فایل</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="task_master">
+                                            واحد ها
+                                            <span class="text-soft fs-10px">در درسترس برای واحد ها</span>
+                                        </label>
+                                        <div class="form-control-wrap text-center">
+                                            {% for department in departments %}
+                                                <div class="custom-control custom-checkbox checked m-3">
+                                                    <input type="checkbox" class="custom-control-input"
+                                                           value="{{ department.id }}"
+                                                           id="customCheck-{{ forloop.counter }}" name="to_departments">
+                                                    <label class="custom-control-label"
+                                                           for="customCheck-{{ forloop.counter }}">{{ department.name }}</label>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="description">توضیحات</label>
+                                        <div class="form-control-wrap">
+                                            <textarea name="description" id="description"
+                                                      class="form-control"
+                                                      placeholder="توضیحات"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-left">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-lg btn-primary">
+                                            ایجاد فایل پیوست
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end modals -->
+    </div>
+{% endblock %}

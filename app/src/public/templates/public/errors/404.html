@@ -1,0 +1,38 @@
+{% extends 'base/base_template.html' %}
+
+{% block Title %}
+    چیزی که به دنبال ان بودید یافت نشد | 404
+{% endblock %}
+
+{% block BodyClass %}
+    has-rtl nk-body ui-rounder npc-general pg-error no-touch nk-nio-theme
+{% endblock %}
+
+{% block Content %}
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main">
+            <!-- wrap @s -->
+            <div class="nk-wrap nk-wrap-nosidebar">
+                <!-- content @s -->
+                <div class="nk-content">
+                    <div class="nk-block nk-block-middle wide-xs mx-auto">
+                        <div class="nk-block-content nk-error-ld text-center">
+                            <h1 class="nk-error-head">404</h1>
+                            <h3 class="nk-error-title">چیزی که به دنبال ان بودید یافت نشد</h3>
+                            <p class="nk-error-text">
+                                با عرض پوزش چیزی که به دنبال ان بودید یافت نشد ، ممکن است محتوا حذف یا جابجا شده باشد
+                            </p>
+                            <a href="{% url 'public:index' %}" class="btn btn-lg btn-primary mt-2">بازگشت به صفحه
+                                اصلی</a>
+                        </div>
+                    </div>
+                    <!-- .nk-block -->
+                </div>
+                <!-- wrap @e -->
+            </div>
+            <!-- content @e -->
+        </div>
+        <!-- main @e -->
+    </div>
+{% endblock %}

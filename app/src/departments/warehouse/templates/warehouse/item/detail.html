@@ -1,0 +1,565 @@
+{% extends 'base/base_template.html' %}
+{% load static %}
+{% load render_partial %}
+
+{% block Title %}
+    جزئیات ایتم انبار - {{ item.name }}
+{% endblock %}
+
+{% block BodyClass %}
+    has-rtl nk-body ui-rounder has-sidebar no-touch nk-nio-theme
+{% endblock %}
+
+{% block Style %}
+    <style>
+        .data-value {
+            width: 50%;
+            text-align: center;
+            display: block;
+        }
+
+        @media (max-width: 767.98px) {
+            .data-value {
+                width: 100%;
+            }
+        }
+
+    </style>
+{% endblock %}
+
+{% block Content %}
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main">
+            <!-- sidebar @s -->
+            {% render_partial 'public.components.MenuComponent' %}
+            <!-- sidebar @e -->
+            <!-- wrap @s -->
+            <div class="nk-wrap">
+                <!-- main header @s -->
+                {% include 'base/components/header.html' %}
+                <!-- main header @e -->
+                <!-- content @s -->
+                <div class="nk-content nk-content-fluid">
+                    <div class="container-xl wide-xl">
+                        <div class="nk-content-body">
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block-between g-3">
+                                    <div class="nk-block-head-content">
+                                        <h3 class="nk-block-title page-title">
+                                            جزئیات ایتم انبار
+                                        </h3>
+                                        <nav>
+                                            <ul class="breadcrumb breadcrumb-arrow">
+                                                <li class="breadcrumb-item"><a href="{% url 'public:index' %}">صفحه
+                                                    اصلی</a></li>
+                                                <li class="breadcrumb-item"><a>انبار</a></li>
+                                                <li class="breadcrumb-item">
+                                                    <a href="{% url 'dp_warehouse:item__list' %}">
+                                                        لیست انبار
+                                                    </a></li>
+                                                <li class="breadcrumb-item"><a>{{ item.name }}</a></li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                    <div class="nk-block-head-content d-flex justify-content-between gx-1">
+                                        {% if has_perm_to_modify %}
+                                            <div class="dropdown">
+                                                <button
+                                                        class="btn btn-outline-light bg-white d-none d-sm-inline-flex dropdown-toggle"
+                                                        data-bs-toggle="dropdown">
+                                                     <span>
+                                                        عملیات
+                                                    </span>
+                                                    <em class="icon ni ni-setting"></em>
+                                                </button>
+                                                <button
+                                                        class="btn btn-icon btn-outline-light bg-white d-inline-flex d-sm-none dropdown-toggle"
+                                                        data-bs-toggle="dropdown">
+                                                    <em class="icon ni ni-setting">
+                                                    </em>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <ul class="link-list-opt">
+                                                        <li data-bs-toggle="modal"
+                                                            data-bs-target="#modal-update-object">
+                                                            <a class="d-flex justify-content-between text-info">
+                                                                <span>ویرایش</span>
+                                                                <em class="icon ni ni-pen2"></em>
+                                                            </a>
+                                                        </li>
+                                                        <li data-bs-toggle="modal"
+                                                            data-bs-target="#modal-delete-object">
+                                                            <a class="d-flex justify-content-between text-danger">
+                                                                <span>حذف</span>
+                                                                <em class="icon ni ni-trash-empty"></em>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                </div>
+                                <!-- .nk-block-between -->
+                            </div>
+                            <div class="nk-block">
+                                <div class="row gy-5">
+                                    <div class="col-12">
+                                        <div class="nk-block-head">
+                                            <div class="nk-block-head-content">
+                                                <h5 class="nk-block-title title">اطلاعات پایه</h5>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <ul class="data-list is-compact">
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">نام</div>
+                                                        <div class="data-value">{{ item.name }}</div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">پروژه</div>
+                                                        <div class="data-value">
+                                                            <a href="{{ item.project.get_absolute_url }}">
+                                                                {{ item.project.name }}
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">تاریخ ثبت</div>
+                                                        <div class="data-value">
+                                                            {{ item.register_time|default:'-' }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">قیمت</div>
+                                                        <div class="data-value">
+                                                            <span class="price-el">{{ item.price }}</span>
+                                                            تومان
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">توضیحات</div>
+                                                        <div class="data-value">{{ item.description|default:'-' }}</div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="nk-block-head">
+                                            <div class="nk-block-head-content d-flex justify-content-between gx-1 align-items-center">
+                                                <h5 class="nk-block-title title">فایل های پیوست</h5>
+                                                <div>
+                                                    <div>
+                                                        <button data-bs-toggle="modal"
+                                                                data-bs-target="#modal-create-file-object"
+                                                                class="btn btn-outline-info bg-info text-white d-none d-sm-inline-flex">
+                                                                    <span>
+                                                                       اپلود فایل
+                                                                    </span>
+                                                            <em class="icon ni ni-upload"></em>
+                                                        </button>
+                                                        <button data-bs-toggle="modal"
+                                                                data-bs-target="#modal-create-file-object"
+                                                                class="btn btn-icon btn-outline-info bg-info text-white d-inline-flex d-sm-none">
+                                                            <em class="icon ni ni ni-upload"></em>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="nk-block">
+                                            <div class="card card-stretch">
+                                                <div class="card-inner-group">
+                                                    <!-- .card-inner -->
+                                                    <div class="card-inner p-2">
+                                                        <div class="nk-tb-list nk-tb-tnx">
+                                                            <div class="nk-tb-item nk-tb-head text-center">
+                                                                <div class="nk-tb-col"><span>واحد ثبت کننده</span></div>
+                                                                <div class="nk-tb-col tb-col-md"><span>توضیحات</span>
+                                                                </div>
+                                                                <div class="nk-tb-col text-center">
+                                                                    <span>فایل</span>
+                                                                </div>
+                                                                <div class="nk-tb-col nk-tb-col-tools"></div>
+                                                            </div>
+                                                            {% for file in files %}
+                                                                <!-- .nk-tb-item -->
+                                                                <div class="nk-tb-item text-center">
+                                                                    <div class="nk-tb-col">
+                                                                        {% if file.from_department == user.department %}
+                                                                            <span>از طرف شما</span>
+                                                                        {% else %}
+                                                                            <a href="{{ file.from_department.get_absolute_url }}">{{ file.from_department.name }}</a>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                    <div class="nk-tb-col tb-col-md">
+                                                                        {{ file.description|truncatechars:30|default:'-' }}
+                                                                    </div>
+                                                                    <div class="nk-tb-col">
+                                                                        <span class="badge badge-pill bg-primary">
+                                                                            <a href="{{ file.file.url }}"
+                                                                               class="view-file text-white">
+                                                                                دانلود و مشاهده
+                                                                            </a>
+                                                                        </span>
+                                                                    </div>
+                                                                    <div class="nk-tb-col nk-tb-col-tools">
+                                                                        <ul class="nk-tb-actions gx-2">
+                                                                            <li class="nk-tb-action-hidden"
+                                                                                data-bs-toggle="modal"
+                                                                                data-bs-target="#modal-detail-file-object-{{ file.id }}">
+                                                                                <a
+                                                                                        class="bg-white btn btn-sm btn-outline-light btn-icon btn-tooltip"
+                                                                                        aria-label="جزئیات"
+                                                                                        data-bs-original-title="جزئیات"><em
+                                                                                        class="icon ni ni-eye"></em></a>
+                                                                            </li>
+                                                                            <li>
+                                                                                <div class="dropdown">
+                                                                                    <a href="#"
+                                                                                       class="dropdown-toggle bg-white btn btn-sm btn-outline-light btn-icon"
+                                                                                       data-bs-toggle="dropdown"
+                                                                                       aria-expanded="false"><em
+                                                                                            class="icon ni ni-more-h"></em></a>
+                                                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                                                         style="">
+                                                                                        <ul class="link-list-opt">
+                                                                                            <li data-bs-toggle="modal"
+                                                                                                data-bs-target="#modal-detail-file-object-{{ file.id }}">
+                                                                                                <a><em
+                                                                                                        class="icon ni ni-eye"></em><span>مشاهده جزئیات</span></a>
+                                                                                            </li>
+                                                                                            {% if file.from_department == user.department %}
+                                                                                                <li class="text-danger"
+                                                                                                    data-bs-toggle="modal"
+                                                                                                    data-bs-target="#modal-delete-file-object-{{ file.id }}">
+                                                                                                    <a><em
+                                                                                                            class="icon ni ni-trash-empty"></em><span>حذف فایل</span></a>
+                                                                                                </li>
+                                                                                            {% endif %}
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            {% empty %}
+                                                                <div class="container-not-found-base">
+                                                                    <p>چیزی یافت نشد</p>
+                                                                </div>
+                                                                <!-- .nk-tb-item -->
+                                                            {% endfor %}
+                                                        </div>
+                                                        <!-- .nk-tb-list -->
+                                                    </div>
+                                                    <!-- .card-inner -->
+                                                </div>
+                                                <!-- .card-inner-group -->
+                                            </div>
+                                            <!-- .card -->
+                                        </div>
+                                    </div>
+                                    <!-- .col -->
+                                </div>
+                                <!-- .row -->
+                            </div>
+                            <!-- .components-preview -->
+                        </div>
+                    </div>
+                </div>
+                <!-- content @e -->
+                <!-- footer @s -->
+                {% include 'base/components/footer.html' %}
+                <!-- footer @e -->
+            </div>
+            <!-- wrap @e -->
+        </div>
+        <!-- main @e -->
+        <!-- modals -->
+
+        <!-- files -->
+        {% for file in files %}
+            <div class="modal fade" tabindex="-1" id="modal-delete-file-object-{{ file.id }}" aria-modal="true"
+                 role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body modal-body-lg text-center">
+                            <div class="nk-modal">
+                                <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-trash-empty bg-danger"></em>
+                                <h4 class="nk-modal-title">حذف فایل پیوست</h4>
+                                <div class="nk-modal-text">
+                                    <p class="bg-outline-danger">
+                                        ایا از حذف فایل پیوست انبار
+                                        اطمینان دارید ؟ پس از
+                                        حذف امکان بازگشت وجود ندارد
+                                    </p>
+                                </div>
+                                <div class="nk-modal-action mt-5">
+                                    <a class="btn btn-lg btn-mw btn-light m-1" data-bs-dismiss="modal">لغو</a>
+                                    <a href="{% url 'dp_warehouse:item_file__delete' item_file_id=file.id %}"
+                                       class="btn btn-lg btn-mw btn-danger m-1">بله ، حذف فایل </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- .modal-body -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" tabindex="-1" id="modal-detail-file-object-{{ file.id }}" aria-modal="true"
+                 role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body text-center">
+                            <div class="nk-modal">
+                                <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-info bg-info"></em>
+                                <h4 class="nk-modal-title">جزئیات فایل پیوست</h4>
+                                <div class="nk-modal-text">
+                                    <div class="card">
+                                        <ul class="data-list is-compact">
+                                            <li class="data-item">
+                                                <div class="data-col">
+                                                    <div class="data-label">واحد ثبت کننده</div>
+                                                    <div class="data-value">
+                                                        <a href="{{ file.from_department.get_absolute_url }}">{{ file.from_department.name|default:'-' }}</a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="data-item">
+                                                <div class="data-col">
+                                                    <div class="data-label">زمان ثبت</div>
+                                                    <div class="data-value">
+                                                        <span class="datetime-convert">{{ file.get_created_at }}</span>
+                                                        <span class="font-60 badge badge-pill bg-secondary text-white">{{ file.get_created_at_timepast }}</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="data-item">
+                                                <div class="data-col">
+                                                    <div class="data-label">فایل</div>
+                                                    <div class="data-value">
+                                                        <span class="badge badge-pill bg-primary">
+                                                            <a href="{{ file.file.url }}"
+                                                               class="view-file text-white">
+                                                                دانلود و مشاهده
+                                                            </a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="data-item">
+                                                <div class="data-col">
+                                                    <div class="data-label">توضیحات</div>
+                                                    <div class="data-value">
+                                                        {{ file.description|default:'-' }}
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="nk-modal-action mt-5">
+                                    <a class="btn btn-lg btn-mw btn-light" data-bs-dismiss="modal">بستن</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- .modal-body -->
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="modal fade" tabindex="-1" id="modal-delete-object" aria-modal="true" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body modal-body-lg text-center">
+                        <div class="nk-modal">
+                            <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-trash-empty bg-danger"></em>
+                            <h4 class="nk-modal-title">حذف ایتم انبار</h4>
+                            <div class="nk-modal-text">
+                                <p class="bg-outline-danger">
+                                    ایا از حذف ایتم
+                                    <b>{{ item.name }}</b>
+                                    اطمینان دارید ؟ با حذف ایتم تمام موارد مربوطه به ان
+                                    حذف خواهند شد و امکان بازگشت وجود ندارد
+                                </p>
+                            </div>
+                            <div class="nk-modal-action mt-5">
+                                <a class="btn btn-lg btn-mw btn-light m-1" data-bs-dismiss="modal">لغو</a>
+                                <a href="{% url 'dp_warehouse:item__delete' item_id=item.id %}"
+                                   class="btn btn-lg btn-mw btn-danger m-1">بله ، حذف ایتم انبار</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- .modal-body -->
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" tabindex="-1" id="modal-update-object">
+            <div class="modal-dialog modal-dialog-top" role="document">
+                <div class="modal-content">
+                    <a href="#" class="close" data-dismiss="modal" aria-label="بستن">
+                        <em class="icon ni ni-cross"></em>
+                    </a>
+                    <div class="modal-header">
+                        <h5 class="modal-title">ویرایش ایتم انبار</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'dp_warehouse:item__update' item_id=item.id %}"
+                              class="form-validate is-alter" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row g-4">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="name">نام</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" name="name"
+                                                   placeholder="نام"
+                                                   id="name" required value="{{ item.name|default:'' }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="project">پروژه</label>
+                                        <div class="form-control-wrap">
+                                            <select id="project" name="project"
+                                                    class="form-select js-select2 select-by-value"
+                                                    value="{{ item.project.id }}" data-search="on" required>
+                                                {% for project in projects %}
+                                                    <option value="{{ project.id }}">{{ project.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="register_time">تاریخ ثبت</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" name="register_time" id="register_time"
+                                                   class="form-control date-picker-alt"
+                                                   placeholder="روز-ماه-سال" readonly
+                                                   value="{{ item.register_time|default:'' }}">
+                                        </div>
+                                        <div class="form-note">فرمت تاریخ <code>روز-ماه-سال</code>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="inpPrice">قیمت</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" name="price" id="inpPrice"
+                                                   class="form-control"
+                                                   placeholder="قیمت" required
+                                                   value="{{ item.price }}">
+                                        </div>
+                                        <div class="text-left font-80 text-muted mt-1">
+                                            <span id="amount-value" class="price-el">{{ item.price }}</span>
+                                            <span>تومان</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="description">توضیحات</label>
+                                        <div class="form-control-wrap">
+                                                                <textarea name="description" id="description"
+                                                                          class="form-control"
+                                                                          placeholder="توضیحات">{{ item.description|default:'' }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-left">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-lg btn-primary">
+                                            بروزرسانی ایتم
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" tabindex="-1" id="modal-create-file-object">
+            <div class="modal-dialog modal-dialog-top modal-lg" role="document">
+                <div class="modal-content">
+                    <button class="close" data-dismiss="modal" aria-label="بستن">
+                        <em class="icon ni ni-cross"></em>
+                    </button>
+                    <div class="modal-header">
+                        <h5 class="modal-title">اپلود فایل پیوست</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'dp_warehouse:item_file__add' %}"
+                              class="form-validate is-alter" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="register_warehouse" value="{{ item.id }}">
+                            {% csrf_token %}
+                            <div class="row g-4">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="file">فایل</label>
+                                        <div class="form-control-wrap">
+                                            <div class="form-file">
+                                                <input type="file" name="file" class="form-file-input"
+                                                       id="file" required>
+                                                <label class="form-file-label overflow-hidden" for="file">انتخاب
+                                                    فایل</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="description">توضیحات</label>
+                                        <div class="form-control-wrap">
+                                            <textarea name="description" id="description"
+                                                      class="form-control"
+                                                      placeholder="توضیحات"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-left">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-lg btn-primary">
+                                            ایجاد فایل پیوست
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end modals -->
+    </div>
+{% endblock %}
+
+{% block Script %}
+    <script>
+        // set amount value
+        document.querySelector('#inpPrice').addEventListener('input', function () {
+            document.querySelector('#amount-value').innerHTML = numberWithCommas(this.value) || 0
+        })
+    </script>
+{% endblock %}

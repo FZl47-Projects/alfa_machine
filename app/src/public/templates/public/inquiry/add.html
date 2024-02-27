@@ -1,0 +1,210 @@
+{% extends 'base/base_template.html' %}
+{% load static %}
+{% load render_partial %}
+
+{% block Title %}
+    ایجاد استعلام
+{% endblock %}
+
+{% block BodyClass %}
+    has-rtl nk-body ui-rounder has-sidebar no-touch nk-nio-theme
+{% endblock %}
+
+{% block Content %}
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main">
+            <!-- sidebar @s -->
+            {% render_partial 'public.components.MenuComponent' %}
+            <!-- sidebar @e -->
+            <!-- wrap @s -->
+            <div class="nk-wrap">
+                <!-- main header @s -->
+                {% include 'base/components/header.html' %}
+                <!-- main header @e -->
+                <!-- content @s -->
+                <div class="nk-content nk-content-fluid">
+                    <div class="container-xl wide-xl">
+                        <div class="nk-content-body">
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block-between g-3">
+                                    <div class="nk-block-head-content">
+                                        <h3 class="nk-block-title page-title">ایجاد استعلام</h3>
+                                        <nav>
+                                            <ul class="breadcrumb breadcrumb-arrow">
+                                                <li class="breadcrumb-item"><a href="{% url 'public:index' %}">صفحه
+                                                    اصلی</a></li>
+                                                <li class="breadcrumb-item"><a>استعلامات</a></li>
+                                                <li class="breadcrumb-item active">ایجاد استعلام</li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                    <div class="nk-block-head-content">
+                                        <div class="toggle-wrap nk-block-tools-toggle">
+                                            <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1"
+                                               data-target="pageMenu"><em class="icon ni ni-menu-alt-r"></em></a>
+                                            <div class="toggle-expand-content" data-content="pageMenu">
+                                                <ul class="nk-block-tools g-3">
+                                                    <li class="nk-block-tools-opt">
+                                                        <div class="drodown">
+                                                            <a href="#" class="dropdown-toggle btn btn-icon btn-primary"
+                                                               data-bs-toggle="dropdown"><em
+                                                                    class="icon ni ni-plus"></em></a>
+                                                            <div class="dropdown-menu dropdown-menu-end">
+                                                                <ul class="link-list-opt no-bdr">
+                                                                    <li>
+                                                                        <a href="#"><span>ایمپورت از فایل اکسل</span></a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                </div>
+                                <!-- .nk-block-between -->
+                            </div>
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block nk-block-lg">
+                                    <div class="card">
+                                        <div class="card-inner">
+                                            <div class="card-head">
+                                                <h5 class="card-title">اطلاعات استعلام</h5>
+                                            </div>
+                                            <form action="{% url 'public:inquiry__add' %}"
+                                                  class="form-validate is-alter" method="post">
+                                                {% csrf_token %}
+                                                <div class="row g-4">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="number_id">شماره
+                                                                استعلام</label>
+                                                            <div class="form-control-wrap">
+                                                                <input type="text" class="form-control" name="number_id"
+                                                                       id="number_id"
+                                                                       value="{{ inquiry.number_id|default:'' }}"
+                                                                       placeholder="1234">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="title">عنوان</label>
+                                                            <div class="form-control-wrap">
+                                                                <input type="text" class="form-control" name="title"
+                                                                       placeholder="عنوان"
+                                                                       id="title" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="client_user">مشتری</label>
+                                                            <div class="form-control-wrap">
+                                                                <select id="client_user" name="task_master"
+                                                                        class="form-select js-select2 select-by-value" data-search="on"
+                                                                        tabindex="-1" aria-hidden="true" required value="{{ request.GET.task_master }}">
+                                                                    {% for task_master in task_masters %}
+                                                                        <option value="{{ task_master.id }}">{{ task_master.name }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="time_receive">تاریخ
+                                                                دریافت</label>
+                                                            <div class="form-control-wrap">
+                                                                <input type="text" name="time_receive" id="time_receive"
+                                                                       class="form-control date-picker-alt"
+                                                                       placeholder="روز-ماه-سال" readonly>
+                                                            </div>
+                                                            <div class="form-note">فرمت تاریخ <code>روز-ماه-سال</code>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="time_deadline_response">
+                                                                مهلت پاسخ
+                                                                <span class="text-soft fs-10px">(تاریخ ددلاین)</span>
+                                                            </label>
+                                                            <div class="form-control-wrap">
+                                                                <input type="text" name="time_deadline_response"
+                                                                       id="time_deadline_response"
+                                                                       class="form-control date-picker-alt"
+                                                                       placeholder="روز-ماه-سال" readonly>
+                                                            </div>
+                                                            <div class="form-note">فرمت تاریخ <code>روز-ماه-سال</code>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="time_submit">
+                                                                تاریخ ارسال
+                                                            </label>
+                                                            <div class="form-control-wrap">
+                                                                <input type="text" name="time_submit" id="time_submit"
+                                                                       class="form-control date-picker-alt"
+                                                                       placeholder="روز-ماه-سال" readonly>
+                                                            </div>
+                                                            <div class="form-note">فرمت تاریخ <code>روز-ماه-سال</code>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="state">وضعیت</label>
+                                                            <div class="form-control-wrap">
+                                                                <select name="state" id="state"
+                                                                        class="form-select js-select2">
+                                                                    {% for state in inquiry_states %}
+                                                                        <option value="{{ state.0 }}">{{ state.1 }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="description">توضیحات</label>
+                                                            <div class="form-control-wrap">
+                                                                <textarea name="description" id="description"
+                                                                          class="form-control"
+                                                                          placeholder="توضیحات"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 text-left">
+                                                        <div class="form-group">
+                                                            <button type="submit" class="btn btn-lg btn-primary">
+                                                                ایجاد استعلام
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- .components-preview -->
+                        </div>
+                    </div>
+                </div>
+                <!-- content @e -->
+                <!-- footer @s -->
+                {% include 'base/components/footer.html' %}
+                <!-- footer @e -->
+            </div>
+            <!-- wrap @e -->
+        </div>
+        <!-- main @e -->
+    </div>
+{% endblock %}

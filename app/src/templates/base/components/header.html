@@ -1,0 +1,150 @@
+{% load static %}
+<div class="nk-header is-light nk-header-fixed is-light">
+    <div class="container-xl wide-xl">
+        <div class="nk-header-wrap">
+            <div class="nk-menu-trigger d-xl-none ms-n1 me-3">
+                <a href="#" class="nk-nav-toggle nk-quick-nav-icon" data-target="sidebarMenu"><em
+                        class="icon ni ni-menu"></em></a>
+            </div>
+            <div class="nk-header-brand d-xl-none">
+                <a href="{% url 'public:index' %}" class="logo-link">
+                    <img class="logo-light logo-img" src="{% static 'frontend/images/logo/logo.png' %}"
+                         srcset="{% static 'frontend/images/logo/logo.png' %} 2x" alt="لوگو"/>
+                    <img class="logo-dark logo-img" src="{% static 'frontend/images/logo/logo-dark.png' %}"
+                         srcset="{% static 'frontend/images/logo/logo-dark.png' %} 2x" alt="لوگوی تاریک"/>
+                </a>
+            </div>
+            <!-- .nk-header-brand -->
+            <div class="nk-header-menu is-light">
+                <div class="nk-header-menu-inner">
+                    <!-- Menu -->
+                    <ul class="nk-menu nk-menu-main">
+                        <li class="nk-menu-item">
+                            <a href="{% url 'public:index' %}" class="nk-menu-link">
+                                <span class="nk-menu-text">داشبورد</span>
+                                <i class="icon ni ni-home"></i>
+                            </a>
+                        </li>
+                        <!-- .nk-menu-item -->
+                        <li class="nk-menu-item">
+                            <a href="{% url 'public:project__list' %}" class="nk-menu-link">
+                                <span class="nk-menu-text">
+                                    پروژه ها
+                                    <i class="icon ni ni-dashboard"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <!-- .nk-menu-item -->
+                    </ul>
+                    <!-- Menu -->
+                </div>
+            </div>
+            <!-- .nk-header-menu -->
+            <div class="nk-header-tools">
+                <ul class="nk-quick-nav">
+                    <li class="dropdown chats-dropdown hide-mb-sm">
+                        <a href="{% url 'account:logout' %}" class="nk-quick-nav-icon">
+                            <div class="icon-status icon-status-na"><em
+                                    class="icon ni ni-signout"></em></div>
+                        </a>
+                    </li>
+                    <!-- .dropdown -->
+                    <li class="dropdown notification-dropdown">
+                        <a href="#" class="dropdown-toggle nk-quick-nav-icon" data-bs-toggle="dropdown">
+                            <div class="{% if user.department.get_unread_notifications.count > 0 %}icon-status icon-status-info{% endif %}">
+                                <em class="icon ni ni-bell"></em>
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-xl dropdown-menu-end">
+                            <div class="dropdown-head">
+                                <span class="sub-title nk-dropdown-title">اعلانات</span>
+                                <a href="{% url 'notification:notification__seen_all' %}">علامت گذاری همه به عنوان
+                                    خوانده شده</a>
+                            </div>
+                            <div class="dropdown-body">
+                                <div class="nk-notification">
+                                    {% for notification in user.department.get_unread_notifications %}
+                                        <div class="nk-notification-item dropdown-inner">
+                                            <div class="nk-notification-content">
+                                                <div class="nk-notification-text">
+                                                    <a href="{{ notification.get_absolute_url }}"
+                                                       class="text-soft fs-15px">{{ notification.title|truncatechars:40 }}</a>
+                                                </div>
+                                                <div class="nk-notification-time">{{ notification.get_created_at_timepast }}</div>
+                                            </div>
+                                        </div>
+                                    {% empty %}
+                                        <p class="text-center m-5">اعلان جدیدی یافت نشد</p>
+                                    {% endfor %}
+                                </div>
+                                <!-- .nk-notification -->
+                            </div>
+                            <!-- .nk-dropdown-body -->
+                            <div class="dropdown-foot center">
+                                <a href="{% url 'notification:notification__list' %}">مشاهده همه</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="dropdown user-dropdown">
+                        <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
+                            <div class="user-toggle">
+                                <div class="user-avatar sm">
+                                    <em class="icon ni ni-user-alt"></em>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-md dropdown-menu-end">
+                            <div class="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
+                                <div class="user-card">
+                                    <div class="user-avatar">
+                                        <span>
+                                            {{ user.first_name|slice:':1' }}
+                                            {{ user.last_name|slice:':1' }}
+                                        </span>
+                                    </div>
+                                    <div class="user-info">
+                                        <span class="lead-text">{{ user.get_full_name }}</span>
+                                        <span class="sub-text">{{ user.get_email }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dropdown-inner">
+                                <ul class="link-list">
+                                    <div class="d-none">
+                                        <li>
+                                            <a href="html/user-profile-regular.html"><em
+                                                    class="icon ni ni-user-alt"></em><span>مشاهده پروفایل</span></a>
+                                        </li>
+                                        <li>
+                                            <a href="html/user-profile-setting.html"><em
+                                                    class="icon ni ni-setting-alt"></em><span>تنظیمات حساب</span></a>
+                                        </li>
+                                        <li>
+                                            <a href="html/user-profile-activity.html"><em
+                                                    class="icon ni ni-activity-alt"></em><span>فعالیت ورود</span></a>
+                                        </li>
+                                    </div>
+                                    <li>
+                                        <a class="dark-switch" href="#"><em
+                                                class="icon ni ni-moon"></em><span>حالت تاریک</span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="dropdown-inner">
+                                <ul class="link-list">
+                                    <li>
+                                        <a href="{% url 'account:logout' %}"><em
+                                                class="icon ni ni-signout"></em><span>خروج</span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!-- .nk-header-tools -->
+        </div>
+        <!-- .nk-header-wrap -->
+    </div>
+    <!-- .container-fliud -->
+</div>

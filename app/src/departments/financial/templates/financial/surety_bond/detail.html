@@ -1,0 +1,320 @@
+{% extends 'base/base_template.html' %}
+{% load static %}
+{% load render_partial %}
+
+{% block Title %}
+    جزئیات ضمانت نامه - {{ surety_bond.number_id|default:'' }}
+{% endblock %}
+
+{% block BodyClass %}
+    has-rtl nk-body ui-rounder has-sidebar no-touch nk-nio-theme
+{% endblock %}
+
+{% block Style %}
+    <style>
+        .data-value {
+            width: 50%;
+            text-align: center;
+            display: block;
+        }
+
+        @media (max-width: 767.98px) {
+            .data-value {
+                width: 100%;
+            }
+        }
+
+    </style>
+{% endblock %}
+
+{% block Content %}
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main">
+            <!-- sidebar @s -->
+            {% render_partial 'public.components.MenuComponent' %}
+            <!-- sidebar @e -->
+            <!-- wrap @s -->
+            <div class="nk-wrap">
+                <!-- main header @s -->
+                {% include 'base/components/header.html' %}
+                <!-- main header @e -->
+                <!-- content @s -->
+                <div class="nk-content nk-content-fluid">
+                    <div class="container-xl wide-xl">
+                        <div class="nk-content-body">
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block-between g-3">
+                                    <div class="nk-block-head-content">
+                                        <h3 class="nk-block-title page-title">
+                                            جزئیات ضمانت نامه
+                                        </h3>
+                                        <nav>
+                                            <ul class="breadcrumb breadcrumb-arrow">
+                                                <li class="breadcrumb-item"><a href="{% url 'public:index' %}">صفحه
+                                                    اصلی</a></li>
+                                                <li class="breadcrumb-item"><a>مالی</a></li>
+                                                <li class="breadcrumb-item">
+                                                    <a href="{% url 'dp_financial:surety_bond__list' %}">
+                                                        لیست ضمانت نامه ها
+                                                    </a></li>
+                                                <li class="breadcrumb-item active">
+                                                    <a>{{ surety_bond.number_id|default:'' }}</a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                    <div class="nk-block-head-content d-flex justify-content-between gx-1">
+                                        {% if has_perm_to_modify %}
+                                            <div class="dropdown">
+                                                <button
+                                                        class="btn btn-outline-light bg-white d-none d-sm-inline-flex dropdown-toggle"
+                                                        data-bs-toggle="dropdown">
+                                                     <span>
+                                                        عملیات
+                                                    </span>
+                                                    <em class="icon ni ni-setting"></em>
+                                                </button>
+                                                <button
+                                                        class="btn btn-icon btn-outline-light bg-white d-inline-flex d-sm-none dropdown-toggle"
+                                                        data-bs-toggle="dropdown">
+                                                    <em class="icon ni ni-setting">
+                                                    </em>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <ul class="link-list-opt">
+                                                        <li data-bs-toggle="modal"
+                                                            data-bs-target="#modal-update-object">
+                                                            <a class="d-flex justify-content-between text-info">
+                                                                <span>ویرایش</span>
+                                                                <em class="icon ni ni-pen2"></em>
+                                                            </a>
+                                                        </li>
+                                                        <li data-bs-toggle="modal"
+                                                            data-bs-target="#modal-delete-object">
+                                                            <a class="d-flex justify-content-between text-danger">
+                                                                <span>حذف</span>
+                                                                <em class="icon ni ni-trash-empty"></em>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                </div>
+                                <!-- .nk-block-between -->
+                            </div>
+                            <div class="nk-block">
+                                <div class="row gy-5">
+                                    <div class="col-12">
+                                        <div class="nk-block-head">
+                                            <div class="nk-block-head-content">
+                                                <h5 class="nk-block-title title">اطلاعات پایه</h5>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <ul class="data-list is-compact">
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">شماره ضمانت نامه</div>
+                                                        <div class="data-value">{{ surety_bond.number_id }}</div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">پروژه</div>
+                                                        <div class="data-value">
+                                                            <a href="{{ surety_bond.project.get_absolute_url }}">
+                                                                {{ surety_bond.project.name }}
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">وضعیت</div>
+                                                        <div class="data-value">
+                                                            <span class="badge badge-dim {% if surety_bond.status == 'free' %}bg-success{% else %}bg-danger{% endif %}">{{ surety_bond.get_status_label }}</span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">تاریخ ثبت</div>
+                                                        <div class="data-value">
+                                                            <span class="datetime-convert">{{ surety_bond.get_created_at_date|default:'-' }}</span>
+                                                            <span class="badge badge-dim bg-secondary">{{ surety_bond.get_created_at_timepast }}</span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">فایل پیوست</div>
+                                                        <div class="data-value">
+                                                            {% if surety_bond.file %}
+                                                                <a href="{{ surety_bond.file.url }}"
+                                                                   class="badge badge-dim bg-info">دانلود و مشاهده</a>
+                                                            {% else %}
+                                                                <span>-</span>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">توضیحات</div>
+                                                        <div class="data-value">{{ surety_bond.description|default:'-' }}</div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- .col -->
+                                </div>
+                                <!-- .row -->
+                            </div>
+                            <!-- .components-preview -->
+                        </div>
+                    </div>
+                </div>
+                <!-- content @e -->
+                <!-- footer @s -->
+                {% include 'base/components/footer.html' %}
+                <!-- footer @e -->
+            </div>
+            <!-- wrap @e -->
+        </div>
+        <!-- main @e -->
+        <!-- modals -->
+
+        <!-- files -->
+
+        <div class="modal fade" tabindex="-1" id="modal-delete-object" aria-modal="true" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body modal-body-lg text-center">
+                        <div class="nk-modal">
+                            <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-trash-empty bg-danger"></em>
+                            <h4 class="nk-modal-title">حذف پرداختی</h4>
+                            <div class="nk-modal-text">
+                                <p class="bg-outline-danger">
+                                    ایا از حذف ضمانت نامه
+                                    <b>{{ surety_bond.number_id|default:'' }}</b>
+                                    اطمینان دارید ؟ پس از حذف امکان بازگشت وجود نخواهد داشت
+                                </p>
+                            </div>
+                            <div class="nk-modal-action mt-5">
+                                <a class="btn btn-lg btn-mw btn-light m-1" data-bs-dismiss="modal">لغو</a>
+                                <a href="{% url 'dp_financial:surety_bond__delete' surety_bond_id=surety_bond.id %}"
+                                   class="btn btn-lg btn-mw btn-danger m-1">بله ، حذف ضمانت نامه</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- .modal-body -->
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" tabindex="-1" id="modal-update-object">
+            <div class="modal-dialog modal-dialog-top" role="document">
+                <div class="modal-content">
+                    <a href="#" class="close" data-dismiss="modal" aria-label="بستن">
+                        <em class="icon ni ni-cross"></em>
+                    </a>
+                    <div class="modal-header">
+                        <h5 class="modal-title">ویرایش ضمانت نامه</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'dp_financial:surety_bond__update' surety_bond_id=surety_bond.id %}"
+                              class="form-validate is-alter" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row g-4">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="number_id">شماره ضمانت نامه</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" name="number_id"
+                                                   placeholder="شماره ضمانت نامه"
+                                                   id="number_id"
+                                                   value="{{ surety_bond.number_id|default:'' }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="status">وضعیت</label>
+                                        <div class="form-control-wrap">
+                                            <select id="status" name="status"
+                                                    class="form-select js-select2 select-by-value"
+                                                    value="{{ surety_bond.status }}" required>
+                                                {% for pt in surety_bond.STATUS_OPTIONS %}
+                                                    <option value="{{ pt.0 }}">{{ pt.1 }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="project">پروژه</label>
+                                        <div class="form-control-wrap">
+                                            <select id="project" name="project"
+                                                    class="form-select js-select2 select-by-value"
+                                                    value="{{ surety_bond.project.id }}" data-search="on" required>
+                                                {% for project in projects %}
+                                                    <option value="{{ project.id }}">{{ project.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="customFileLabel">فایل پیوست</label>
+                                        <div class="form-control-wrap">
+                                            <div class="form-file">
+                                                <input type="file" name="file" class="form-file-input" id="file">
+                                                <label class="form-file-label" for="file">انتخاب
+                                                    فایل</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="description">توضیحات</label>
+                                        <div class="form-control-wrap">
+                                            <textarea name="description" id="description"
+                                                      class="form-control"
+                                                      placeholder="توضیحات">{{ surety_bond.description|default:'' }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-left">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-lg btn-primary">
+                                            بروزرسانی ضمانت نامه
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end modals -->
+    </div>
+{% endblock %}
+
+{% block Script %}
+    <script>
+        // set amount value
+        document.querySelector('#inpPrice').addEventListener('input', function () {
+            document.querySelector('#amount-value').innerHTML = numberWithCommas(this.value) || 0
+        })
+    </script>
+{% endblock %}

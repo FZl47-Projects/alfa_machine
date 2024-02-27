@@ -1,0 +1,334 @@
+{% extends 'base/base_template.html' %}
+{% load static %}
+{% load render_partial %}
+
+{% block Title %}
+    جزئیات گزارش - {{ ticket.title }}
+{% endblock %}
+
+{% block BodyClass %}
+    has-rtl nk-body ui-rounder has-sidebar no-touch nk-nio-theme
+{% endblock %}
+
+{% block Style %}
+    <style>
+        .data-value {
+            width: 50%;
+            text-align: center;
+            display: block;
+        }
+
+        @media (max-width: 767.98px) {
+            .data-value {
+                width: 100%;
+            }
+        }
+
+    </style>
+{% endblock %}
+
+{% block Content %}
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main">
+            <!-- sidebar @s -->
+            {% render_partial 'public.components.MenuComponent' %}
+            <!-- sidebar @e -->
+            <!-- wrap @s -->
+            <div class="nk-wrap">
+                <!-- main header @s -->
+                {% include 'base/components/header.html' %}
+                <!-- main header @e -->
+                <!-- content @s -->
+                <div class="nk-content nk-content-fluid">
+                    <div class="container-xl wide-xl">
+                        <div class="nk-content-body">
+                            <div class="nk-block-head nk-block-head-sm">
+                                <div class="nk-block-between g-3">
+                                    <div class="nk-block-head-content">
+                                        <h3 class="nk-block-title page-title">
+                                            جزئیات گزارش
+                                        </h3>
+                                        <nav>
+                                            <ul class="breadcrumb breadcrumb-arrow">
+                                                <li class="breadcrumb-item"><a href="{% url 'public:index' %}">صفحه
+                                                    اصلی</a></li>
+                                                <li class="breadcrumb-item"><a>گزارشات</a></li>
+                                                <li class="breadcrumb-item">
+                                                    <a href="{% url 'support:ticket__list' %}">
+                                                        لیست گزارشات
+                                                    </a></li>
+                                                <li class="breadcrumb-item"><a>{{ ticket.title }}</a></li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                    <div class="nk-block-head-content d-flex justify-content-between gx-1">
+                                        {% if has_perm_to_modify %}
+                                            <div class="dropdown">
+                                                <button
+                                                        class="btn btn-outline-light bg-white d-none d-sm-inline-flex dropdown-toggle"
+                                                        data-bs-toggle="dropdown">
+                                                     <span>
+                                                        عملیات
+                                                    </span>
+                                                    <em class="icon ni ni-setting"></em>
+                                                </button>
+                                                <button
+                                                        class="btn btn-icon btn-outline-light bg-white d-inline-flex d-sm-none dropdown-toggle"
+                                                        data-bs-toggle="dropdown">
+                                                    <em class="icon ni ni-setting">
+                                                    </em>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <ul class="link-list-opt">
+                                                        <li data-bs-toggle="modal"
+                                                            data-bs-target="#modal-update-object">
+                                                            <a class="d-flex justify-content-between text-info">
+                                                                <span>ویرایش</span>
+                                                                <em class="icon ni ni-pen2"></em>
+                                                            </a>
+                                                        </li>
+                                                        <li data-bs-toggle="modal"
+                                                            data-bs-target="#modal-delete-object">
+                                                            <a class="d-flex justify-content-between text-danger">
+                                                                <span>حذف</span>
+                                                                <em class="icon ni ni-trash-empty"></em>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <!-- .nk-block-head-content -->
+                                </div>
+                                <!-- .nk-block-between -->
+                            </div>
+                            <div class="nk-block">
+                                <div class="row gy-5">
+                                    <div class="col-12">
+                                        <div class="nk-block-head">
+                                            <div class="nk-block-head-content">
+                                                <h5 class="nk-block-title title">اطلاعات پایه</h5>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <ul class="data-list is-compact">
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">وضعیت</div>
+                                                        <div class="data-value">
+                                                            {% if ticket.is_open %}
+                                                                <span class="badge bg-danger fs-12px">باز</span>
+                                                            {% else %}
+                                                                <span class="badge bg-success fs-12px">بسته</span>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">شماره گزارش</div>
+                                                        <div class="data-value">{{ ticket.number_id }}</div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">عنوان</div>
+                                                        <div class="data-value">{{ ticket.title }}</div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label"> پروژه ها</div>
+                                                        <div class="data-value">
+                                                            {% if ticket.projects_type == 'selected' %}
+                                                                {% for project in ticket.get_projects %}
+                                                                    <a href="{{ project.get_absolute_url }}"
+                                                                       class="badge badge-dim bg-info fs-13px rounded-pill">{{ project.name|truncatechars:30 }}</a>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                <span class="badge badge-dim bg-gray">متفرقه</span>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">واحد ثبت کننده</div>
+                                                        <div class="data-value">
+                                                            <a href="{{ ticket.from_department.get_absolute_url }}">{{ ticket.from_department.name|default:'-' }}</a>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">برای واحد های</div>
+                                                        <div class="data-value">
+                                                            {% for department in ticket.get_to_departments %}
+                                                                <a href="{{ department.get_absolute_url }}"
+                                                                   class="badge badge-dim bg-black fs-9px rounded-pill">{{ department.name|truncatechars:30 }}</a>
+                                                            {% empty %}
+                                                                <span>-</span>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">فایل پیوست</div>
+                                                        <div class="data-value">
+                                                            {% if ticket.file %}
+                                                                <a href="{{ ticket.file.url }}"
+                                                                   class="view-file badge bg-secondary fs-13px py-1">
+                                                                    دانلود و مشاهده
+                                                                </a>
+                                                            {% else %}
+                                                                <em class="icon ni ni-cross-c text-warning"></em>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">توضیحات</div>
+                                                        <div class="data-value">{{ ticket.description|default:'-' }}</div>
+                                                    </div>
+                                                </li>
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">زمان ثبت</div>
+                                                        <div class="data-value datetime-convert">{{ ticket.get_created_at|default:'-' }}</div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- .row -->
+                            </div>
+                            <!-- .components-preview -->
+                        </div>
+                    </div>
+                </div>
+                <!-- content @e -->
+                <!-- footer @s -->
+                {% include 'base/components/footer.html' %}
+                <!-- footer @e -->
+            </div>
+            <!-- wrap @e -->
+        </div>
+        <!-- main @e -->
+        <!-- modals -->
+        <div class="modal fade" tabindex="-1" id="modal-delete-object" aria-modal="true" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body modal-body-lg text-center">
+                        <div class="nk-modal">
+                            <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-trash-empty bg-danger"></em>
+                            <h4 class="nk-modal-title">حذف گزارش</h4>
+                            <div class="nk-modal-text">
+                                <p class="bg-outline-danger">
+                                    ایا از حذف گزارش
+                                    <b>{{ ticket.number_id }}</b>
+                                    اطمینان دارید ؟
+                                    پس از حذف امکان بازگشت وجود نخواهد داشت
+                                </p>
+                            </div>
+                            <div class="nk-modal-action mt-5">
+                                <a class="btn btn-lg btn-mw btn-light m-1" data-bs-dismiss="modal">لغو</a>
+                                <a href="{% url 'support:ticket__delete' ticket_id=ticket.id %}"
+                                   class="btn btn-lg btn-mw btn-danger m-1">بله ، حذف گزارش</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- .modal-body -->
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" tabindex="-1" id="modal-update-object">
+            <div class="modal-dialog modal-dialog-top" role="document">
+                <div class="modal-content">
+                    <a href="#" class="close" data-dismiss="modal" aria-label="بستن">
+                        <em class="icon ni ni-cross"></em>
+                    </a>
+                    <div class="modal-header">
+                        <h5 class="modal-title">ویرایش گزارش</h5>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'support:ticket__update' ticket_id=ticket.id %}"
+                              class="form-validate is-alter" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row g-4">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="title">عنوان</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" name="title"
+                                                   placeholder="عنوان"
+                                                   id="title" required value="{{ ticket.title|default:'' }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="number_id">شماره گزارش</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" name="number_id"
+                                                   placeholder="شماره گزارش"
+                                                   id="number_id" required value="{{ ticket.number_id|default:'' }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="customFileLabel">فایل پیوست</label>
+                                        <div class="form-control-wrap">
+                                            <div class="form-file">
+                                                <input type="file" name="file" class="form-file-input" id="file">
+                                                <label class="form-file-label" for="file">انتخاب
+                                                    فایل</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="is_open">وضعیت</label>
+                                        <div class="form-control-wrap">
+                                            <select name="is_open" id="is_open"
+                                                    class="form-control js-select2">
+                                                <option value="true" {% if ticket.is_open %}selected{% endif %}>باز</option>
+                                                <option value="false" {% if not ticket.is_open %}selected{% endif %}>بسته</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="description">توضیحات</label>
+                                        <div class="form-control-wrap">
+                                                                <textarea name="description" id="description"
+                                                                          class="form-control"
+                                                                          placeholder="توضیحات">{{ ticket.description|default:'' }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-left">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-lg btn-primary">
+                                            بروزرسانی گزارش
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- end modals -->
+    </div>
+{% endblock %}

@@ -1,0 +1,61 @@
+version: '3.7'
+
+services:
+
+  app:
+    build: './app'
+    container_name: 'app_service'
+    restart: always
+    expose:
+      - '8000'
+    volumes:
+      - type: 'bind'
+        source: './volumes/media/'
+        target: '/app/volumes/media/'
+      - type: 'bind'
+        source: './volumes/static/'
+        target: '/app/volumes/static/'
+      - type: 'bind'
+        source: './volumes/logs/app/'
+        target: '/app/logs/'
+    env_file:
+      - './app/src/.env'
+    depends_on:
+      - db
+      - redis
+
+  webserver:
+    build: './webserver'
+    container_name: 'webserver_service'
+    restart: always
+    ports:
+      - '80:80'
+    volumes:
+      - type: 'bind'
+        source: './volumes/media/'
+        target: '/app/volumes/media/'
+      - type: 'bind'
+        source: './volumes/static/'
+        target: '/app/volumes/static/'
+
+  db:
+    image: 'mysql:8.3'
+    container_name: 'db_service'
+    restart: always
+    expose:
+      - '3306'
+    environment:
+      MYSQL_DATABASE: 'alfa_machine_db'
+      MYSQL_USER: 'root'
+      MYSQL_ROOT_PASSWORD: 'alfa_machine_password'
+    volumes:
+      - type: 'bind'
+        source: './volumes/db'
+        target: '/var/lib/mysql'
+
+  redis:
+    image: 'redis:7.2'
+    container_name: 'redis_service'
+    restart: always
+    expose:
+      - '6379'

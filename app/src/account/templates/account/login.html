@@ -1,0 +1,88 @@
+{% extends 'base/base_template.html' %}
+{% load static %}
+
+{% block Title %}
+    ورود
+{% endblock %}
+
+{% block BodyClass %}
+    has-rtl nk-body ui-rounder npc-general pg-auth
+{% endblock %}
+
+{% block Content %}
+    <div class="nk-app-root">
+        <!-- main @s -->
+        <div class="nk-main">
+            <!-- wrap @s -->
+            <div class="nk-wrap nk-wrap-nosidebar">
+                <!-- content @s -->
+                <div class="nk-content">
+                    <div class="nk-block nk-block-middle nk-auth-body wide-xs">
+                        <div class="brand-logo pb-4 text-center">
+                            <a href="{% url 'public:index' %}" class="logo-link">
+                                <img class="logo-light logo-img logo-img-lg" src="{% static 'frontend/images/logo/logo.png' %}"
+                                     srcset="{% static 'frontend/images/logo/logo.png' %} 2x" alt="لوگو"/>
+                                <img class="logo-dark logo-img logo-img-lg" src="{% static 'frontend/images/logo/logo-dark.png' %}"
+                                     srcset="{% static 'frontend/images/logo/logo-dark.png' %} 2x" alt="لوگوی تاریک"/>
+                            </a>
+                        </div>
+                        <div class="card">
+                            <div class="card-inner card-inner-lg">
+                                <div class="nk-block-head">
+                                    <div class="nk-block-head-content">
+                                        <h4 class="nk-block-title">ورود</h4>
+                                        <div class="nk-block-des">
+                                            <p>با استفاده از ایمیل و رمز عبور خود به داشبورد دسترسی پیدا کنید.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <form action="{% url 'account:login' %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <div class="form-label-group">
+                                            <label class="form-label" for="default-01">ایمیل یا نام کاربری</label>
+                                        </div>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control form-control-lg" id="default-01" name="email" tabindex="1"
+                                                   placeholder="نشانی ایمیل یا نام کاربری خود را وارد کنید"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form-label-group">
+                                            <label class="form-label" for="password">رمز عبور</label>
+                                            <a class="link link-primary link-sm"
+                                               href="{% url 'account:reset_password' %}">رمز عبور را فراموش کردید؟</a>
+                                        </div>
+                                        <div class="form-control-wrap">
+                                            <a href="#" class="form-icon form-icon-right passcode-switch lg"
+                                               data-target="password">
+                                                <em class="passcode-icon icon-show icon ni ni-eye"></em>
+                                                <em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
+                                            </a>
+                                            <input type="password" class="form-control form-control-lg" id="password" name="password" tabindex="2"
+                                                   placeholder="رمز عبور خود را وارد کنید"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-lg btn-primary btn-block" tabindex="3">ورود</button>
+                                    </div>
+                                </form>
+                                <div class="text-center pt-4 pb-3">
+                                    <h6 class="overline-title overline-title-sap"><span>یا</span></h6>
+                                </div>
+                                <ul class="nav justify-center gx-4">
+                                    <li class="nav-item"><a class="nav-link" href="#">ورود با اثر انگشت</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    {% include 'base/components/footer.html' %}
+                </div>
+                <!-- wrap @e -->
+            </div>
+            <!-- content @e -->
+        </div>
+        <!-- main @e -->
+    </div>
+
+{% endblock %}
