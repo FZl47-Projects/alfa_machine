@@ -28955,7 +28955,7 @@ return W(yi), g(yi), {
                         k.push('<td class="cw">' + E + "</td>")
                     }
                     (C = this.getClassNames(x)).push("day");
-                    var O = x.getUTCDate();
+                    var O = x.getUTCDate() ;
                     this.o.beforeShowDay !== t.noop && ((o = this.o.beforeShowDay(this._utc_to_local(x))) === e ? o = {} : "boolean" == typeof o ? o = {enabled: o} : "string" == typeof o && (o = {classes: o}), !1 === o.enabled && C.push("disabled"), o.classes && (C = C.concat(o.classes.split(/\s+/))), o.tooltip && (r = o.tooltip), o.content && (O = o.content)), C = "function" == typeof t.uniqueSort ? t.uniqueSort(C) : t.unique(C), k.push('<td class="' + C.join(" ") + '"' + (r ? ' title="' + r + '"' : "") + ' data-date="' + x.getTime().toString() + '">' + O + "</td>"), r = null, S === this.o.weekEnd && k.push("</tr>"), x.setUTCDate(x.getUTCDate() + 1)
                 }
                 this.picker.find(".datepicker-days tbody").html(k.join(""));
@@ -29199,9 +29199,9 @@ return W(yi), g(yi), {
     t.fn.datepicker.Constructor = c;
     var g = t.fn.datepicker.dates = {
         fa: {
-            days: ["شنبه", "یکشنبه", "دوشنبه", "سه شنبه", "چهارشنبه", "پنجشنبه", "جمعه"],
-            daysShort: ["ش", "ی", "د", "س", "چ", "پ", "ج"],
-            daysMin: ["ش", "ی", "د", "س", "چ", "پ", "ج"],
+            days: ["یکشنبه", "دوشنبه", "سه شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه"],
+            daysShort: ["ی", "د", "س", "چ", "پ", "ج", "ش"],
+            daysMin: ["ی", "د", "س", "چ", "پ", "ج", "ش"],
             months: ["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"],
             monthsShort: ["فرو", "ارد", "خرد", "تیر", "مرد", "شهر", "مهر", "آبا", "آذر", "دی", "بهم", "اسف"],
             today: "امروز",
