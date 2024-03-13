@@ -217,7 +217,7 @@
                                                     <div class="data-col">
                                                         <div class="data-label">وضعیت بررسی</div>
                                                         <div class="data-value">
-                                                            <span class="badge p-1 bg-{{ inquiry.status.status }}">{{ inquiry.get_status_label }}</span>
+                                                            <span class="badge p-1 bg-{{ inquiry.status.status|default:'outline-warning' }}">{{ inquiry.get_status_label }}</span>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -236,7 +236,7 @@
                                                             {{ inquiry.time_deadline_response|default:'-' }}
                                                             {% with remaining=inquiry.get_remaining_deadline %}
                                                                 {% if remaining %}
-                                                                    <span class="badge badge-dim rounded-pill text-soft fs-10px {% if remaining > 0 %}bg-outline-info{% else %}bg-outline-danger{% endif %}">
+                                                                    <span class="badge badge-dim rounded-pill fs-10px {% if remaining > 0 %}bg-outline-info{% else %}bg-outline-danger{% endif %}">
                                                                         {{ inquiry.get_remaining_deadline }}
                                                                         روز
                                                                     </span>

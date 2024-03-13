@@ -3,7 +3,7 @@
 {% load render_partial %}
 
 {% block Title %}
-    مشتری - {{ task_master.name }}
+    کارفرما - {{ task_master.name }}
 {% endblock %}
 
 {% block BodyClass %}
@@ -30,15 +30,15 @@
                             <div class="nk-block-head nk-block-head-sm">
                                 <div class="nk-block-between g-3">
                                     <div class="nk-block-head-content">
-                                        <h3 class="nk-block-title page-title">جزئیات مشتری</h3>
+                                        <h3 class="nk-block-title page-title">جزئیات کارفرما</h3>
                                         <nav>
                                             <ul class="breadcrumb breadcrumb-arrow">
                                                 <li class="breadcrumb-item"><a href="{% url 'public:index' %}">صفحه
                                                     اصلی</a></li>
-                                                <li class="breadcrumb-item"><a>مشتریان</a></li>
+                                                <li class="breadcrumb-item"><a>کارفرمایان</a></li>
                                                 <li class="breadcrumb-item"><a
                                                         href="{% url 'public:task_master__list' %}">لیست
-                                                    مشتریان</a></li>
+                                                    کارفرمایان</a></li>
                                                 <li class="breadcrumb-item active">{{ task_master.name }}</li>
                                             </ul>
                                         </nav>
@@ -332,12 +332,12 @@
                     <div class="modal-body modal-body-lg text-center">
                         <div class="nk-modal">
                             <em class="nk-modal-icon icon icon-circle icon-circle-xxl ni ni-trash-empty bg-danger"></em>
-                            <h4 class="nk-modal-title">حذف مشتری</h4>
+                            <h4 class="nk-modal-title">حذف کارفرما</h4>
                             <div class="nk-modal-text">
                                 <p class="bg-outline-danger">
-                                    ایا از حذف مشتری
+                                    ایا از حذف کارفرما
                                     <b>{{ task_master.name }}</b>
-                                    اطمینان دارید ؟ با حذف مشتری تمام موارد مربوطه به ان از جمله پروژه ها ، استعلامات و
+                                    اطمینان دارید ؟ با حذف کارفرما تمام موارد مربوطه به ان از جمله پروژه ها ، استعلامات و
                                     ..
                                     حذف خواهند شد و امکان بازگشت وجود ندارد
                                 </p>
@@ -345,7 +345,7 @@
                             <div class="nk-modal-action mt-5">
                                 <a class="btn btn-lg btn-mw btn-light m-1" data-bs-dismiss="modal">لغو</a>
                                 <a href="{% url 'public:task_master__delete' task_master_id=task_master.id %}"
-                                   class="btn btn-lg btn-mw btn-danger m-1">بله ، حذف مشتری</a>
+                                   class="btn btn-lg btn-mw btn-danger m-1">بله ، حذف کارفرما</a>
                             </div>
                         </div>
                     </div>
@@ -360,7 +360,7 @@
                         <em class="icon ni ni-cross"></em>
                     </a>
                     <div class="modal-header">
-                        <h5 class="modal-title">تغییر مشتری</h5>
+                        <h5 class="modal-title">تغییر کارفرما</h5>
                     </div>
                     <div class="modal-body">
                         <form action="{% url 'public:task_master__update' task_master_id=task_master.id %}"
@@ -372,7 +372,7 @@
                                         <label class="form-label" for="name">نام</label>
                                         <div class="form-control-wrap">
                                             <input type="text" class="form-control" name="name"
-                                                   placeholder="نام مشتری"
+                                                   placeholder="نام کارفرما"
                                                    id="name" required value="{{ task_master.name|default:'' }}">
                                         </div>
                                     </div>
@@ -391,7 +391,7 @@
                                 <div class="col-12 text-left">
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-lg btn-primary">
-                                            بروزرسانی مشتری
+                                            بروزرسانی کارفرما
                                         </button>
                                     </div>
                                 </div>

@@ -76,7 +76,7 @@
                                                 <h5 class="card-title">اطلاعات استعلام</h5>
                                             </div>
                                             <form action="{% url 'public:inquiry__add' %}"
-                                                  class="form-validate is-alter" method="post">
+                                                  class="form-validate is-alter" method="post" enctype="multipart/form-data">
                                                 {% csrf_token %}
                                                 <div class="row g-4">
                                                     <div class="col-lg-6">
@@ -103,11 +103,13 @@
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="form-group">
-                                                            <label class="form-label" for="client_user">مشتری</label>
+                                                            <label class="form-label" for="client_user">کارفرما</label>
                                                             <div class="form-control-wrap">
                                                                 <select id="client_user" name="task_master"
-                                                                        class="form-select js-select2 select-by-value" data-search="on"
-                                                                        tabindex="-1" aria-hidden="true" required value="{{ request.GET.task_master }}">
+                                                                        class="form-select js-select2 select-by-value"
+                                                                        data-search="on"
+                                                                        tabindex="-1" aria-hidden="true" required
+                                                                        value="{{ request.GET.task_master }}">
                                                                     {% for task_master in task_masters %}
                                                                         <option value="{{ task_master.id }}">{{ task_master.name }}</option>
                                                                     {% endfor %}
@@ -178,6 +180,88 @@
                                                                 <textarea name="description" id="description"
                                                                           class="form-control"
                                                                           placeholder="توضیحات"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div id="accordion" class="accordion">
+                                                        <div class="accordion-item">
+                                                            <a href="#" class="accordion-head" data-bs-toggle="collapse"
+                                                               aria-expanded="false"
+                                                               data-bs-target="#accordion-item-1">
+                                                                <h6 class="title">اپلود فایل پیوست</h6>
+                                                                <span class="accordion-icon"></span>
+                                                            </a>
+                                                            <div class="accordion-body collapse"
+                                                                 id="accordion-item-1" data-bs-parent="#accordion">
+                                                                <div class="accordion-inner">
+                                                                    <div class="row g-4">
+                                                                        <div class="col-12">
+                                                                            <div class="form-group">
+                                                                                <label class="form-label"
+                                                                                       for="file_name">نام</label>
+                                                                                <div class="form-control-wrap">
+                                                                                    <input type="text"
+                                                                                           class="form-control"
+                                                                                           name="file_name"
+                                                                                           placeholder="نام"
+                                                                                           id="file_name" required>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-12">
+                                                                            <div class="form-group">
+                                                                                <label class="form-label"
+                                                                                       for="description">فایل
+                                                                                    ها</label>
+                                                                                <div class="form-control-wrap">
+                                                                                    <div class="form-file">
+                                                                                        <input type="file" multiple
+                                                                                               name="files"
+                                                                                               class="form-file-input"
+                                                                                               id="file" required>
+                                                                                        <label class="form-file-label overflow-hidden"
+                                                                                               for="file">انتخاب
+                                                                                            فایل</label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-12">
+                                                                            <div class="form-group">
+                                                                                <label class="form-label"
+                                                                                       for="task_master">
+                                                                                    واحد ها
+                                                                                    <span class="text-soft fs-10px">در درسترس برای واحد ها</span>
+                                                                                </label>
+                                                                                <div class="form-control-wrap text-center">
+                                                                                    {% for department in departments %}
+                                                                                        <div class="custom-control custom-checkbox checked m-3">
+                                                                                            <input type="checkbox"
+                                                                                                   class="custom-control-input"
+                                                                                                   value="{{ department.id }}"
+                                                                                                   id="customCheck-{{ forloop.counter }}"
+                                                                                                   name="to_departments">
+                                                                                            <label class="custom-control-label"
+                                                                                                   for="customCheck-{{ forloop.counter }}">{{ department.name }}</label>
+                                                                                        </div>
+                                                                                    {% endfor %}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-12">
+                                                                            <div class="form-group">
+                                                                                <label class="form-label"
+                                                                                       for="file_description">توضیحات</label>
+                                                                                <div class="form-control-wrap">
+                                                                                <textarea name="file_description" id="file_description"
+                                                                                          class="form-control"
+                                                                                          placeholder="توضیحات"></textarea>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>

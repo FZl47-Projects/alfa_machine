@@ -3,7 +3,7 @@
 {% load render_partial %}
 
 {% block Title %}
-    لیست مشتریان
+    لیست کارفرمایان
 {% endblock %}
 
 {% block BodyClass %}
@@ -30,13 +30,13 @@
                             <div class="nk-block-head nk-block-head-sm">
                                 <div class="nk-block-between g-3">
                                     <div class="nk-block-head-content">
-                                        <h3 class="nk-block-title page-title">لیست مشتریان</h3>
+                                        <h3 class="nk-block-title page-title">لیست کارفرمایان</h3>
                                         <nav>
                                             <ul class="breadcrumb breadcrumb-arrow">
                                                 <li class="breadcrumb-item"><a href="{% url 'public:index' %}">صفحه
                                                     اصلی</a></li>
-                                                <li class="breadcrumb-item"><a>مشتریان</a></li>
-                                                <li class="breadcrumb-item active">لیست مشتریان</li>
+                                                <li class="breadcrumb-item"><a>کارفرمایان</a></li>
+                                                <li class="breadcrumb-item active">لیست کارفرمایان</li>
                                             </ul>
                                         </nav>
                                     </div>
@@ -81,7 +81,7 @@
                                                 <div class="card-title-group">
                                                     <div class="card-title">
                                                         <h5 class="title">
-                                                            لیست مشتریان
+                                                            لیست کارفرمایان
                                                             <span class="fs-15px">({{ task_masters.count }})</span>
                                                         </h5>
                                                     </div>
@@ -173,7 +173,7 @@
                                                                         class="icon ni ni-arrow-left"></em></a>
                                                                 <input type="text" name="search"
                                                                        class="form-control border-transparent form-focus-none"
-                                                                       placeholder="جستجوی سریع بر اساس نام مشتری"
+                                                                       placeholder="جستجوی سریع بر اساس نام کارفرما"
                                                                        value="{{ qs.search }}">
                                                                 <button class="search-submit btn btn-icon"><em
                                                                         class="icon ni ni-search"></em></button>

@@ -507,20 +507,42 @@ class InquiryAdd(LoginRequiredMixin, View):
     def get(self, request):
         context = {
             'inquiry_states': models.Inquiry.STATE_OPTIONS,
-            'task_masters': models.TaskMaster.objects.all()
+            'task_masters': models.TaskMaster.objects.all(),
+            'departments': models.Department.objects.all()
         }
         return render(request, self.template_name, context)
 
     @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user'])
     def post(self, request):
         data = request.POST.copy()
+        user = request.user
+        user_department = user.department
         # set additional values
-        data['from_department'] = request.user.department
+        data['from_department'] = user_department
 
         f = forms.InquiryAdd(data)
         if form_validate_err(request, f) is False:
             return redirect('public:inquiry__add')
         inquiry = f.save()
+
+        # create inquiry file's
+        # set additional values
+        data['inquiry'] = inquiry
+        data['from_department'] = user_department
+        data['allocator_user'] = user
+        data['name'] = data['file_name']
+        data['description'] = data['file_description']
+        f = forms.InquiryFile(data, request.FILES)
+        if f.is_valid():
+            # create and upload files
+            files_object = []
+            files = request.FILES.getlist('files')
+            for file in files:
+                files_object.append(models.File(file=file))
+            files_object = models.File.objects.bulk_create(files_object)
+            inquiry_file = f.save()
+            inquiry_file.files.add(*files_object)
+
         messages.success(request, 'استعلام با موفقیت ایجاد شد')
         return redirect(inquiry.get_absolute_url())
 

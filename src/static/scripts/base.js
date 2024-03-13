@@ -295,69 +295,27 @@ function setThemeMode(theme) {
 setThemeMode(getCookie('theme-mode') || 'light')
 
 
-// bg status
-// document.querySelectorAll('.bg-checking').forEach(function (e) {
-//     e.classList.add('bg-outline-warning')
-// })
-
-// document.querySelectorAll('.bg-queue').forEach(function (e) {
-//     e.classList.add('bg-outline-warning')
-// })
-
-// document.querySelectorAll('.bg-under_construction').forEach(function (e) {
-//     e.classList.add('bg-outline-primary')
-// })
-
-
-// document.querySelectorAll('.bg-progress').forEach(function (e) {
-//     e.classList.add('bg-outline-primary')
-// })
-
-
-// document.querySelectorAll('.bg-posted').forEach(function (e) {
-//     e.classList.add('bg-outline-info')
-// })
-
-// document.querySelectorAll('.bg-completed').forEach(function (e) {
-//     e.classList.add('bg-outline-success')
-// })
-
-// document.querySelectorAll('.bg-finished').forEach(function (e) {
-//     e.classList.add('bg-outline-success')
-// })
-
-// document.querySelectorAll('.bg-paused').forEach(function (e) {
-//     e.classList.add('bg-outline-danger')
-// })
-//
-
-// document.querySelectorAll('.dot-checking').forEach(function (e) {
-//     e.classList.add('dot-warning')
-// })
-
-// document.querySelectorAll('.dot-under_construction').forEach(function (e) {
-//     e.classList.add('dot-primary')
-// })
-
-// document.querySelectorAll('.dot-posted').forEach(function (e) {
-//     e.classList.add('dot-info')
-// })
-
-// document.querySelectorAll('.dot-completed').forEach(function (e) {
-//     e.classList.add('dot-success')
-// })
-
-// document.querySelectorAll('.dot-paused').forEach(function (e) {
-//     e.classList.add('dot-danger')
-// })
-
-
 // view files
 let view_file_elements = document.getElementsByClassName("view-file");
 
 for (var i = 0; i < view_file_elements.length; i++) {
-  view_file_elements[i].addEventListener('click', function() {
-    var fileUrl = this.getAttribute('href');
-    window.open(fileUrl, '_blank');
-  });
+    view_file_elements[i].addEventListener('click', function () {
+        var fileUrl = this.getAttribute('href');
+        window.open(fileUrl, '_blank');
+    });
 }
+
+
+function addParamsToUrl(params) {
+    var currentUrl = window.location.href;
+    var newUrl = new URL(currentUrl);
+
+    for (var key in params) {
+        if (params.hasOwnProperty(key)) {
+            newUrl.searchParams.set(key, params[key]);
+        }
+    }
+
+    history.pushState({}, '', newUrl);
+}
+
