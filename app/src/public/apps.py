@@ -5,5 +5,3 @@ class PublicConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'public'
 
-    def ready(self):
-        from . import signals

@@ -177,7 +177,6 @@ class Project(BaseModel):
         ('paused', 'متوقف شده'),
     )
     number_id = models.CharField(max_length=150, null=True, blank=True)
-    prepayment_datetime = models.DateField(null=True, blank=True)
     item = models.TextField(null=True, blank=True)
     count_remaining = models.BigIntegerField()
     count_total = models.BigIntegerField()
@@ -189,7 +188,6 @@ class Project(BaseModel):
     time_start = models.DateField(null=True, blank=True)
     time_end = models.DateField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
-    price = models.BigIntegerField(null=True, blank=True)
     is_paid = models.BooleanField(default=False)
     description = models.TextField(null=True, blank=True)
     status = models.CharField(max_length=20, choices=STATUS_OPTIONS, default='under_construction')

@@ -41390,12 +41390,13 @@ p > span > .icon.ni {
     }
 }
 
-.bq-note-item{
-    margin: 10px auto;
-}
 
 .bq-note-item:not(:first-child) {
     margin-top: 1.75rem;
+}
+
+.bq-note-item{
+    margin: 10px auto;
 }
 
 .bq-note-text {

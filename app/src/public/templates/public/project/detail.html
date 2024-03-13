@@ -67,51 +67,62 @@
                                         <div class="card-content">
                                             <ul class="nav nav-tabs nav-tabs-mb-icon nav-tabs-card">
                                                 <li class="nav-item">
-                                                    <a class="nav-link active" data-bs-toggle="tab" href="#info"><em
+                                                    <a class="nav-link active select-section" data-section-id="info"
+                                                       data-bs-toggle="tab" href="#info"><em
                                                             class="icon ni ni-info"></em><span>اطلاعات</span></a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" data-bs-toggle="tab" href="#statistics"><em
+                                                    <a class="nav-link select-section" data-section-id="statistics"
+                                                       data-bs-toggle="tab" href="#statistics"><em
                                                             class="icon ni ni-chart-up"></em><span>امار</span></a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" data-bs-toggle="tab"
+                                                    <a class="nav-link select-section" data-section-id="tasks"
+                                                       data-bs-toggle="tab"
                                                        href="#tasks"><em
                                                             class="icon ni ni-task"></em><span>تسک ها</span></a>
                                                 </li>
                                                 {% if has_perm_to_steps %}
                                                     <li class="nav-item">
-                                                        <a class="nav-link" data-bs-toggle="tab" href="#steps"><em
+                                                        <a class="nav-link select-section" data-section-id="steps"
+                                                           data-bs-toggle="tab" href="#steps"><em
                                                                 class="icon ni ni-activity-round"></em><span>مرحله ها</span></a>
                                                     </li>
                                                 {% endif %}
                                                 <li class="nav-item">
-                                                    <a class="nav-link" data-bs-toggle="tab" href="#tickets"><em
+                                                    <a class="nav-link select-section" data-section-id="tickets"
+                                                       data-bs-toggle="tab" href="#tickets"><em
                                                             class="icon ni ni-view-col"></em><span>گزارشات</span></a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" data-bs-toggle="tab" href="#files"><em
+                                                    <a class="nav-link select-section" data-section-id="files"
+                                                       data-bs-toggle="tab" href="#files"><em
                                                             class="icon ni ni-file-text"></em><span>فایل ها</span></a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" data-bs-toggle="tab" href="#notifications"><em
+                                                    <a class="nav-link select-section" data-section-id="notifications"
+                                                       data-bs-toggle="tab" href="#notifications"><em
                                                             class="icon ni ni-notice"></em><span>اعلانات</span></a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" data-bs-toggle="tab"
+                                                    <a class="nav-link select-section" data-section-id="warehouse"
+                                                       data-bs-toggle="tab"
                                                        href="#warehouse"><em
                                                             class="icon ni ni-book"></em><span>امور انبار</span></a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" data-bs-toggle="tab" href="#financial"><em
+                                                    <a class="nav-link select-section" data-section-id="financial"
+                                                       data-bs-toggle="tab" href="#financial"><em
                                                             class="icon ni ni-coin-alt"></em><span>امور مالی</span></a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" data-bs-toggle="tab" href="#comment"><em
+                                                    <a class="nav-link select-section" data-section-id="comment"
+                                                       data-bs-toggle="tab" href="#comment"><em
                                                             class="icon ni ni-comments"></em><span>نظرات</span></a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" data-bs-toggle="tab" href="#note"><em
+                                                    <a class="nav-link select-section" data-section-id="note"
+                                                       data-bs-toggle="tab" href="#note"><em
                                                             class="icon ni ni-pen2"></em><span>یادداشت های شخصی</span></a>
                                                 </li>
                                                 <li class="nav-item nav-item-trigger d-xxl-none">
@@ -122,7 +133,7 @@
                                             </ul>
                                             <!-- .nav-tabs -->
                                             <div class="tab-content">
-                                                <div class="tab-pane active" id="info">
+                                                <div class="tab-pane active select-section-tab" id="info">
                                                     <div class="card-inner">
                                                         <div class="nk-block">
                                                             <div class="nk-block-head">
@@ -138,7 +149,7 @@
                                                                 </div>
                                                                 <div class="profile-ud-item w-100">
                                                                     <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">مشتری</span>
+                                                                        <span class="profile-ud-label">کارفرما</span>
                                                                         <span class="profile-ud-value">
                                                                     <a href="{{ project.task_master.get_absolute_url }}">{{ project.task_master.name }}</a>
                                                                 </span>
@@ -178,21 +189,7 @@
                                                                         </span>
                                                                     </div>
                                                                 </div>
-                                                                <div class="profile-ud-item w-100">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">قیمت</span>
-                                                                        <span class="profile-ud-value">
-                                                                    {% if project.price %}
-                                                                        <span class="price-el">
-                                                                            {{ project.price }}
-                                                                            تومان
-                                                                        </span>
-                                                                    {% else %}
-                                                                        <span>ثبت نشده است</span>
-                                                                    {% endif %}
-                                                                </span>
-                                                                    </div>
-                                                                </div>
+
                                                             </div>
                                                             <!-- .profile-ud-list -->
                                                         </div>
@@ -226,12 +223,6 @@
                                                                                 <em class="icon ni ni-cross-c text-warning"></em>
                                                                             {% endif %}
                                                                         </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item w-100">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">تاریخ پیش پرداخت</span>
-                                                                        <span class="profile-ud-value">{{ project.prepayment_datetime|default:'-' }}</span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="profile-ud-item w-100">
@@ -283,7 +274,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="tab-pane" id="statistics">
+                                                <div class="tab-pane select-section-tab" id="statistics">
                                                     <div class="card-inner">
                                                         <div class="nk-block">
                                                             <div class="nk-block-head">
@@ -311,7 +302,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="tab-pane" id="tasks">
+                                                <div class="tab-pane select-section-tab" id="tasks">
                                                     <div class="card-inner">
                                                         <div class="nk-block-head nk-block-head-sm nk-block-between">
                                                             <h5 class="title mb-1">تسک ها</h5>
@@ -346,7 +337,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="tab-pane" id="tickets">
+                                                <div class="tab-pane select-section-tab" id="tickets">
                                                     <div class="card-inner">
                                                         <div class="nk-block-head nk-block-head-sm nk-block-between">
                                                             <h5 class="title mb-1">گزارشات</h5>
@@ -382,7 +373,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="tab-pane" id="files">
+                                                <div class="tab-pane select-section-tab" id="files">
                                                     <div class="card-inner">
                                                         <div class="nk-block-head nk-block-head-sm nk-block-between">
                                                             <h5 class="title mb-1">فایل ها</h5>
@@ -418,7 +409,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="tab-pane" id="notifications">
+                                                <div class="tab-pane select-section-tab" id="notifications">
                                                     <div class="card-inner">
                                                         <div class="nk-block-head nk-block-head-sm nk-block-between">
                                                             <h5 class="title mb-1">اعلانات</h5>
@@ -454,7 +445,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="tab-pane" id="financial">
+                                                <div class="tab-pane select-section-tab" id="financial">
                                                     <div class="card-inner">
                                                         <div class="nk-block">
                                                             <div class="nk-block-head">
@@ -517,7 +508,7 @@
                                                                         <span class="profile-ud-value">
                                                                             {% if has_perm_to_financial_amount %}
                                                                                 <span class="price-el">{{ project.get_total_prepayments_amount }}</span>
-                                                                                تومان
+                                                                                ریال
                                                                             {% else %}
                                                                                 <span>غیر قابل مشاهده</span>
                                                                             {% endif %}
@@ -530,40 +521,44 @@
                                                                         <span class="profile-ud-value">
                                                                             {% if has_perm_to_financial_amount %}
                                                                                 <span class="price-el">{{ project.get_total_payments_amount }}</span>
-                                                                                تومان
+                                                                                ریال
                                                                             {% else %}
                                                                                 <span>غیر قابل مشاهده</span>
                                                                             {% endif %}
                                                                         </span>
                                                                     </div>
                                                                 </div>
-                                                                {% if has_perm_to_financial_amount %}
-                                                                    <div class="profile-ud-item w-100">
-                                                                        <div class="profile-ud wider">
-                                                                            <span class="profile-ud-label">پیش پرداختی ها</span>
-                                                                        </div>
-                                                                        {% for prepayment in project.get_prepayments %}
-                                                                            <div class="bq-note">
-                                                                                <div class="bq-note-item">
-                                                                                    <div class="bq-note-text d-flex justify-content-between align-items-center">
-                                                                                        <p>
+                                                                <div class="profile-ud-item w-100">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">پیش پرداختی ها</span>
+                                                                    </div>
+                                                                    {% for prepayment in project.get_prepayments %}
+                                                                        <div class="bq-note">
+                                                                            <div class="bq-note-item">
+                                                                                <div class="bq-note-text d-flex justify-content-between align-items-center">
+                                                                                    <p>
+                                                                                        {% if has_perm_to_financial_amount %}
                                                                                             <a href="{{ prepayment.get_absolute_url }}">پیش
-                                                                                            پرداخت {{ forloop.counter }}</a>
-                                                                                        </p>
-                                                                                        <p>{{ prepayment.submited_at }}</p>
-                                                                                    </div>
+                                                                                                پرداخت {{ forloop.counter }}</a>
+                                                                                        {% else %}
+                                                                                            پیش
+                                                                                            پرداخت
+                                                                                            {{ forloop.counter }}
+                                                                                        {% endif %}
+                                                                                    </p>
+                                                                                    <p>{{ prepayment.submited_at }}</p>
                                                                                 </div>
                                                                             </div>
-                                                                        {% endfor %}
-                                                                    </div>
-                                                                {% endif %}
+                                                                        </div>
+                                                                    {% endfor %}
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <!-- .nk-block -->
                                                     </div>
                                                 </div>
 
-                                                <div class="tab-pane" id="warehouse">
+                                                <div class="tab-pane select-section-tab" id="warehouse">
                                                     <div class="card-inner">
                                                         <div class="nk-block">
                                                             <div class="nk-block-head">
@@ -584,7 +579,7 @@
                                                                         <span class="profile-ud-value">
                                                                             {% if has_perm_to_warehouse_amount %}
                                                                                 <span class="price-el">{{ project.get_total_warehouse_items_amount }}</span>
-                                                                                تومان
+                                                                                ریال
                                                                             {% else %}
                                                                                 <span>غیر قابل مشاهده</span>
                                                                             {% endif %}
@@ -598,7 +593,7 @@
                                                 </div>
 
                                                 {% if has_perm_to_steps %}
-                                                    <div class="tab-pane" id="steps">
+                                                    <div class="tab-pane select-section-tab" id="steps">
                                                         <div class="card-inner">
                                                             <div class="nk-block">
                                                                 <div class="nk-block-head nk-block-head-sm nk-block-between">
@@ -650,7 +645,8 @@
                                                                                 <span class="badge badge-sm badge-dim step-subtract-plan-actual"
                                                                                       data-plan="{{ step.plan }}"
                                                                                       data-actual="{{ step.actual }}"
-                                                                                      data-teraffic="{{ step.person_traffic }}" dir="ltr"></span>
+                                                                                      data-teraffic="{{ step.person_traffic }}"
+                                                                                      dir="ltr"></span>
                                                                             </div>
                                                                             <div class="nk-tb-col text-center">
                                                                                 {% if step.get_status_result > -1 %}
@@ -662,7 +658,7 @@
                                                                                 {% endif %}
                                                                             </div>
                                                                         </div>
-                                                                    {% empty %}
+                                                                        {% empty %}
                                                                         <div class="container-not-found-base">
                                                                             <p>چیزی ثبت نشده است</p>
                                                                         </div>
@@ -697,7 +693,8 @@
                                                                                 </li>
                                                                                 <li class="list-group-item d-flex justify-content-between">
                                                                                     <span>تاخیرات/تعجیلات</span>
-                                                                                    <span class="badge badge-sm badge-dim data-value-diff" dir="ltr">-</span>
+                                                                                    <span class="badge badge-sm badge-dim data-value-diff"
+                                                                                          dir="ltr">-</span>
                                                                                 </li>
                                                                             </ul>
                                                                         </div>
@@ -718,7 +715,8 @@
                                                                                 </li>
                                                                                 <li class="list-group-item d-flex justify-content-between">
                                                                                     <span>تاخیرات/تعجیلات</span>
-                                                                                    <span class="badge badge-sm badge-dim data-value-diff" dir="ltr">-</span>
+                                                                                    <span class="badge badge-sm badge-dim data-value-diff"
+                                                                                          dir="ltr">-</span>
                                                                                 </li>
                                                                             </ul>
                                                                         </div>
@@ -729,7 +727,7 @@
                                                         </div>
                                                     </div>
                                                 {% endif %}
-                                                <div class="tab-pane" id="comment">
+                                                <div class="tab-pane select-section-tab" id="comment">
                                                     <div class="card-inner">
                                                         <!-- .nk-block -->
                                                         <div class="nk-block">
@@ -771,7 +769,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <!-- .bq-note-item -->
-                                                                {% empty %}
+                                                                    {% empty %}
                                                                     <div class="my-5 text-center ">
                                                                         <h6 class="text-soft">نظری ثبت نشده است</h6>
                                                                     </div>
@@ -782,7 +780,7 @@
                                                         <!-- .nk-block -->
                                                     </div>
                                                 </div>
-                                                <div class="tab-pane" id="note">
+                                                <div class="tab-pane select-section-tab" id="note">
                                                     <div class="card-inner">
                                                         <!-- .nk-block -->
                                                         <div class="nk-block">
@@ -816,7 +814,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <!-- .bq-note-item -->
-                                                                {% empty %}
+                                                                    {% empty %}
                                                                     <div class="my-5 text-center ">
                                                                         <h6 class="text-soft">اولین یادداشت خود را
                                                                             بنویسید</h6>
@@ -948,7 +946,11 @@
                                                         <div class="col-4">
                                                             <div class="profile-stats">
                                                                 <span class="amount"
-                                                                      title="{{ project.get_last_step.name|default:'-' }}">
+                                                                      title="
+
+
+
+                                                                              {{ project.get_last_step.name|default:'-' }}">
                                                                     <a href="{{ project.get_last_step.get_absolute_url }}"
                                                                        class="badge badge-dim bg-secondary fs-13px mb-1">{{ project.get_last_step.name|default:'-'|truncatechars:10 }}</a>
                                                                 </span>
@@ -1004,7 +1006,7 @@
                                                                 <a class="btn btn-xs btn-light btn-dim"
                                                                    href="{{ department.get_absolute_url }}">{{ department.name }}</a>
                                                             </li>
-                                                        {% empty %}
+                                                            {% empty %}
                                                             <div class="container-not-found-base">
                                                                 <p>چیزی یافت نشد</p>
                                                             </div>
@@ -1097,7 +1099,7 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label class="form-label" for="client_user">مشتری</label>
+                                        <label class="form-label" for="client_user">کارفرما</label>
                                         <div class="form-control-wrap">
                                             <select id="client_user" name="task_master"
                                                     class="form-select js-select2 select-by-value"
@@ -1124,7 +1126,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-12">
                                     <div class="form-group">
                                         <label class="form-label" for="time_end">تاریخ اتمام
                                             قرارداد</label>
@@ -1138,7 +1140,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-12">
                                     <div class="form-group">
                                         <label class="form-label" for="is_paid">وضعیت
                                             پرداخت</label>
@@ -1149,21 +1151,6 @@
                                                 <option value="false">پرداخت نشده</option>
                                                 <option value="true">پرداخت شده</option>
                                             </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label class="form-label" for="prepayment_datetime">تاریخ
-                                            پیش پرداخت</label>
-                                        <div class="form-control-wrap">
-                                            <input type="text" name="prepayment_datetime"
-                                                   id="prepayment_datetime"
-                                                   class="form-control date-picker-alt"
-                                                   placeholder="روز-ماه-سال" readonly
-                                                   value="{{ project.prepayment_datetime|default:'' }}">
-                                        </div>
-                                        <div class="form-note">فرمت تاریخ <code>روز-ماه-سال</code>
                                         </div>
                                     </div>
                                 </div>
@@ -1192,7 +1179,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-12">
                                     <div class="form-group">
                                         <label class="form-label" for="status">وضعیت</label>
                                         <div class="form-control-wrap">
@@ -1226,17 +1213,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label class="form-label" for="price">قیمت</label>
-                                        <div class="form-control-wrap">
-                                            <input type="number" name="price"
-                                                   id="price"
-                                                   class="form-control"
-                                                   placeholder="قیمت" value="{{ project.price|default:'' }}">
-                                        </div>
-                                    </div>
-                                </div>
+
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label class="form-label"
@@ -1400,11 +1377,11 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-label" for="to_departments">واحد
+                                        <label class="form-label" for="to_departments_create">واحد
                                             ها</label>
                                         <div class="form-control-wrap">
-                                            <select id="to_departments" name="to_departments"
-                                                    class="form-select js-select2 select-by-filter"
+                                            <select id="to_departments_create" name="to_departments"
+                                                    class="form-control  js-select2"
                                                     data-search="on" multiple
                                                     tabindex="-1" aria-hidden="true" required>
                                                 {% for department in departments %}
@@ -2031,6 +2008,38 @@
         }
 
         set_result_steps()
+
+        // select section
+        document.querySelectorAll('.select-section').forEach(function (el) {
+            el.addEventListener('click', function () {
+                let section_el_id = el.dataset.sectionId
+                addParamsToUrl({
+                    'section': section_el_id
+                })
+                // set on cookie
+                setCookie(`select-section-${window.location.pathname}`, section_el_id, 365)
+            })
+        })
+
+        function select_section() {
+            let section_id = getCookie(`select-section-${window.location.pathname}`) || 'info' // default
+            if (section_id) {
+                document.getElementById(section_id).classList.add('active', 'show')
+                document.querySelector(`.select-section[data-section-id="${section_id}"]`).classList.add('active', 'show')
+            }
+        }
+
+        function hide_active_select_sections() {
+            document.querySelectorAll('.select-section-tab').forEach(function (el) {
+                el.classList.remove('active', 'show')
+            })
+            document.querySelectorAll('.select-section').forEach(function (el) {
+                el.classList.remove('active')
+            })
+        }
+
+        hide_active_select_sections()
+        select_section()
 
 
     </script>
