@@ -10,6 +10,24 @@
     has-rtl nk-body ui-rounder has-sidebar no-touch nk-nio-theme
 {% endblock %}
 
+{% block Style %}
+    <style>
+        .profile-ud-value {
+            text-align: right !important;
+            margin-right: 20px;
+        }
+
+        .profile-ud-label {
+            width: 140px !important;
+        }
+
+        .profile-ud-item {
+            margin-bottom: 8px;
+        }
+
+    </style>
+{% endblock %}
+
 
 {% block Content %}
     <div class="nk-app-root">
@@ -143,13 +161,19 @@
                                                             <div class="profile-ud-list">
                                                                 <div class="profile-ud-item w-100">
                                                                     <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">نام درخواست</span>
+                                                                        <span class="profile-ud-label">نام درخواست : </span>
                                                                         <span class="profile-ud-value">{{ project.name }}</span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="profile-ud-item w-100">
                                                                     <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">کارفرما</span>
+                                                                        <span class="profile-ud-label">شماره درخواست : </span>
+                                                                        <span class="profile-ud-value">{{ project.number_id|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item w-100">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">کارفرما : </span>
                                                                         <span class="profile-ud-value">
                                                                     <a href="{{ project.task_master.get_absolute_url }}">{{ project.task_master.name }}</a>
                                                                 </span>
@@ -157,25 +181,25 @@
                                                                 </div>
                                                                 <div class="profile-ud-item w-100">
                                                                     <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">شماره درخواست</span>
-                                                                        <span class="profile-ud-value">{{ project.number_id|default:'-' }}</span>
+                                                                        <span class="profile-ud-label">تاریخ ابلاغ(شروع) : </span>
+                                                                        <span class="profile-ud-value">{{ project.time_start|default:'-' }}</span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="profile-ud-item w-100">
                                                                     <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">وضعیت پرداخت</span>
-                                                                        <span class="profile-ud-value">
-                                                                        {% if project.is_paid %}
-                                                                            <span class="text-success">پرداخت شده</span>
-                                                                        {% else %}
-                                                                            <span class="text-danger">پرداخت نشده</span>
-                                                                        {% endif %}
-                                                                    </span>
+                                                                        <span class="profile-ud-label">تاریخ اتمام قرارداد : </span>
+                                                                        <span class="profile-ud-value">{{ project.time_end|default:'-' }}</span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="profile-ud-item w-100">
                                                                     <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">نمونه</span>
+                                                                        <span class="profile-ud-label">تاریخ تحویل نمونه : </span>
+                                                                        <span class="profile-ud-value">{{ project.sample_delivery_date|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item w-100">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">نمونه : </span>
                                                                         <span class="profile-ud-value">
                                                                             {% if project.has_sample %}
                                                                                 <span class="text-info">
@@ -189,33 +213,15 @@
                                                                         </span>
                                                                     </div>
                                                                 </div>
-
-                                                            </div>
-                                                            <!-- .profile-ud-list -->
-                                                        </div>
-                                                        <!-- .nk-block -->
-                                                        <div class="nk-block">
-                                                            <div class="nk-block-head nk-block-head-line">
-                                                                <h6 class="title overline-title text-base">اطلاعات
-                                                                    تکمیلی</h6>
-                                                            </div>
-                                                            <!-- .nk-block-head -->
-                                                            <div class="profile-ud-list">
                                                                 <div class="profile-ud-item w-100">
                                                                     <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">تعداد کل</span>
-                                                                        <span class="profile-ud-value">{{ project.count_total }}</span>
+                                                                        <span class="profile-ud-label">تاریخ تحویل انبوه : </span>
+                                                                        <span class="profile-ud-value">{{ project.mass_delivery_date|default:'-' }}</span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="profile-ud-item w-100">
                                                                     <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">تعداد باقی مانده</span>
-                                                                        <span class="profile-ud-value">{{ project.count_remaining }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item w-100">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">استعلام مربوطه</span>
+                                                                        <span class="profile-ud-label">استعلام مربوطه : </span>
                                                                         <span class="profile-ud-value">
                                                                             {% if project.inquiry %}
                                                                                 <a href="{{ project.inquiry.get_absolute_url }}">{{ project.inquiry.title|truncatechars:30 }}</a>
@@ -227,50 +233,51 @@
                                                                 </div>
                                                                 <div class="profile-ud-item w-100">
                                                                     <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">تاریخ تحویل نمونه</span>
-                                                                        <span class="profile-ud-value">{{ project.sample_delivery_date|default:'-' }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item w-100">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">تاریخ تحویل انبوه</span>
-                                                                        <span class="profile-ud-value">{{ project.mass_delivery_date|default:'-' }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item w-100">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">تاریخ ابلاغ(شروع)</span>
-                                                                        <span class="profile-ud-value">{{ project.time_start|default:'-' }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item w-100">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">تاریخ اتمام قرارداد</span>
-                                                                        <span class="profile-ud-value">{{ project.time_end|default:'-' }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item w-100">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">مرحله</span>
-                                                                        <span class="profile-ud-value">{{ project.get_last_step|default:'-' }}</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="profile-ud-item w-100">
-                                                                    <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">ایتم ها</span>
+                                                                        <span class="profile-ud-label">ایتم ها : </span>
                                                                         <span class="profile-ud-value"><pre>{{ project.item|default:'-' }}</pre></span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="profile-ud-item w-100">
                                                                     <div class="profile-ud wider">
-                                                                        <span class="profile-ud-label">توضیحات</span>
+                                                                        <span class="profile-ud-label">تعداد کل : </span>
+                                                                        <span class="profile-ud-value">{{ project.count_total }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item w-100">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">تعداد باقی مانده : </span>
+                                                                        <span class="profile-ud-value">{{ project.count_remaining }}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item w-100">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">وضعیت پرداخت : </span>
+                                                                        <span class="profile-ud-value">
+                                                                        {% if project.is_paid %}
+                                                                            <span class="text-success">پرداخت شده : </span>
+                                                                        {% else %}
+                                                                            <span class="text-danger">پرداخت نشده : </span>
+                                                                        {% endif %}
+                                                                    </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="profile-ud-item w-100">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">مرحله : </span>
+                                                                        <span class="profile-ud-value">{{ project.get_last_step|default:'-' }}</span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="profile-ud-item w-100">
+                                                                    <div class="profile-ud wider">
+                                                                        <span class="profile-ud-label">توضیحات : </span>
                                                                         <span class="profile-ud-value"><pre>{{ project.description|default:'-' }}</pre></span>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <!-- .profile-ud-list -->
                                                         </div>
-                                                        <!-- .nk-block -->
+
                                                     </div>
                                                 </div>
 
@@ -979,15 +986,15 @@
                                                     <div class="row g-3">
                                                         <div class="col-6">
                                                             <span class="sub-text">زمان باقی مانده تا تحویل انبوه:</span>
-                                                            <span>{{ project.get_remaining_mass_delivery }} روز </span>
+                                                            <span dir="ltr">{{ project.get_remaining_mass_delivery }} روز </span>
                                                         </div>
                                                         <div class="col-6">
                                                             <span class="sub-text">زمان باقی مانده تا تحویل نمونه:</span>
-                                                            <span>{{ project.get_remaining_sample_delivery }} روز </span>
+                                                            <span dir="ltr">{{ project.get_remaining_sample_delivery }} روز </span>
                                                         </div>
                                                         <div class="col-6">
                                                             <span class="sub-text">زمان باقی مانده تا اتمام قرارداد:</span>
-                                                            <span>{{ project.get_remaining_time_end }} روز </span>
+                                                            <span dir="ltr">{{ project.get_remaining_time_end }} روز </span>
                                                         </div>
                                                         <div class="col-6">
                                                             <span class="sub-text">زمان ایجاد پروژه:</span>
