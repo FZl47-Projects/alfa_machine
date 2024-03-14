@@ -313,7 +313,7 @@
                                                                 <div class="nk-tb-col"><span>وضعیت</span></div>
                                                                 <div class="nk-tb-col"><span>کاربر ثبت کننده</span>
                                                                 </div>
-                                                                <div class="nk-tb-col"><span>توضیحات</span></div>
+                                                                <div class="nk-tb-col text-center"><span>توضیحات</span></div>
                                                                 <div class="nk-tb-col text-center">
                                                                     <span>فایل پیوست</span>
                                                                 </div>
@@ -333,8 +333,8 @@
                                                                     <div class="nk-tb-col">
                                                                         <a href="{{ status.allocator_user.get_absolute_url }}"><span>{{ status.allocator_user.get_full_name|default:'-' }}</span></a>
                                                                     </div>
-                                                                    <div class="nk-tb-col">
-                                                                        <pre>{{ status.description|default:'-' }}</pre>
+                                                                    <div class="nk-tb-col text-center">
+                                                                        <p>{{ status.description|default:'-' }}</p>
                                                                     </div>
                                                                     <div class="nk-tb-col nk-tb-col-status text-center">
                                                                         {% if status.file %}
