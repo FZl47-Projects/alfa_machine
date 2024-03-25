@@ -971,8 +971,14 @@ class ProjectFileList(LoginRequiredMixin, View):
     def filter(self, project_files):
         qs = self.request.GET
         search = qs.get('search', None)
+        project = qs.get('project', 'all')
+        from_department = qs.get('from_department', 'all')
         if search:
             project_files = project_files.filter(name__icontains=search)
+        if project != 'all' and project.isdigit():
+            project_files = project_files.filter(project_id=project)
+        if from_department != 'all' and from_department.isdigit():
+            project_files = project_files.filter(from_department=from_department)
         return project_files
 
     def get(self, request):
@@ -983,7 +989,8 @@ class ProjectFileList(LoginRequiredMixin, View):
         context = {
             'pagination': pagination,
             'project_files': project_files,
-            'projects': models.Project.objects.all()
+            'projects': models.Project.objects.all(),
+            'departments': models.Department.objects.all()
         }
         return render(request, self.template_name, context)
 
