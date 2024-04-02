@@ -122,6 +122,16 @@
                                                         </div>
                                                     </div>
                                                 </li>
+                                                {% if project_file.task %}
+                                                    <li class="data-item">
+                                                        <div class="data-col">
+                                                            <div class="data-label">تسک</div>
+                                                            <div class="data-value">
+                                                                <a href="{{ project_file.task.get_absolute_url }}">{{ project_file.task.name|default:'-' }}</a>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                {% endif %}
                                                 <li class="data-item">
                                                     <div class="data-col">
                                                         <div class="data-label">واحد ثبت کننده</div>
@@ -151,7 +161,8 @@
                                                     <div class="data-col">
                                                         <div class="data-label">فایل</div>
                                                         <div class="data-value">
-                                                            <a href="{{ project_file.file.url }}" class="view-file badge bg-secondary fs-13px py-1">
+                                                            <a href="{{ project_file.file.url }}"
+                                                               class="view-file badge bg-secondary fs-13px py-1">
                                                                 دانلود و مشاهده
                                                             </a>
                                                         </div>
