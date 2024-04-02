@@ -360,6 +360,7 @@ class Project(BaseModel):
 class ProjectFile(BaseModel, FileAbstract):
     name = models.CharField(max_length=100)
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
+    task = models.ForeignKey('Task', on_delete=models.SET_NULL, null=True, blank=True, related_name='task_files')
     allocator_user = models.ForeignKey('account.User', on_delete=models.SET_NULL, null=True)
     from_department = models.ForeignKey('Department', on_delete=models.SET_NULL, null=True)
     description = models.TextField(null=True)
@@ -401,7 +402,7 @@ class ProjectComment(BaseModel):
         return False
 
 
-class Task(BaseModel, FileAbstract):
+class Task(BaseModel):
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
     project = models.ForeignKey('Project', on_delete=models.CASCADE)
@@ -452,6 +453,9 @@ class Task(BaseModel, FileAbstract):
 
     def get_remaining_time(self):
         return self.get_remaining_date_field(self.time_end)
+
+    def get_files(self):
+        return self.task_files.all()
 
 
 class TaskStatus(BaseModel, FileAbstract):

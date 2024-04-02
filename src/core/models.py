@@ -57,5 +57,5 @@ class FileAbstract(RemoveOldFileMixin, models.Model):
     def get_file_url(self):
         try:
             return self.file.url
-        except:
+        except Exception as e:
             return None
