@@ -299,12 +299,24 @@ class TaskAdd(LoginRequiredMixin, View):
         # set default values
         data['allocator_user'] = request.user
         data['from_department'] = request.user.department
-
-        f = forms.TaskCreate(data, request.FILES)
+        project_file_data = data.copy()
+        f = forms.TaskCreate(data)
         if not form_validate_err(request, f):
             messages.error(request, 'لطفا فیلد هارا به درستی پر نمایید')
             return redirect('public:task__add')
         task = f.save()
+        # create task files
+        if request.FILES:
+            project_file_data.update({
+                'task': task,
+                'name': f'{task.name}| فایل تسک  ',
+                'description': f'{task.description}| فایل تسک '
+            })
+            f = forms.ProjectFileCreate(data=project_file_data, files=request.FILES)
+            if not form_validate_err(request, f):
+                messages.error(request, 'لطفا فایل های تسک را به درستی پر نمایید')
+                return redirect('public:task__add')
+            f.save()
         # create status task(queue)
         models.TaskStatus.objects.create(
             department=task.to_department,
@@ -456,6 +468,33 @@ class TaskUpdate(LoginRequiredMixin, View):
             messages.error(request, 'لطفا فیلد هارا به درستی وارد نمایید')
             return redirect(task.get_absolute_url())
         task = f.save()
+        if request.FILES:
+            # update task files
+            task_file = task.get_files().first()  # one instance
+            if task_file:
+                # update task file
+                f = forms.ProjectFileUpdate(instance=task_file, files=request.FILES)
+                if not form_validate_err(request, f):
+                    messages.error(request, 'لطفا فایل های تسک را به درستی پر نمایید')
+                    return redirect(task.get_absolute_url())
+                f.save()
+            else:
+                # create task file
+                data = request.POST.copy()
+                # set default values
+                data.update({
+                    'allocator_user': request.user,
+                    'from_department': request.user.department,
+                    'project': task.project,
+                    'task': task,
+                    'name': f'{task.name}| فایل تسک  ',
+                    'description': f'{task.description}| فایل تسک ',
+                })
+                f = forms.ProjectFileCreate(data=data, files=request.FILES)
+                if not form_validate_err(request, f):
+                    messages.error(request, 'لطفا فایل های تسک را به درستی پر نمایید')
+                    return redirect(task.get_absolute_url())
+                f.save()
         messages.success(request, 'تسک با موفقیت بروزرسانی شد')
         return redirect(task.get_absolute_url())
 
@@ -503,7 +542,7 @@ class TaskRemind(LoginRequiredMixin, View):
 class InquiryAdd(LoginRequiredMixin, View):
     template_name = 'public/inquiry/add.html'
 
-    @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user'])
+    @user_role_required_cbv(['super_user', 'control_project_user', 'commerce_user', 'procurement_commerce_user'])
     def get(self, request):
         context = {
             'inquiry_states': models.Inquiry.STATE_OPTIONS,
@@ -512,7 +551,7 @@ class InquiryAdd(LoginRequiredMixin, View):
         }
         return render(request, self.template_name, context)
 
-    @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user'])
+    @user_role_required_cbv(['super_user', 'control_project_user', 'commerce_user', 'procurement_commerce_user'])
     def post(self, request):
         data = request.POST.copy()
         user = request.user
@@ -945,7 +984,14 @@ class ProjectFileAdd(LoginRequiredMixin, View):
         if not f.is_valid():
             messages.error(request, 'لطفا فیلد هارا به درستی وارد نمایید')
             return redirect('public:project_file__add')
-        f.save()
+        project_file_obj = f.save()
+        # create notification for department
+        create_notification(
+            'فایل پروژه جدید',
+            from_department=request.user.department,
+            projects=[project_file_obj.project],
+            attached_link=project_file_obj.get_absolute_url(),
+        )
         messages.success(request, 'فایل پروژه با موفقیت ایجاد و اپلود شد')
         return redirect(referer_url or 'public:project_file__add')
 

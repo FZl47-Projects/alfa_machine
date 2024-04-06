@@ -5,7 +5,7 @@ from .models import NotificationDepartment
 User = get_user_model()
 
 
-def create_notification(title: str, from_department: object, to_departments: list|tuple, projects: list|tuple,
+def create_notification(title: str, from_department: object, to_departments: list|tuple|None, projects: list|tuple,
                         **kwargs):
     kwargs.setdefault('projects_type', 'selected')
     n = NotificationDepartment.objects.create(
@@ -14,6 +14,8 @@ def create_notification(title: str, from_department: object, to_departments: lis
         **kwargs
     )
     n.projects.set(projects)
+    if not to_departments:
+        to_departments = Department.objects.all()
     n.to_departments.set(to_departments)
     return True
 
