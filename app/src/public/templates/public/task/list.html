@@ -318,7 +318,7 @@
                                                                 <span>{{ task.time_end|default:'-' }}</span>
                                                             </div>
                                                             <div class="nk-tb-col tb-col-sm">
-                                                                {% if task.file %}
+                                                                {% if task.get_files.count > 0 %}
                                                                     <span class="text-info">
                                                                         <em class="icon ni ni-check-c"></em>
                                                                     </span>

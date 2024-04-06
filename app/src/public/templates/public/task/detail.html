@@ -194,21 +194,22 @@
                                         <!-- .nk-block-head -->
                                         <div class="card">
                                             <ul class="data-list is-compact">
-                                                {% if task.file %}
+                                                {% for file in task.get_files %}
                                                     <li class="data-item">
                                                         <div class="data-col">
-                                                            <div class="data-label">فایل 1</div>
+                                                            <div class="data-label">فایل {{ forloop.counter }}</div>
                                                             <div class="data-value">
-                                                                <a href="{{ task.file.url }}" class="view-file">دانلود و
+                                                                <a href="{{ file.get_file_url }}" class="view-file">دانلود و
                                                                     مشاهده</a>
                                                             </div>
                                                         </div>
                                                     </li>
-                                                {% else %}
+                                                {% empty %}
                                                     <div class="container-not-found-base">
                                                         <p>چیزی یافت نشد</p>
                                                     </div>
-                                                {% endif %}
+                                                {% endfor %}
+
                                             </ul>
                                         </div>
                                         <!-- .card -->
@@ -290,7 +291,9 @@
                                                 <li class="data-item">
                                                     <div class="data-col">
                                                         <div class="data-label">توضیحات</div>
-                                                        <div class="data-value"><pre>{{ task.description|default:'-' }}</pre></div>
+                                                        <div class="data-value">
+                                                            <pre>{{ task.description|default:'-' }}</pre>
+                                                        </div>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -313,7 +316,8 @@
                                                                 <div class="nk-tb-col"><span>وضعیت</span></div>
                                                                 <div class="nk-tb-col"><span>کاربر ثبت کننده</span>
                                                                 </div>
-                                                                <div class="nk-tb-col text-center"><span>توضیحات</span></div>
+                                                                <div class="nk-tb-col text-center"><span>توضیحات</span>
+                                                                </div>
                                                                 <div class="nk-tb-col text-center">
                                                                     <span>فایل پیوست</span>
                                                                 </div>
