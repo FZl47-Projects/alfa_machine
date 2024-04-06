@@ -542,7 +542,7 @@ class TaskRemind(LoginRequiredMixin, View):
 class InquiryAdd(LoginRequiredMixin, View):
     template_name = 'public/inquiry/add.html'
 
-    @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user'])
+    @user_role_required_cbv(['super_user', 'control_project_user', 'commerce_user', 'procurement_commerce_user'])
     def get(self, request):
         context = {
             'inquiry_states': models.Inquiry.STATE_OPTIONS,
@@ -551,7 +551,7 @@ class InquiryAdd(LoginRequiredMixin, View):
         }
         return render(request, self.template_name, context)
 
-    @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user'])
+    @user_role_required_cbv(['super_user', 'control_project_user', 'commerce_user', 'procurement_commerce_user'])
     def post(self, request):
         data = request.POST.copy()
         user = request.user
@@ -984,7 +984,14 @@ class ProjectFileAdd(LoginRequiredMixin, View):
         if not f.is_valid():
             messages.error(request, 'لطفا فیلد هارا به درستی وارد نمایید')
             return redirect('public:project_file__add')
-        f.save()
+        project_file_obj = f.save()
+        # create notification for department
+        create_notification(
+            'فایل پروژه جدید',
+            from_department=request.user.department,
+            projects=[project_file_obj.project],
+            attached_link=project_file_obj.get_absolute_url(),
+        )
         messages.success(request, 'فایل پروژه با موفقیت ایجاد و اپلود شد')
         return redirect(referer_url or 'public:project_file__add')
 
