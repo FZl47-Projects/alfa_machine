@@ -316,7 +316,15 @@ class TaskAdd(LoginRequiredMixin, View):
             if not form_validate_err(request, f):
                 messages.error(request, 'لطفا فایل های تسک را به درستی پر نمایید')
                 return redirect('public:task__add')
-            f.save()
+            task_file = f.save()
+            # create notification for department
+            create_notification(
+                'فایل تسک جدید',
+                from_department=request.user.department,
+                to_departments=[task.to_department],
+                projects=[task.project],
+                attached_link=task_file.get_absolute_url(),
+            )
         # create status task(queue)
         models.TaskStatus.objects.create(
             department=task.to_department,
@@ -487,14 +495,22 @@ class TaskUpdate(LoginRequiredMixin, View):
                     'from_department': request.user.department,
                     'project': task.project,
                     'task': task,
-                    'name': f'{task.name}| فایل تسک  ',
+                    'name': f'{task.name} | فایل تسک  ',
                     'description': f'{task.description}| فایل تسک ',
                 })
                 f = forms.ProjectFileCreate(data=data, files=request.FILES)
                 if not form_validate_err(request, f):
                     messages.error(request, 'لطفا فایل های تسک را به درستی پر نمایید')
                     return redirect(task.get_absolute_url())
-                f.save()
+                task_file = f.save()
+                # create notification for department
+                create_notification(
+                    'فایل تسک جدید',
+                    from_department=request.user.department,
+                    to_departments=[task.to_department],
+                    projects=[task.project],
+                    attached_link=task_file.get_absolute_url(),
+                )
         messages.success(request, 'تسک با موفقیت بروزرسانی شد')
         return redirect(task.get_absolute_url())
 
@@ -542,7 +558,8 @@ class TaskRemind(LoginRequiredMixin, View):
 class InquiryAdd(LoginRequiredMixin, View):
     template_name = 'public/inquiry/add.html'
 
-    @user_role_required_cbv(['super_user', 'control_project_user', 'commerce_user', 'procurement_commerce_user'])
+    @user_role_required_cbv(
+        ['super_user', 'control_project_user', 'commerce_user', 'procurement_commerce_user', 'technical_user'])
     def get(self, request):
         context = {
             'inquiry_states': models.Inquiry.STATE_OPTIONS,
@@ -551,7 +568,8 @@ class InquiryAdd(LoginRequiredMixin, View):
         }
         return render(request, self.template_name, context)
 
-    @user_role_required_cbv(['super_user', 'control_project_user', 'commerce_user', 'procurement_commerce_user'])
+    @user_role_required_cbv(
+        ['super_user', 'control_project_user', 'commerce_user', 'procurement_commerce_user', 'technical_user'])
     def post(self, request):
         data = request.POST.copy()
         user = request.user
@@ -643,7 +661,9 @@ class InquiryList(LoginRequiredMixin, View):
             inquiries = inquiries.order_by('id')
         return inquiries
 
-    @user_role_required_cbv(['super_user', 'commerce_user', 'procurement_commerce_user', 'financial_user'])
+    @user_role_required_cbv(
+        ['super_user', 'commerce_user', 'procurement_commerce_user', 'financial_user', 'control_project_user',
+         'technical_user'])
     def get(self, request):
         inquiries = models.Inquiry.objects.all()
         inquiries = self.filter(inquiries)
@@ -989,6 +1009,7 @@ class ProjectFileAdd(LoginRequiredMixin, View):
         create_notification(
             'فایل پروژه جدید',
             from_department=request.user.department,
+            to_departments=None,
             projects=[project_file_obj.project],
             attached_link=project_file_obj.get_absolute_url(),
         )
