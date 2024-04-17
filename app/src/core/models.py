@@ -7,7 +7,10 @@ from .mixins import RemoveOldFileMixin
 def upload_file_src(instance, path):
     path = str(path).split('.')
     frmt = path[-1]
-    file_name = path[0]
+    try:
+        file_name = instance.name
+    except (AttributeError, ValueError):
+        file_name = path[0]
     tm = get_time('%Y-%m-%d')
     return f'files/{tm}/{file_name}.{frmt}'
 
