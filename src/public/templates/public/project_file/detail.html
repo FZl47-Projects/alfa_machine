@@ -138,7 +138,7 @@
                                                         <div class="data-label">برای واحد های</div>
                                                         <div class="data-value">
                                                             {% for department in project_file.get_to_departments %}
-                                                                <a href="{{ department.get_absolute_url }}">{{ department.name|default:'-' }}</a>
+                                                                <a class="badge badge-dim bg-info" href="{{ department.get_absolute_url }}">{{ department.name|default:'-' }}</a>
                                                             {% endfor %}
                                                         </div>
                                                     </div>
