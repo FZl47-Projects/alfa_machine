@@ -132,6 +132,17 @@
                                                         </div>
                                                     </li>
                                                 {% endif %}
+
+                                                <li class="data-item">
+                                                    <div class="data-col">
+                                                        <div class="data-label">برای واحد های</div>
+                                                        <div class="data-value">
+                                                            {% for department in project_file.get_to_departments %}
+                                                                <a class="badge badge-dim bg-info" href="{{ department.get_absolute_url }}">{{ department.name|default:'-' }}</a>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                </li>
                                                 <li class="data-item">
                                                     <div class="data-col">
                                                         <div class="data-label">واحد ثبت کننده</div>

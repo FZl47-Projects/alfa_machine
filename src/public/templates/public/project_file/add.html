@@ -103,6 +103,20 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                <div class="col-lg-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label" for="project">واحد ها</label>
+                                                            <div class="form-control-wrap">
+                                                                <select id="project" name="to_departments"
+                                                                        class="form-select js-select2 select-by-filter" data-search="on"
+                                                                        tabindex="-1" aria-hidden="true" required multiple>
+                                                                    {% for department in departments %}
+                                                                        <option value="{{ department.id }}">{{ department.name }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <div class="col-lg-12">
                                                         <div class="form-group">
                                                             <label class="form-label" for="customFileLabel">فایل</label>

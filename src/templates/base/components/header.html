@@ -63,7 +63,7 @@
                             </div>
                             <div class="dropdown-body">
                                 <div class="nk-notification">
-                                    {% for notification in user.department.get_unread_notifications %}
+                                    {% for notification in user.department.get_unread_notifications|slice:':8' %}
                                         <div class="nk-notification-item dropdown-inner">
                                             <div class="nk-notification-content">
                                                 <div class="nk-notification-text">

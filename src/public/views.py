@@ -310,13 +310,16 @@ class TaskAdd(LoginRequiredMixin, View):
             project_file_data.update({
                 'task': task,
                 'name': f'{task.name}| فایل تسک  ',
-                'description': f'{task.description}| فایل تسک '
+                'description': f'{task.description}| فایل تسک ',
+                'to_departments': task.to_department
             })
             f = forms.ProjectFileCreate(data=project_file_data, files=request.FILES)
             if not form_validate_err(request, f):
                 messages.error(request, 'لطفا فایل های تسک را به درستی پر نمایید')
                 return redirect('public:task__add')
             task_file = f.save()
+            # add 'to_departments' field
+            # task_file.add(task.to_department)
             # create notification for department
             create_notification(
                 'فایل تسک جدید',
@@ -990,6 +993,7 @@ class ProjectFileAdd(LoginRequiredMixin, View):
     def get(self, request):
         context = {
             'projects': models.Project.objects.all(),
+            'departments': models.Department.objects.all()
         }
         return render(request, self.template_name, context)
 
@@ -1048,8 +1052,15 @@ class ProjectFileList(LoginRequiredMixin, View):
             project_files = project_files.filter(from_department=from_department)
         return project_files
 
+    def get_objects(self):
+        user = self.request.user
+        user_role = user.role
+        if user_role in ('super_user',):
+            return models.ProjectFile.objects.all()
+        return models.ProjectFile.objects.filter(to_departments__in=[user.department])
+
     def get(self, request):
-        project_files = models.ProjectFile.objects.all()
+        project_files = self.get_objects()
         project_files = self.filter(project_files)
         project_files = self.sort(project_files)
         pagination, project_files = self.pagination(project_files)
@@ -1069,6 +1080,7 @@ class ProjectFileDetail(LoginRequiredMixin, View):
         project_file = get_object_or_404(models.ProjectFile, id=project_file_id)
         context = {
             'project_file': project_file,
+            'departments': models.Department.objects.all(),
             # permissions
             'has_perm_to_modify': project_file.has_perm_to_modify(request.user)
         }

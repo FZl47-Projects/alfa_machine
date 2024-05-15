@@ -365,6 +365,7 @@ class ProjectFile(BaseModel, FileAbstract):
     task = models.ForeignKey('Task', on_delete=models.SET_NULL, null=True, blank=True, related_name='task_files')
     allocator_user = models.ForeignKey('account.User', on_delete=models.SET_NULL, null=True)
     from_department = models.ForeignKey('Department', on_delete=models.SET_NULL, null=True)
+    to_departments = models.ManyToManyField('Department', related_name='departments_access')
     description = models.TextField(null=True)
 
     class Meta:
@@ -376,12 +377,16 @@ class ProjectFile(BaseModel, FileAbstract):
     def has_perm_to_modify(self, user):
         if user.is_anonymous:
             return False
-        if user == self.allocator_user or user.role in ('super_user',):
+        if ((user == self.allocator_user) and (user.department in self.get_to_departments())) or (
+                user.role in ('super_user',)):
             return True
         return False
 
     def get_absolute_url(self):
         return reverse('public:project_file__detail', args=(self.id,))
+
+    def get_to_departments(self):
+        return self.to_departments.all()
 
 
 class ProjectComment(BaseModel):
