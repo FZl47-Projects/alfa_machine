@@ -4,6 +4,8 @@ from django.db import models
 from django.db.models import F, Max
 from core.models import BaseModel, FileAbstract
 
+from django_jalali.db import models as jmodels
+
 
 class Department(BaseModel):
     name = models.CharField(max_length=100)
@@ -181,12 +183,12 @@ class Project(BaseModel):
     count_remaining = models.BigIntegerField()
     count_total = models.BigIntegerField()
     has_sample = models.BooleanField(default=False)
-    sample_delivery_date = models.DateField(null=True, blank=True)
-    mass_delivery_date = models.DateField(null=True, blank=True)
+    sample_delivery_date = jmodels.jDateField(null=True, blank=True)
+    mass_delivery_date = jmodels.jDateField(null=True, blank=True)
     name = models.CharField(max_length=100)
     task_master = models.ForeignKey(TaskMaster, on_delete=models.CASCADE, related_name='projects')
-    time_start = models.DateField(null=True, blank=True)
-    time_end = models.DateField(null=True, blank=True)
+    time_start = jmodels.jDateField(null=True, blank=True)
+    time_end = jmodels.jDateField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
     is_paid = models.BooleanField(default=False)
     description = models.TextField(null=True, blank=True)
@@ -409,8 +411,8 @@ class Task(BaseModel):
     from_department = models.ForeignKey('Department', on_delete=models.CASCADE, related_name='from_department')
     to_department = models.ForeignKey('Department', on_delete=models.CASCADE)
     allocator_user = models.ForeignKey('account.User', on_delete=models.CASCADE)  # who created task
-    time_start = models.DateField(null=True)
-    time_end = models.DateField(null=True)
+    time_start = jmodels.jDateField(null=True, blank=True)
+    time_end = jmodels.jDateField(null=True, blank=True)
     priority = models.IntegerField(default=1)
     is_active = models.BooleanField(default=True)
 
@@ -495,9 +497,12 @@ class Inquiry(BaseModel):
     state = models.CharField(max_length=32, choices=STATE_OPTIONS, default='waiting_for_price', blank=True)
     task_master = models.ForeignKey(TaskMaster, on_delete=models.SET_NULL, null=True)
     description = models.TextField(null=True, blank=True)
-    time_receive = models.DateField(null=True, blank=True)
-    time_deadline_response = models.DateField(null=True, blank=True)
-    time_submit = models.DateField(null=True, blank=True)
+    # time_receive = jmodels.jDateField(null=True, blank=True)
+    # time_deadline_response = jmodels.jDateField(null=True, blank=True)
+    # time_submit = jmodels.jDateField(null=True, blank=True)
+    time_receive = jmodels.jDateField(null=True, blank=True)
+    time_deadline_response = jmodels.jDateField(null=True, blank=True)
+    time_submit = jmodels.jDateField(null=True, blank=True)
 
     class Meta:
         ordering = '-id',
