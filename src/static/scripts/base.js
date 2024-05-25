@@ -137,9 +137,10 @@ let all_datetime_convert = document.querySelectorAll('.datetime-convert')
 for (let dt_el of all_datetime_convert) {
     let dt = dt_el.innerHTML || dt_el.value
     dt_el.setAttribute('datetime', dt)
+    dt_el.dir = 'ltr'
     let dt_persian = new Date(dt).toLocaleDateString('fa-IR', {
-        // hour: '2-digit',
-        // minute: '2-digit'
+        hour: '2-digit',
+        minute: '2-digit',
     });
     dt_persian = dt_persian.replaceAll('/', '-')
     if (dt_persian != 'Invalid Date') {
