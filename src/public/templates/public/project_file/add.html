@@ -76,7 +76,8 @@
                                                 <h5 class="card-title">اطلاعات فایل پروژه</h5>
                                             </div>
                                             <form action="{% url 'public:project_file__add' %}"
-                                                  class="form-validate is-alter" method="post" enctype="multipart/form-data">
+                                                  class="form-validate is-alter" method="post"
+                                                  enctype="multipart/form-data">
                                                 {% csrf_token %}
                                                 <div class="row g-4">
                                                     <div class="col-lg-6">
@@ -94,7 +95,8 @@
                                                             <label class="form-label" for="project">پروژه</label>
                                                             <div class="form-control-wrap">
                                                                 <select id="project" name="project"
-                                                                        class="form-select js-select2 select-by-filter" data-search="on"
+                                                                        class="form-select js-select2 select-by-filter"
+                                                                        data-search="on"
                                                                         tabindex="-1" aria-hidden="true" required>
                                                                     {% for project in projects %}
                                                                         <option value="{{ project.id }}">{{ project.name }}</option>
@@ -103,17 +105,24 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                <div class="col-lg-12">
+                                                    <div class="col-lg-12">
                                                         <div class="form-group">
                                                             <label class="form-label" for="project">واحد ها</label>
                                                             <div class="form-control-wrap">
                                                                 <select id="project" name="to_departments"
-                                                                        class="form-select js-select2 select-by-filter" data-search="on"
-                                                                        tabindex="-1" aria-hidden="true" required multiple>
+                                                                        class="form-select js-select2 select-by-filter"
+                                                                        data-search="on"
+                                                                        tabindex="-1" aria-hidden="true" required
+                                                                        multiple>
                                                                     {% for department in departments %}
                                                                         <option value="{{ department.id }}">{{ department.name }}</option>
                                                                     {% endfor %}
                                                                 </select>
+                                                            </div>
+                                                            <div class="text-end">
+                                                                <button type="button" id="select-all-department"
+                                                                        class="btn fs-11px">انتخاب همه
+                                                                </button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -122,7 +131,8 @@
                                                             <label class="form-label" for="customFileLabel">فایل</label>
                                                             <div class="form-control-wrap">
                                                                 <div class="form-file">
-                                                                    <input type="file" name="file" class="form-file-input" id="file" required>
+                                                                    <input type="file" name="file"
+                                                                           class="form-file-input" id="file" required>
                                                                     <label class="form-file-label" for="file">انتخاب
                                                                         فایل</label>
                                                                 </div>
@@ -165,4 +175,15 @@
         </div>
         <!-- main @e -->
     </div>
+{% endblock %}
+
+{% block Script %}
+    <script>
+        document.querySelector('#select-all-department').addEventListener('click', function () {
+            let allOptions = $('select[name="to_departments"] option').map(function () {
+                return this.value;
+            });
+            $('select[name="to_departments"]').val(allOptions).trigger("change");
+        })
+    </script>
 {% endblock %}

@@ -5,7 +5,7 @@ from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.views.generic import View
 from django.contrib import messages
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Max, F
 from core.utils import form_validate_err
 from account.auth.decorators import user_role_required_cbv
 from notification.utils import create_notification
@@ -396,11 +396,12 @@ class TaskList(LoginRequiredMixin, View):
             tasks = tasks.filter(to_department_id=to_department)
 
         if status != 'all':
+            tasks = tasks.annotate(latest_status_id=Max('taskstatus__id'))
             if status == 'queue':
-                lookup = Q(taskstatus__status=status) | Q(taskstatus=None)
+                lookup = Q(taskstatus__status=status, taskstatus__id=F('latest_status_id')) | Q(taskstatus=None)
                 tasks = tasks.filter(lookup).distinct()
             else:
-                tasks = tasks.filter(taskstatus__status=status)
+                tasks = tasks.filter(taskstatus__status=status, taskstatus__id=F('latest_status_id'))
 
         # filter by start and end date tasks
         time_start_gt = qs.get('time_start__gt', None)
