@@ -332,7 +332,7 @@ function inactivityTime() {
 
     function resetTimer() {
         clearTimeout(time);
-        let time_amount = 300000 * 6 // 30 miutnes
+        let time_amount = 1000 * 300 * 4 // 20 minutes
         time = setTimeout(logout, time_amount)
     }
 }
