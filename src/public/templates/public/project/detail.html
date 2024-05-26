@@ -1717,6 +1717,18 @@
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="form-group">
+                                        <label class="form-label" for="to_departments_upload_file">واحد ها</label>
+                                        <div class="form-control-wrap">
+                                            <select name="to_departments" id="to_departments_upload_file" class="form-select js-select2">
+                                                {% for department in departments %}
+                                                    <option value="{{ department.id }}">{{ department.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="form-group">
                                         <label class="form-label" for="customFileLabel">فایل</label>
                                         <div class="form-control-wrap">
                                             <div class="form-file">

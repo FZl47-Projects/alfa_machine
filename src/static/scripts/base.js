@@ -320,3 +320,21 @@ function addParamsToUrl(params) {
     history.pushState({}, '', newUrl);
 }
 
+function inactivityTime() {
+    let time;
+    window.onload = resetTimer;
+    document.onmousemove = resetTimer;
+    document.onkeydown = resetTimer;
+
+    function logout() {
+        window.location.href = LOGOUT_URL
+    }
+
+    function resetTimer() {
+        clearTimeout(time);
+        let time_amount = 300000 * 6 // 30 miutnes
+        time = setTimeout(logout, time_amount)
+    }
+}
+
+inactivityTime()
