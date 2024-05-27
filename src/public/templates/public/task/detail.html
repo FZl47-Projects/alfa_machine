@@ -166,7 +166,8 @@
                                                     <div class="data-col">
                                                         <div class="data-label">اخرین وضعیت</div>
                                                         <div class="data-value"><span
-                                                                class="badge badge-dim badge-sm bg-{{ task.get_last_status.status|default:'gray' }}">{{ task.get_last_status.get_status_label|default:'-' }}</span>
+                                                                class="badge badge-dim badge-sm bg-
+                                                                        {{ task.get_last_status.status|default:'gray' }}">{{ task.get_last_status.get_status_label|default:'-' }}</span>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -199,12 +200,13 @@
                                                         <div class="data-col">
                                                             <div class="data-label">فایل {{ forloop.counter }}</div>
                                                             <div class="data-value">
-                                                                <a href="{{ file.get_file_url }}" class="view-file">دانلود و
+                                                                <a href="{{ file.get_file_url }}" class="view-file">دانلود
+                                                                    و
                                                                     مشاهده</a>
                                                             </div>
                                                         </div>
                                                     </li>
-                                                {% empty %}
+                                                    {% empty %}
                                                     <div class="container-not-found-base">
                                                         <p>چیزی یافت نشد</p>
                                                     </div>
@@ -273,11 +275,15 @@
                                                     <div class="data-col">
                                                         {% with reamaining_time=task.get_remaining_time %}
                                                             <div class="data-label">زمان باقی مانده</div>
-                                                            <div class="data-value">
-                                                                <span class="badge badge-dim {% if reamaining_time > 0 %}bg-info{% else %}bg-danger{% endif %}">
+                                                            <div class="data-value" dir="ltr">
+                                                                {% if reamaining_time %}
+                                                                    <span class="badge badge-dim {% if reamaining_time > 0 %}bg-info{% else %}bg-danger{% endif %}">
                                                                     {{ reamaining_time }}
                                                                     روز
                                                                 </span>
+                                                                {% else %}
+                                                                    <span class="badge badge-dim bg-success">انجام شده است</span>
+                                                                {% endif %}
                                                             </div>
                                                         {% endwith %}
                                                     </div>
@@ -361,7 +367,7 @@
                                                                         {% endif %}
                                                                     </div>
                                                                 </div>
-                                                            {% empty %}
+                                                                {% empty %}
                                                                 <div class="container-not-found-base">
                                                                     <p>چیزی یافت نشد</p>
                                                                 </div>

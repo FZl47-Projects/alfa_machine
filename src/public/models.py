@@ -459,7 +459,10 @@ class Task(BaseModel):
         return 'در صف'
 
     def get_remaining_time(self):
-        return self.get_remaining_date_field(self.time_end)
+        t = self.get_remaining_date_field(self.time_end)
+        if self.get_statuses().filter(status='finished').exists():
+            return None
+        return t
 
     def get_files(self):
         return self.task_files.all()
