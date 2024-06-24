@@ -166,8 +166,7 @@
                                                     <div class="data-col">
                                                         <div class="data-label">اخرین وضعیت</div>
                                                         <div class="data-value"><span
-                                                                class="badge badge-dim badge-sm bg-
-                                                                        {{ task.get_last_status.status|default:'gray' }}">{{ task.get_last_status.get_status_label|default:'-' }}</span>
+                                                                class="badge badge-dim badge-sm bg-{{ task.get_last_status.status|default:'gray' }}">{{ task.get_last_status.get_status_label|default:'-' }}</span>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -290,7 +289,9 @@
                                                                         مدت انجام تسک
                                                                             <b>{{ task.get_time_work|default:'-' }}</b>
                                                                         </span>
-                                                                    <span class="badge badge-dim bg-success">انجام شده است</span>
+                                                                    {% if task.finish_status %}
+                                                                        <span class="badge badge-dim bg-success">انجام شده است</span>
+                                                                    {% endif %}
                                                                 {% endif %}
                                                             {% endwith %}
                                                         </div>

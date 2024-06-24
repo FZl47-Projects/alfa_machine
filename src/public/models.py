@@ -465,8 +465,11 @@ class Task(BaseModel):
             return None
         return t
 
+    def get_finished_status(self):
+        return self.get_statuses().filter(status='finished').first()
+
     def get_time_work(self):
-        finish_status = self.get_statuses().filter(status='finished').first()
+        finish_status = self.get_finished_status()
         if not finish_status:
             return 'در حال انجام'
         td = finish_status.created_at - self.created_at
