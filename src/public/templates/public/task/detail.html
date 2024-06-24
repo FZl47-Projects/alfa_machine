@@ -289,7 +289,7 @@
                                                                         مدت انجام تسک
                                                                             <b>{{ task.get_time_work|default:'-' }}</b>
                                                                         </span>
-                                                                    {% if task.finish_status %}
+                                                                    {% if task.get_finished_status %}
                                                                         <span class="badge badge-dim bg-success">انجام شده است</span>
                                                                     {% endif %}
                                                                 {% endif %}
