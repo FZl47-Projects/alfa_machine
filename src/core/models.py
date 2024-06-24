@@ -44,6 +44,15 @@ class BaseModel(models.Model):
             return t.days
         return '-'
 
+    def get_remaining_date_fields(self, date_start, date_end):
+        # remaining time by days
+        if not date_start or not date_end:
+            return '-'
+        t = jdatetime.date(date_end.year,
+                           date_end.month,
+                           date_end.day) - jdatetime.date(date_start.year, date_start.month, date_start.day)
+        return t.days
+
 
 class FileAbstract(RemoveOldFileMixin, models.Model):
     FIELDS_REMOVE_FILES = ('file',)

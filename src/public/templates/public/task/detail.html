@@ -206,7 +206,7 @@
                                                             </div>
                                                         </div>
                                                     </li>
-                                                    {% empty %}
+                                                {% empty %}
                                                     <div class="container-not-found-base">
                                                         <p>چیزی یافت نشد</p>
                                                     </div>
@@ -273,19 +273,28 @@
                                                 </li>
                                                 <li class="data-item">
                                                     <div class="data-col">
-                                                        {% with reamaining_time=task.get_remaining_time %}
-                                                            <div class="data-label">زمان باقی مانده</div>
-                                                            <div class="data-value" dir="ltr">
-                                                                {% if reamaining_time %}
+                                                        <div class="data-label">زمان باقی مانده</div>
+                                                        <div class="data-value" dir="ltr">
+
+
+                                                            {% with reamaining_time=task.get_remaining_time %}
+                                                                {% if reamaining_time and task.time_end %}
                                                                     <span class="badge badge-dim {% if reamaining_time > 0 %}bg-info{% else %}bg-danger{% endif %}">
                                                                     {{ reamaining_time }}
                                                                     روز
                                                                 </span>
+                                                                {% elif reamaining_time == '-' %}
+                                                                    <span class="badge badge-dim bg-secondary">-</span>
                                                                 {% else %}
+                                                                    <span class="badge badge-dim bg-gray">
+                                                                        مدت انجام تسک
+                                                                            <b>{{ task.get_time_work|default:'-' }}</b>
+                                                                        </span>
                                                                     <span class="badge badge-dim bg-success">انجام شده است</span>
                                                                 {% endif %}
-                                                            </div>
-                                                        {% endwith %}
+                                                            {% endwith %}
+                                                        </div>
+
                                                     </div>
                                                 </li>
                                                 <li class="data-item">
@@ -367,7 +376,7 @@
                                                                         {% endif %}
                                                                     </div>
                                                                 </div>
-                                                                {% empty %}
+                                                            {% empty %}
                                                                 <div class="container-not-found-base">
                                                                     <p>چیزی یافت نشد</p>
                                                                 </div>

@@ -459,10 +459,22 @@ class Task(BaseModel):
         return 'در صف'
 
     def get_remaining_time(self):
-        t = self.get_remaining_date_field(self.time_end)
+        # t = self.get_remaining_date_field(self.time_end)
+        t = self.get_remaining_date_fields(self.time_start, self.time_end)
         if self.get_statuses().filter(status='finished').exists():
             return None
         return t
+
+    def get_time_work(self):
+        finish_status = self.get_statuses().filter(status='finished').first()
+        if not finish_status:
+            return 'در حال انجام'
+        td = finish_status.created_at - self.created_at
+        td_d = td.days
+        if td_d:
+            return f'{td.days} روز '
+        else:
+            return f'{td.seconds // 60} دقیقه '
 
     def get_files(self):
         return self.task_files.all()
