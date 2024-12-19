@@ -667,7 +667,7 @@ class InquiryList(LoginRequiredMixin, View):
 
     @user_role_required_cbv(
         ['super_user', 'commerce_user', 'procurement_commerce_user', 'financial_user', 'control_project_user',
-         'technical_user'])
+         'technical_user', 'production_user'])
     def get(self, request):
         inquiries = models.Inquiry.objects.all()
         inquiries = self.filter(inquiries)
@@ -695,6 +695,9 @@ class InquiryDetail(LoginRequiredMixin, View):
         files = inquiry.get_files().filter(lookup).distinct()
         return files
 
+    @user_role_required_cbv(
+        ['super_user', 'commerce_user', 'procurement_commerce_user', 'financial_user', 'control_project_user',
+         'technical_user', 'production_user'])
     def get(self, request, inquiry_id):
         inquiry = get_object_or_404(models.Inquiry, id=inquiry_id)
         context = {

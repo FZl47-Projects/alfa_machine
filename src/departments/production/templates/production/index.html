@@ -45,7 +45,7 @@
                             <!-- .nk-block-head -->
                             <div class="nk-block">
                                 <div class="row g-gs">
-                                    <div class="col-lg-3 col-sm-6">
+                                    <div class="col-lg-4 col-sm-6">
                                         <div class="card h-100 bg-primary">
                                             <div class="nk-cmwg nk-cmwg1">
                                                 <div class="card-inner pt-3">
@@ -85,7 +85,7 @@
                                         <!-- .card -->
                                     </div>
                                     <!-- .col -->
-                                    <div class="col-lg-3 col-sm-6">
+                                    <div class="col-lg-4 col-sm-6">
                                         <div class="card h-100 bg-secondary">
                                             <div class="nk-cmwg nk-cmwg1">
                                                 <div class="card-inner pt-3">
@@ -125,7 +125,7 @@
                                         <!-- .card -->
                                     </div>
                                     <!-- .col -->
-                                    <div class="col-lg-3 col-sm-6">
+                                    <div class="col-lg-4 col-sm-6">
                                         <div class="card h-100 bg-success">
                                             <div class="nk-cmwg nk-cmwg1">
                                                 <div class="card-inner pt-3">
@@ -168,7 +168,7 @@
                                         <!-- .card -->
                                     </div>
                                     <!-- .col -->
-                                    <div class="col-lg-3 col-sm-6">
+                                    <div class="col-lg-6 col-sm-6">
                                         <div class="card h-100 bg-warning">
                                             <div class="nk-cmwg nk-cmwg1">
                                                 <div class="card-inner pt-3">
@@ -207,6 +207,49 @@
                                         </div>
                                         <!-- .card -->
                                     </div>
+                                    <!-- .col -->
+                                    <div class="col-lg-6 col-sm-6">
+                                        <div class="card h-100 bg-black">
+                                            <div class="nk-cmwg nk-cmwg1">
+                                                <div class="card-inner pt-3">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="flex-item">
+                                                            <div class="text-white d-flex flex-wrap">
+                                                                <span class="fs-1 me-1">{{ inquiries.count }}</span>
+                                                            </div>
+                                                            <h6 class="text-white">تعداد استعلامات</h6>
+                                                        </div>
+                                                        <div class="card-tools me-n1">
+                                                            <div class="dropdown">
+                                                                <a href="#"
+                                                                   class="dropdown-toggle btn btn-icon btn-sm btn-trigger on-dark"
+                                                                   data-bs-toggle="dropdown"><em
+                                                                        class="icon ni ni-more-v"></em></a>
+                                                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                                                    <ul class="link-list-opt no-bdr">
+                                                                        <li>
+                                                                            <a href="{% url 'public:inquiry__list' %}"><span>لیست استعلامات</span></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- .card-inner -->
+                                                <div class="nk-ck-wrap mt-auto overflow-hidden rounded-bottom">
+                                                    <div class="nk-cmwg1-ck box-icon">
+                                                        <i class="icon ni ni-info-i"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- .nk-cmwg -->
+                                        </div>
+                                        <!-- .card -->
+                                    </div>
+
+
+
                                     <div class="col-xxl-8 col-lg-7">
                                         <div class="card card-full">
                                             <div class="card-inner">

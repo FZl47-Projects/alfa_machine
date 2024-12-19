@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import View
-from public.models import Project
+from public.models import Project, Inquiry
 from account.auth.decorators import user_role_required_cbv
 
 
@@ -12,5 +12,6 @@ class Index(View):
         projects = Project.objects.filter(is_active=True)
         context = {
             'projects': projects,
+            'inquiries': Inquiry.objects.all(),
         }
         return render(request, self.template_name, context)
